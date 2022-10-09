@@ -1,23 +1,62 @@
 #include "image_magick_ffi.h"
+#include <MagickWand/MagickWand.h>
 
-// A very short-lived native function.
-//
-// For very short-lived functions, it is fine to call them on the main isolate.
-// They will block the Dart execution while running the native function, so
-// only do this for native functions which are guaranteed to be short-lived.
-FFI_PLUGIN_EXPORT intptr_t sum(intptr_t a, intptr_t b) { return a + b; }
+void handleWandException(MagickWand* wand, char* errorOut, int maxErrorOutSize) {
+	char* description;
+	ExceptionType severity;
+	description = MagickGetException(wand, &severity);
+	strcpy_s(errorOut, maxErrorOutSize, description);
+}
 
-// A longer-lived native function, which occupies the thread calling it.
-//
-// Do not call these kind of native functions in the main isolate. They will
-// block Dart execution. This will cause dropped frames in Flutter applications.
-// Instead, call these native functions on a separate isolate.
-FFI_PLUGIN_EXPORT intptr_t sum_long_running(intptr_t a, intptr_t b) {
-  // Simulate work.
-#if _WIN32
-  Sleep(5000);
-#else
-  usleep(5000 * 1000);
-#endif
-  return a + b;
+FFI_PLUGIN_EXPORT void resize(const char* inputFilePath, const char* outputFilePath, int width, int height, char* errorOut, int maxErrorOutSize) {
+	MagickWandGenesis();
+
+	MagickWand* m_wand = NULL;
+
+	strcpy_s(errorOut, maxErrorOutSize, "");
+
+	m_wand = NewMagickWand();
+
+	MagickBooleanType status = MagickTrue; // indicates success
+
+	// Read the image
+	status = MagickReadImage(m_wand, inputFilePath);
+	if (!status) {
+		handleWandException(m_wand, errorOut, maxErrorOutSize);
+		return;
+	}
+
+	// make sure width and height don't underflow
+	if (width < 1)width = 1;
+	if (height < 1)height = 1;
+
+	// Resize the image using the Lanczos filter
+	// The blur factor is a "double", where > 1 is blurry, < 1 is sharp
+	// I haven't figured out how you would change the blur parameter of MagickResizeImage
+	// on the command line so I have set it to its default of one.
+	status = MagickResizeImage(m_wand, width, height, LanczosFilter);
+	if (!status) {
+		handleWandException(m_wand, errorOut, maxErrorOutSize);
+		return;
+	}
+
+	// Set the compression quality to 95 (high quality = low compression)
+	MagickSetImageCompressionQuality(m_wand, 95);
+	if (!status) {
+		handleWandException(m_wand, errorOut, maxErrorOutSize);
+		return;
+	}
+
+	/* Write the new image */
+	MagickWriteImage(m_wand, outputFilePath);
+	if (!status) {
+		handleWandException(m_wand, errorOut, maxErrorOutSize);
+		return;
+	}
+
+	/* Clean up */
+	if (m_wand)m_wand = DestroyMagickWand(m_wand);
+
+
+	MagickWandTerminus();
 }

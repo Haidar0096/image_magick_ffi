@@ -4,7 +4,7 @@ description: |
   Bindings for `src/image_magick_ffi.h`.
 
   Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
-output: 'lib/image_magick_ffi_bindings_generated.dart'
+output: 'lib/src/image_magick_ffi_bindings_generated.dart'
 headers:
   entry-points:
     - 'src/image_magick_ffi.h'
@@ -17,3 +17,6 @@ preamble: |
 comments:
   style: any
   length: full
+llvm-path:
+  - '/usr/lib/llvm-14'
+  - 'C:\Program Files\LLVM'
