@@ -1,7 +1,7 @@
 # image_magick_ffi
 
-A new Flutter FFI plugin project.
-
+This plugin ports the famous [ImageMagick](https://imagemagick.org/script/index.php) library into flutter.
+It uses the [MagickWand](https://imagemagick.org/script/magick-wand.php) API.
 ## Getting Started
 
 This project is a starting point for a Flutter
