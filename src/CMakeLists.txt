@@ -16,10 +16,14 @@ set_target_properties(image_magick_ffi PROPERTIES
 
 target_compile_definitions(image_magick_ffi PUBLIC DART_SHARED_LIB)
 
-#ImageMagick
-include_directories(Dependencies/ImageMagick/include)
-target_link_directories(image_magick_ffi PRIVATE Dependencies/ImageMagick/lib)
-target_link_libraries(image_magick_ffi
-        "CORE_RL_MagickCore_"
-        "CORE_RL_MagickWand_"
-        )
+# ImageMagick
+if(WIN32)
+    add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=16 )
+    add_definitions( -DMAGICKCORE_HDRI_ENABLE=0 )
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/include)
+    target_link_directories(image_magick_ffi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib)
+    file(GLOB IMAGEMAGICK_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib/*.lib)
+    target_link_libraries(image_magick_ffi
+            "${IMAGEMAGICK_LIBS}"
+            )
+endif()
