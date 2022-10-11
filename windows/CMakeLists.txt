@@ -14,7 +14,14 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DI
 
 
 # ImageMagick Dlls
-file(GLOB IMAGEMAGICK_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/../src/Dependencies/ImageMagick/bin/*.dll)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    # 64 bits
+    set(binDir x64)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    # 32 bits
+    set(binDir x86)
+endif()
+file(GLOB IMAGEMAGICK_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/../src/Dependencies/ImageMagick/bin/${binDir}/*.dll)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
