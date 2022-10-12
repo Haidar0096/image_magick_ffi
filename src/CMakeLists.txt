@@ -21,9 +21,6 @@ target_compile_definitions(image_magick_ffi PUBLIC DART_SHARED_LIB)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/include)
 
 if (WIN32)
-    add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=16)
-    add_definitions(-DMAGICKCORE_HDRI_ENABLE=0)
-
     if (CMAKE_SIZEOF_VOID_P EQUAL 8)
         # 64 bits
         set(libDir x64)
