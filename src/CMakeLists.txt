@@ -16,25 +16,32 @@ set_target_properties(image_magick_ffi PROPERTIES
 
 target_compile_definitions(image_magick_ffi PUBLIC DART_SHARED_LIB)
 
-# ImageMagick
-if(WIN32)
-    add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=16 )
-    add_definitions( -DMAGICKCORE_HDRI_ENABLE=0 )
+################################### Image Magick ###################################
 
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/include)
 
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+if (WIN32)
+    add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=16)
+    add_definitions(-DMAGICKCORE_HDRI_ENABLE=0)
+
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
         # 64 bits
         set(libDir x64)
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    elseif (CMAKE_SIZEOF_VOID_P EQUAL 4)
         # 32 bits
         set(libDir x86)
-    endif()
-
-    target_link_directories(image_magick_ffi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib/${libDir})
-
+    endif ()
     file(GLOB IMAGEMAGICK_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib/${libDir}/*.lib)
-    target_link_libraries(image_magick_ffi
-            "${IMAGEMAGICK_LIBS}"
-            )
-endif()
+    target_link_directories(image_magick_ffi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib/${libDir})
+endif ()
+
+if (UNIX)
+    set(libDir linux)
+    file(GLOB IMAGEMAGICK_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/lib/${libDir}/*.so)
+endif ()
+
+target_link_libraries(image_magick_ffi
+        "${IMAGEMAGICK_LIBS}"
+        )
+
+################################### Image Magick ###################################

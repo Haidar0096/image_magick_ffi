@@ -11,6 +11,10 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 # This can be changed to accomodate different builds.
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DIR}/shared")
 
+# ImageMagick lib files
+set(libDir linux)
+file(GLOB IMAGEMAGICK_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../src/Dependencies/ImageMagick/lib/${libDir}/*.so*)
+
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
@@ -18,5 +22,6 @@ set(image_magick_ffi_bundled_libraries
   # Defined in ../src/CMakeLists.txt.
   # This can be changed to accomodate different builds.
   $<TARGET_FILE:image_magick_ffi>
+  ${IMAGEMAGICK_LIBS}
   PARENT_SCOPE
 )

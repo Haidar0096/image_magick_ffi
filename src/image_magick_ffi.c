@@ -13,7 +13,12 @@ FFI_PLUGIN_EXPORT void resize(const char* inputFilePath, const char* outputFileP
 
 	MagickWand* m_wand = NULL;
 
-	strcpy_s(errorOut, maxErrorOutSize, "");
+#if defined(WIN32)
+    strcpy_s(errorOut, maxErrorOutSize, "");
+#elif defined(UNIX)
+    *errorOut = '\0';
+#endif
+
 
 	m_wand = NewMagickWand();
 
