@@ -29,3 +29,10 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+// Define external configuration for ImageMagick
+ext {
+    Q16 = 1
+    HDRI = 1
+}

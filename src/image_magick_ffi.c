@@ -1,23 +1,41 @@
 #include "image_magick_ffi.h"
 #include <MagickWand/MagickWand.h>
 
+// include android log lib if android is defined
+#ifdef ANDROID
+#include <android/log.h>
+#endif
+
 void handleWandException(MagickWand* wand, char* errorOut, int maxErrorOutSize) {
 	char* description;
 	ExceptionType severity;
 	description = MagickGetException(wand, &severity);
-	strcpy_s(errorOut, maxErrorOutSize, description);
+	#if defined(WIN32)
+        strcpy_s(errorOut, maxErrorOutSize, description);
+    #elif defined(UNIX)
+        *errorOut = '\0';
+    #endif
 }
 
 FFI_PLUGIN_EXPORT void resize(const char* inputFilePath, const char* outputFilePath, int width, int height, char* errorOut, int maxErrorOutSize) {
+    #ifdef ANDROID
+        __android_log_print(ANDROID_LOG_INFO, "ImageMagick", "resize called");
+        // print quantum depth
+        size_t* depthPtr = (size_t*)malloc(sizeof(size_t));
+        const char* depthStringPtr = MagickGetQuantumDepth(depthPtr);
+        free(depthPtr);
+        __android_log_print(ANDROID_LOG_INFO,"ImageMagick","\ndepth is %s\n", depthStringPtr);
+    #endif
+
 	MagickWandGenesis();
 
 	MagickWand* m_wand = NULL;
 
-#if defined(WIN32)
-    strcpy_s(errorOut, maxErrorOutSize, "");
-#elif defined(UNIX)
-    *errorOut = '\0';
-#endif
+    #if defined(WIN32)
+        strcpy_s(errorOut, maxErrorOutSize, "");
+    #elif defined(UNIX)
+        *errorOut = '\0';
+    #endif
 
 
 	m_wand = NewMagickWand();

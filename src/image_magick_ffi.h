@@ -1,6 +1,4 @@
 #include <stdlib.h>
-#include <string.h>
-#include<stdbool.h>
 
 #if _WIN32
 #define FFI_PLUGIN_EXPORT __declspec(dllexport)

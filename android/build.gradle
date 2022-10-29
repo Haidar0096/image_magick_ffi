@@ -1,3 +1,26 @@
+// Read ImageMagick Configuration from root project
+def Q8
+def Q16
+def HDRI
+if(rootProject.hasProperty("Q8")){
+    Q8 = 1
+}
+else{
+    Q8 = 0
+}
+if(rootProject.hasProperty("Q16")){
+    Q16 = 1
+}
+else{
+    Q16 = 0
+}
+if(rootProject.hasProperty("HDRI")){
+    HDRI = 1
+}
+else{
+    HDRI = 0
+}
+
 // The Android Gradle Plugin builds the native code with the Android NDK.
 
 group 'com.example.image_magick_ffi'
@@ -55,5 +78,15 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+        // Compile only for arm64-v8a.
+        ndk {
+            abiFilters "arm64-v8a"
+        }
+        // Pass ImageMagick Configuration to CMake
+        externalNativeBuild{
+            cmake {
+                arguments "-DQ8=${Q8}" , "-DQ16=${Q16}" , "-DHDRI=${HDRI}"
+            }
+        }
     }
 }

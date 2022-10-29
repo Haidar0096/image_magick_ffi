@@ -14,14 +14,35 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DI
 
 
 # ImageMagick Dlls
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
     # 64 bits
-    set(binDir x64)
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    set(dir x64)
+elseif (CMAKE_SIZEOF_VOID_P EQUAL 4)
     # 32 bits
-    set(binDir x86)
-endif()
-file(GLOB IMAGEMAGICK_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/../src/Dependencies/ImageMagick/bin/${binDir}/*.dll)
+    set(dir x86)
+endif ()
+
+if (Q8)
+    if (HDRI)
+        message("Using Q8-HDRI libs for ImageMagick")
+        set(dir ${dir}/Q8-HDRI)
+    else ()
+        message("Using Q8 libs for ImageMagick")
+        set(dir ${dir}/Q8)
+    endif ()
+elseif (Q16)
+    if (HDRI)
+        message("Using Q16-HDRI libs for ImageMagick")
+        set(dir ${dir}/Q16-HDRI)
+    else ()
+        message("Using Q16 libs for ImageMagick")
+        set(dir ${dir}/Q16)
+    endif ()
+else ()
+    message("Neither Q8 nor Q16 is not defined, using Q8 (No HDRI) libs by default")
+    set(dir ${dir}/Q8)
+endif ()
+file(GLOB IMAGEMAGICK_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/../src/Dependencies/ImageMagick/${dir}/bin/*.dll)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
@@ -30,6 +51,7 @@ set(image_magick_ffi_bundled_libraries
   # Defined in ../src/CMakeLists.txt.
   # This can be changed to accomodate different builds.
   $<TARGET_FILE:image_magick_ffi>
+  # ImageMagick dlls to be bundled with the app's executable
   ${IMAGEMAGICK_DLLS}
   PARENT_SCOPE
 )

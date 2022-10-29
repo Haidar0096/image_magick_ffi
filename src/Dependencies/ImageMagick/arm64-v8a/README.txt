@@ -1,0 +1,1 @@
+The binaries for different configurations were built using the repository at https://github.com/MolotovCherry/Android-ImageMagick7.
