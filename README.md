@@ -10,6 +10,7 @@ This plugin brings to you the imagemagick C/C++ library to use with dart.
 - Your decision must be made at buildtime (not runtime) since the versions are bundled as shared libraries.
 - Only the version you use will be bundled with your app when you build your app.
 - #### Windows
+  Windows x64 (32 bits) and window x86 (32 bits) are both supported.
   To choose one of the variants add this to your `windows/CMakeLists.txt` file:
     ```
     # Use ImageMagick with Q8 and HDRI enabled.
@@ -17,10 +18,11 @@ This plugin brings to you the imagemagick C/C++ library to use with dart.
     set(HDRI 1)
     ```
   Note:
-    - Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or undefined behaviour will occur.
-    - If you don't set any configuration then by default "Q8-No HDRI" will be used.
-    - Make sure you add the snippet above before this line `include(flutter/generated_plugins.cmake)`
+  - Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or undefined behaviour will occur.
+  - If you don't set any configuration then by default "Q8-No HDRI" will be used.
+  - Make sure you add the snippet above before this line `include(flutter/generated_plugins.cmake)`
 - #### Android
+  Currently only arm64-v8a (64 bits) is supported. If you want to help add support to armeabi-v7a (32 bits), have a look [here](https://github.com/MolotovCherry/Android-ImageMagick7/discussions/95).
   To choose one of the variants add this to your **`android/build.gradle`** file:
     ```
     // Use ImageMagick with Q16 and HDRI enabled.
