@@ -39,14 +39,4 @@ This plugin brings to you the imagemagick C/C++ library to use with dart.
   Your contributions to provide the binraires are welcomed :)
 
 # Usage
- ```
- import 'package:image_magick_ffi/image_magick_ffi.dart' as magick_ffi;
-   Future<String?> _resize() async {
-    return await magick_ffi.resize(
-      inputFilePath: "some/path",
-      outputFilePath: "some/path",
-      height: 800,
-      width: 600,
-    );
-  }
- ```
+Have a look at the example app in this repo.
