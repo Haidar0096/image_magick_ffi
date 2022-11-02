@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp> {
     MagickWand.magickWandGenesis();
     MagickWand wand = MagickWand.newMagickWand();
     wand.magickReadImage(_inputFile!.path);
-    wand.magickWriteImage("${outputDirectory!.path}out_\\${_inputFile!.path.split('\\').last}");
+    wand.magickWriteImage("${outputDirectory!.path}\\out_${_inputFile!.path.split('\\').last}");
     wand.destroyMagickWand();
     MagickWand.magickWandTerminus();
     return null;
