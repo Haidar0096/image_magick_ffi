@@ -20,3 +20,5 @@ comments:
 llvm-path:
   - '/usr/lib/llvm-14'
   - 'C:\Program Files\LLVM'
+compiler-opts:
+  - '-Isrc/Dependencies/ImageMagick/x64/Q8/include'

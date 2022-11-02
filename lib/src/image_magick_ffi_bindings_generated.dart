@@ -26,29 +26,283 @@ class ImageMagickFfiBindings {
           lookup)
       : _lookup = lookup;
 
-  void resize(
-    ffi.Pointer<ffi.Char> inputFilePath,
-    ffi.Pointer<ffi.Char> outputFilePath,
-    int width,
-    int height,
-    ffi.Pointer<ffi.Char> errorOut,
-    int maxErrorOutSize,
+  void clearMagickWand(
+    ffi.Pointer<ffi.Void> wand,
   ) {
-    return _resize(
-      inputFilePath,
-      outputFilePath,
-      width,
-      height,
-      errorOut,
-      maxErrorOutSize,
+    return _clearMagickWand(
+      wand,
     );
   }
 
-  late final _resizePtr = _lookup<
+  late final _clearMagickWandPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'clearMagickWand');
+  late final _clearMagickWand =
+      _clearMagickWandPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> cloneMagickWand(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _cloneMagickWand(
+      wand,
+    );
+  }
+
+  late final _cloneMagickWandPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Int, ffi.Int, ffi.Pointer<ffi.Char>, ffi.Int)>>('resize');
-  late final _resize = _resizePtr.asFunction<
-      void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, int,
-          ffi.Pointer<ffi.Char>, int)>();
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('cloneMagickWand');
+  late final _cloneMagickWand = _cloneMagickWandPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> destroyMagickWand(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _destroyMagickWand(
+      wand,
+    );
+  }
+
+  late final _destroyMagickWandPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('destroyMagickWand');
+  late final _destroyMagickWand = _destroyMagickWandPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  bool isMagickWand(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _isMagickWand(
+      wand,
+    );
+  }
+
+  late final _isMagickWandPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'isMagickWand');
+  late final _isMagickWand =
+      _isMagickWandPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickClearException(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickClearException(
+      wand,
+    );
+  }
+
+  late final _magickClearExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickClearException');
+  late final _magickClearException = _magickClearExceptionPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickGetException(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Int> severity,
+  ) {
+    return _magickGetException(
+      wand,
+      severity,
+    );
+  }
+
+  late final _magickGetExceptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Int>)>>('magickGetException');
+  late final _magickGetException = _magickGetExceptionPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Int>)>();
+
+  int magickGetExceptionType(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetExceptionType(
+      wand,
+    );
+  }
+
+  late final _magickGetExceptionTypePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetExceptionType');
+  late final _magickGetExceptionType = _magickGetExceptionTypePtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  int magickGetIteratorIndex(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetIteratorIndex(
+      wand,
+    );
+  }
+
+  late final _magickGetIteratorIndexPtr =
+      _lookup<ffi.NativeFunction<ssize_t Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetIteratorIndex');
+  late final _magickGetIteratorIndex = _magickGetIteratorIndexPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickQueryConfigureOption(
+    ffi.Pointer<ffi.Char> option,
+  ) {
+    return _magickQueryConfigureOption(
+      option,
+    );
+  }
+
+  late final _magickQueryConfigureOptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>)>>('magickQueryConfigureOption');
+  late final _magickQueryConfigureOption = _magickQueryConfigureOptionPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryConfigureOptions(
+    ffi.Pointer<ffi.Char> pattern,
+    ffi.Pointer<ffi.Size> number_options,
+  ) {
+    return _magickQueryConfigureOptions(
+      pattern,
+      number_options,
+    );
+  }
+
+  late final _magickQueryConfigureOptionsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryConfigureOptions');
+  late final _magickQueryConfigureOptions =
+      _magickQueryConfigureOptionsPtr.asFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<ffi.Double> magickQueryFontMetrics(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> drawing_wand,
+    ffi.Pointer<ffi.Char> text,
+  ) {
+    return _magickQueryFontMetrics(
+      wand,
+      drawing_wand,
+      text,
+    );
+  }
+
+  late final _magickQueryFontMetricsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Double> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickQueryFontMetrics');
+  late final _magickQueryFontMetrics = _magickQueryFontMetricsPtr.asFunction<
+      ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Double> magickQueryMultilineFontMetrics(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> drawing_wand,
+    ffi.Pointer<ffi.Char> text,
+  ) {
+    return _magickQueryMultilineFontMetrics(
+      wand,
+      drawing_wand,
+      text,
+    );
+  }
+
+  late final _magickQueryMultilineFontMetricsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Double> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickQueryMultilineFontMetrics');
+  late final _magickQueryMultilineFontMetrics =
+      _magickQueryMultilineFontMetricsPtr.asFunction<
+          ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryFonts(
+    ffi.Pointer<ffi.Char> pattern,
+    ffi.Pointer<ffi.Size> number_fonts,
+  ) {
+    return _magickQueryFonts(
+      pattern,
+      number_fonts,
+    );
+  }
+
+  late final _magickQueryFontsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryFonts');
+  late final _magickQueryFonts = _magickQueryFontsPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  /// TODO: complete adding the other methods
+  void magickWandGenesis() {
+    return _magickWandGenesis();
+  }
+
+  late final _magickWandGenesisPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandGenesis');
+  late final _magickWandGenesis =
+      _magickWandGenesisPtr.asFunction<void Function()>();
+
+  void magickWandTerminus() {
+    return _magickWandTerminus();
+  }
+
+  late final _magickWandTerminusPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandTerminus');
+  late final _magickWandTerminus =
+      _magickWandTerminusPtr.asFunction<void Function()>();
+
+  ffi.Pointer<ffi.Void> newMagickWand() {
+    return _newMagickWand();
+  }
+
+  late final _newMagickWandPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function()>>(
+          'newMagickWand');
+  late final _newMagickWand =
+      _newMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
+
+  bool magickReadImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> filename,
+  ) {
+    return _magickReadImage(
+      wand,
+      filename,
+    );
+  }
+
+  late final _magickReadImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickReadImage');
+  late final _magickReadImage = _magickReadImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  bool magickWriteImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> filename,
+  ) {
+    return _magickWriteImage(
+      wand,
+      filename,
+    );
+  }
+
+  late final _magickWriteImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickWriteImage');
+  late final _magickWriteImage = _magickWriteImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 }
+
+typedef ssize_t = ffi.LongLong;

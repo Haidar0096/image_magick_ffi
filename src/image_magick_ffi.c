@@ -1,85 +1,80 @@
 #include "image_magick_ffi.h"
 #include <MagickWand/MagickWand.h>
 
-// include android log lib if android is defined
-#ifdef ANDROID
-#include <android/log.h>
-#endif
-
-void handleWandException(MagickWand* wand, char* errorOut, int maxErrorOutSize) {
-	char* description;
-	ExceptionType severity;
-	description = MagickGetException(wand, &severity);
-	#if defined(WIN32)
-        strcpy_s(errorOut, maxErrorOutSize, description);
-    #elif defined(UNIX)
-        *errorOut = '\0';
-    #endif
+FFI_PLUGIN_EXPORT void clearMagickWand(void *wand) {
+    ClearMagickWand((MagickWand *) wand);
 }
 
-FFI_PLUGIN_EXPORT void resize(const char* inputFilePath, const char* outputFilePath, int width, int height, char* errorOut, int maxErrorOutSize) {
-    #ifdef ANDROID
-        __android_log_print(ANDROID_LOG_INFO, "ImageMagick", "resize called");
-        // print quantum depth
-        size_t* depthPtr = (size_t*)malloc(sizeof(size_t));
-        const char* depthStringPtr = MagickGetQuantumDepth(depthPtr);
-        free(depthPtr);
-        __android_log_print(ANDROID_LOG_INFO,"ImageMagick","\ndepth is %s\n", depthStringPtr);
-    #endif
+FFI_PLUGIN_EXPORT void *cloneMagickWand(const void *wand) {
+    return CloneMagickWand((const MagickWand *) wand);
+}
 
-	MagickWandGenesis();
+FFI_PLUGIN_EXPORT void *destroyMagickWand(void *wand) {
+    return DestroyMagickWand((MagickWand *) wand);
+}
 
-	MagickWand* m_wand = NULL;
+FFI_PLUGIN_EXPORT bool isMagickWand(const void *wand) {
+    MagickBooleanType result = IsMagickWand((const MagickWand *) wand);
+    return result == MagickTrue;
+}
 
-    #if defined(WIN32)
-        strcpy_s(errorOut, maxErrorOutSize, "");
-    #elif defined(UNIX)
-        *errorOut = '\0';
-    #endif
+FFI_PLUGIN_EXPORT bool magickClearException(void *wand) {
+    MagickBooleanType result = MagickClearException((MagickWand *) wand);
+    return result == MagickTrue;
+}
 
+FFI_PLUGIN_EXPORT char *magickGetException(const void *wand, int *severity) {
+    return MagickGetException((const MagickWand *) wand, (ExceptionType *) severity);
+}
 
-	m_wand = NewMagickWand();
+FFI_PLUGIN_EXPORT int magickGetExceptionType(const void *wand) {
+    return MagickGetExceptionType((const MagickWand *) wand);
+}
 
-	MagickBooleanType status = MagickTrue; // indicates success
+FFI_PLUGIN_EXPORT ssize_t magickGetIteratorIndex(void *wand){
+    return MagickGetIteratorIndex((MagickWand *) wand);
+}
 
-	// Read the image
-	status = MagickReadImage(m_wand, inputFilePath);
-	if (!status) {
-		handleWandException(m_wand, errorOut, maxErrorOutSize);
-		return;
-	}
+FFI_PLUGIN_EXPORT char *magickQueryConfigureOption(const char *option){
+    return MagickQueryConfigureOption(option);
+}
 
-	// make sure width and height don't underflow
-	if (width < 1)width = 1;
-	if (height < 1)height = 1;
+FFI_PLUGIN_EXPORT char **magickQueryConfigureOptions(const char *pattern, size_t *number_options){
+    return MagickQueryConfigureOptions(pattern, number_options);
+}
 
-	// Resize the image using the Lanczos filter
-	// The blur factor is a "double", where > 1 is blurry, < 1 is sharp
-	// I haven't figured out how you would change the blur parameter of MagickResizeImage
-	// on the command line so I have set it to its default of one.
-	status = MagickResizeImage(m_wand, width, height, LanczosFilter);
-	if (!status) {
-		handleWandException(m_wand, errorOut, maxErrorOutSize);
-		return;
-	}
+FFI_PLUGIN_EXPORT double *magickQueryFontMetrics(void *wand, const void *drawing_wand, const char *text){
+    return MagickQueryFontMetrics((MagickWand *) wand, (DrawingWand *) drawing_wand, text);
+}
 
-	// Set the compression quality to 95 (high quality = low compression)
-	MagickSetImageCompressionQuality(m_wand, 95);
-	if (!status) {
-		handleWandException(m_wand, errorOut, maxErrorOutSize);
-		return;
-	}
+FFI_PLUGIN_EXPORT double *magickQueryMultilineFontMetrics(void *wand, const void *drawing_wand,const char *text){
+    return MagickQueryMultilineFontMetrics((MagickWand *) wand, (DrawingWand *) drawing_wand, text);
+}
 
-	/* Write the new image */
-	MagickWriteImage(m_wand, outputFilePath);
-	if (!status) {
-		handleWandException(m_wand, errorOut, maxErrorOutSize);
-		return;
-	}
+FFI_PLUGIN_EXPORT char **magickQueryFonts(const char *pattern, size_t *number_fonts){
+    return MagickQueryFonts(pattern, number_fonts);
+}
 
-	/* Clean up */
-	if (m_wand)m_wand = DestroyMagickWand(m_wand);
+// TODO: complete adding the other methods
 
+FFI_PLUGIN_EXPORT void magickWandGenesis(void) {
+    MagickWandGenesis();
+}
 
-	MagickWandTerminus();
+FFI_PLUGIN_EXPORT void magickWandTerminus(void) {
+    MagickWandTerminus();
+}
+
+FFI_PLUGIN_EXPORT void *newMagickWand(void) {
+    return NewMagickWand();
+}
+
+FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {
+    MagickBooleanType result = MagickReadImage((MagickWand *) wand, filename);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickWriteImage(void *wand, const char *filename) {
+    MagickBooleanType result = MagickWriteImage((MagickWand *) wand, filename);
+    return result == MagickTrue;
 }
