@@ -35,6 +35,10 @@ FFI_PLUGIN_EXPORT double *magickQueryMultilineFontMetrics(void *wand, const void
 
 FFI_PLUGIN_EXPORT char **magickQueryFonts(const char *pattern, size_t *number_fonts);
 
+FFI_PLUGIN_EXPORT char **magickQueryFormats(const char *pattern,size_t *number_formats);
+
+FFI_PLUGIN_EXPORT void *magickRelinquishMemory(void *resource);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT void magickWandGenesis(void);

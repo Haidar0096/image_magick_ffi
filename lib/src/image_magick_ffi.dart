@@ -25,16 +25,16 @@ final ffi.DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
 
-/// An object that can be used to manipulate images. You must call `MagickWand.magickWandGenesis` before using any MagickWand object,
-/// and `MagickWand.magickWandTerminus` after you're done using the last MagickWand object (this process can be repeated).
+/// An object that can be used to manipulate images. You must call `magickWandGenesis` before using any `MagickWand` object,
+/// and `magickWandTerminus` after you're done using the last `MagickWand` object.
 ///
-/// Each MagickWand object should be destroyed after use by using `destroyMagickWand`.
+/// Each `MagickWand` object should be destroyed after use by calling `destroyMagickWand`.
 ///
 /// For more info about the native API, see https://imagemagick.org/script/magick-wand.php
 class MagickWand {
-  final ffi.Pointer<ffi.Void> _wandPtr;
+  ffi.Pointer<ffi.Void> _wandPtr;
 
-  const MagickWand._(this._wandPtr);
+  MagickWand._(this._wandPtr);
 
   /// Clears resources associated with this wand, leaving the wand blank, and ready to be used for a new set of images.
   void clearMagickWand() {
@@ -46,9 +46,9 @@ class MagickWand {
     return MagickWand._(_bindings.cloneMagickWand(_wandPtr));
   }
 
-  /// Deallocates memory associated with this MagickWand. You can't use the wand after calling this function.
+  /// Deallocates memory associated with this wand. You can't use the wand after calling this function.
   void destroyMagickWand() {
-    _bindings.destroyMagickWand(_wandPtr);
+    _wandPtr = _bindings.destroyMagickWand(_wandPtr);
   }
 
   /// Returns true if this wand is verified as a magick wand. For example, after calling
@@ -66,21 +66,21 @@ class MagickWand {
   /// with this wand. For example, failure to read an image using [magickReadImage] will cause an exception
   /// to be associated with this wand and which can be retrieved by this method.
   ///
-  /// - Note: if no exception has occurred, UndefinedExceptionType is returned.
+  /// - Note: if no exception has occurred, `UndefinedExceptionType` is returned.
   MagickGetExceptionResult magickGetException() {
     final ffi.Pointer<ffi.Int> severity = malloc<ffi.Int>();
     final ffi.Pointer<ffi.Char> description = _bindings.magickGetException(_wandPtr, severity);
-    final MagickGetExceptionResult magickException = MagickGetExceptionResult(
+    final MagickGetExceptionResult magickGetExceptionResult = MagickGetExceptionResult(
       ExceptionType.fromValue(severity.value),
       description.cast<Utf8>().toDartString(),
     );
     calloc.free(severity);
-    calloc.free(description);
-    return magickException;
+    _magickRelinquishMemory(description.cast<ffi.Void>());
+    return magickGetExceptionResult;
   }
 
   /// Returns the exception type associated with this wand.
-  /// If no exception has occurred, UndefinedExceptionType is returned.
+  /// If no exception has occurred, `UndefinedExceptionType` is returned.
   ExceptionType magickGetExceptionType() {
     return ExceptionType.fromValue(_bindings.magickGetExceptionType(_wandPtr));
   }
@@ -96,7 +96,7 @@ class MagickWand {
     final ffi.Pointer<ffi.Char> resultPtr = _bindings.magickQueryConfigureOption(optionPtr);
     final String? result = resultPtr != ffi.nullptr ? resultPtr.cast<Utf8>().toDartString() : null;
     calloc.free(optionPtr);
-    calloc.free(resultPtr);
+    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
     return result;
   }
 
@@ -114,7 +114,7 @@ class MagickWand {
     }
     calloc.free(patternPtr);
     calloc.free(numOptionsPtr);
-    calloc.free(resultPtr);
+    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
     return result;
   }
 
@@ -148,7 +148,7 @@ class MagickWand {
       }
     }
     calloc.free(textPtr);
-    calloc.free(metricsPtr);
+    _magickRelinquishMemory(metricsPtr.cast<ffi.Void>());
     return metrics;
   }
 
@@ -183,7 +183,7 @@ class MagickWand {
       }
     }
     calloc.free(textPtr);
-    calloc.free(metricsPtr);
+    _magickRelinquishMemory(metricsPtr.cast<ffi.Void>());
     return metrics;
   }
 
@@ -198,8 +198,30 @@ class MagickWand {
     }
     calloc.free(patternPtr);
     calloc.free(numFontsPtr);
-    calloc.free(resultPtr);
+    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
     return result;
+  }
+
+  /// Returns any image formats that match the specified pattern (e.g. "*" for all).
+  /// - Note: An empty list is returned if there are no results.
+  static List<String> magickQueryFormats(String pattern) {
+    final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
+    final ffi.Pointer<ffi.Size> numFormatsPtr = malloc<ffi.Size>();
+    final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr =
+        _bindings.magickQueryFormats(patternPtr, numFormatsPtr);
+    final List<String> result = [];
+    for (int i = 0; i < numFormatsPtr.value; i++) {
+      result.add(resultPtr[i].cast<Utf8>().toDartString());
+    }
+    calloc.free(patternPtr);
+    calloc.free(numFormatsPtr);
+    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+    return result;
+  }
+
+  /// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc.
+  static ffi.Pointer<ffi.Void> _magickRelinquishMemory(ffi.Pointer<ffi.Void> ptr) {
+    return _bindings.magickRelinquishMemory(ptr);
   }
 
   // TODO: complete adding the other methods

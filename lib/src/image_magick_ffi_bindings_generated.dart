@@ -241,6 +241,39 @@ class ImageMagickFfiBindings {
       ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
           ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
+  ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryFormats(
+    ffi.Pointer<ffi.Char> pattern,
+    ffi.Pointer<ffi.Size> number_formats,
+  ) {
+    return _magickQueryFormats(
+      pattern,
+      number_formats,
+    );
+  }
+
+  late final _magickQueryFormatsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryFormats');
+  late final _magickQueryFormats = _magickQueryFormatsPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<ffi.Void> magickRelinquishMemory(
+    ffi.Pointer<ffi.Void> resource,
+  ) {
+    return _magickRelinquishMemory(
+      resource,
+    );
+  }
+
+  late final _magickRelinquishMemoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickRelinquishMemory');
+  late final _magickRelinquishMemory = _magickRelinquishMemoryPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   void magickWandGenesis() {
     return _magickWandGenesis();

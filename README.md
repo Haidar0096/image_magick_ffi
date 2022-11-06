@@ -1,5 +1,6 @@
 # ImageMagickFFi Plugin
 This plugin brings to you the imagemagick C/C++ library to use with dart.
+- Feel native, interact with the underlying image magick C api just as you used to do in C (not with pointers, of course :P), see the #Usage below for more insights.
 
 # Install
 `image_magick_ffi: <latest_version>`
@@ -39,4 +40,23 @@ This plugin brings to you the imagemagick C/C++ library to use with dart.
   Your contributions to provide the binraires are welcomed :)
 
 # Usage
-Have a look at the example app in this repo.
+```dart
+  // reads an image, then writes it in jpeg format
+  Future<String?> _handlePress() async {
+    try{
+      MagickWand.magickWandGenesis(); // initialize the magick wand environment
+      MagickWand wand = MagickWand.newMagickWand(); // create a new wand, which can be used to manipulate images
+      wand.magickReadImage(_inputFile!.path); // read an image into the wand
+      String inputFileNameWithoutExtension = _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
+      wand.magickWriteImage("${outputDirectory!.path}\\out_${inputFileNameWithoutExtension}.jpeg"); // write image
+      String error = wand.magickGetException().description; // get error, if any
+      wand.destroyMagickWand(); // free resources used by the wand
+      MagickWand.magickWandTerminus(); // terminate the magick wand environment
+      return error.isEmpty ? null : error; // return error, if any
+    }
+    catch(e){
+      return e.toString();
+    }
+  }
+  ```
+For more info, have a look at the example app in this repo.

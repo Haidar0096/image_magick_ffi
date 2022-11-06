@@ -55,6 +55,14 @@ FFI_PLUGIN_EXPORT char **magickQueryFonts(const char *pattern, size_t *number_fo
     return MagickQueryFonts(pattern, number_fonts);
 }
 
+FFI_PLUGIN_EXPORT char **magickQueryFormats(const char *pattern,size_t *number_formats){
+    return MagickQueryFormats(pattern, number_formats);
+}
+
+FFI_PLUGIN_EXPORT void *magickRelinquishMemory(void *resource){
+    return MagickRelinquishMemory(resource);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT void magickWandGenesis(void) {
