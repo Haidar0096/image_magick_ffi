@@ -25,8 +25,8 @@ final ffi.DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
 
-/// An object that can be used to manipulate images. You must call `magickWandGenesis` before using any `MagickWand` object,
-/// and `magickWandTerminus` after you're done using the last `MagickWand` object.
+/// An object that can be used to manipulate images. You must call `magickWandGenesis` before using any
+/// `MagickWand` object, and `magickWandTerminus` after you're done using the last `MagickWand` object.
 ///
 /// Each `MagickWand` object should be destroyed after use by calling `destroyMagickWand`.
 ///
@@ -36,7 +36,8 @@ class MagickWand {
 
   MagickWand._(this._wandPtr);
 
-  /// Clears resources associated with this wand, leaving the wand blank, and ready to be used for a new set of images.
+  /// Clears resources associated with this wand, leaving the wand blank, and ready to be used for a new
+  /// set of images.
   void clearMagickWand() {
     _bindings.clearMagickWand(_wandPtr);
   }
@@ -100,7 +101,8 @@ class MagickWand {
     return result;
   }
 
-  /// Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME, VERSION, LIB_VERSION, etc.
+  /// Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME,
+  /// VERSION, LIB_VERSION, etc.
   ///
   /// - Note: An empty list is returned if there are no results.
   static List<String> magickQueryConfigureOptions(String pattern) {
@@ -135,8 +137,8 @@ class MagickWand {
   ///     10 bounding box: y2
   ///     11 origin: x
   ///     12 origin: y
-  /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if the
-  /// [MagickWand] contains no images).
+  /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if
+  /// the [MagickWand] contains no images).
   List<double>? magickQueryFontMetrics(DrawingWand drawingWand, String text) {
     final ffi.Pointer<ffi.Char> textPtr = text.toNativeUtf8().cast<ffi.Char>();
     final ffi.Pointer<ffi.Double> metricsPtr =
@@ -169,7 +171,8 @@ class MagickWand {
   ///     10 bounding box: y2
   ///     11 origin: x
   ///     12 origin: y
-  /// This method is like magickQueryFontMetrics() but it returns the maximum text width and height for multiple lines of text.
+  /// This method is like magickQueryFontMetrics() but it returns the maximum text width and height for
+  /// multiple lines of text.
   /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if the
   /// [MagickWand] contains no images).
   List<double>? magickQueryMultilineFontMetrics(DrawingWand drawingWand, String text) {
@@ -219,12 +222,70 @@ class MagickWand {
     return result;
   }
 
-  /// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc.
+  /// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(),
+  /// etc.
   static ffi.Pointer<ffi.Void> _magickRelinquishMemory(ffi.Pointer<ffi.Void> ptr) {
     return _bindings.magickRelinquishMemory(ptr);
   }
 
-  // TODO: complete adding the other methods
+  /// Resets the wand iterator.
+  ///
+  /// It is typically used either before iterating though images, or before calling specific functions such as
+  /// `magickAppendImages()` to append all images together.
+  ///
+  /// Afterward you can use `magickNextImage()` to iterate over all the images in a wand container, starting
+  /// with the first image.
+  ///
+  /// Using this before `magickAddImages()` or `magickReadImages()` will cause new images to be inserted
+  /// between the first and second image.
+  void magickResetIterator() {
+    _bindings.magickResetIterator(_wandPtr);
+  }
+
+  /// Sets the wand iterator to the first image.
+  ///
+  /// After using any images added to the wand using `magickAddImage()` or `magickReadImage()` will be
+  /// prepended before any image in the wand.
+  ///
+  /// Also the current image has been set to the first image (if any) in the Magick Wand. Using
+  /// `magickNextImage()` will then set the current image to the second image in the list (if present).
+  ///
+  /// This operation is similar to `magickResetIterator()` but differs in how `magickAddImage()`,
+  /// `magickReadImage()`, and magickNextImage()` behaves afterward.
+  void magickSetFirstIterator() {
+    _bindings.magickSetFirstIterator(_wandPtr);
+  }
+
+  /// Sets the iterator to the given position in the image list specified with the index parameter.
+  /// A zero index will set the first image as current, and so on. Negative indexes can be used to
+  /// specify an image relative to the end of the images in the wand, with -1 being the last image
+  /// in the wand.
+  ///
+  /// If the index is invalid (range too large for number of images in wand) the function will return
+  /// false, but no 'exception' will be raised, as it is not actually an error. In that case the current
+  /// image will not change.
+  ///
+  /// After using any images added to the wand using `magickAddImage()` or `magickReadImage()` will be
+  /// added after the image indexed, regardless of if a zero (first image in list) or negative index
+  /// (from end) is used.
+  ///
+  /// Jumping to index 0 is similar to `magickResetIterator()` but differs in how `magickNextImage()`
+  /// behaves afterward.
+  bool magickSetIteratorIndex(int index) {
+    return _bindings.magickSetIteratorIndex(_wandPtr, index);
+  }
+
+  /// Sets the wand iterator to the last image.
+  ///
+  /// The last image is actually the current image, and the next use of `magickPreviousImage()` will not
+  /// change this allowing this function to be used to iterate over the images in the reverse direction.
+  /// In this sense it is more like `magickResetIterator()` than `magickSetFirstIterator()`.
+  ///
+  /// Typically this function is used before `magickAddImage()`, `magickReadImage()` functions to ensure'
+  /// new images are appended to the very end of wand's image list.
+  void magickSetLastIterator() {
+    _bindings.magickSetLastIterator(_wandPtr);
+  }
 
   /// Initializes the MagickWand environment.
   static void magickWandGenesis() {
@@ -238,10 +299,23 @@ class MagickWand {
 
   /// Returns a wand required for all other methods in the API.
   /// A fatal exception is thrown if there is not enough memory to allocate the wand.
-  /// Use destroyMagickWand() to dispose of the wand when it is no longer needed.
+  /// Use `destroyMagickWand()` to dispose of the wand when it is no longer needed.
   factory MagickWand.newMagickWand() {
     return MagickWand._(_bindings.newMagickWand());
   }
+
+  factory MagickWand.newMagickWandFromImage(Image image) {
+    return MagickWand._(_bindings.newMagickWandFromImage(image._imagePtr));
+  }
+
+  /// Returns true if the ImageMagick environment is currently instantiated-- that is,
+  /// `magickWandGenesis()` has been called but `magickWandTerminus()` has not.
+  bool isMagickWandInstantiated(){
+    return _bindings.isMagickWandInstantiated();
+  }
+
+  // TODO: complete adding the other methods
+
 
   /// Reads an image or image sequence. The images are inserted just before the current image
   /// pointer position. Use magickSetFirstIterator(), to insert new images before all the current images
@@ -270,7 +344,16 @@ class DrawingWand {
 
   const DrawingWand._(this._wandPtr);
 
-// TODO: add fields and methods later
+  // TODO: add fields and methods later
+}
+
+/// An object that represents an image
+class Image{
+  final ffi.Pointer<ffi.Void> _imagePtr;
+
+  const Image._(this._imagePtr);
+
+  // TODO: add fields and methods later
 }
 
 /// Represents the type of an exception that occurred when using the ImageMagick API.

@@ -39,13 +39,25 @@ FFI_PLUGIN_EXPORT char **magickQueryFormats(const char *pattern,size_t *number_f
 
 FFI_PLUGIN_EXPORT void *magickRelinquishMemory(void *resource);
 
-// TODO: complete adding the other methods
+FFI_PLUGIN_EXPORT void magickResetIterator(void *wand);
+
+FFI_PLUGIN_EXPORT void magickSetFirstIterator(void *wand);
+
+FFI_PLUGIN_EXPORT bool magickSetIteratorIndex(void *wand, const ssize_t index);
+
+FFI_PLUGIN_EXPORT void magickSetLastIterator(void *wand);
 
 FFI_PLUGIN_EXPORT void magickWandGenesis(void);
 
 FFI_PLUGIN_EXPORT void magickWandTerminus(void);
 
 FFI_PLUGIN_EXPORT void *newMagickWand(void);
+
+FFI_PLUGIN_EXPORT void *newMagickWandFromImage(const void *image);
+
+FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void);
+
+// TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
 

@@ -63,7 +63,22 @@ FFI_PLUGIN_EXPORT void *magickRelinquishMemory(void *resource){
     return MagickRelinquishMemory(resource);
 }
 
-// TODO: complete adding the other methods
+FFI_PLUGIN_EXPORT void magickResetIterator(void *wand){
+    MagickResetIterator((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT void magickSetFirstIterator(void *wand){
+    MagickSetFirstIterator((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickSetIteratorIndex(void *wand, const ssize_t index){
+    MagickBooleanType result = MagickSetIteratorIndex((MagickWand *) wand, index);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void magickSetLastIterator(void *wand){
+    MagickSetLastIterator((MagickWand *) wand);
+}
 
 FFI_PLUGIN_EXPORT void magickWandGenesis(void) {
     MagickWandGenesis();
@@ -76,6 +91,17 @@ FFI_PLUGIN_EXPORT void magickWandTerminus(void) {
 FFI_PLUGIN_EXPORT void *newMagickWand(void) {
     return NewMagickWand();
 }
+
+FFI_PLUGIN_EXPORT void *newMagickWandFromImage(const void *image){
+    return NewMagickWandFromImage((const Image *) image);
+}
+
+FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void){
+    MagickBooleanType result = IsMagickWandInstantiated();
+    return result == MagickTrue;
+}
+
+// TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {
     MagickBooleanType result = MagickReadImage((MagickWand *) wand, filename);

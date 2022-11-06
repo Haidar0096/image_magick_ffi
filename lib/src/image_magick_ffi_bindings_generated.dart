@@ -274,7 +274,65 @@ class ImageMagickFfiBindings {
   late final _magickRelinquishMemory = _magickRelinquishMemoryPtr
       .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
-  /// TODO: complete adding the other methods
+  void magickResetIterator(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickResetIterator(
+      wand,
+    );
+  }
+
+  late final _magickResetIteratorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickResetIterator');
+  late final _magickResetIterator = _magickResetIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void magickSetFirstIterator(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickSetFirstIterator(
+      wand,
+    );
+  }
+
+  late final _magickSetFirstIteratorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickSetFirstIterator');
+  late final _magickSetFirstIterator = _magickSetFirstIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickSetIteratorIndex(
+    ffi.Pointer<ffi.Void> wand,
+    int index,
+  ) {
+    return _magickSetIteratorIndex(
+      wand,
+      index,
+    );
+  }
+
+  late final _magickSetIteratorIndexPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ssize_t)>>('magickSetIteratorIndex');
+  late final _magickSetIteratorIndex = _magickSetIteratorIndexPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  void magickSetLastIterator(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickSetLastIterator(
+      wand,
+    );
+  }
+
+  late final _magickSetLastIteratorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickSetLastIterator');
+  late final _magickSetLastIterator = _magickSetLastIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
   void magickWandGenesis() {
     return _magickWandGenesis();
   }
@@ -303,6 +361,32 @@ class ImageMagickFfiBindings {
   late final _newMagickWand =
       _newMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
 
+  ffi.Pointer<ffi.Void> newMagickWandFromImage(
+    ffi.Pointer<ffi.Void> image,
+  ) {
+    return _newMagickWandFromImage(
+      image,
+    );
+  }
+
+  late final _newMagickWandFromImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('newMagickWandFromImage');
+  late final _newMagickWandFromImage = _newMagickWandFromImagePtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  bool isMagickWandInstantiated() {
+    return _isMagickWandInstantiated();
+  }
+
+  late final _isMagickWandInstantiatedPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function()>>(
+          'isMagickWandInstantiated');
+  late final _isMagickWandInstantiated =
+      _isMagickWandInstantiatedPtr.asFunction<bool Function()>();
+
+  /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,
     ffi.Pointer<ffi.Char> filename,
