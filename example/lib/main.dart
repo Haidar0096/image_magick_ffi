@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_magick_ffi/image_magick_ffi.dart';
+import 'package:image_magick_ffi/image_magick_ffi.dart' as magick_ffi;
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -173,14 +173,14 @@ class _MyAppState extends State<MyApp> {
   // reads an image, then writes it in jpeg format
   Future<String?> _handlePress() async {
     try{
-      MagickWand.magickWandGenesis(); // initialize the magick wand environment
-      MagickWand wand = MagickWand.newMagickWand(); // create a new wand, which can be used to manipulate images
+      magick_ffi.magickWandGenesis(); // initialize the magick wand environment
+      magick_ffi.MagickWand wand = magick_ffi.MagickWand.newMagickWand(); // create a new wand, which can be used to manipulate images
       wand.magickReadImage(_inputFile!.path); // read an image into the wand
       String inputFileNameWithoutExtension = _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
-      wand.magickWriteImage("${outputDirectory!.path}\\out_${inputFileNameWithoutExtension}.jpeg"); // write image
+      wand.magickWriteImage("${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image
       String error = wand.magickGetException().description; // get error, if any
       wand.destroyMagickWand(); // free resources used by the wand
-      MagickWand.magickWandTerminus(); // terminate the magick wand environment
+      magick_ffi.magickWandTerminus(); // terminate the magick wand environment
       return error.isEmpty ? null : error; // return error, if any
     }
     catch(e){

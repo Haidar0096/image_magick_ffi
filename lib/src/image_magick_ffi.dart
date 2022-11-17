@@ -2,6 +2,7 @@
 
 import 'dart:ffi' as ffi;
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
@@ -25,14 +26,29 @@ final ffi.DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
 
-/// An object that can be used to manipulate images. You must call `magickWandGenesis` before using any
-/// `MagickWand` object, and `magickWandTerminus` after you're done using the last `MagickWand` object.
-///
-/// Each `MagickWand` object should be destroyed after use by calling `destroyMagickWand`.
-///
-/// For more info about the native API, see https://imagemagick.org/script/magick-wand.php
+/// Represents a memory resource on the heap which will be freed when the associated dart object is garbage-collected.
+class _MagickRelinquishableResource implements ffi.Finalizable {
+  static final ffi.NativeFinalizer _finalizer = ffi.NativeFinalizer(_dylib.lookup('magickRelinquishMemory'));
+
+  /// Represents a map with weak keys. The keys of the map will be dart objects, and the values will be
+  /// `_MagickRelinquishableResource` objects. When the dart object (the key) is garbage-collected, the associated
+  /// `_MagickRelinquishableResource` object (the value) will be garbage-collected, and the native memory will be freed.
+  static final Expando<_MagickRelinquishableResource> relinquishables = Expando();
+
+  _MagickRelinquishableResource._();
+
+  factory _MagickRelinquishableResource(ffi.Pointer<ffi.Void> ptr, {ffi.Pointer<ffi.Void>? detach, int? externalSize}) {
+    _MagickRelinquishableResource finalizable = _MagickRelinquishableResource._();
+    _finalizer.attach(finalizable, ptr, detach: detach, externalSize: externalSize);
+    return finalizable;
+  }
+}
+
+// TODO: add docs
 class MagickWand {
   ffi.Pointer<ffi.Void> _wandPtr;
+
+  // TODO: check if you should add members of the struct _MagickWand here
 
   MagickWand._(this._wandPtr);
 
@@ -75,13 +91,13 @@ class MagickWand {
       ExceptionType.fromValue(severity.value),
       description.cast<Utf8>().toDartString(),
     );
-    calloc.free(severity);
+    malloc.free(severity);
     _magickRelinquishMemory(description.cast<ffi.Void>());
     return magickGetExceptionResult;
   }
 
   /// Returns the exception type associated with this wand.
-  /// If no exception has occurred, `UndefinedExceptionType` is returned.
+  /// If no exception has occurred, `UndefinedException` is returned.
   ExceptionType magickGetExceptionType() {
     return ExceptionType.fromValue(_bindings.magickGetExceptionType(_wandPtr));
   }
@@ -89,35 +105,6 @@ class MagickWand {
   /// Returns the position of the iterator in the image list.
   int magickGetIteratorIndex() {
     return _bindings.magickGetIteratorIndex(_wandPtr);
-  }
-
-  /// Returns the value associated with the specified configure option, or null in case of no match.
-  static String? magickQueryConfigureOption(String option) {
-    final ffi.Pointer<ffi.Char> optionPtr = option.toNativeUtf8().cast<ffi.Char>();
-    final ffi.Pointer<ffi.Char> resultPtr = _bindings.magickQueryConfigureOption(optionPtr);
-    final String? result = resultPtr != ffi.nullptr ? resultPtr.cast<Utf8>().toDartString() : null;
-    calloc.free(optionPtr);
-    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
-    return result;
-  }
-
-  /// Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME,
-  /// VERSION, LIB_VERSION, etc.
-  ///
-  /// - Note: An empty list is returned if there are no results.
-  static List<String> magickQueryConfigureOptions(String pattern) {
-    final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
-    final ffi.Pointer<ffi.Size> numOptionsPtr = malloc<ffi.Size>();
-    final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr =
-        _bindings.magickQueryConfigureOptions(patternPtr, numOptionsPtr);
-    final List<String> result = [];
-    for (int i = 0; i < numOptionsPtr.value; i++) {
-      result.add(resultPtr[i].cast<Utf8>().toDartString());
-    }
-    calloc.free(patternPtr);
-    calloc.free(numOptionsPtr);
-    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
-    return result;
   }
 
   /// Returns a 13 element array representing the following font metrics:
@@ -143,14 +130,12 @@ class MagickWand {
     final ffi.Pointer<ffi.Char> textPtr = text.toNativeUtf8().cast<ffi.Char>();
     final ffi.Pointer<ffi.Double> metricsPtr =
         _bindings.magickQueryFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
-    final List<double>? metrics = metricsPtr == ffi.nullptr ? null : [];
-    if (metrics != null) {
-      for (int i = 0; i < 13; i++) {
-        metrics.add(metricsPtr[i]);
-      }
+    malloc.free(textPtr);
+    if (metricsPtr == ffi.nullptr) {
+      return null;
     }
-    calloc.free(textPtr);
-    _magickRelinquishMemory(metricsPtr.cast<ffi.Void>());
+    final List<double> metrics = metricsPtr.asTypedList(13);
+    _MagickRelinquishableResource.relinquishables[metrics] = _MagickRelinquishableResource(metricsPtr.cast());
     return metrics;
   }
 
@@ -179,53 +164,13 @@ class MagickWand {
     final ffi.Pointer<ffi.Char> textPtr = text.toNativeUtf8().cast<ffi.Char>();
     final ffi.Pointer<ffi.Double> metricsPtr =
         _bindings.magickQueryMultilineFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
-    final List<double>? metrics = metricsPtr == ffi.nullptr ? null : [];
-    if (metrics != null) {
-      for (int i = 0; i < 13; i++) {
-        metrics.add(metricsPtr[i]);
-      }
+    malloc.free(textPtr);
+    if (metricsPtr == ffi.nullptr) {
+      return null;
     }
-    calloc.free(textPtr);
-    _magickRelinquishMemory(metricsPtr.cast<ffi.Void>());
+    final List<double> metrics = metricsPtr.asTypedList(13);
+    _MagickRelinquishableResource.relinquishables[metrics] = _MagickRelinquishableResource(metricsPtr.cast());
     return metrics;
-  }
-
-  /// Returns any font that match the specified pattern (e.g. "*" for all).
-  static List<String> magickQueryFonts(String pattern) {
-    final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
-    final ffi.Pointer<ffi.Size> numFontsPtr = malloc<ffi.Size>();
-    final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr = _bindings.magickQueryFonts(patternPtr, numFontsPtr);
-    final List<String> result = [];
-    for (int i = 0; i < numFontsPtr.value; i++) {
-      result.add(resultPtr[i].cast<Utf8>().toDartString());
-    }
-    calloc.free(patternPtr);
-    calloc.free(numFontsPtr);
-    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
-    return result;
-  }
-
-  /// Returns any image formats that match the specified pattern (e.g. "*" for all).
-  /// - Note: An empty list is returned if there are no results.
-  static List<String> magickQueryFormats(String pattern) {
-    final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
-    final ffi.Pointer<ffi.Size> numFormatsPtr = malloc<ffi.Size>();
-    final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr =
-        _bindings.magickQueryFormats(patternPtr, numFormatsPtr);
-    final List<String> result = [];
-    for (int i = 0; i < numFormatsPtr.value; i++) {
-      result.add(resultPtr[i].cast<Utf8>().toDartString());
-    }
-    calloc.free(patternPtr);
-    calloc.free(numFormatsPtr);
-    _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
-    return result;
-  }
-
-  /// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(),
-  /// etc.
-  static ffi.Pointer<ffi.Void> _magickRelinquishMemory(ffi.Pointer<ffi.Void> ptr) {
-    return _bindings.magickRelinquishMemory(ptr);
   }
 
   /// Resets the wand iterator.
@@ -287,16 +232,6 @@ class MagickWand {
     _bindings.magickSetLastIterator(_wandPtr);
   }
 
-  /// Initializes the MagickWand environment.
-  static void magickWandGenesis() {
-    _bindings.magickWandGenesis();
-  }
-
-  /// Terminates the MagickWand environment.
-  static void magickWandTerminus() {
-    _bindings.magickWandTerminus();
-  }
-
   /// Returns a wand required for all other methods in the API.
   /// A fatal exception is thrown if there is not enough memory to allocate the wand.
   /// Use `destroyMagickWand()` to dispose of the wand when it is no longer needed.
@@ -304,18 +239,137 @@ class MagickWand {
     return MagickWand._(_bindings.newMagickWand());
   }
 
+  /// Returns a wand with an image.
   factory MagickWand.newMagickWandFromImage(Image image) {
     return MagickWand._(_bindings.newMagickWandFromImage(image._imagePtr));
   }
 
-  /// Returns true if the ImageMagick environment is currently instantiated-- that is,
-  /// `magickWandGenesis()` has been called but `magickWandTerminus()` has not.
-  bool isMagickWandInstantiated(){
-    return _bindings.isMagickWandInstantiated();
+  /// Deletes a wand artifact.
+  bool magickDeleteImageArtifact(String artifact) {
+    final ffi.Pointer<ffi.Char> artifactPtr = artifact.toNativeUtf8().cast<ffi.Char>();
+    final bool result = _bindings.magickDeleteImageArtifact(_wandPtr, artifactPtr);
+    malloc.free(artifactPtr);
+    return result;
+  }
+
+  /// Deletes a wand property.
+  bool magickDeleteImageProperty(String property) {
+    final ffi.Pointer<ffi.Char> propertyPtr = property.toNativeUtf8().cast<ffi.Char>();
+    final bool result = _bindings.magickDeleteImageProperty(_wandPtr, propertyPtr);
+    malloc.free(propertyPtr);
+    return result;
+  }
+
+  /// Deletes a wand option.
+  bool magickDeleteOption(String option) {
+    final ffi.Pointer<ffi.Char> keyPtr = option.toNativeUtf8().cast<ffi.Char>();
+    final bool result = _bindings.magickDeleteOption(_wandPtr, keyPtr);
+    malloc.free(keyPtr);
+    return result;
+  }
+
+  /// Returns the antialias property associated with the wand.
+  bool magickGetAntialias() {
+    return _bindings.magickGetAntialias(_wandPtr);
+  }
+
+  /// Returns the wand background color.
+  PixelWand magickGetBackgroundColor() {
+    return PixelWand._(_bindings.magickGetBackgroundColor(_wandPtr));
+  }
+
+  /// Gets the wand colorspace type.
+  ColorspaceType magickGetColorspace() {
+    return ColorspaceType.values[_bindings.magickGetColorspace(_wandPtr)];
+  }
+
+  /// Gets the wand compression type.
+  CompressionType magickGetCompression() {
+    return CompressionType.values[_bindings.magickGetCompression(_wandPtr)];
+  }
+
+  /// Gets the wand compression quality.
+  int magickGetCompressionQuality() {
+    return _bindings.magickGetCompressionQuality(_wandPtr);
+  }
+
+  /// Returns the filename associated with an image sequence.
+  String magickGetFilename() {
+    return _bindings.magickGetFilename(_wandPtr).cast<Utf8>().toDartString();
+  }
+
+  /// Returns the font associated with the MagickWand.
+  String? magickGetFont() {
+    final ffi.Pointer<ffi.Char> fontPtr = _bindings.magickGetFont(_wandPtr);
+    if (fontPtr == ffi.nullptr) {
+      return null;
+    }
+    final String result = fontPtr.cast<Utf8>().toDartString();
+    _bindings.magickRelinquishMemory(fontPtr.cast<ffi.Void>());
+    return result;
+  }
+
+  /// Returns the format of the magick wand.
+  String magickGetFormat() {
+    return _bindings.magickGetFormat(_wandPtr).cast<Utf8>().toDartString();
+  }
+
+  /// Gets the wand gravity.
+  GravityType magickGetGravity() {
+    return GravityType.fromValue(_bindings.magickGetGravity(_wandPtr));
+  }
+
+  /// Returns a value associated with the specified artifact.
+  String? magickGetImageArtifact(String artifact) {
+    final ffi.Pointer<ffi.Char> artifactPtr = artifact.toNativeUtf8().cast<ffi.Char>();
+    final ffi.Pointer<ffi.Char> resultPtr = _bindings.magickGetImageArtifact(_wandPtr, artifactPtr);
+    malloc.free(artifactPtr);
+    if (resultPtr == ffi.nullptr) {
+      return null;
+    }
+    final String result = resultPtr.cast<Utf8>().toDartString();
+    _bindings.magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+    return result;
+  }
+
+  /// Returns all the artifact names that match the specified pattern associated with a wand.
+  /// Use `magickGetImageProperty()` to return the value of a particular artifact.
+  List<String>? magickGetImageArtifacts(String pattern) {
+    final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
+    final ffi.Pointer<ffi.Size> numArtifactsPtr = malloc<ffi.Size>();
+    final ffi.Pointer<ffi.Pointer<ffi.Char>> artifactsPtr =
+        _bindings.magickGetImageArtifacts(_wandPtr, patternPtr, numArtifactsPtr);
+    malloc.free(patternPtr);
+    final int numArtifacts = numArtifactsPtr.value;
+    malloc.free(numArtifactsPtr);
+    if (artifactsPtr == ffi.nullptr) {
+      return null;
+    }
+    final List<String> result = [];
+    for (int i = 0; i < numArtifacts; i++) {
+      result.add(artifactsPtr[i].cast<Utf8>().toDartString());
+    }
+    _bindings.magickRelinquishMemory(artifactsPtr.cast<ffi.Void>());
+    return result;
+  }
+
+  /// Returns the named image profile.
+  Uint8List? magickGetImageProfile(String name) {
+    final ffi.Pointer<ffi.Char> namePtr = name.toNativeUtf8().cast<ffi.Char>();
+    final ffi.Pointer<ffi.Size> lengthPtr = malloc<ffi.Size>();
+    final ffi.Pointer<ffi.UnsignedChar> profilePtr = _bindings.magickGetImageProfile(_wandPtr, namePtr, lengthPtr);
+    malloc.free(namePtr);
+    final int length = lengthPtr.value;
+    malloc.free(lengthPtr);
+    if (profilePtr == ffi.nullptr) {
+      return null;
+    }
+    final Uint8List profile = profilePtr.cast<ffi.Uint8>().asTypedList(length);
+    _MagickRelinquishableResource.relinquishables[profile] = _MagickRelinquishableResource(profilePtr.cast());
+    return profile;
   }
 
   // TODO: complete adding the other methods
-
 
   /// Reads an image or image sequence. The images are inserted just before the current image
   /// pointer position. Use magickSetFirstIterator(), to insert new images before all the current images
@@ -324,7 +378,7 @@ class MagickWand {
   bool magickReadImage(String imageFilePath) {
     final ffi.Pointer<ffi.Char> imageFilePathPtr = imageFilePath.toNativeUtf8().cast<ffi.Char>();
     final bool result = _bindings.magickReadImage(_wandPtr, imageFilePathPtr);
-    calloc.free(imageFilePathPtr);
+    malloc.free(imageFilePathPtr);
     return result;
   }
 
@@ -333,34 +387,151 @@ class MagickWand {
   bool magickWriteImage(String imageFilePath) {
     final ffi.Pointer<ffi.Char> imageFilePathPtr = imageFilePath.toNativeUtf8().cast<ffi.Char>();
     final bool result = _bindings.magickWriteImage(_wandPtr, imageFilePathPtr);
-    calloc.free(imageFilePathPtr);
+    malloc.free(imageFilePathPtr);
     return result;
   }
 }
 
-/// An object used for drawing on an image.
+/// Returns the value associated with the specified configure option, or null in case of no match.
+String? magickQueryConfigureOption(String option) {
+  final ffi.Pointer<ffi.Char> optionPtr = option.toNativeUtf8().cast<ffi.Char>();
+  final ffi.Pointer<ffi.Char> resultPtr = _bindings.magickQueryConfigureOption(optionPtr);
+  malloc.free(optionPtr);
+  if (resultPtr == ffi.nullptr) {
+    return null;
+  }
+  final String result = resultPtr.cast<Utf8>().toDartString();
+  _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+  return result;
+}
+
+/// Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME,
+/// VERSION, LIB_VERSION, etc.
+///
+/// - Note: An empty list is returned if there are no results.
+List<String>? magickQueryConfigureOptions(String pattern) {
+  final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
+  final ffi.Pointer<ffi.Size> numOptionsPtr = malloc<ffi.Size>();
+  final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr = _bindings.magickQueryConfigureOptions(patternPtr, numOptionsPtr);
+  malloc.free(patternPtr);
+  int numOptions = numOptionsPtr.value;
+  malloc.free(numOptionsPtr);
+  if (resultPtr == ffi.nullptr) {
+    return null;
+  }
+  final List<String> result = [];
+  for (int i = 0; i < numOptions; i++) {
+    result.add(resultPtr[i].cast<Utf8>().toDartString());
+  }
+  _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+  return result;
+}
+
+/// Returns any font that match the specified pattern (e.g. "*" for all).
+List<String>? magickQueryFonts(String pattern) {
+  final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
+  final ffi.Pointer<ffi.Size> numFontsPtr = malloc<ffi.Size>();
+  final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr = _bindings.magickQueryFonts(patternPtr, numFontsPtr);
+  malloc.free(patternPtr);
+  int numFonts = numFontsPtr.value;
+  malloc.free(numFontsPtr);
+  if (resultPtr == ffi.nullptr) {
+    return null;
+  }
+  final List<String> result = [];
+  for (int i = 0; i < numFonts; i++) {
+    result.add(resultPtr[i].cast<Utf8>().toDartString());
+  }
+  _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+  return result;
+}
+
+/// Returns any image formats that match the specified pattern (e.g. "*" for all).
+/// - Note: An empty list is returned if there are no results.
+List<String>? magickQueryFormats(String pattern) {
+  final ffi.Pointer<ffi.Char> patternPtr = pattern.toNativeUtf8().cast<ffi.Char>();
+  final ffi.Pointer<ffi.Size> numFormatsPtr = malloc<ffi.Size>();
+  final ffi.Pointer<ffi.Pointer<ffi.Char>> resultPtr = _bindings.magickQueryFormats(patternPtr, numFormatsPtr);
+  malloc.free(patternPtr);
+  int numFormats = numFormatsPtr.value;
+  malloc.free(numFormatsPtr);
+  if (resultPtr == ffi.nullptr) {
+    return null;
+  }
+  final List<String> result = [];
+  for (int i = 0; i < numFormats; i++) {
+    result.add(resultPtr[i].cast<Utf8>().toDartString());
+  }
+  _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+  return result;
+}
+
+/// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(),
+/// etc.
+ffi.Pointer<ffi.Void> _magickRelinquishMemory(ffi.Pointer<ffi.Void> ptr) {
+  return _bindings.magickRelinquishMemory(ptr);
+}
+
+/// Initializes the MagickWand environment.
+void magickWandGenesis() {
+  _bindings.magickWandGenesis();
+}
+
+/// Terminates the MagickWand environment.
+void magickWandTerminus() {
+  _bindings.magickWandTerminus();
+}
+
+/// Returns true if the ImageMagick environment is currently instantiated-- that is,
+/// `magickWandGenesis()` has been called but `magickWandTerminus()` has not.
+bool isMagickWandInstantiated() {
+  return _bindings.isMagickWandInstantiated();
+}
+
+/// Returns the ImageMagick API copyright as a string.
+String magickGetCopyright() {
+  return _bindings.magickGetCopyright().cast<Utf8>().toDartString();
+}
+
+/// Returns the ImageMagick home URL.
+String magickGetHomeURL() {
+  ffi.Pointer<ffi.Char> resultPtr = _bindings.magickGetHomeURL();
+  String result = resultPtr.cast<Utf8>().toDartString();
+  _magickRelinquishMemory(resultPtr.cast<ffi.Void>());
+  return result;
+}
+
+// TODO: add docs
 class DrawingWand {
   final ffi.Pointer<ffi.Void> _wandPtr;
 
   const DrawingWand._(this._wandPtr);
 
-  // TODO: add fields and methods later
+// TODO: add fields and methods later
 }
 
-/// An object that represents an image
-class Image{
+// TODO: add docs
+class Image {
   final ffi.Pointer<ffi.Void> _imagePtr;
 
   const Image._(this._imagePtr);
 
-  // TODO: add fields and methods later
+// TODO: add fields and methods later
+}
+
+// TODO: add docs
+class PixelWand {
+  final ffi.Pointer<ffi.Void> _wandPtr;
+
+  const PixelWand._(this._wandPtr);
+
+// TODO: add fields and methods later
 }
 
 /// Represents the type of an exception that occurred when using the ImageMagick API.
 enum ExceptionType {
   UndefinedException(0),
   WarningException(300),
-  ResourceLimitWarning(300),
   TypeWarning(305),
   OptionWarning(310),
   DelegateWarning(315),
@@ -383,7 +554,6 @@ enum ExceptionType {
   ConfigureWarning(395),
   PolicyWarning(399),
   ErrorException(400),
-  ResourceLimitError(400),
   TypeError(405),
   OptionError(410),
   DelegateError(415),
@@ -406,7 +576,6 @@ enum ExceptionType {
   ConfigureError(495),
   PolicyError(499),
   FatalErrorException(700),
-  ResourceLimitFatalError(700),
   TypeFatalError(705),
   OptionFatalError(710),
   DelegateFatalError(715),
@@ -429,6 +598,12 @@ enum ExceptionType {
   ConfigureFatalError(795),
   PolicyFatalError(799);
 
+  static const ResourceLimitWarning = WarningException;
+
+  static const ResourceLimitError = ErrorException;
+
+  static const ResourceLimitFatalError = FatalErrorException;
+
   final int value;
 
   const ExceptionType(this.value);
@@ -450,4 +625,99 @@ class MagickGetExceptionResult {
   String toString() {
     return 'MagickException{severity: $severity, description: $description}';
   }
+}
+
+/// Represents a colorspace type.
+enum ColorspaceType {
+  UndefinedColorspace,
+  CMYColorspace,
+  CMYKColorspace,
+  GRAYColorspace,
+  HCLColorspace,
+  HCLpColorspace,
+  HSBColorspace,
+  HSIColorspace,
+  HSLColorspace,
+  HSVColorspace,
+  HWBColorspace,
+  LabColorspace,
+  LCHColorspace,
+  LCHabColorspace,
+  LCHuvColorspace,
+  LogColorspace,
+  LMSColorspace,
+  LuvColorspace,
+  OHTAColorspace,
+  Rec601YCbCrColorspace,
+  Rec709YCbCrColorspace,
+  RGBColorspace,
+  scRGBColorspace,
+  sRGBColorspace,
+  TransparentColorspace,
+  xyYColorspace,
+  XYZColorspace,
+  YCbCrColorspace,
+  YCCColorspace,
+  YDbDrColorspace,
+  YIQColorspace,
+  YPbPrColorspace,
+  YUVColorspace,
+  LinearGRAYColorspace,
+  JzazbzColorspace,
+  DisplayP3Colorspace,
+  Adobe98Colorspace,
+  ProPhotoColorspace
+}
+
+/// Represents an image compression type.
+enum CompressionType {
+  UndefinedCompression,
+  B44ACompression,
+  B44Compression,
+  BZipCompression,
+  DXT1Compression,
+  DXT3Compression,
+  DXT5Compression,
+  FaxCompression,
+  Group4Compression,
+  JBIG1Compression,
+  JBIG2Compression,
+  JPEG2000Compression,
+  JPEGCompression,
+  LosslessJPEGCompression,
+  LZMACompression,
+  LZWCompression,
+  NoCompression,
+  PizCompression,
+  Pxr24Compression,
+  RLECompression,
+  ZipCompression,
+  ZipSCompression,
+  ZstdCompression,
+  WebPCompression,
+  DWAACompression,
+  DWABCompression,
+  BC7Compression
+}
+
+/// Represents a gravity type.
+enum GravityType {
+  UndefinedGravity(0),
+  NorthWestGravity(1),
+  NorthGravity(2),
+  NorthEastGravity(3),
+  WestGravity(4),
+  CenterGravity(5),
+  EastGravity(6),
+  SouthWestGravity(7),
+  SouthGravity(8),
+  SouthEastGravity(9);
+
+  static const ForgetGravity = UndefinedGravity;
+
+  final int value;
+
+  const GravityType(this.value);
+
+  static GravityType fromValue(int value) => GravityType.values.firstWhere((e) => e.value == value);
 }

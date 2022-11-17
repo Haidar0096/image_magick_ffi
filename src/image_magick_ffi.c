@@ -101,6 +101,78 @@ FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void){
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickDeleteImageArtifact(void *wand, const char *artifact){
+    MagickBooleanType result = MagickDeleteImageArtifact((MagickWand *) wand, artifact);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDeleteImageProperty(void *wand, const char *property){
+    MagickBooleanType result = MagickDeleteImageProperty((MagickWand *) wand, property);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDeleteOption(void *wand, const char *option){
+    MagickBooleanType result = MagickDeleteOption((MagickWand *) wand, option);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickGetAntialias(const void *wand){
+    MagickBooleanType result = MagickGetAntialias((const MagickWand *) wand);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void *magickGetBackgroundColor(void *wand){
+    return MagickGetBackgroundColor((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT int magickGetColorspace(void *wand){
+    return MagickGetColorspace((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT int magickGetCompression(void *wand){
+    return MagickGetCompression((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT size_t magickGetCompressionQuality(void *wand){
+    return MagickGetCompressionQuality((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetCopyright(void){
+    return MagickGetCopyright();
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetFilename(const void *wand){
+    return MagickGetFilename((const MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT char *magickGetFont(void *wand){
+    return MagickGetFont((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetFormat(void *wand){
+    return MagickGetFormat((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT int magickGetGravity(void *wand){
+    return MagickGetGravity((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT char *magickGetHomeURL(void){
+    return MagickGetHomeURL();
+}
+
+FFI_PLUGIN_EXPORT char *magickGetImageArtifact(void *wand,const char *artifact){
+    return MagickGetImageArtifact((MagickWand *) wand, artifact);
+}
+
+FFI_PLUGIN_EXPORT char **magickGetImageArtifacts(void *wand, const char *pattern, size_t *number_artifacts){
+    return MagickGetImageArtifacts((MagickWand *) wand, pattern, number_artifacts);
+}
+
+FFI_PLUGIN_EXPORT unsigned char *magickGetImageProfile(void *wand,const char *name, size_t *length){
+    return MagickGetImageProfile((MagickWand *) wand, name, length);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {
