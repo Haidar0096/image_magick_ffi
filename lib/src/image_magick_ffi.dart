@@ -26,21 +26,27 @@ final ffi.DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
 
-/// Represents a memory resource on the heap which will be freed when the associated dart object is garbage-collected.
+/// Used with managing memory resources on the native heap associated with dart objects.
 class _MagickRelinquishableResource implements ffi.Finalizable {
   static final ffi.NativeFinalizer _finalizer = ffi.NativeFinalizer(_dylib.lookup('magickRelinquishMemory'));
 
   /// Represents a map with weak keys. The keys of the map will be dart objects, and the values will be
-  /// `_MagickRelinquishableResource` objects. When the dart object (the key) is garbage-collected, the associated
-  /// `_MagickRelinquishableResource` object (the value) will be garbage-collected, and the native memory will be freed.
-  static final Expando<_MagickRelinquishableResource> relinquishables = Expando();
+  /// `_MagickRelinquishableResource` objects (which are `Finalizable` objects). When the dart object (the key)
+  /// is garbage-collected, the associated `_MagickRelinquishableResource` object (the value) will be
+  /// garbage-collected, and the native cleanup function will be invoked, which will cause the associated memory
+  /// to be freed.
+  static final Expando<_MagickRelinquishableResource> _relinquishables = Expando();
 
   _MagickRelinquishableResource._();
 
-  factory _MagickRelinquishableResource(ffi.Pointer<ffi.Void> ptr, {ffi.Pointer<ffi.Void>? detach, int? externalSize}) {
+  /// Registers [ptr] to be freed when [obj] is garbage-collected.
+  ///
+  /// For more info on the other params, see [ffi.NativeFinalizer.attach]
+  static void registerRelinquishable(TypedData obj, ffi.Pointer<ffi.Void> ptr,
+      {ffi.Pointer<ffi.Void>? detach, int? externalSize}) {
     _MagickRelinquishableResource finalizable = _MagickRelinquishableResource._();
     _finalizer.attach(finalizable, ptr, detach: detach, externalSize: externalSize);
-    return finalizable;
+    _relinquishables[obj] = finalizable;
   }
 }
 
@@ -126,7 +132,7 @@ class MagickWand {
   ///     12 origin: y
   /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if
   /// the [MagickWand] contains no images).
-  List<double>? magickQueryFontMetrics(DrawingWand drawingWand, String text) {
+  Float64List? magickQueryFontMetrics(DrawingWand drawingWand, String text) {
     final ffi.Pointer<ffi.Char> textPtr = text.toNativeUtf8().cast<ffi.Char>();
     final ffi.Pointer<ffi.Double> metricsPtr =
         _bindings.magickQueryFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
@@ -134,8 +140,8 @@ class MagickWand {
     if (metricsPtr == ffi.nullptr) {
       return null;
     }
-    final List<double> metrics = metricsPtr.asTypedList(13);
-    _MagickRelinquishableResource.relinquishables[metrics] = _MagickRelinquishableResource(metricsPtr.cast());
+    final Float64List metrics = metricsPtr.asTypedList(13);
+    _MagickRelinquishableResource.registerRelinquishable(metrics, metricsPtr.cast());
     return metrics;
   }
 
@@ -160,7 +166,7 @@ class MagickWand {
   /// multiple lines of text.
   /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if the
   /// [MagickWand] contains no images).
-  List<double>? magickQueryMultilineFontMetrics(DrawingWand drawingWand, String text) {
+  Float64List? magickQueryMultilineFontMetrics(DrawingWand drawingWand, String text) {
     final ffi.Pointer<ffi.Char> textPtr = text.toNativeUtf8().cast<ffi.Char>();
     final ffi.Pointer<ffi.Double> metricsPtr =
         _bindings.magickQueryMultilineFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
@@ -168,8 +174,8 @@ class MagickWand {
     if (metricsPtr == ffi.nullptr) {
       return null;
     }
-    final List<double> metrics = metricsPtr.asTypedList(13);
-    _MagickRelinquishableResource.relinquishables[metrics] = _MagickRelinquishableResource(metricsPtr.cast());
+    final Float64List metrics = metricsPtr.asTypedList(13);
+    _MagickRelinquishableResource.registerRelinquishable(metrics, metricsPtr.cast());
     return metrics;
   }
 
@@ -365,7 +371,7 @@ class MagickWand {
       return null;
     }
     final Uint8List profile = profilePtr.cast<ffi.Uint8>().asTypedList(length);
-    _MagickRelinquishableResource.relinquishables[profile] = _MagickRelinquishableResource(profilePtr.cast());
+    _MagickRelinquishableResource.registerRelinquishable(profile, profilePtr.cast());
     return profile;
   }
 
