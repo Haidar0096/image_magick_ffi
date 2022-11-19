@@ -172,18 +172,19 @@ class _MyAppState extends State<MyApp> {
 
   // reads an image, then writes it in jpeg format
   Future<String?> _handlePress() async {
-    try{
+    try {
       magick_ffi.magickWandGenesis(); // initialize the magick wand environment
-      magick_ffi.MagickWand wand = magick_ffi.MagickWand.newMagickWand(); // create a new wand, which can be used to manipulate images
+      magick_ffi.MagickWand wand =
+          magick_ffi.MagickWand.newMagickWand(); // create a new wand, which can be used to manipulate images
       wand.magickReadImage(_inputFile!.path); // read an image into the wand
-      String inputFileNameWithoutExtension = _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
+      String inputFileNameWithoutExtension =
+          _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
       wand.magickWriteImage("${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image
       String error = wand.magickGetException().description; // get error, if any
       wand.destroyMagickWand(); // free resources used by the wand
       magick_ffi.magickWandTerminus(); // terminate the magick wand environment
       return error.isEmpty ? null : error; // return error, if any
-    }
-    catch(e){
+    } catch (e) {
       return e.toString();
     }
   }

@@ -91,6 +91,8 @@ FFI_PLUGIN_EXPORT char **magickGetImageArtifacts(void *wand, const char *pattern
 
 FFI_PLUGIN_EXPORT unsigned char *magickGetImageProfile(void *wand,const char *name, size_t *length);
 
+FFI_PLUGIN_EXPORT char **magickGetImageProfiles(void *wand,const char *pattern, size_t *number_profiles);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

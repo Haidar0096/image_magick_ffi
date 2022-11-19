@@ -173,6 +173,10 @@ FFI_PLUGIN_EXPORT unsigned char *magickGetImageProfile(void *wand,const char *na
     return MagickGetImageProfile((MagickWand *) wand, name, length);
 }
 
+FFI_PLUGIN_EXPORT char **magickGetImageProfiles(void *wand,const char *pattern, size_t *number_profiles){
+    return MagickGetImageProfiles((MagickWand *) wand, pattern, number_profiles);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {
