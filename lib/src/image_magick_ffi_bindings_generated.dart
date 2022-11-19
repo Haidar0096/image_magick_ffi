@@ -13,13 +13,17 @@ import 'dart:ffi' as ffi;
 ///
 class ImageMagickFfiBindings {
   /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) _lookup;
+  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
+      _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  ImageMagickFfiBindings(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
+  ImageMagickFfiBindings(ffi.DynamicLibrary dynamicLibrary)
+      : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
-  ImageMagickFfiBindings.fromLookup(ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup)
+  ImageMagickFfiBindings.fromLookup(
+      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
+          lookup)
       : _lookup = lookup;
 
   void clearMagickWand(
@@ -31,8 +35,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _clearMagickWandPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>('clearMagickWand');
-  late final _clearMagickWand = _clearMagickWandPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'clearMagickWand');
+  late final _clearMagickWand =
+      _clearMagickWandPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Void> cloneMagickWand(
     ffi.Pointer<ffi.Void> wand,
@@ -42,9 +48,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _cloneMagickWandPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('cloneMagickWand');
-  late final _cloneMagickWand = _cloneMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+  late final _cloneMagickWandPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('cloneMagickWand');
+  late final _cloneMagickWand = _cloneMagickWandPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Void> destroyMagickWand(
     ffi.Pointer<ffi.Void> wand,
@@ -54,10 +63,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _destroyMagickWandPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('destroyMagickWand');
-  late final _destroyMagickWand =
-      _destroyMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+  late final _destroyMagickWandPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('destroyMagickWand');
+  late final _destroyMagickWand = _destroyMagickWandPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
   bool isMagickWand(
     ffi.Pointer<ffi.Void> wand,
@@ -67,8 +78,11 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _isMagickWandPtr = _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>('isMagickWand');
-  late final _isMagickWand = _isMagickWandPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+  late final _isMagickWandPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'isMagickWand');
+  late final _isMagickWand =
+      _isMagickWandPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
 
   bool magickClearException(
     ffi.Pointer<ffi.Void> wand,
@@ -79,8 +93,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickClearExceptionPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>('magickClearException');
-  late final _magickClearException = _magickClearExceptionPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickClearException');
+  late final _magickClearException = _magickClearExceptionPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickGetException(
     ffi.Pointer<ffi.Void> wand,
@@ -92,11 +108,13 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetExceptionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Int>)>>(
-          'magickGetException');
-  late final _magickGetException =
-      _magickGetExceptionPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Int>)>();
+  late final _magickGetExceptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Int>)>>('magickGetException');
+  late final _magickGetException = _magickGetExceptionPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Int>)>();
 
   int magickGetExceptionType(
     ffi.Pointer<ffi.Void> wand,
@@ -107,8 +125,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetExceptionTypePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>('magickGetExceptionType');
-  late final _magickGetExceptionType = _magickGetExceptionTypePtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetExceptionType');
+  late final _magickGetExceptionType = _magickGetExceptionTypePtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   int magickGetIteratorIndex(
     ffi.Pointer<ffi.Void> wand,
@@ -119,8 +139,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetIteratorIndexPtr =
-      _lookup<ffi.NativeFunction<ssize_t Function(ffi.Pointer<ffi.Void>)>>('magickGetIteratorIndex');
-  late final _magickGetIteratorIndex = _magickGetIteratorIndexPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ssize_t Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetIteratorIndex');
+  late final _magickGetIteratorIndex = _magickGetIteratorIndexPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickQueryConfigureOption(
     ffi.Pointer<ffi.Char> option,
@@ -130,10 +152,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickQueryConfigureOptionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('magickQueryConfigureOption');
-  late final _magickQueryConfigureOption =
-      _magickQueryConfigureOptionPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+  late final _magickQueryConfigureOptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>)>>('magickQueryConfigureOption');
+  late final _magickQueryConfigureOption = _magickQueryConfigureOptionPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryConfigureOptions(
     ffi.Pointer<ffi.Char> pattern,
@@ -147,10 +171,12 @@ class ImageMagickFfiBindings {
 
   late final _magickQueryConfigureOptionsPtr = _lookup<
       ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryConfigureOptions');
+  late final _magickQueryConfigureOptions =
+      _magickQueryConfigureOptionsPtr.asFunction<
           ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickQueryConfigureOptions');
-  late final _magickQueryConfigureOptions = _magickQueryConfigureOptionsPtr
-      .asFunction<ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
   ffi.Pointer<ffi.Double> magickQueryFontMetrics(
     ffi.Pointer<ffi.Void> wand,
@@ -167,9 +193,12 @@ class ImageMagickFfiBindings {
   late final _magickQueryFontMetricsPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Double> Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>('magickQueryFontMetrics');
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickQueryFontMetrics');
   late final _magickQueryFontMetrics = _magickQueryFontMetricsPtr.asFunction<
-      ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+      ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Double> magickQueryMultilineFontMetrics(
     ffi.Pointer<ffi.Void> wand,
@@ -186,9 +215,13 @@ class ImageMagickFfiBindings {
   late final _magickQueryMultilineFontMetricsPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Double> Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>('magickQueryMultilineFontMetrics');
-  late final _magickQueryMultilineFontMetrics = _magickQueryMultilineFontMetricsPtr.asFunction<
-      ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickQueryMultilineFontMetrics');
+  late final _magickQueryMultilineFontMetrics =
+      _magickQueryMultilineFontMetricsPtr.asFunction<
+          ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryFonts(
     ffi.Pointer<ffi.Char> pattern,
@@ -202,10 +235,11 @@ class ImageMagickFfiBindings {
 
   late final _magickQueryFontsPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickQueryFonts');
-  late final _magickQueryFonts = _magickQueryFontsPtr
-      .asFunction<ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryFonts');
+  late final _magickQueryFonts = _magickQueryFontsPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
   ffi.Pointer<ffi.Pointer<ffi.Char>> magickQueryFormats(
     ffi.Pointer<ffi.Char> pattern,
@@ -219,10 +253,11 @@ class ImageMagickFfiBindings {
 
   late final _magickQueryFormatsPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickQueryFormats');
-  late final _magickQueryFormats = _magickQueryFormatsPtr
-      .asFunction<ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickQueryFormats');
+  late final _magickQueryFormats = _magickQueryFormatsPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
   ffi.Pointer<ffi.Void> magickRelinquishMemory(
     ffi.Pointer<ffi.Void> resource,
@@ -232,10 +267,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickRelinquishMemoryPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('magickRelinquishMemory');
-  late final _magickRelinquishMemory =
-      _magickRelinquishMemoryPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+  late final _magickRelinquishMemoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickRelinquishMemory');
+  late final _magickRelinquishMemory = _magickRelinquishMemoryPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
   void magickResetIterator(
     ffi.Pointer<ffi.Void> wand,
@@ -246,8 +283,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickResetIteratorPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>('magickResetIterator');
-  late final _magickResetIterator = _magickResetIteratorPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickResetIterator');
+  late final _magickResetIterator = _magickResetIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void magickSetFirstIterator(
     ffi.Pointer<ffi.Void> wand,
@@ -258,8 +297,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickSetFirstIteratorPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>('magickSetFirstIterator');
-  late final _magickSetFirstIterator = _magickSetFirstIteratorPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickSetFirstIterator');
+  late final _magickSetFirstIterator = _magickSetFirstIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   bool magickSetIteratorIndex(
     ffi.Pointer<ffi.Void> wand,
@@ -271,10 +312,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickSetIteratorIndexPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ssize_t)>>('magickSetIteratorIndex');
-  late final _magickSetIteratorIndex =
-      _magickSetIteratorIndexPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+  late final _magickSetIteratorIndexPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ssize_t)>>('magickSetIteratorIndex');
+  late final _magickSetIteratorIndex = _magickSetIteratorIndexPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
 
   void magickSetLastIterator(
     ffi.Pointer<ffi.Void> wand,
@@ -285,29 +328,38 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickSetLastIteratorPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>('magickSetLastIterator');
-  late final _magickSetLastIterator = _magickSetLastIteratorPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'magickSetLastIterator');
+  late final _magickSetLastIterator = _magickSetLastIteratorPtr
+      .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void magickWandGenesis() {
     return _magickWandGenesis();
   }
 
-  late final _magickWandGenesisPtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandGenesis');
-  late final _magickWandGenesis = _magickWandGenesisPtr.asFunction<void Function()>();
+  late final _magickWandGenesisPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandGenesis');
+  late final _magickWandGenesis =
+      _magickWandGenesisPtr.asFunction<void Function()>();
 
   void magickWandTerminus() {
     return _magickWandTerminus();
   }
 
-  late final _magickWandTerminusPtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandTerminus');
-  late final _magickWandTerminus = _magickWandTerminusPtr.asFunction<void Function()>();
+  late final _magickWandTerminusPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('magickWandTerminus');
+  late final _magickWandTerminus =
+      _magickWandTerminusPtr.asFunction<void Function()>();
 
   ffi.Pointer<ffi.Void> newMagickWand() {
     return _newMagickWand();
   }
 
-  late final _newMagickWandPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function()>>('newMagickWand');
-  late final _newMagickWand = _newMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
+  late final _newMagickWandPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function()>>(
+          'newMagickWand');
+  late final _newMagickWand =
+      _newMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
 
   ffi.Pointer<ffi.Void> newMagickWandFromImage(
     ffi.Pointer<ffi.Void> image,
@@ -317,18 +369,22 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _newMagickWandFromImagePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('newMagickWandFromImage');
-  late final _newMagickWandFromImage =
-      _newMagickWandFromImagePtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+  late final _newMagickWandFromImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('newMagickWandFromImage');
+  late final _newMagickWandFromImage = _newMagickWandFromImagePtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
   bool isMagickWandInstantiated() {
     return _isMagickWandInstantiated();
   }
 
   late final _isMagickWandInstantiatedPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function()>>('isMagickWandInstantiated');
-  late final _isMagickWandInstantiated = _isMagickWandInstantiatedPtr.asFunction<bool Function()>();
+      _lookup<ffi.NativeFunction<ffi.Bool Function()>>(
+          'isMagickWandInstantiated');
+  late final _isMagickWandInstantiated =
+      _isMagickWandInstantiatedPtr.asFunction<bool Function()>();
 
   bool magickDeleteImageArtifact(
     ffi.Pointer<ffi.Void> wand,
@@ -340,11 +396,13 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickDeleteImageArtifactPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>(
-          'magickDeleteImageArtifact');
+  late final _magickDeleteImageArtifactPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickDeleteImageArtifact');
   late final _magickDeleteImageArtifact =
-      _magickDeleteImageArtifactPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+      _magickDeleteImageArtifactPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   bool magickDeleteImageProperty(
     ffi.Pointer<ffi.Void> wand,
@@ -356,11 +414,13 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickDeleteImagePropertyPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>(
-          'magickDeleteImageProperty');
+  late final _magickDeleteImagePropertyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickDeleteImageProperty');
   late final _magickDeleteImageProperty =
-      _magickDeleteImagePropertyPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+      _magickDeleteImagePropertyPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   bool magickDeleteOption(
     ffi.Pointer<ffi.Void> wand,
@@ -372,11 +432,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickDeleteOptionPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>(
-          'magickDeleteOption');
-  late final _magickDeleteOption =
-      _magickDeleteOptionPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+  late final _magickDeleteOptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickDeleteOption');
+  late final _magickDeleteOption = _magickDeleteOptionPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   bool magickGetAntialias(
     ffi.Pointer<ffi.Void> wand,
@@ -387,8 +448,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetAntialiasPtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>('magickGetAntialias');
-  late final _magickGetAntialias = _magickGetAntialiasPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetAntialias');
+  late final _magickGetAntialias =
+      _magickGetAntialiasPtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Void> magickGetBackgroundColor(
     ffi.Pointer<ffi.Void> wand,
@@ -398,10 +461,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetBackgroundColorPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('magickGetBackgroundColor');
-  late final _magickGetBackgroundColor =
-      _magickGetBackgroundColorPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+  late final _magickGetBackgroundColorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetBackgroundColor');
+  late final _magickGetBackgroundColor = _magickGetBackgroundColorPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
   int magickGetColorspace(
     ffi.Pointer<ffi.Void> wand,
@@ -412,8 +477,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetColorspacePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>('magickGetColorspace');
-  late final _magickGetColorspace = _magickGetColorspacePtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetColorspace');
+  late final _magickGetColorspace =
+      _magickGetColorspacePtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   int magickGetCompression(
     ffi.Pointer<ffi.Void> wand,
@@ -424,8 +491,10 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetCompressionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>('magickGetCompression');
-  late final _magickGetCompression = _magickGetCompressionPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetCompression');
+  late final _magickGetCompression = _magickGetCompressionPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   int magickGetCompressionQuality(
     ffi.Pointer<ffi.Void> wand,
@@ -436,17 +505,20 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetCompressionQualityPtr =
-      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<ffi.Void>)>>('magickGetCompressionQuality');
-  late final _magickGetCompressionQuality =
-      _magickGetCompressionQualityPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetCompressionQuality');
+  late final _magickGetCompressionQuality = _magickGetCompressionQualityPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickGetCopyright() {
     return _magickGetCopyright();
   }
 
   late final _magickGetCopyrightPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>('magickGetCopyright');
-  late final _magickGetCopyright = _magickGetCopyrightPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          'magickGetCopyright');
+  late final _magickGetCopyright =
+      _magickGetCopyrightPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
   ffi.Pointer<ffi.Char> magickGetFilename(
     ffi.Pointer<ffi.Void> wand,
@@ -456,10 +528,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetFilenamePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>>('magickGetFilename');
-  late final _magickGetFilename =
-      _magickGetFilenamePtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
+  late final _magickGetFilenamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetFilename');
+  late final _magickGetFilename = _magickGetFilenamePtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickGetFont(
     ffi.Pointer<ffi.Void> wand,
@@ -469,9 +543,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetFontPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>>('magickGetFont');
-  late final _magickGetFont = _magickGetFontPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
+  late final _magickGetFontPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetFont');
+  late final _magickGetFont = _magickGetFontPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickGetFormat(
     ffi.Pointer<ffi.Void> wand,
@@ -481,9 +558,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetFormatPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>>('magickGetFormat');
-  late final _magickGetFormat = _magickGetFormatPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
+  late final _magickGetFormatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetFormat');
+  late final _magickGetFormat = _magickGetFormatPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>)>();
 
   int magickGetGravity(
     ffi.Pointer<ffi.Void> wand,
@@ -494,15 +574,20 @@ class ImageMagickFfiBindings {
   }
 
   late final _magickGetGravityPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>('magickGetGravity');
-  late final _magickGetGravity = _magickGetGravityPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetGravity');
+  late final _magickGetGravity =
+      _magickGetGravityPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.Char> magickGetHomeURL() {
     return _magickGetHomeURL();
   }
 
-  late final _magickGetHomeURLPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>('magickGetHomeURL');
-  late final _magickGetHomeURL = _magickGetHomeURLPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+  late final _magickGetHomeURLPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          'magickGetHomeURL');
+  late final _magickGetHomeURL =
+      _magickGetHomeURLPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
   ffi.Pointer<ffi.Char> magickGetImageArtifact(
     ffi.Pointer<ffi.Void> wand,
@@ -514,11 +599,13 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickGetImageArtifactPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>(
-          'magickGetImageArtifact');
-  late final _magickGetImageArtifact = _magickGetImageArtifactPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+  late final _magickGetImageArtifactPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickGetImageArtifact');
+  late final _magickGetImageArtifact = _magickGetImageArtifactPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Pointer<ffi.Char>> magickGetImageArtifacts(
     ffi.Pointer<ffi.Void> wand,
@@ -535,10 +622,12 @@ class ImageMagickFfiBindings {
   late final _magickGetImageArtifactsPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickGetImageArtifacts');
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImageArtifacts');
   late final _magickGetImageArtifacts = _magickGetImageArtifactsPtr.asFunction<
-      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
   ffi.Pointer<ffi.UnsignedChar> magickGetImageProfile(
     ffi.Pointer<ffi.Void> wand,
@@ -555,9 +644,12 @@ class ImageMagickFfiBindings {
   late final _magickGetImageProfilePtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.UnsignedChar> Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickGetImageProfile');
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImageProfile');
   late final _magickGetImageProfile = _magickGetImageProfilePtr.asFunction<
-      ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+      ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
   ffi.Pointer<ffi.Pointer<ffi.Char>> magickGetImageProfiles(
     ffi.Pointer<ffi.Void> wand,
@@ -574,10 +666,173 @@ class ImageMagickFfiBindings {
   late final _magickGetImageProfilesPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>>('magickGetImageProfiles');
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImageProfiles');
   late final _magickGetImageProfiles = _magickGetImageProfilesPtr.asFunction<
-      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<ffi.Char> magickGetImageProperty(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> property,
+  ) {
+    return _magickGetImageProperty(
+      wand,
+      property,
+    );
+  }
+
+  late final _magickGetImagePropertyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickGetImageProperty');
+  late final _magickGetImageProperty = _magickGetImagePropertyPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Pointer<ffi.Char>> magickGetImageProperties(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> pattern,
+    ffi.Pointer<ffi.Size> number_properties,
+  ) {
+    return _magickGetImageProperties(
+      wand,
+      pattern,
+      number_properties,
+    );
+  }
+
+  late final _magickGetImagePropertiesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImageProperties');
+  late final _magickGetImageProperties =
+      _magickGetImagePropertiesPtr.asFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  int magickGetInterlaceScheme(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetInterlaceScheme(
+      wand,
+    );
+  }
+
+  late final _magickGetInterlaceSchemePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetInterlaceScheme');
+  late final _magickGetInterlaceScheme = _magickGetInterlaceSchemePtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  int magickGetInterpolateMethod(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetInterpolateMethod(
+      wand,
+    );
+  }
+
+  late final _magickGetInterpolateMethodPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetInterpolateMethod');
+  late final _magickGetInterpolateMethod = _magickGetInterpolateMethodPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickGetOption(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> key,
+  ) {
+    return _magickGetOption(
+      wand,
+      key,
+    );
+  }
+
+  late final _magickGetOptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickGetOption');
+  late final _magickGetOption = _magickGetOptionPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Pointer<ffi.Char>> magickGetOptions(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> pattern,
+    ffi.Pointer<ffi.Size> number_options,
+  ) {
+    return _magickGetOptions(
+      wand,
+      pattern,
+      number_options,
+    );
+  }
+
+  late final _magickGetOptionsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickGetOptions');
+  late final _magickGetOptions = _magickGetOptionsPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
+  int magickGetOrientation(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetOrientation(
+      wand,
+    );
+  }
+
+  late final _magickGetOrientationPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetOrientation');
+  late final _magickGetOrientation = _magickGetOrientationPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickGetPackageName() {
+    return _magickGetPackageName();
+  }
+
+  late final _magickGetPackageNamePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          'magickGetPackageName');
+  late final _magickGetPackageName =
+      _magickGetPackageNamePtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+
+  bool magickGetPage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Size> width,
+    ffi.Pointer<ffi.Size> height,
+    ffi.Pointer<ssize_t> x,
+    ffi.Pointer<ssize_t> y,
+  ) {
+    return _magickGetPage(
+      wand,
+      width,
+      height,
+      x,
+      y,
+    );
+  }
+
+  late final _magickGetPagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ssize_t>,
+              ffi.Pointer<ssize_t>)>>('magickGetPage');
+  late final _magickGetPage = _magickGetPagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>,
+          ffi.Pointer<ffi.Size>, ffi.Pointer<ssize_t>, ffi.Pointer<ssize_t>)>();
 
   /// TODO: complete adding the other methods
   bool magickReadImage(
@@ -590,10 +845,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickReadImagePtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>('magickReadImage');
-  late final _magickReadImage =
-      _magickReadImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+  late final _magickReadImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickReadImage');
+  late final _magickReadImage = _magickReadImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
   bool magickWriteImage(
     ffi.Pointer<ffi.Void> wand,
@@ -605,10 +862,12 @@ class ImageMagickFfiBindings {
     );
   }
 
-  late final _magickWriteImagePtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>('magickWriteImage');
-  late final _magickWriteImage =
-      _magickWriteImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+  late final _magickWriteImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickWriteImage');
+  late final _magickWriteImage = _magickWriteImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 }
 
 typedef ssize_t = ffi.LongLong;

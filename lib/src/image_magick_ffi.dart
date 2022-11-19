@@ -394,6 +394,109 @@ class MagickWand {
     return result;
   }
 
+  /// Returns a value associated with the specified property.
+  String? magickGetImageProperty(String property) {
+    final Pointer<Char> propertyPtr = property.toNativeUtf8().cast();
+    final Pointer<Char> resultPtr = _bindings.magickGetImageProperty(_wandPtr, propertyPtr);
+    malloc.free(propertyPtr);
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    final String result = resultPtr.cast<Utf8>().toDartString();
+    _bindings.magickRelinquishMemory(resultPtr.cast());
+    return result;
+  }
+
+  /// Returns all the property names that match the specified pattern associated with a wand.
+  /// Use `magickGetImageProperty()` to return the value of a particular property.
+  List<String>? magickGetImageProperties(String pattern) {
+    final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
+    final Pointer<Size> numPropertiesPtr = malloc<Size>();
+    final Pointer<Pointer<Char>> propertiesPtr =
+        _bindings.magickGetImageProperties(_wandPtr, patternPtr, numPropertiesPtr);
+    malloc.free(patternPtr);
+    final int numProperties = numPropertiesPtr.value;
+    malloc.free(numPropertiesPtr);
+    if (propertiesPtr == nullptr) {
+      return null;
+    }
+    final List<String> result = [];
+    for (int i = 0; i < numProperties; i++) {
+      result.add(propertiesPtr[i].cast<Utf8>().toDartString());
+    }
+    _bindings.magickRelinquishMemory(propertiesPtr.cast());
+    return result;
+  }
+
+  /// Gets the wand interlace scheme.
+  InterlaceType magickGetInterlaceScheme() {
+    return InterlaceType.values[_bindings.magickGetInterlaceScheme(_wandPtr)];
+  }
+
+  /// Gets the wand compression.
+  PixelInterpolateMethod magickGetInterpolateMethod() {
+    return PixelInterpolateMethod.values[_bindings.magickGetInterpolateMethod(_wandPtr)];
+  }
+
+  /// Returns a value associated with a wand and the specified key.
+  String? magickGetOption(String key) {
+    final Pointer<Char> keyPtr = key.toNativeUtf8().cast();
+    final Pointer<Char> resultPtr = _bindings.magickGetOption(_wandPtr, keyPtr);
+    malloc.free(keyPtr);
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    final String result = resultPtr.cast<Utf8>().toDartString();
+    _bindings.magickRelinquishMemory(resultPtr.cast());
+    return result;
+  }
+
+  /// Returns all the option names that match the specified pattern associated with a wand.
+  /// Use `magickGetOption()` to return the value of a particular option.
+  List<String>? magickGetOptions(String pattern) {
+    final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
+    final Pointer<Size> numOptionsPtr = malloc<Size>();
+    final Pointer<Pointer<Char>> optionsPtr = _bindings.magickGetOptions(_wandPtr, patternPtr, numOptionsPtr);
+    malloc.free(patternPtr);
+    final int numOptions = numOptionsPtr.value;
+    malloc.free(numOptionsPtr);
+    if (optionsPtr == nullptr) {
+      return null;
+    }
+    final List<String> result = [];
+    for (int i = 0; i < numOptions; i++) {
+      result.add(optionsPtr[i].cast<Utf8>().toDartString());
+    }
+    _bindings.magickRelinquishMemory(optionsPtr.cast());
+    return result;
+  }
+
+  /// Gets the wand orientation type.
+  OrientationType magickGetOrientation() {
+    return OrientationType.values[_bindings.magickGetOrientation(_wandPtr)];
+  }
+
+  /// Returns the page geometry associated with the magick wand.
+  MagickGetPageResult? magickGetPage() {
+    final Pointer<Size> widthPtr = malloc<Size>();
+    final Pointer<Size> heightPtr = malloc<Size>();
+    final Pointer<ssize_t> xPtr = malloc<ssize_t>();
+    final Pointer<ssize_t> yPtr = malloc<ssize_t>();
+    final bool result = _bindings.magickGetPage(_wandPtr, widthPtr, heightPtr, xPtr, yPtr);
+    if (!result) {
+      return null;
+    }
+    int width = widthPtr.value;
+    malloc.free(widthPtr);
+    int height = heightPtr.value;
+    malloc.free(heightPtr);
+    int x = xPtr.value;
+    malloc.free(xPtr);
+    int y = yPtr.value;
+    malloc.free(yPtr);
+    return MagickGetPageResult(width, height, x, y);
+  }
+
   // TODO: complete adding the other methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -524,6 +627,11 @@ String magickGetHomeURL() {
   String result = resultPtr.cast<Utf8>().toDartString();
   _magickRelinquishMemory(resultPtr.cast());
   return result;
+}
+
+/// Returns the ImageMagick package name.
+String magickGetPackageName() {
+  return _bindings.magickGetPackageName().cast<Utf8>().toDartString();
 }
 
 // TODO: add docs
@@ -745,4 +853,64 @@ enum GravityType {
   const GravityType(this.value);
 
   static GravityType fromValue(int value) => GravityType.values.firstWhere((e) => e.value == value);
+}
+
+/// Represents an interlace type.
+enum InterlaceType {
+  UndefinedInterlace,
+  NoInterlace,
+  LineInterlace,
+  PlaneInterlace,
+  PartitionInterlace,
+  GIFInterlace,
+  JPEGInterlace,
+  PNGInterlace;
+}
+
+/// Represents a pixel interpolation method.
+enum PixelInterpolateMethod {
+  UndefinedInterpolatePixel,
+  /* Average 4 nearest neighbours */
+  AverageInterpolatePixel,
+  /* Average 9 nearest neighbours */
+  Average9InterpolatePixel,
+  /* Average 16 nearest neighbours */
+  Average16InterpolatePixel,
+  /* Just return background color */
+  BackgroundInterpolatePixel,
+  /* Triangular filter interpolation */
+  BilinearInterpolatePixel,
+  /* blend of nearest 1, 2 or 4 pixels */
+  BlendInterpolatePixel,
+  /* Catmull-Rom interpolation */
+  CatromInterpolatePixel,
+  /* Integer (floor) interpolation */
+  IntegerInterpolatePixel,
+  /* Triangular Mesh interpolation */
+  MeshInterpolatePixel,
+  /* Nearest Neighbour Only */
+  NearestInterpolatePixel,
+  /* Cubic Spline (blurred) interpolation */
+  SplineInterpolatePixel
+}
+
+enum OrientationType {
+  UndefinedOrientation,
+  TopLeftOrientation,
+  TopRightOrientation,
+  BottomRightOrientation,
+  BottomLeftOrientation,
+  LeftTopOrientation,
+  RightTopOrientation,
+  RightBottomOrientation,
+  LeftBottomOrientation
+}
+
+class MagickGetPageResult {
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  const MagickGetPageResult(this.width, this.height, this.x, this.y);
 }

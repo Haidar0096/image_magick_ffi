@@ -177,6 +177,43 @@ FFI_PLUGIN_EXPORT char **magickGetImageProfiles(void *wand,const char *pattern, 
     return MagickGetImageProfiles((MagickWand *) wand, pattern, number_profiles);
 }
 
+FFI_PLUGIN_EXPORT char *magickGetImageProperty(void *wand,const char *property){
+    return MagickGetImageProperty((MagickWand *) wand, property);
+}
+
+FFI_PLUGIN_EXPORT char **magickGetImageProperties (void *wand, const char *pattern, size_t *number_properties){
+    return MagickGetImageProperties((MagickWand *) wand, pattern, number_properties);
+}
+
+FFI_PLUGIN_EXPORT int magickGetInterlaceScheme(void *wand){
+    return MagickGetInterlaceScheme((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT int magickGetInterpolateMethod(void *wand){
+    return MagickGetInterpolateMethod((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT char *magickGetOption(void *wand,const char *key){
+    return MagickGetOption((MagickWand *) wand, key);
+}
+
+FFI_PLUGIN_EXPORT char **magickGetOptions(void *wand,const char *pattern, size_t *number_options){
+    return MagickGetOptions((MagickWand *) wand, pattern, number_options);
+}
+
+FFI_PLUGIN_EXPORT int magickGetOrientation(void *wand){
+    return MagickGetOrientation((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetPackageName(void){
+    return MagickGetPackageName();
+}
+
+FFI_PLUGIN_EXPORT bool magickGetPage(const void *wand, size_t *width, size_t *height, ssize_t *x, ssize_t *y){
+    MagickBooleanType result = MagickGetPage((const MagickWand *) wand, width, height, x, y);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

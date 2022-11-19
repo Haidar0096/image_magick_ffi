@@ -93,6 +93,24 @@ FFI_PLUGIN_EXPORT unsigned char *magickGetImageProfile(void *wand,const char *na
 
 FFI_PLUGIN_EXPORT char **magickGetImageProfiles(void *wand,const char *pattern, size_t *number_profiles);
 
+FFI_PLUGIN_EXPORT char *magickGetImageProperty(void *wand,const char *property);
+
+FFI_PLUGIN_EXPORT char **magickGetImageProperties (void *wand, const char *pattern, size_t *number_properties);
+
+FFI_PLUGIN_EXPORT int magickGetInterlaceScheme(void *wand);
+
+FFI_PLUGIN_EXPORT int magickGetInterpolateMethod(void *wand);
+
+FFI_PLUGIN_EXPORT char *magickGetOption(void *wand, const char *key);
+
+FFI_PLUGIN_EXPORT char **magickGetOptions(void *wand, const char *pattern, size_t *number_options);
+
+FFI_PLUGIN_EXPORT int magickGetOrientation(void *wand);
+
+FFI_PLUGIN_EXPORT const char *magickGetPackageName(void);
+
+FFI_PLUGIN_EXPORT bool magickGetPage(const void *wand, size_t *width, size_t *height, ssize_t *x, ssize_t *y);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
