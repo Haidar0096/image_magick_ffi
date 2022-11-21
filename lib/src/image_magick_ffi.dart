@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
+import 'package:image_magick_ffi/src/ffi_extensions.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
 
 part 'magick_enums.dart';
@@ -548,6 +549,51 @@ class MagickWand {
     return MagickGetSizeResult(width, height);
   }
 
+  /// Returns the size offset associated with the magick wand.
+  int? magickGetSizeOffset() {
+    Pointer<ssize_t> sizeOffsetPtr = malloc();
+    final bool result = _bindings.magickGetSizeOffset(_wandPtr, sizeOffsetPtr);
+    if (!result) {
+      return null;
+    }
+    int sizeOffset = sizeOffsetPtr.value;
+    malloc.free(sizeOffsetPtr);
+    return sizeOffset;
+  }
+
+  /// Returns the wand type.
+  ImageType magickGetType() {
+    return ImageType.values[_bindings.magickGetType(_wandPtr)];
+  }
+
+  /// Adds or removes a ICC, IPTC, or generic profile from an image. If the profile is NULL, it is removed
+  /// from the image otherwise added. Use a name of '*' and a profile of NULL to remove all profiles from
+  /// the image.
+  bool magickProfileImage(String name, Uint8List? profile) {
+    final Pointer<UnsignedChar> profilePtr = profile == null ? nullptr : profile.toUnsignedCharArray();
+    final Pointer<Char> namePtr = name.toNativeUtf8().cast();
+    final bool result = _bindings.magickProfileImage(_wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
+    malloc.free(namePtr);
+    malloc.free(profilePtr);
+    return result;
+  }
+
+  /// Removes the named image profile and returns it.
+  Uint8List? magickRemoveImageProfile(String name) {
+    final Pointer<Char> namePtr = name.toNativeUtf8().cast();
+    final Pointer<Size> lengthPtr = malloc();
+    final Pointer<UnsignedChar> profilePtr = _bindings.magickRemoveImageProfile(_wandPtr, namePtr, lengthPtr);
+    malloc.free(namePtr);
+    int length = lengthPtr.value;
+    malloc.free(lengthPtr);
+    if (profilePtr == nullptr) {
+      return null;
+    }
+    Uint8List result = profilePtr.cast<Uint8>().asTypedList(length);
+    _MagickRelinquishableResource.registerRelinquishable(result, profilePtr.cast());
+    return result;
+  }
+
   // TODO: complete adding the other methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -718,6 +764,15 @@ int magickGetResourceLimit(ResourceType type) {
   return _bindings.magickGetResourceLimit(type.index);
 }
 
+/// Returns the ImageMagick version.
+MagickGetVersionResult magickGetVersion() {
+  final Pointer<Size> versionPtr = malloc();
+  String versionString = _bindings.magickGetVersion(versionPtr).cast<Utf8>().toDartString();
+  int version = versionPtr.value;
+  malloc.free(versionPtr);
+  return MagickGetVersionResult(version, versionString);
+}
+
 // TODO: add docs
 class DrawingWand {
   final Pointer<Void> _wandPtr;
@@ -807,4 +862,15 @@ class MagickGetSizeResult {
   final int height;
 
   const MagickGetSizeResult(this.width, this.height);
+}
+
+/// Represents a result to a call to `magickGetVersion()`.
+class MagickGetVersionResult {
+  /// The version as an integer.
+  final int version;
+
+  /// The version as a string.
+  final String versionString;
+
+  const MagickGetVersionResult(this.version, this.versionString);
 }

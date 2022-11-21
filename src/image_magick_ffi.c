@@ -252,6 +252,28 @@ FFI_PLUGIN_EXPORT bool magickGetSize(const void *wand, size_t *columns,size_t *r
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickGetSizeOffset(const void *wand, ssize_t *offset){
+    MagickBooleanType result = MagickGetSizeOffset((const MagickWand *) wand, offset);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT int magickGetType(void *wand){
+    return MagickGetType((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetVersion(size_t *version){
+    return MagickGetVersion(version);
+}
+
+FFI_PLUGIN_EXPORT bool magickProfileImage(void *wand,const char *name, const void *profile,const size_t length){
+    MagickBooleanType result = MagickProfileImage((MagickWand *) wand, name, profile, length);
+    return result;
+}
+
+FFI_PLUGIN_EXPORT unsigned char *magickRemoveImageProfile(void *wand, const char *name,size_t *length){
+    return MagickRemoveImageProfile((MagickWand *) wand, name, length);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

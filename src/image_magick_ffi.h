@@ -129,6 +129,16 @@ FFI_PLUGIN_EXPORT double *magickGetSamplingFactors(void *wand, size_t *number_fa
 
 FFI_PLUGIN_EXPORT bool magickGetSize(const void *wand, size_t *columns,size_t *rows);
 
+FFI_PLUGIN_EXPORT bool magickGetSizeOffset(const void *wand, ssize_t *offset);
+
+FFI_PLUGIN_EXPORT int magickGetType(void *wand);
+
+FFI_PLUGIN_EXPORT const char *magickGetVersion(size_t *version);
+
+FFI_PLUGIN_EXPORT bool magickProfileImage(void *wand,const char *name, const void *profile,const size_t length);
+
+FFI_PLUGIN_EXPORT unsigned char *magickRemoveImageProfile(void *wand, const char *name,size_t *length);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

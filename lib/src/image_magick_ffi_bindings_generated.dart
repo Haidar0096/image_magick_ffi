@@ -975,6 +975,97 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>,
           ffi.Pointer<ffi.Size>)>();
 
+  bool magickGetSizeOffset(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ssize_t> offset,
+  ) {
+    return _magickGetSizeOffset(
+      wand,
+      offset,
+    );
+  }
+
+  late final _magickGetSizeOffsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ssize_t>)>>('magickGetSizeOffset');
+  late final _magickGetSizeOffset = _magickGetSizeOffsetPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ssize_t>)>();
+
+  int magickGetType(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetType(
+      wand,
+    );
+  }
+
+  late final _magickGetTypePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetType');
+  late final _magickGetType =
+      _magickGetTypePtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickGetVersion(
+    ffi.Pointer<ffi.Size> version,
+  ) {
+    return _magickGetVersion(
+      version,
+    );
+  }
+
+  late final _magickGetVersionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Size>)>>('magickGetVersion');
+  late final _magickGetVersion = _magickGetVersionPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Size>)>();
+
+  bool magickProfileImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<ffi.Void> profile,
+    int length,
+  ) {
+    return _magickProfileImage(
+      wand,
+      name,
+      profile,
+      length,
+    );
+  }
+
+  late final _magickProfileImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('magickProfileImage');
+  late final _magickProfileImage = _magickProfileImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<ffi.UnsignedChar> magickRemoveImageProfile(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<ffi.Size> length,
+  ) {
+    return _magickRemoveImageProfile(
+      wand,
+      name,
+      length,
+    );
+  }
+
+  late final _magickRemoveImageProfilePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.UnsignedChar> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Size>)>>('magickRemoveImageProfile');
+  late final _magickRemoveImageProfile =
+      _magickRemoveImageProfilePtr.asFunction<
+          ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

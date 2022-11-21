@@ -247,3 +247,19 @@ enum ResourceType {
   WidthResource,
   ListLengthResource
 }
+
+/// Represents an image type.
+enum ImageType {
+  UndefinedType,
+  BilevelType,
+  GrayscaleType,
+  GrayscaleAlphaType,
+  PaletteType,
+  PaletteAlphaType,
+  TrueColorType,
+  TrueColorAlphaType,
+  ColorSeparationType,
+  ColorSeparationAlphaType,
+  OptimizeType,
+  PaletteBilevelAlphaType
+}
