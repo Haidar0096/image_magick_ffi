@@ -214,6 +214,44 @@ FFI_PLUGIN_EXPORT bool magickGetPage(const void *wand, size_t *width, size_t *he
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT double magickGetPointsize(void *wand){
+    return MagickGetPointsize((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetQuantumDepth(size_t *depth){
+    return MagickGetQuantumDepth(depth);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetQuantumRange(size_t *range){
+    return MagickGetQuantumRange(range);
+}
+
+FFI_PLUGIN_EXPORT const char *magickGetReleaseDate(void){
+    return MagickGetReleaseDate();
+}
+
+FFI_PLUGIN_EXPORT bool magickGetResolution(const void *wand,double *x, double *y){
+    MagickBooleanType result = MagickGetResolution((const MagickWand *) wand, x, y);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT unsigned long long magickGetResource(const int type){
+    return MagickGetResource(type);
+}
+
+FFI_PLUGIN_EXPORT unsigned long long magickGetResourceLimit(const int type){
+    return MagickGetResourceLimit(type);
+}
+
+FFI_PLUGIN_EXPORT double *magickGetSamplingFactors(void *wand, size_t *number_factors){
+    return MagickGetSamplingFactors((MagickWand *) wand, number_factors);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetSize(const void *wand, size_t *columns,size_t *rows){
+    MagickBooleanType result = MagickGetSize((const MagickWand *) wand, columns, rows);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

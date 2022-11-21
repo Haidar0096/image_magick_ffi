@@ -7,6 +7,8 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
 
+part 'magick_enums.dart';
+
 const String _libName = 'image_magick_ffi';
 
 /// The dynamic library in which the symbols for [ImageMagickFfiBindings] can be found.
@@ -90,7 +92,7 @@ class MagickWand {
   ///
   /// - Note: if no exception has occurred, `UndefinedExceptionType` is returned.
   MagickGetExceptionResult magickGetException() {
-    final Pointer<Int> severity = malloc<Int>();
+    final Pointer<Int> severity = malloc();
     final Pointer<Char> description = _bindings.magickGetException(_wandPtr, severity);
     final MagickGetExceptionResult magickGetExceptionResult = MagickGetExceptionResult(
       ExceptionType.fromValue(severity.value),
@@ -340,7 +342,7 @@ class MagickWand {
   /// Use `magickGetImageProperty()` to return the value of a particular artifact.
   List<String>? magickGetImageArtifacts(String pattern) {
     final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-    final Pointer<Size> numArtifactsPtr = malloc<Size>();
+    final Pointer<Size> numArtifactsPtr = malloc();
     final Pointer<Pointer<Char>> artifactsPtr =
         _bindings.magickGetImageArtifacts(_wandPtr, patternPtr, numArtifactsPtr);
     malloc.free(patternPtr);
@@ -360,7 +362,7 @@ class MagickWand {
   /// Returns the named image profile.
   Uint8List? magickGetImageProfile(String name) {
     final Pointer<Char> namePtr = name.toNativeUtf8().cast();
-    final Pointer<Size> lengthPtr = malloc<Size>();
+    final Pointer<Size> lengthPtr = malloc();
     final Pointer<UnsignedChar> profilePtr = _bindings.magickGetImageProfile(_wandPtr, namePtr, lengthPtr);
     malloc.free(namePtr);
     final int length = lengthPtr.value;
@@ -378,7 +380,7 @@ class MagickWand {
   /// - Note: An empty list is returned if there are no results.
   List<String>? magickGetImageProfiles(String pattern) {
     final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-    final Pointer<Size> numProfilesPtr = malloc<Size>();
+    final Pointer<Size> numProfilesPtr = malloc();
     final Pointer<Pointer<Char>> profilesPtr = _bindings.magickGetImageProfiles(_wandPtr, patternPtr, numProfilesPtr);
     malloc.free(patternPtr);
     final int numProfiles = numProfilesPtr.value;
@@ -411,7 +413,7 @@ class MagickWand {
   /// Use `magickGetImageProperty()` to return the value of a particular property.
   List<String>? magickGetImageProperties(String pattern) {
     final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-    final Pointer<Size> numPropertiesPtr = malloc<Size>();
+    final Pointer<Size> numPropertiesPtr = malloc();
     final Pointer<Pointer<Char>> propertiesPtr =
         _bindings.magickGetImageProperties(_wandPtr, patternPtr, numPropertiesPtr);
     malloc.free(patternPtr);
@@ -455,7 +457,7 @@ class MagickWand {
   /// Use `magickGetOption()` to return the value of a particular option.
   List<String>? magickGetOptions(String pattern) {
     final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-    final Pointer<Size> numOptionsPtr = malloc<Size>();
+    final Pointer<Size> numOptionsPtr = malloc();
     final Pointer<Pointer<Char>> optionsPtr = _bindings.magickGetOptions(_wandPtr, patternPtr, numOptionsPtr);
     malloc.free(patternPtr);
     final int numOptions = numOptionsPtr.value;
@@ -478,10 +480,10 @@ class MagickWand {
 
   /// Returns the page geometry associated with the magick wand.
   MagickGetPageResult? magickGetPage() {
-    final Pointer<Size> widthPtr = malloc<Size>();
-    final Pointer<Size> heightPtr = malloc<Size>();
-    final Pointer<ssize_t> xPtr = malloc<ssize_t>();
-    final Pointer<ssize_t> yPtr = malloc<ssize_t>();
+    final Pointer<Size> widthPtr = malloc();
+    final Pointer<Size> heightPtr = malloc();
+    final Pointer<ssize_t> xPtr = malloc();
+    final Pointer<ssize_t> yPtr = malloc();
     final bool result = _bindings.magickGetPage(_wandPtr, widthPtr, heightPtr, xPtr, yPtr);
     if (!result) {
       return null;
@@ -495,6 +497,55 @@ class MagickWand {
     int y = yPtr.value;
     malloc.free(yPtr);
     return MagickGetPageResult(width, height, x, y);
+  }
+
+  /// Returns the font pointsize associated with the MagickWand.
+  double magickGetPointsize() {
+    return _bindings.magickGetPointsize(_wandPtr);
+  }
+
+  /// Gets the image X and Y resolution.
+  MagickGetResolutionResult? magickGetResolution() {
+    final Pointer<Double> xResolutionPtr = malloc();
+    final Pointer<Double> yResolutionPtr = malloc();
+    final bool result = _bindings.magickGetResolution(_wandPtr, xResolutionPtr, yResolutionPtr);
+    if (!result) {
+      return null;
+    }
+    double xResolution = xResolutionPtr.value;
+    malloc.free(xResolutionPtr);
+    double yResolution = yResolutionPtr.value;
+    malloc.free(yResolutionPtr);
+    return MagickGetResolutionResult(xResolution, yResolution);
+  }
+
+  /// Gets the horizontal and vertical sampling factor.
+  Float64List? magickGetSamplingFactors() {
+    final Pointer<Size> numFactorsPtr = malloc();
+    final Pointer<Double> factorsPtr = _bindings.magickGetSamplingFactors(_wandPtr, numFactorsPtr);
+    final int numFactors = numFactorsPtr.value;
+    malloc.free(numFactorsPtr);
+    if (factorsPtr == nullptr) {
+      return null;
+    }
+    final Float64List factors = factorsPtr.asTypedList(numFactors);
+    _MagickRelinquishableResource.registerRelinquishable(factors, factorsPtr.cast());
+    return factors;
+  }
+
+  /// Returns the size associated with the magick wand.
+  MagickGetSizeResult? magickGetSize() {
+    final Pointer<Size> widthPtr = malloc();
+    final Pointer<Size> heightPtr = malloc();
+    final bool result = _bindings.magickGetSize(_wandPtr, widthPtr, heightPtr);
+    if (!result) {
+      return null;
+    }
+    int width = widthPtr.value;
+    malloc.free(widthPtr);
+    int height = heightPtr.value;
+    malloc.free(heightPtr);
+    return MagickGetSizeResult(width, height);
   }
 
   // TODO: complete adding the other methods
@@ -539,7 +590,7 @@ String? magickQueryConfigureOption(String option) {
 /// - Note: An empty list is returned if there are no results.
 List<String>? magickQueryConfigureOptions(String pattern) {
   final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-  final Pointer<Size> numOptionsPtr = malloc<Size>();
+  final Pointer<Size> numOptionsPtr = malloc();
   final Pointer<Pointer<Char>> resultPtr = _bindings.magickQueryConfigureOptions(patternPtr, numOptionsPtr);
   malloc.free(patternPtr);
   int numOptions = numOptionsPtr.value;
@@ -558,7 +609,7 @@ List<String>? magickQueryConfigureOptions(String pattern) {
 /// Returns any font that match the specified pattern (e.g. "*" for all).
 List<String>? magickQueryFonts(String pattern) {
   final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-  final Pointer<Size> numFontsPtr = malloc<Size>();
+  final Pointer<Size> numFontsPtr = malloc();
   final Pointer<Pointer<Char>> resultPtr = _bindings.magickQueryFonts(patternPtr, numFontsPtr);
   malloc.free(patternPtr);
   int numFonts = numFontsPtr.value;
@@ -578,7 +629,7 @@ List<String>? magickQueryFonts(String pattern) {
 /// - Note: An empty list is returned if there are no results.
 List<String>? magickQueryFormats(String pattern) {
   final Pointer<Char> patternPtr = pattern.toNativeUtf8().cast();
-  final Pointer<Size> numFormatsPtr = malloc<Size>();
+  final Pointer<Size> numFormatsPtr = malloc();
   final Pointer<Pointer<Char>> resultPtr = _bindings.magickQueryFormats(patternPtr, numFormatsPtr);
   malloc.free(patternPtr);
   int numFormats = numFormatsPtr.value;
@@ -634,6 +685,39 @@ String magickGetPackageName() {
   return _bindings.magickGetPackageName().cast<Utf8>().toDartString();
 }
 
+/// Returns the ImageMagick quantum depth.
+MagickGetQuantumDepthResult magickGetQuantumDepth() {
+  final Pointer<Size> depthPtr = malloc();
+  String depthString = _bindings.magickGetQuantumDepth(depthPtr).cast<Utf8>().toDartString();
+  int depth = depthPtr.value;
+  malloc.free(depthPtr);
+  return MagickGetQuantumDepthResult(depth, depthString);
+}
+
+///  Returns the ImageMagick quantum range.
+MagickGetQuantumRangeResult magickGetQuantumRange() {
+  final Pointer<Size> rangePtr = malloc();
+  String rangeString = _bindings.magickGetQuantumRange(rangePtr).cast<Utf8>().toDartString();
+  int range = rangePtr.value;
+  malloc.free(rangePtr);
+  return MagickGetQuantumRangeResult(range, rangeString);
+}
+
+/// Returns the ImageMagick release date.
+String magickGetReleaseDate() {
+  return _bindings.magickGetReleaseDate().cast<Utf8>().toDartString();
+}
+
+/// Returns the specified resource in megabytes.
+int magickGetResource(ResourceType type) {
+  return _bindings.magickGetResource(type.index);
+}
+
+/// Returns the specified resource limit in megabytes.
+int magickGetResourceLimit(ResourceType type) {
+  return _bindings.magickGetResourceLimit(type.index);
+}
+
 // TODO: add docs
 class DrawingWand {
   final Pointer<Void> _wandPtr;
@@ -661,89 +745,6 @@ class PixelWand {
 // TODO: add fields and methods later
 }
 
-/// Represents the type of an exception that occurred when using the ImageMagick API.
-enum ExceptionType {
-  UndefinedException(0),
-  WarningException(300),
-  TypeWarning(305),
-  OptionWarning(310),
-  DelegateWarning(315),
-  MissingDelegateWarning(320),
-  CorruptImageWarning(325),
-  FileOpenWarning(330),
-  BlobWarning(335),
-  StreamWarning(340),
-  CacheWarning(345),
-  CoderWarning(350),
-  FilterWarning(352),
-  ModuleWarning(355),
-  DrawWarning(360),
-  ImageWarning(365),
-  WandWarning(370),
-  RandomWarning(375),
-  XServerWarning(380),
-  MonitorWarning(385),
-  RegistryWarning(390),
-  ConfigureWarning(395),
-  PolicyWarning(399),
-  ErrorException(400),
-  TypeError(405),
-  OptionError(410),
-  DelegateError(415),
-  MissingDelegateError(420),
-  CorruptImageError(425),
-  FileOpenError(430),
-  BlobError(435),
-  StreamError(440),
-  CacheError(445),
-  CoderError(450),
-  FilterError(452),
-  ModuleError(455),
-  DrawError(460),
-  ImageError(465),
-  WandError(470),
-  RandomError(475),
-  XServerError(480),
-  MonitorError(485),
-  RegistryError(490),
-  ConfigureError(495),
-  PolicyError(499),
-  FatalErrorException(700),
-  TypeFatalError(705),
-  OptionFatalError(710),
-  DelegateFatalError(715),
-  MissingDelegateFatalError(720),
-  CorruptImageFatalError(725),
-  FileOpenFatalError(730),
-  BlobFatalError(735),
-  StreamFatalError(740),
-  CacheFatalError(745),
-  CoderFatalError(750),
-  FilterFatalError(752),
-  ModuleFatalError(755),
-  DrawFatalError(760),
-  ImageFatalError(765),
-  WandFatalError(770),
-  RandomFatalError(775),
-  XServerFatalError(780),
-  MonitorFatalError(785),
-  RegistryFatalError(790),
-  ConfigureFatalError(795),
-  PolicyFatalError(799);
-
-  static const ResourceLimitWarning = WarningException;
-
-  static const ResourceLimitError = ErrorException;
-
-  static const ResourceLimitFatalError = FatalErrorException;
-
-  final int value;
-
-  const ExceptionType(this.value);
-
-  static ExceptionType fromValue(int value) => ExceptionType.values.firstWhere((e) => e.value == value);
-}
-
 /// Represents an exception that occurred while using the ImageMagick API.
 class MagickGetExceptionResult {
   /// The type of the exception.
@@ -760,152 +761,7 @@ class MagickGetExceptionResult {
   }
 }
 
-/// Represents a colorspace type.
-enum ColorspaceType {
-  UndefinedColorspace,
-  CMYColorspace,
-  CMYKColorspace,
-  GRAYColorspace,
-  HCLColorspace,
-  HCLpColorspace,
-  HSBColorspace,
-  HSIColorspace,
-  HSLColorspace,
-  HSVColorspace,
-  HWBColorspace,
-  LabColorspace,
-  LCHColorspace,
-  LCHabColorspace,
-  LCHuvColorspace,
-  LogColorspace,
-  LMSColorspace,
-  LuvColorspace,
-  OHTAColorspace,
-  Rec601YCbCrColorspace,
-  Rec709YCbCrColorspace,
-  RGBColorspace,
-  scRGBColorspace,
-  sRGBColorspace,
-  TransparentColorspace,
-  xyYColorspace,
-  XYZColorspace,
-  YCbCrColorspace,
-  YCCColorspace,
-  YDbDrColorspace,
-  YIQColorspace,
-  YPbPrColorspace,
-  YUVColorspace,
-  LinearGRAYColorspace,
-  JzazbzColorspace,
-  DisplayP3Colorspace,
-  Adobe98Colorspace,
-  ProPhotoColorspace
-}
-
-/// Represents an image compression type.
-enum CompressionType {
-  UndefinedCompression,
-  B44ACompression,
-  B44Compression,
-  BZipCompression,
-  DXT1Compression,
-  DXT3Compression,
-  DXT5Compression,
-  FaxCompression,
-  Group4Compression,
-  JBIG1Compression,
-  JBIG2Compression,
-  JPEG2000Compression,
-  JPEGCompression,
-  LosslessJPEGCompression,
-  LZMACompression,
-  LZWCompression,
-  NoCompression,
-  PizCompression,
-  Pxr24Compression,
-  RLECompression,
-  ZipCompression,
-  ZipSCompression,
-  ZstdCompression,
-  WebPCompression,
-  DWAACompression,
-  DWABCompression,
-  BC7Compression
-}
-
-/// Represents a gravity type.
-enum GravityType {
-  UndefinedGravity(0),
-  NorthWestGravity(1),
-  NorthGravity(2),
-  NorthEastGravity(3),
-  WestGravity(4),
-  CenterGravity(5),
-  EastGravity(6),
-  SouthWestGravity(7),
-  SouthGravity(8),
-  SouthEastGravity(9);
-
-  static const ForgetGravity = UndefinedGravity;
-
-  final int value;
-
-  const GravityType(this.value);
-
-  static GravityType fromValue(int value) => GravityType.values.firstWhere((e) => e.value == value);
-}
-
-/// Represents an interlace type.
-enum InterlaceType {
-  UndefinedInterlace,
-  NoInterlace,
-  LineInterlace,
-  PlaneInterlace,
-  PartitionInterlace,
-  GIFInterlace,
-  JPEGInterlace,
-  PNGInterlace;
-}
-
-/// Represents a pixel interpolation method.
-enum PixelInterpolateMethod {
-  UndefinedInterpolatePixel,
-  /* Average 4 nearest neighbours */
-  AverageInterpolatePixel,
-  /* Average 9 nearest neighbours */
-  Average9InterpolatePixel,
-  /* Average 16 nearest neighbours */
-  Average16InterpolatePixel,
-  /* Just return background color */
-  BackgroundInterpolatePixel,
-  /* Triangular filter interpolation */
-  BilinearInterpolatePixel,
-  /* blend of nearest 1, 2 or 4 pixels */
-  BlendInterpolatePixel,
-  /* Catmull-Rom interpolation */
-  CatromInterpolatePixel,
-  /* Integer (floor) interpolation */
-  IntegerInterpolatePixel,
-  /* Triangular Mesh interpolation */
-  MeshInterpolatePixel,
-  /* Nearest Neighbour Only */
-  NearestInterpolatePixel,
-  /* Cubic Spline (blurred) interpolation */
-  SplineInterpolatePixel
-}
-
-enum OrientationType {
-  UndefinedOrientation,
-  TopLeftOrientation,
-  TopRightOrientation,
-  BottomRightOrientation,
-  BottomLeftOrientation,
-  LeftTopOrientation,
-  RightTopOrientation,
-  RightBottomOrientation,
-  LeftBottomOrientation
-}
-
+/// Represents a result to a call to `magickGetPage()`.
 class MagickGetPageResult {
   final int width;
   final int height;
@@ -913,4 +769,42 @@ class MagickGetPageResult {
   final int y;
 
   const MagickGetPageResult(this.width, this.height, this.x, this.y);
+}
+
+/// Represents a result to a call to `magickGetQuantumDepth()`.
+class MagickGetQuantumDepthResult {
+  /// The depth as an integer.
+  final int depth;
+
+  /// The depth as a string.
+  final String depthString;
+
+  const MagickGetQuantumDepthResult(this.depth, this.depthString);
+}
+
+/// Represents a result to a call to `magickGetQuantumRange()`.
+class MagickGetQuantumRangeResult {
+  /// The range as an integer.
+  final int range;
+
+  /// The range as a string.
+  final String rangeString;
+
+  const MagickGetQuantumRangeResult(this.range, this.rangeString);
+}
+
+// Represents a result to a call to `magickGetResolution()`.
+class MagickGetResolutionResult {
+  final double x;
+  final double y;
+
+  const MagickGetResolutionResult(this.x, this.y);
+}
+
+/// Represents a result to a call to `magickGetSize()`.
+class MagickGetSizeResult {
+  final int width;
+  final int height;
+
+  const MagickGetSizeResult(this.width, this.height);
 }

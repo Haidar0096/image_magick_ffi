@@ -834,6 +834,147 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>,
           ffi.Pointer<ffi.Size>, ffi.Pointer<ssize_t>, ffi.Pointer<ssize_t>)>();
 
+  double magickGetPointsize(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetPointsize(
+      wand,
+    );
+  }
+
+  late final _magickGetPointsizePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetPointsize');
+  late final _magickGetPointsize = _magickGetPointsizePtr
+      .asFunction<double Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> magickGetQuantumDepth(
+    ffi.Pointer<ffi.Size> depth,
+  ) {
+    return _magickGetQuantumDepth(
+      depth,
+    );
+  }
+
+  late final _magickGetQuantumDepthPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Size>)>>('magickGetQuantumDepth');
+  late final _magickGetQuantumDepth = _magickGetQuantumDepthPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<ffi.Char> magickGetQuantumRange(
+    ffi.Pointer<ffi.Size> range,
+  ) {
+    return _magickGetQuantumRange(
+      range,
+    );
+  }
+
+  late final _magickGetQuantumRangePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Size>)>>('magickGetQuantumRange');
+  late final _magickGetQuantumRange = _magickGetQuantumRangePtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<ffi.Char> magickGetReleaseDate() {
+    return _magickGetReleaseDate();
+  }
+
+  late final _magickGetReleaseDatePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          'magickGetReleaseDate');
+  late final _magickGetReleaseDate =
+      _magickGetReleaseDatePtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+
+  bool magickGetResolution(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Double> x,
+    ffi.Pointer<ffi.Double> y,
+  ) {
+    return _magickGetResolution(
+      wand,
+      x,
+      y,
+    );
+  }
+
+  late final _magickGetResolutionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('magickGetResolution');
+  late final _magickGetResolution = _magickGetResolutionPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
+
+  int magickGetResource(
+    int type,
+  ) {
+    return _magickGetResource(
+      type,
+    );
+  }
+
+  late final _magickGetResourcePtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLongLong Function(ffi.Int)>>(
+          'magickGetResource');
+  late final _magickGetResource =
+      _magickGetResourcePtr.asFunction<int Function(int)>();
+
+  int magickGetResourceLimit(
+    int type,
+  ) {
+    return _magickGetResourceLimit(
+      type,
+    );
+  }
+
+  late final _magickGetResourceLimitPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLongLong Function(ffi.Int)>>(
+          'magickGetResourceLimit');
+  late final _magickGetResourceLimit =
+      _magickGetResourceLimitPtr.asFunction<int Function(int)>();
+
+  ffi.Pointer<ffi.Double> magickGetSamplingFactors(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Size> number_factors,
+  ) {
+    return _magickGetSamplingFactors(
+      wand,
+      number_factors,
+    );
+  }
+
+  late final _magickGetSamplingFactorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Double> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Size>)>>('magickGetSamplingFactors');
+  late final _magickGetSamplingFactors =
+      _magickGetSamplingFactorsPtr.asFunction<
+          ffi.Pointer<ffi.Double> Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>)>();
+
+  bool magickGetSize(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Size> columns,
+    ffi.Pointer<ffi.Size> rows,
+  ) {
+    return _magickGetSize(
+      wand,
+      columns,
+      rows,
+    );
+  }
+
+  late final _magickGetSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('magickGetSize');
+  late final _magickGetSize = _magickGetSizePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>,
+          ffi.Pointer<ffi.Size>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

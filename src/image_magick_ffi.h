@@ -111,6 +111,24 @@ FFI_PLUGIN_EXPORT const char *magickGetPackageName(void);
 
 FFI_PLUGIN_EXPORT bool magickGetPage(const void *wand, size_t *width, size_t *height, ssize_t *x, ssize_t *y);
 
+FFI_PLUGIN_EXPORT double magickGetPointsize(void *wand);
+
+FFI_PLUGIN_EXPORT const char *magickGetQuantumDepth(size_t *depth);
+
+FFI_PLUGIN_EXPORT const char *magickGetQuantumRange(size_t *range);
+
+FFI_PLUGIN_EXPORT const char *magickGetReleaseDate(void);
+
+FFI_PLUGIN_EXPORT bool magickGetResolution(const void *wand,double *x, double *y);
+
+FFI_PLUGIN_EXPORT unsigned long long magickGetResource(const int type);
+
+FFI_PLUGIN_EXPORT unsigned long long magickGetResourceLimit(const int type);
+
+FFI_PLUGIN_EXPORT double *magickGetSamplingFactors(void *wand, size_t *number_factors);
+
+FFI_PLUGIN_EXPORT bool magickGetSize(const void *wand, size_t *columns,size_t *rows);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
