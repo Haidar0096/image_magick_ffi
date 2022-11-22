@@ -536,6 +536,31 @@ class MagickWand {
     return result;
   }
 
+  ///  Sets the antialias property of the wand.
+  bool magickSetAntialias(bool antialias) {
+    return _bindings.magickSetAntialias(_wandPtr, antialias);
+  }
+
+  /// Sets the wand background color.
+  bool magickSetBackgroundColor(PixelWand pixelWand) {
+    return _bindings.magickSetBackgroundColor(_wandPtr, pixelWand._wandPtr);
+  }
+
+  /// Sets the wand colorspace type.
+  bool magickSetColorspace(ColorspaceType colorspaceType) {
+    return _bindings.magickSetColorspace(_wandPtr, colorspaceType.index);
+  }
+
+  /// Sets the wand compression type.
+  bool magickSetCompression(CompressionType compressionType) {
+    return _bindings.magickSetCompression(_wandPtr, compressionType.index);
+  }
+
+  /// Sets the wand compression quality.
+  bool magickSetCompressionQuality(int quality) {
+    return _bindings.magickSetCompressionQuality(_wandPtr, quality);
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image

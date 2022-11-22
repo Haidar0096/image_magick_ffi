@@ -274,6 +274,32 @@ FFI_PLUGIN_EXPORT unsigned char *magickRemoveImageProfile(void *wand, const char
     return MagickRemoveImageProfile((MagickWand *) wand, name, length);
 }
 
+FFI_PLUGIN_EXPORT bool magickSetAntialias(void *wand, const bool antialias){
+    MagickBooleanType result = MagickSetAntialias((MagickWand *) wand, antialias);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetBackgroundColor(void *wand, const void *background){
+    // TODO: test this when PixelWand is implemented in dart
+    MagickBooleanType result = MagickSetBackgroundColor((MagickWand *) wand, (const PixelWand *) background);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetColorspace(void *wand, const int colorspace){
+    MagickBooleanType result = MagickSetColorspace((MagickWand *) wand, colorspace);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetCompression(void *wand, const int compression){
+    MagickBooleanType result = MagickSetCompression((MagickWand *) wand, compression);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetCompressionQuality(void *wand, const size_t quality){
+    MagickBooleanType result = MagickSetCompressionQuality((MagickWand *) wand, quality);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

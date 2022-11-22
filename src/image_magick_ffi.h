@@ -139,6 +139,16 @@ FFI_PLUGIN_EXPORT bool magickProfileImage(void *wand,const char *name, const voi
 
 FFI_PLUGIN_EXPORT unsigned char *magickRemoveImageProfile(void *wand, const char *name,size_t *length);
 
+FFI_PLUGIN_EXPORT bool magickSetAntialias(void *wand, const bool antialias);
+
+FFI_PLUGIN_EXPORT bool magickSetBackgroundColor(void *wand, const void *background);
+
+FFI_PLUGIN_EXPORT bool magickSetColorspace(void *wand, const int colorspace);
+
+FFI_PLUGIN_EXPORT bool magickSetCompression(void *wand, const int compression);
+
+FFI_PLUGIN_EXPORT bool magickSetCompressionQuality(void *wand, const size_t quality);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

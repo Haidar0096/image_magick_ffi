@@ -1066,6 +1066,92 @@ class ImageMagickFfiBindings {
           ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>)>();
 
+  bool magickSetAntialias(
+    ffi.Pointer<ffi.Void> wand,
+    bool antialias,
+  ) {
+    return _magickSetAntialias(
+      wand,
+      antialias,
+    );
+  }
+
+  late final _magickSetAntialiasPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Bool)>>('magickSetAntialias');
+  late final _magickSetAntialias = _magickSetAntialiasPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, bool)>();
+
+  bool magickSetBackgroundColor(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> background,
+  ) {
+    return _magickSetBackgroundColor(
+      wand,
+      background,
+    );
+  }
+
+  late final _magickSetBackgroundColorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickSetBackgroundColor');
+  late final _magickSetBackgroundColor =
+      _magickSetBackgroundColorPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  bool magickSetColorspace(
+    ffi.Pointer<ffi.Void> wand,
+    int colorspace,
+  ) {
+    return _magickSetColorspace(
+      wand,
+      colorspace,
+    );
+  }
+
+  late final _magickSetColorspacePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickSetColorspace');
+  late final _magickSetColorspace = _magickSetColorspacePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickSetCompression(
+    ffi.Pointer<ffi.Void> wand,
+    int compression,
+  ) {
+    return _magickSetCompression(
+      wand,
+      compression,
+    );
+  }
+
+  late final _magickSetCompressionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickSetCompression');
+  late final _magickSetCompression = _magickSetCompressionPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickSetCompressionQuality(
+    ffi.Pointer<ffi.Void> wand,
+    int quality,
+  ) {
+    return _magickSetCompressionQuality(
+      wand,
+      quality,
+    );
+  }
+
+  late final _magickSetCompressionQualityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('magickSetCompressionQuality');
+  late final _magickSetCompressionQuality = _magickSetCompressionQualityPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

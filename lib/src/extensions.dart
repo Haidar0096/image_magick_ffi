@@ -5,6 +5,8 @@ import 'package:ffi/ffi.dart';
 extension UnsignedCharPointerExtension on Pointer<UnsignedChar> {
   /// Creates a `List<int>` from this pointer by copying the pointer's data.
   ///
+  /// `length` is the length of the array.
+  ///
   /// null is returned if the pointer is equal to `nullptr`.
   List<int>? toIntList(int length) {
     if (this == nullptr) {
