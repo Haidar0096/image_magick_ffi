@@ -515,7 +515,7 @@ class MagickWand {
   /// from the image otherwise added. Use a name of '*' and a profile of NULL to remove all profiles from
   /// the image.
   bool magickProfileImage(String name, List<int>? profile) {
-    final Pointer<UnsignedChar> profilePtr = profile?.toUnsignedCharPointer() ?? nullptr;
+    final Pointer<UnsignedChar> profilePtr = profile?.toUnsignedCharArray() ?? nullptr;
     final Pointer<Char> namePtr = name.toNativeUtf8().cast();
     final bool result = _bindings.magickProfileImage(_wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
     malloc.free(namePtr);

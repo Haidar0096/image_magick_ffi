@@ -24,7 +24,7 @@ extension IntListExtension on List<int> {
   /// a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
-  Pointer<UnsignedChar> toUnsignedCharPointer() {
+  Pointer<UnsignedChar> toUnsignedCharArray() {
     if (isEmpty) {
       return nullptr;
     }
