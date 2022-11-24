@@ -300,6 +300,16 @@ FFI_PLUGIN_EXPORT bool magickSetCompressionQuality(void *wand, const size_t qual
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickSetDepth(void *wand, const size_t depth){
+    MagickBooleanType result = MagickSetDepth((MagickWand *) wand, depth);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetExtract(void *wand, const char *geometry){
+    MagickBooleanType result = MagickSetExtract((MagickWand *) wand, geometry);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

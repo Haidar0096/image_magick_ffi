@@ -1152,6 +1152,40 @@ class ImageMagickFfiBindings {
   late final _magickSetCompressionQuality = _magickSetCompressionQualityPtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
 
+  bool magickSetDepth(
+    ffi.Pointer<ffi.Void> wand,
+    int depth,
+  ) {
+    return _magickSetDepth(
+      wand,
+      depth,
+    );
+  }
+
+  late final _magickSetDepthPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('magickSetDepth');
+  late final _magickSetDepth = _magickSetDepthPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickSetExtract(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> geometry,
+  ) {
+    return _magickSetExtract(
+      wand,
+      geometry,
+    );
+  }
+
+  late final _magickSetExtractPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickSetExtract');
+  late final _magickSetExtract = _magickSetExtractPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

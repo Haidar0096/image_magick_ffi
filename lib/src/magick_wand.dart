@@ -561,6 +561,20 @@ class MagickWand {
     return _bindings.magickSetCompressionQuality(_wandPtr, quality);
   }
 
+  /// Sets the wand pixel depth.
+  bool magickSetDepth(int depth) {
+    return _bindings.magickSetDepth(_wandPtr, depth);
+  }
+
+  /// Sets the extract geometry before you read or write an image file. Use it for inline cropping
+  /// (e.g. 200x200+0+0) or resizing (e.g.200x200).
+  bool magickSetExtract(String geometry) {
+    final Pointer<Char> geometryPtr = geometry.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetExtract(_wandPtr, geometryPtr);
+    malloc.free(geometryPtr);
+    return result;
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image

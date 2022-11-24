@@ -149,6 +149,10 @@ FFI_PLUGIN_EXPORT bool magickSetCompression(void *wand, const int compression);
 
 FFI_PLUGIN_EXPORT bool magickSetCompressionQuality(void *wand, const size_t quality);
 
+FFI_PLUGIN_EXPORT bool magickSetDepth(void *wand, const size_t depth);
+
+FFI_PLUGIN_EXPORT bool magickSetExtract(void *wand, const char *geometry);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
