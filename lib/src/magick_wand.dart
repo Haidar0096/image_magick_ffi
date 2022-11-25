@@ -1,8 +1,7 @@
 part of 'image_magick_ffi.dart';
 
 // TODO: add docs
-// TODO: check if we should make the wand implement Finalizable
-class MagickWand implements Finalizable{
+class MagickWand {
   Pointer<Void> _wandPtr;
 
   // TODO: check if you should add members of the struct _MagickWand here

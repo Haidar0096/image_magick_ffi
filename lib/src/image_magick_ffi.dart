@@ -9,11 +9,17 @@ import 'package:image_magick_ffi/src/extensions.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
 
 part 'magick_wand.dart';
+
 part 'drawing_wand.dart';
+
 part 'pixel_wand.dart';
+
 part 'image.dart';
+
 part 'magick_enums.dart';
+
 part 'magick_global_methods.dart';
+
 part 'helpers.dart';
 
 const String _libName = 'image_magick_ffi';

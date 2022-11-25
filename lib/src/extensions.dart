@@ -38,7 +38,7 @@ extension IntListExtension on List<int> {
   }
 }
 
-extension CharPointerPointerExtension on Pointer<Pointer<Char>>{
+extension CharPointerPointerExtension on Pointer<Pointer<Char>> {
   /// Creates a `List<String>` from this pointer by copying the pointer's data.
   ///
   /// `length` is the length of the array.
