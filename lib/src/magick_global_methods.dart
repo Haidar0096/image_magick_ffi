@@ -24,13 +24,7 @@ List<String>? magickQueryConfigureOptions(String pattern) {
   malloc.free(patternPtr);
   int numOptions = numOptionsPtr.value;
   malloc.free(numOptionsPtr);
-  if (resultPtr == nullptr) {
-    return null;
-  }
-  final List<String> result = [];
-  for (int i = 0; i < numOptions; i++) {
-    result.add(resultPtr[i].cast<Utf8>().toDartString());
-  }
+  final List<String>? result = resultPtr.toStringList(numOptions);
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }
@@ -43,13 +37,7 @@ List<String>? magickQueryFonts(String pattern) {
   malloc.free(patternPtr);
   int numFonts = numFontsPtr.value;
   malloc.free(numFontsPtr);
-  if (resultPtr == nullptr) {
-    return null;
-  }
-  final List<String> result = [];
-  for (int i = 0; i < numFonts; i++) {
-    result.add(resultPtr[i].cast<Utf8>().toDartString());
-  }
+  final List<String>? result = resultPtr.toStringList(numFonts);
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }
@@ -63,13 +51,7 @@ List<String>? magickQueryFormats(String pattern) {
   malloc.free(patternPtr);
   int numFormats = numFormatsPtr.value;
   malloc.free(numFormatsPtr);
-  if (resultPtr == nullptr) {
-    return null;
-  }
-  final List<String> result = [];
-  for (int i = 0; i < numFormats; i++) {
-    result.add(resultPtr[i].cast<Utf8>().toDartString());
-  }
+  final List<String>? result = resultPtr.toStringList(numFormats);
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }

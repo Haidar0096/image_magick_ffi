@@ -298,9 +298,6 @@ class MagickWand implements Finalizable{
     malloc.free(patternPtr);
     final int numArtifacts = numArtifactsPtr.value;
     malloc.free(numArtifactsPtr);
-    if (artifactsPtr == nullptr) {
-      return null;
-    }
     final List<String>? result = artifactsPtr.toStringList(numArtifacts);
     _bindings.magickRelinquishMemory(artifactsPtr.cast());
     return result;
@@ -329,9 +326,6 @@ class MagickWand implements Finalizable{
     malloc.free(patternPtr);
     final int numProfiles = numProfilesPtr.value;
     malloc.free(numProfilesPtr);
-    if (profilesPtr == nullptr) {
-      return null;
-    }
     final List<String>? result = profilesPtr.toStringList(numProfiles);
     _bindings.magickRelinquishMemory(profilesPtr.cast());
     return result;
@@ -360,9 +354,6 @@ class MagickWand implements Finalizable{
     malloc.free(patternPtr);
     final int numProperties = numPropertiesPtr.value;
     malloc.free(numPropertiesPtr);
-    if (propertiesPtr == nullptr) {
-      return null;
-    }
     final List<String>? result = propertiesPtr.toStringList(numProperties);
     _bindings.magickRelinquishMemory(propertiesPtr.cast());
     return result;
@@ -400,9 +391,6 @@ class MagickWand implements Finalizable{
     malloc.free(patternPtr);
     final int numOptions = numOptionsPtr.value;
     malloc.free(numOptionsPtr);
-    if (optionsPtr == nullptr) {
-      return null;
-    }
     final List<String>? result = optionsPtr.toStringList(numOptions);
     _bindings.magickRelinquishMemory(optionsPtr.cast());
     return result;
