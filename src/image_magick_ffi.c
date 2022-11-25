@@ -310,6 +310,46 @@ FFI_PLUGIN_EXPORT bool magickSetExtract(void *wand, const char *geometry){
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickSetFilename(void *wand, const char *filename){
+    MagickBooleanType result = MagickSetFilename((MagickWand *) wand, filename);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetFont(void *wand, const char *font){
+    MagickBooleanType result = MagickSetFont((MagickWand *) wand, font);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetFormat(void *wand,const char *format){
+    MagickBooleanType result = MagickSetFormat((MagickWand *) wand, format);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetGravity(void *wand, const int type){
+    MagickBooleanType result = MagickSetGravity((MagickWand *) wand, type);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetImageArtifact(void *wand, const char *artifact,const char *value){
+    MagickBooleanType result = MagickSetImageArtifact((MagickWand *) wand, artifact, value);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetImageProfile(void *wand, const char *name,const void *profile,const size_t length){
+    MagickBooleanType result = MagickSetImageProfile((MagickWand *) wand, name, profile, length);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetImageProperty(void *wand, const char *property,const char *value){
+    MagickBooleanType result = MagickSetImageProperty((MagickWand *) wand, property, value);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetInterlaceScheme(void *wand, const int interlace_scheme){
+    MagickBooleanType result = MagickSetInterlaceScheme((MagickWand *) wand, interlace_scheme);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

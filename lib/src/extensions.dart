@@ -37,3 +37,22 @@ extension IntListExtension on List<int> {
     return array;
   }
 }
+
+extension CharPointerPointerExtension on Pointer<Pointer<Char>>{
+  /// Creates a `List<String>` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  List<String>? toStringList(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final List<String> list = [];
+    for (int i = 0; i < length; i++) {
+      // this is sad, see if this can be done without copying the data.
+      list.add(this[i].cast<Utf8>().toDartString());
+    }
+    return list;
+  }
+}

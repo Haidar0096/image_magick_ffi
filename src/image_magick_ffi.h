@@ -153,6 +153,22 @@ FFI_PLUGIN_EXPORT bool magickSetDepth(void *wand, const size_t depth);
 
 FFI_PLUGIN_EXPORT bool magickSetExtract(void *wand, const char *geometry);
 
+FFI_PLUGIN_EXPORT bool magickSetFilename(void *wand, const char *filename);
+
+FFI_PLUGIN_EXPORT bool magickSetFont(void *wand, const char *font);
+
+FFI_PLUGIN_EXPORT bool magickSetFormat(void *wand,const char *format);
+
+FFI_PLUGIN_EXPORT bool magickSetGravity(void *wand, const int type);
+
+FFI_PLUGIN_EXPORT bool magickSetImageArtifact(void *wand, const char *artifact,const char *value);
+
+FFI_PLUGIN_EXPORT bool magickSetImageProfile(void *wand, const char *name,const void *profile,const size_t length);
+
+FFI_PLUGIN_EXPORT bool magickSetImageProperty(void *wand, const char *property,const char *value);
+
+FFI_PLUGIN_EXPORT bool magickSetInterlaceScheme(void *wand, const int interlace_scheme);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

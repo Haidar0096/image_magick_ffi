@@ -1,7 +1,8 @@
 part of 'image_magick_ffi.dart';
 
 // TODO: add docs
-class MagickWand {
+// TODO: check if we should make the wand implement Finalizable
+class MagickWand implements Finalizable{
   Pointer<Void> _wandPtr;
 
   // TODO: check if you should add members of the struct _MagickWand here
@@ -300,10 +301,7 @@ class MagickWand {
     if (artifactsPtr == nullptr) {
       return null;
     }
-    final List<String> result = [];
-    for (int i = 0; i < numArtifacts; i++) {
-      result.add(artifactsPtr[i].cast<Utf8>().toDartString());
-    }
+    final List<String>? result = artifactsPtr.toStringList(numArtifacts);
     _bindings.magickRelinquishMemory(artifactsPtr.cast());
     return result;
   }
@@ -334,10 +332,7 @@ class MagickWand {
     if (profilesPtr == nullptr) {
       return null;
     }
-    final List<String> result = [];
-    for (int i = 0; i < numProfiles; i++) {
-      result.add(profilesPtr[i].cast<Utf8>().toDartString());
-    }
+    final List<String>? result = profilesPtr.toStringList(numProfiles);
     _bindings.magickRelinquishMemory(profilesPtr.cast());
     return result;
   }
@@ -368,10 +363,7 @@ class MagickWand {
     if (propertiesPtr == nullptr) {
       return null;
     }
-    final List<String> result = [];
-    for (int i = 0; i < numProperties; i++) {
-      result.add(propertiesPtr[i].cast<Utf8>().toDartString());
-    }
+    final List<String>? result = propertiesPtr.toStringList(numProperties);
     _bindings.magickRelinquishMemory(propertiesPtr.cast());
     return result;
   }
@@ -411,10 +403,7 @@ class MagickWand {
     if (optionsPtr == nullptr) {
       return null;
     }
-    final List<String> result = [];
-    for (int i = 0; i < numOptions; i++) {
-      result.add(optionsPtr[i].cast<Utf8>().toDartString());
-    }
+    final List<String>? result = optionsPtr.toStringList(numOptions);
     _bindings.magickRelinquishMemory(optionsPtr.cast());
     return result;
   }
@@ -573,6 +562,75 @@ class MagickWand {
     final bool result = _bindings.magickSetExtract(_wandPtr, geometryPtr);
     malloc.free(geometryPtr);
     return result;
+  }
+
+  /// Sets the filename before you read or write an image file.
+  bool magickSetFilename(String filename) {
+    final Pointer<Char> filenamePtr = filename.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetFilename(_wandPtr, filenamePtr);
+    malloc.free(filenamePtr);
+    return result;
+  }
+
+  /// Sets the font associated with the MagickWand.
+  bool magickSetFont(String font) {
+    final Pointer<Char> fontPtr = font.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetFont(_wandPtr, fontPtr);
+    malloc.free(fontPtr);
+    return result;
+  }
+
+  /// Sets the format of the magick wand.
+  bool magickSetFormat(String format) {
+    final Pointer<Char> formatPtr = format.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetFormat(_wandPtr, formatPtr);
+    malloc.free(formatPtr);
+    return result;
+  }
+
+  /// Sets the gravity type.
+  bool magickSetGravity(GravityType gravityType) {
+    return _bindings.magickSetGravity(_wandPtr, gravityType.value);
+  }
+
+  /// Sets a key-value pair in the image artifact namespace. Artifacts differ from properties.
+  /// Properties are public and are generally exported to an external image format if the format
+  /// supports it. Artifacts are private and are utilized by the internal ImageMagick API to modify
+  /// the behavior of certain algorithms.
+  bool magickSetImageArtifact(String key, String value) {
+    final Pointer<Char> keyPtr = key.toNativeUtf8().cast();
+    final Pointer<Char> valuePtr = value.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetImageArtifact(_wandPtr, keyPtr, valuePtr);
+    malloc.free(keyPtr);
+    malloc.free(valuePtr);
+    return result;
+  }
+
+  /// Adds a named profile to the magick wand. If a profile with the same name already exists,
+  /// it is replaced. This method differs from the MagickProfileImage() method in that it does not
+  /// apply any CMS color profiles.
+  bool magickSetImageProfile(String name, List<int> profile) {
+    final Pointer<UnsignedChar> profilePtr = profile.toUnsignedCharArray();
+    final Pointer<Char> namePtr = name.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetImageProfile(_wandPtr, namePtr, profilePtr.cast(), profile.length);
+    malloc.free(namePtr);
+    malloc.free(profilePtr);
+    return result;
+  }
+
+  /// Associates a property with an image.
+  bool magickSetImageProperty(String key, String value) {
+    final Pointer<Char> keyPtr = key.toNativeUtf8().cast();
+    final Pointer<Char> valuePtr = value.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetImageProperty(_wandPtr, keyPtr, valuePtr);
+    malloc.free(keyPtr);
+    malloc.free(valuePtr);
+    return result;
+  }
+
+  /// Sets the image compression.
+  bool magickSetInterlaceScheme(InterlaceType interlaceType) {
+    return _bindings.magickSetInterlaceScheme(_wandPtr, interlaceType.index);
   }
 
   // TODO: continue adding the remaining methods
