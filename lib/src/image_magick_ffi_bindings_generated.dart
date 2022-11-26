@@ -1333,6 +1333,117 @@ class ImageMagickFfiBindings {
   late final _magickSetInterlaceScheme = _magickSetInterlaceSchemePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
 
+  bool magickSetInterpolateMethod(
+    ffi.Pointer<ffi.Void> wand,
+    int method,
+  ) {
+    return _magickSetInterpolateMethod(
+      wand,
+      method,
+    );
+  }
+
+  late final _magickSetInterpolateMethodPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickSetInterpolateMethod');
+  late final _magickSetInterpolateMethod = _magickSetInterpolateMethodPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickSetOption(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> key,
+    ffi.Pointer<ffi.Char> value,
+  ) {
+    return _magickSetOption(
+      wand,
+      key,
+      value,
+    );
+  }
+
+  late final _magickSetOptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('magickSetOption');
+  late final _magickSetOption = _magickSetOptionPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>)>();
+
+  bool magickSetOrientation(
+    ffi.Pointer<ffi.Void> wand,
+    int orientation,
+  ) {
+    return _magickSetOrientation(
+      wand,
+      orientation,
+    );
+  }
+
+  late final _magickSetOrientationPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickSetOrientation');
+  late final _magickSetOrientation = _magickSetOrientationPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickSetPage(
+    ffi.Pointer<ffi.Void> wand,
+    int width,
+    int height,
+    int x,
+    int y,
+  ) {
+    return _magickSetPage(
+      wand,
+      width,
+      height,
+      x,
+      y,
+    );
+  }
+
+  late final _magickSetPagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size, ssize_t,
+              ssize_t)>>('magickSetPage');
+  late final _magickSetPage = _magickSetPagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int, int, int)>();
+
+  bool magickSetPassphrase(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> passphrase,
+  ) {
+    return _magickSetPassphrase(
+      wand,
+      passphrase,
+    );
+  }
+
+  late final _magickSetPassphrasePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickSetPassphrase');
+  late final _magickSetPassphrase = _magickSetPassphrasePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  bool magickSetPointsize(
+    ffi.Pointer<ffi.Void> wand,
+    double pointsize,
+  ) {
+    return _magickSetPointsize(
+      wand,
+      pointsize,
+    );
+  }
+
+  late final _magickSetPointsizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Double)>>('magickSetPointsize');
+  late final _magickSetPointsize = _magickSetPointsizePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

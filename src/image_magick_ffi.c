@@ -350,6 +350,36 @@ FFI_PLUGIN_EXPORT bool magickSetInterlaceScheme(void *wand, const int interlace_
     return result == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickSetInterpolateMethod(void *wand, const int method){
+    MagickBooleanType result = MagickSetInterpolateMethod((MagickWand *) wand, method);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetOption(void *wand,const char *key, const char *value){
+    MagickBooleanType result = MagickSetOption((MagickWand *) wand, key, value);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetOrientation(void *wand, const int orientation){
+    MagickBooleanType result = MagickSetOrientation((MagickWand *) wand, orientation);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetPage(void *wand, const size_t width,const size_t height,const ssize_t x, const ssize_t y){
+    MagickBooleanType result = MagickSetPage((MagickWand *) wand, width, height, x, y);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetPassphrase(void *wand, const char *passphrase){
+    MagickBooleanType result = MagickSetPassphrase((MagickWand *) wand, passphrase);
+    return result == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetPointsize(void *wand, const double pointsize){
+    MagickBooleanType result = MagickSetPointsize((MagickWand *) wand, pointsize);
+    return result == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

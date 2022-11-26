@@ -620,6 +620,44 @@ class MagickWand {
     return _bindings.magickSetInterlaceScheme(_wandPtr, interlaceType.index);
   }
 
+  /// Sets the interpolate pixel method.
+  bool magickSetInterpolateMethod(PixelInterpolateMethod pixelInterpolateMethod) {
+    return _bindings.magickSetInterpolateMethod(_wandPtr, pixelInterpolateMethod.index);
+  }
+
+  /// Associates one or options with the wand (.e.g MagickSetOption(wand,"jpeg:perserve","yes")).
+  bool magickSetOption(String key, String value) {
+    final Pointer<Char> keyPtr = key.toNativeUtf8().cast();
+    final Pointer<Char> valuePtr = value.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetOption(_wandPtr, keyPtr, valuePtr);
+    malloc.free(keyPtr);
+    malloc.free(valuePtr);
+    return result;
+  }
+
+  /// Sets the wand orientation type.
+  bool magickSetOrientation(OrientationType orientationType) {
+    return _bindings.magickSetOrientation(_wandPtr, orientationType.index);
+  }
+
+  /// Sets the page geometry of the magick wand.
+  bool magickSetPage(int width, int height, int x, int y) {
+    return _bindings.magickSetPage(_wandPtr, width, height, x, y);
+  }
+
+  /// Sets the passphrase.
+  bool magickSetPassphrase(String passphrase) {
+    final Pointer<Char> passphrasePtr = passphrase.toNativeUtf8().cast();
+    final bool result = _bindings.magickSetPassphrase(_wandPtr, passphrasePtr);
+    malloc.free(passphrasePtr);
+    return result;
+  }
+
+  /// Sets the font pointsize associated with the MagickWand.
+  bool magickSetPointsize(double pointSize) {
+    return _bindings.magickSetPointsize(_wandPtr, pointSize);
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image

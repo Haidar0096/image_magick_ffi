@@ -169,6 +169,18 @@ FFI_PLUGIN_EXPORT bool magickSetImageProperty(void *wand, const char *property,c
 
 FFI_PLUGIN_EXPORT bool magickSetInterlaceScheme(void *wand, const int interlace_scheme);
 
+FFI_PLUGIN_EXPORT bool magickSetInterpolateMethod(void *wand, const int method);
+
+FFI_PLUGIN_EXPORT bool magickSetOption(void *wand,const char *key, const char *value);
+
+FFI_PLUGIN_EXPORT bool magickSetOrientation(void *wand, const int orientation);
+
+FFI_PLUGIN_EXPORT bool magickSetPage(void *wand, const size_t width,const size_t height,const ssize_t x, const ssize_t y);
+
+FFI_PLUGIN_EXPORT bool magickSetPassphrase(void *wand, const char *passphrase);
+
+FFI_PLUGIN_EXPORT bool magickSetPointsize(void *wand, const double pointsize);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
