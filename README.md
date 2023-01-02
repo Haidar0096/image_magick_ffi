@@ -49,7 +49,7 @@ See the #Usage section below for more insights.
   // ...
   @override
   void initState() {
-    im.initialize(); // initialize the plugin
+    im.initialize(); // initialize the plugin (can also be done before `runApp`)
     wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
     super.initState();
   }
