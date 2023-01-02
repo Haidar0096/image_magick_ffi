@@ -26,6 +26,22 @@ class ImageMagickFfiBindings {
           lookup)
       : _lookup = lookup;
 
+  /// ############################################ Dart Sdk Api ############################################
+  int initDartAPI(
+    ffi.Pointer<ffi.Void> data,
+  ) {
+    return _initDartAPI(
+      data,
+    );
+  }
+
+  late final _initDartAPIPtr =
+      _lookup<ffi.NativeFunction<ffi.IntPtr Function(ffi.Pointer<ffi.Void>)>>(
+          'initDartAPI');
+  late final _initDartAPI =
+      _initDartAPIPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  /// ############################################ Dart Sdk Api ############################################
   void clearMagickWand(
     ffi.Pointer<ffi.Void> wand,
   ) {
@@ -1443,6 +1459,24 @@ class ImageMagickFfiBindings {
               ffi.Pointer<ffi.Void>, ffi.Double)>>('magickSetPointsize');
   late final _magickSetPointsize = _magickSetPointsizePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, double)>();
+
+  ffi.Pointer<ffi.IntPtr> magickSetProgressMonitorPort(
+    ffi.Pointer<ffi.Void> wand,
+    int sendPort,
+  ) {
+    return _magickSetProgressMonitorPort(
+      wand,
+      sendPort,
+    );
+  }
+
+  late final _magickSetProgressMonitorPortPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.IntPtr> Function(ffi.Pointer<ffi.Void>,
+              ffi.IntPtr)>>('magickSetProgressMonitorPort');
+  late final _magickSetProgressMonitorPort =
+      _magickSetProgressMonitorPortPtr.asFunction<
+          ffi.Pointer<ffi.IntPtr> Function(ffi.Pointer<ffi.Void>, int)>();
 
   /// TODO: complete adding the other methods
   bool magickReadImage(

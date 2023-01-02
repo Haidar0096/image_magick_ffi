@@ -17,8 +17,13 @@ class _MagickRelinquishableResource implements Finalizable {
   ///
   /// For more info on the other params, see [NativeFinalizer.attach]
   static void registerRelinquishable(TypedData obj, Pointer<Void> ptr, {Pointer<Void>? detach, int? externalSize}) {
+    // create a finalizable object to be attached to a native resource
     _MagickRelinquishableResource finalizable = _MagickRelinquishableResource._();
+    // attach the `ptr` to the `finalizable` object, so when the `finalizable` object is garbage-collected,
+    // the `ptr` will be freed using the corresponding cleanup function of the `_finalizer`
     _finalizer.attach(finalizable, ptr, detach: detach, externalSize: externalSize);
+    // attach the `finalizable` object to the `obj` object,
+    // so when the `obj` object is garbage-collected, the `finalizable` object will be garbage-collected
     _relinquishables[obj] = finalizable;
   }
 }

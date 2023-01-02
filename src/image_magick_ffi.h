@@ -9,6 +9,10 @@
 #define FFI_PLUGIN_EXPORT
 #endif
 
+/*############################################ Dart Sdk Api ############################################*/
+FFI_PLUGIN_EXPORT intptr_t initDartAPI(void* data);
+/*############################################ Dart Sdk Api ############################################*/
+
 FFI_PLUGIN_EXPORT void clearMagickWand(void *wand);
 
 FFI_PLUGIN_EXPORT void *cloneMagickWand(const void *wand);
@@ -180,6 +184,8 @@ FFI_PLUGIN_EXPORT bool magickSetPage(void *wand, const size_t width,const size_t
 FFI_PLUGIN_EXPORT bool magickSetPassphrase(void *wand, const char *passphrase);
 
 FFI_PLUGIN_EXPORT bool magickSetPointsize(void *wand, const double pointsize);
+
+FFI_PLUGIN_EXPORT intptr_t* magickSetProgressMonitorPort(void *wand, intptr_t sendPort);
 
 // TODO: complete adding the other methods
 

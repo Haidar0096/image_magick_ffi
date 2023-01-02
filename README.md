@@ -38,19 +38,26 @@ See the #Usage section below for more insights.
 - #### Linux
   Coming Soon
 - #### Macos
-  Your contributions to provide the binraires are welcomed :)
+  Your contributions to provide the binaries are welcomed :)
 - #### Ios
-  Your contributions to provide the binraires are welcomed :)
+  Your contributions to provide the binaries are welcomed :)
 
 # Usage
 ```dart
+  import 'package:image_magick_ffi/image_magick_ffi.dart' as im;
+  
+  // ...
+  @override
+  void initState() {
+    im.initialize(); // initialize the plugin
+    wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+    super.initState();
+  }
+  // ...
+
   // reads an image, then writes it in jpeg format
   Future<String?> _handlePress() async {
     try {
-      im.magickWandGenesis(); // initialize the magick wand environment
-
-      im.MagickWand wand = im.MagickWand.newMagickWand(); // create a new wand
-
       wand.magickReadImage(_inputFile!.path); // read an image file into the wand
 
       String inputFileNameWithoutExtension =
@@ -68,5 +75,14 @@ See the #Usage section below for more insights.
       return e.toString();
     }
   }
-  ```
-For more info about code usage, have a look at the example app in this repo.
+
+  // ...
+  @override
+  dispose() {
+    wand.destroyMagickWand(); // we are done with the wand
+    im.dispose(); // we are done with the plugin
+    super.dispose();
+  }
+  // ...
+```
+- For more info about code usage, have a look at the example app in this repo.

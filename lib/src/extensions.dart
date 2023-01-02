@@ -26,11 +26,11 @@ extension IntListExtension on List<int> {
   /// a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
-  Pointer<UnsignedChar> toUnsignedCharArray() {
+  Pointer<UnsignedChar> toUnsignedCharArray({required Allocator allocator}) {
     if (isEmpty) {
       return nullptr;
     }
-    final Pointer<UnsignedChar> array = malloc(sizeOf<UnsignedChar>() * length);
+    final Pointer<UnsignedChar> array = allocator(sizeOf<UnsignedChar>() * length);
     for (int i = 0; i < length; i++) {
       array[i] = this[i];
     }

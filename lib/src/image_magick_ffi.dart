@@ -1,10 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_magick_ffi/src/extensions.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
 

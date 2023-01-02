@@ -27,15 +27,21 @@ class _MyAppState extends State<MyApp> {
 
   String? operationError;
 
-  /// log a message into `logs.txt`. The message is appended to the end of the file.
-  void _log(String message) {
-    File('logs.txt').writeAsStringSync('$message\n', mode: FileMode.append);
+  late im.MagickWand _wand;
+
+  @override
+  void initState() {
+    im.initialize(); // initialize the plugin
+    _wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+    super.initState();
   }
 
   @override
   dispose() {
     outputImageWidthController.dispose();
     outputImageHeightController.dispose();
+    _wand.destroyMagickWand(); // we are done with the wand
+    im.dispose(); // we are done with the plugin
     super.dispose();
   }
 
@@ -159,7 +165,7 @@ class _MyAppState extends State<MyApp> {
                       final stopwatch = Stopwatch()..start();
                       operationError = await _handlePress();
                       stopwatch.stop();
-                      _log("operation time: ${stopwatch.elapsedMilliseconds}ms");
+                      debugPrint("operation time: ${stopwatch.elapsedMilliseconds}ms");
                       setState(() {});
                     },
                     child: const Text('Click Me!'),
@@ -176,19 +182,15 @@ class _MyAppState extends State<MyApp> {
   // reads an image, then writes it in jpeg format
   Future<String?> _handlePress() async {
     try {
-      im.magickWandGenesis(); // initialize the magick wand environment
-
-      im.MagickWand wand = im.MagickWand.newMagickWand(); // create a new wand
-
-      wand.magickReadImage(_inputFile!.path); // read an image file into the wand
+      _wand.magickReadImage(_inputFile!.path); // read an image file into the wand
 
       String inputFileNameWithoutExtension =
           _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
 
-      wand.magickWriteImage(
+      _wand.magickWriteImage(
           "${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image in jpeg format, automatically detects the format from the file extension
 
-      im.MagickGetExceptionResult e = wand.magickGetException(); // get error, if any
+      im.MagickGetExceptionResult e = _wand.magickGetException(); // get error, if any
       if (e.severity != im.ExceptionType.UndefinedException) {
         throw e.description;
       }

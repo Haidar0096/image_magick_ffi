@@ -16,6 +16,20 @@ set_target_properties(image_magick_ffi PROPERTIES
 
 target_compile_definitions(image_magick_ffi PUBLIC DART_SHARED_LIB)
 
+################################### Dart Sdk Api ###################################
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/dart_sdk_api")
+file(GLOB_RECURSE DART_SDK_API "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/dart_sdk_api/*.c")
+add_library(dart_sdk_api STATIC ${DART_SDK_API})
+target_link_libraries(image_magick_ffi dart_sdk_api)
+################################### Dart Sdk Api ###################################
+
+################################### Json-C ###################################
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/json-c/include")
+file(GLOB_RECURSE JSON_C "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/json-c/*.c")
+add_library(json-c STATIC ${JSON_C})
+target_link_libraries(image_magick_ffi json-c)
+################################### Json-C ###################################
+
 ################################### Image Magick ###################################
 macro(setDir dir)
     if (Q8)
