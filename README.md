@@ -27,6 +27,7 @@ See the #Usage section below for more insights.
   - Make sure you add the snippet above before this line `include(flutter/generated_plugins.cmake)`
 - #### Android
   Currently only arm64-v8a (64 bits) is supported. If you want to help add support to armeabi-v7a (32 bits), have a look [here](https://github.com/MolotovCherry/Android-ImageMagick7/discussions/95).
+  
   To choose one of the variants add this to your **`android/build.gradle`** file as a top-level statement:
     ```
     // Use ImageMagick with Q16 and HDRI enabled.
