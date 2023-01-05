@@ -56,7 +56,6 @@ target_link_libraries(image_magick_ffi dart_sdk_api)
 ################################### Dart Sdk Api ###################################
 
 ################################### Json-C ###################################
-#TODO: Rebuild json-c for android with the correct flags. For build instructions see https://github.com/json-c/json-c#building-for-android-
 # Download the zipped include folder of json-c from the dependencies repo
 if (WIN32)
     set(json_c_zip_url "https://github.com/Haidar0096/image_magick_ffi_deps/raw/master/json-c/windows.zip")
@@ -143,6 +142,22 @@ macro(downloadImageMagick dir downloadedContentName)
     FetchContent_MakeAvailable(${downloadedContentName})
 endmacro()
 
+# Set MAGICKCORE_QUANTUM_DEPTH and MAGICKCORE_HDRI_ENABLE flags
+if (Q8 AND NOT Q16)
+    if (HDRI)
+        add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=8 -DMAGICKCORE_HDRI_ENABLE=1)
+    else ()
+        add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=8 -DMAGICKCORE_HDRI_ENABLE=0)
+    endif ()
+elseif (Q16 AND NOT Q8)
+    if (HDRI)
+        add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=16 -DMAGICKCORE_HDRI_ENABLE=1)
+    else ()
+        add_definitions(-DMAGICKCORE_QUANTUM_DEPTH=16 -DMAGICKCORE_HDRI_ENABLE=0)
+    endif ()
+endif ()
+
+# Download the zipped folder of ImageMagick from the dependencies repo and link it
 if (WIN32)
     if (CMAKE_SIZEOF_VOID_P EQUAL 8)
         # 64 bits
