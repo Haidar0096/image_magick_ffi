@@ -16,23 +16,98 @@ set_target_properties(image_magick_ffi PROPERTIES
 
 target_compile_definitions(image_magick_ffi PUBLIC DART_SHARED_LIB)
 
+# Check if non-supported platforms are being used
+if (ANDROID)
+    if (${ANDROID_ABI} STREQUAL "arm64-v8a")
+        set(dir arm64-v8a)
+    else ()
+        message(FATAL_ERROR "Only arm64-v8a is supported for android at the moment")
+    endif ()
+endif ()
+
+# Include FetchContent module to download dependencies at configure time.
+include(FetchContent)
+
 ################################### Dart Sdk Api ###################################
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/dart_sdk_api")
-file(GLOB_RECURSE DART_SDK_API "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/dart_sdk_api/*.c")
-add_library(dart_sdk_api STATIC ${DART_SDK_API})
+
+# Download the zipped folder of dart-sdk-api from the dependencies repo
+set(dart_sdk_api_zip_url "https://github.com/Haidar0096/image_magick_ffi_deps/raw/master/dart_sdk_api.zip")
+message(STATUS "Downloading dart-sdk-api from ${dart_sdk_api_zip_url}")
+FetchContent_Declare(
+        dart_sdk_api
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        URL "${dart_sdk_api_zip_url}"
+)
+FetchContent_MakeAvailable(dart_sdk_api)
+
+# Fail if the download failed
+if (NOT EXISTS ${dart_sdk_api_SOURCE_DIR})
+    message(FATAL_ERROR "Failed to download dart-sdk-api from ${dart_sdk_api_zip_url}")
+endif ()
+
+# Include the include folder of dart_sdk_api from the downloaded zip
+include_directories(${dart_sdk_api_SOURCE_DIR}/include)
+
+# Create a target from the sources of the downloaded zip and link it to the executable
+file(GLOB_RECURSE DART_SDK_API_SOURCES "${dart_sdk_api_SOURCE_DIR}/src/*.c")
+add_library(dart_sdk_api STATIC ${DART_SDK_API_SOURCES})
 target_link_libraries(image_magick_ffi dart_sdk_api)
+
 ################################### Dart Sdk Api ###################################
 
 ################################### Json-C ###################################
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/json-c/include")
-file(GLOB_RECURSE JSON_C "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/json-c/*.c")
-add_library(json-c STATIC ${JSON_C})
-target_link_libraries(image_magick_ffi json-c)
+#TODO: Rebuild json-c for android with the correct flags. For build instructions see https://github.com/json-c/json-c#building-for-android-
+# Download the zipped include folder of json-c from the dependencies repo
+if (WIN32)
+    set(json_c_zip_url "https://github.com/Haidar0096/image_magick_ffi_deps/raw/master/json-c/windows.zip")
+elseif (ANDROID)
+    set(json_c_zip_url "https://github.com/Haidar0096/image_magick_ffi_deps/raw/master/json-c/arm64-v8a.zip")
+endif ()
+message(STATUS "Downloading json-c from ${json_c_zip_url}")
+FetchContent_Declare(
+        json-c
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        URL ${json_c_zip_url}
+)
+FetchContent_MakeAvailable(json-c)
+
+# Fail if the download failed
+if (NOT EXISTS ${json-c_SOURCE_DIR})
+    message(FATAL_ERROR "Failed to download json-c from ${json_c_zip_url}")
+endif ()
+
+if (WIN32)
+    # Include the include folder of json-c from the downloaded zip
+    include_directories(${json-c_SOURCE_DIR}/include)
+
+    # Create a target from the sources of the downloaded zip and link it to the executable
+    file(GLOB_RECURSE json-c-src ${json-c_SOURCE_DIR}/src/*.c)
+    add_library(json-c-lib ${json-c-src})
+    target_link_libraries(image_magick_ffi json-c-lib)
+elseif (ANDROID)
+    # Include the include folder of json-c from the downloaded zip
+    include_directories(${json-c_SOURCE_DIR}/include)
+
+    # Create a target from the sources of the downloaded zip and link it to the executable
+    add_library(json-c-lib SHARED IMPORTED)
+    set_target_properties(json-c-lib PROPERTIES IMPORTED_LOCATION ${json-c_SOURCE_DIR}/bin/libjson-c.so)
+    target_link_libraries(image_magick_ffi json-c-lib)
+endif ()
+
+
 ################################### Json-C ###################################
 
 ################################### Image Magick ###################################
 macro(setDir dir)
-    if (Q8)
+    # These values (Q8, Q16, HDRI) are set by the user of the plugin.
+
+    # For android: they are set in the android/build.gradle file by defining a top-level
+    # `ext` block and setting Q8=1 (or 0) or Q16=1 (or 0)  and HDRI=1 (or 0) in the ext block.
+
+    # For windows: they are set in the windows/CMakeLists.txt file by declaring them on the
+    # top-level like set(Q8 1) (or 0) or set(Q16 1) (or 0) and set(HDRI 1) (or 0).
+
+    if (Q8 AND NOT Q16)
         if (HDRI)
             message("Using Q8-HDRI libs for ImageMagick")
             set(dir ${dir}/Q8-HDRI)
@@ -40,7 +115,7 @@ macro(setDir dir)
             message("Using Q8 libs for ImageMagick")
             set(dir ${dir}/Q8)
         endif ()
-    elseif (Q16)
+    elseif (Q16 AND NOT Q8)
         if (HDRI)
             message("Using Q16-HDRI libs for ImageMagick")
             set(dir ${dir}/Q16-HDRI)
@@ -48,10 +123,24 @@ macro(setDir dir)
             message("Using Q16 libs for ImageMagick")
             set(dir ${dir}/Q16)
         endif ()
+    elseif (Q8 AND Q16)
+        message(FATAL_ERROR "Q8 and Q16 cannot be set to true at the same time")
     else ()
-        message("Neither Q8 nor Q16 is not defined, using Q8 (No HDRI) libs by default")
+        message("Neither Q8 nor Q16 is defined, using Q8 (No HDRI) libs by default")
         set(dir ${dir}/Q8)
     endif ()
+endmacro()
+
+macro(downloadImageMagick dir downloadedContentName)
+    # Download the zipped folder of ImageMagick from the dependencies repo
+    set(image_magick_zip_url "https://github.com/Haidar0096/image_magick_ffi_deps/raw/master/ImageMagick/${dir}.zip")
+    message(STATUS "Downloading ImageMagick from ${image_magick_zip_url}")
+    FetchContent_Declare(
+            ${downloadedContentName}
+            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+            URL ${image_magick_zip_url}
+    )
+    FetchContent_MakeAvailable(${downloadedContentName})
 endmacro()
 
 if (WIN32)
@@ -65,40 +154,56 @@ if (WIN32)
 
     setDir(${dir})
 
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/include)
+    # Download ImageMagick from the dependencies repo
+    downloadImageMagick(${dir} imagemagick-windows)
 
-    file(GLOB IMAGEMAGICK_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/lib/*.lib)
-    target_link_libraries(image_magick_ffi ${IMAGEMAGICK_LIBS})
-
-elseif (ANDROID)
-    if (${ANDROID_ABI} STREQUAL "arm64-v8a")
-        set(dir arm64-v8a)
-    else ()
-        message(FATAL_ERROR "Only arm64-v8a is supported for android at the moment")
+    # Fail if the download failed
+    if (NOT EXISTS ${imagemagick-windows_SOURCE_DIR})
+        message(FATAL_ERROR "Failed to download ImageMagick from ${image_magick_zip_url}")
     endif ()
 
+    # Include the include folder of ImageMagick from the downloaded zip
+    include_directories(${imagemagick-windows_SOURCE_DIR}/include)
+
+    # Link the ImageMagick libs from the downloaded zip to the executable
+    file(GLOB_RECURSE ImageMagick-libs ${imagemagick-windows_SOURCE_DIR}/lib/*.lib)
+    target_link_libraries(image_magick_ffi ${ImageMagick-libs})
+
+    # Set the path to the ImageMagick dlls as a cache entry to be used in windows/CMakeLists.txt
+    set(ImageMagick-dlls ${imagemagick-windows_SOURCE_DIR}/bin CACHE PATH "Path to ImageMagick dlls")
+
+elseif (ANDROID)
     setDir(${dir})
 
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/include)
+    # Download ImageMagick from the dependencies repo
+    downloadImageMagick(${dir} imagemagick-arm64-v8a)
+
+    # Fail if the download failed
+    if (NOT EXISTS ${imagemagick-arm64-v8a_SOURCE_DIR})
+        message(FATAL_ERROR "Failed to download ImageMagick from ${image_magick_zip_url}")
+    endif ()
+
+    # Include the include folder of ImageMagick from the downloaded zip
+    include_directories(${imagemagick-arm64-v8a_SOURCE_DIR}/include)
 
     # MagickCore
     add_library(magickcore SHARED IMPORTED)
-    set_target_properties(magickcore PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/bin/libmagickcore-7.so)
+    set_target_properties(magickcore PROPERTIES IMPORTED_LOCATION ${imagemagick-arm64-v8a_SOURCE_DIR}/bin/libmagickcore-7.so)
     target_link_libraries(image_magick_ffi magickcore)
 
     # MagickWand
     add_library(magickwand SHARED IMPORTED)
-    set_target_properties(magickwand PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/bin/libmagickwand-7.so)
+    set_target_properties(magickwand PROPERTIES IMPORTED_LOCATION ${imagemagick-arm64-v8a_SOURCE_DIR}/bin/libmagickwand-7.so)
     target_link_libraries(image_magick_ffi magickwand)
 
     # libomp
     add_library(omp SHARED IMPORTED)
-    set_target_properties(omp PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/bin/libomp.so)
+    set_target_properties(omp PROPERTIES IMPORTED_LOCATION ${imagemagick-arm64-v8a_SOURCE_DIR}/bin/libomp.so)
     target_link_libraries(image_magick_ffi omp)
 
     # libc++_shared
     add_library(cxx_shared SHARED IMPORTED)
-    set_target_properties(cxx_shared PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/ImageMagick/${dir}/bin/libc++_shared.so)
+    set_target_properties(cxx_shared PROPERTIES IMPORTED_LOCATION ${imagemagick-arm64-v8a_SOURCE_DIR}/bin/libc++_shared.so)
     target_link_libraries(image_magick_ffi cxx_shared)
 
     # android log lib

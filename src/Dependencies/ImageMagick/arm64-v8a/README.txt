@@ -1,1 +1,0 @@
-The binaries for different configurations were built using the repository at https://github.com/Haidar0096/Android-ImageMagick7 by running the workflow called `Handle Release`.
