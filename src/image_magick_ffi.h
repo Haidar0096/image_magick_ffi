@@ -1,7 +1,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/* Include the local headers if __FFIGEN__ is defined. */
+#ifdef __FFIGEN__
+#include "ffigen_deps/MagickCore/magick-baseconfig.h"
+#else
 #include <MagickCore/magick-baseconfig.h>
+#endif
 
 #if _WIN32
 #define FFI_PLUGIN_EXPORT __declspec(dllexport)

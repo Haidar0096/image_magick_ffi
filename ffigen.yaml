@@ -22,3 +22,4 @@ llvm-path:
   - 'C:\Program Files\LLVM'
 compiler-opts:
   - '-Isrc/Dependencies/ImageMagick/x64/Q8/include'
+  - '-D__FFIGEN__'
