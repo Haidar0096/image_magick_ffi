@@ -22,7 +22,7 @@ See the #Usage section below for more insights.
     set(HDRI 1)
     ```
   **Note**:
-  - Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or undefined behaviour will occur.
+  - Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or an error will occur.
   - If you don't set any configuration then by default "Q8-No HDRI" will be used.
   - Make sure you add the snippet above before this line `include(flutter/generated_plugins.cmake)`
 - #### Android
@@ -40,7 +40,7 @@ See the #Usage section below for more insights.
   Coming Soon
 - #### Macos
   Your contributions to provide the binaries are welcomed :)
-- #### Ios
+- #### IOS
   Your contributions to provide the binaries are welcomed :)
 
 # Usage
@@ -56,26 +56,33 @@ See the #Usage section below for more insights.
   }
   // ...
 
-  // reads an image, then writes it in jpeg format
-  Future<String?> _handlePress() async {
-    try {
-      wand.magickReadImage(_inputFile!.path); // read an image file into the wand
+// reads an image, then writes it in jpeg format
+Future<String?> _handlePress() async {
+  try {
+    // set a callback to be called while the image is being processed
+    await _wand.magickSetProgressMonitor(
+      progressMonitorFunction,
+      {
+        'myName': 'fayruz',
+        'myList': [1, 2, 3],
+      },
+    );
 
-      String inputFileNameWithoutExtension =
-          _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
+    await _wand.magickReadImage(_inputFile!.path);
 
-      wand.magickWriteImage(
-          "${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image in jpeg format, automatically detects the format from the file extension
-
-      im.MagickGetExceptionResult e = wand.magickGetException(); // get error, if any
-      if (e.severity != im.ExceptionType.UndefinedException) {
-        throw e.description;
-      }
-      return null;
-    } catch (e) {
-      return e.toString();
+    final String ps = Platform.pathSeparator;
+    String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
+    await _wand.magickWriteImage(
+            "${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png"); // write the image to a file in the png format
+    im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
+    if (e.severity != im.ExceptionType.UndefinedException) {
+      throw e.description;
     }
+    return null;
+  } catch (e) {
+    return e.toString();
   }
+}
 
   // ...
   @override
