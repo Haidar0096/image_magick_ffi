@@ -66,7 +66,7 @@ class MagickWand {
   ///
   /// - Note: if no exception has occurred, `UndefinedExceptionType` is returned.
   MagickGetExceptionResult magickGetException() => using((Arena arena) {
-        final Pointer<Int> severity = arena.call();
+        final Pointer<Int> severity = arena();
         final Pointer<Char> description = _bindings.magickGetException(_wandPtr, severity);
         final MagickGetExceptionResult magickGetExceptionResult = MagickGetExceptionResult(
           ExceptionType.fromValue(severity.value),
