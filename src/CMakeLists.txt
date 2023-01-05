@@ -75,18 +75,15 @@ if (NOT EXISTS ${json-c_SOURCE_DIR})
     message(FATAL_ERROR "Failed to download json-c from ${json_c_zip_url}")
 endif ()
 
-if (WIN32)
-    # Include the include folder of json-c from the downloaded zip
-    include_directories(${json-c_SOURCE_DIR}/include)
+# Include the include folder of json-c from the downloaded zip
+include_directories(${json-c_SOURCE_DIR}/include)
 
+if (WIN32)
     # Create a target from the sources of the downloaded zip and link it to the executable
     file(GLOB_RECURSE json-c-src ${json-c_SOURCE_DIR}/src/*.c)
     add_library(json-c-lib ${json-c-src})
     target_link_libraries(image_magick_ffi json-c-lib)
 elseif (ANDROID)
-    # Include the include folder of json-c from the downloaded zip
-    include_directories(${json-c_SOURCE_DIR}/include)
-
     # Create a target from the sources of the downloaded zip and link it to the executable
     add_library(json-c-lib SHARED IMPORTED)
     set_target_properties(json-c-lib PROPERTIES IMPORTED_LOCATION ${json-c_SOURCE_DIR}/bin/libjson-c.so)
