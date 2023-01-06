@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -17,13 +19,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  File? _inputFile = File("D:\\magick\\fayruz_love.png");
-  Directory? outputDirectory = Directory("D:\\magick");
+  File? _inputFile;
+  Directory? _outputDirectory = Directory("D:\\magick");
   int _outputImageWidth = 800;
   int _outputImageHeight = 600;
 
-  TextEditingController outputImageWidthController = TextEditingController();
-  TextEditingController outputImageHeightController = TextEditingController();
+  bool isLoading = false;
+
+  final TextEditingController _outputImageWidthController = TextEditingController();
+  final TextEditingController _outputImageHeightController = TextEditingController();
 
   String? operationError;
 
@@ -31,15 +35,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    im.initialize(); // initialize the plugin
+    im.initialize(); // initialize the plugin, this can be done before `runApp` as well
     _wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+
+    File file = File("D:\\magick\\Screenshot.png");
+    if (file.existsSync()) {
+      _inputFile = file;
+    }
+
+    _outputImageWidthController.text = _outputImageWidth.toString();
+    _outputImageHeightController.text = _outputImageHeight.toString();
     super.initState();
   }
 
   @override
   dispose() {
-    outputImageWidthController.dispose();
-    outputImageHeightController.dispose();
+    _outputImageWidthController.dispose();
+    _outputImageHeightController.dispose();
     _wand.destroyMagickWand(); // we are done with the wand
     im.dispose(); // we are done with the plugin
     super.dispose();
@@ -62,7 +74,7 @@ class _MyAppState extends State<MyApp> {
                       height: MediaQuery.of(context).size.height / 3,
                     ),
                   Text('input file: ${_inputFile?.path}'),
-                  Text('output directory: ${outputDirectory?.path}'),
+                  Text('output directory: ${_outputDirectory?.path}'),
                   Text('output image width: $_outputImageWidth'),
                   Text('output image height: $_outputImageHeight'),
                   Text('operation error: $operationError'),
@@ -85,7 +97,7 @@ class _MyAppState extends State<MyApp> {
                       final directoryPickerResult = await FilePicker.platform.getDirectoryPath();
                       if (directoryPickerResult != null) {
                         setState(() {
-                          outputDirectory = Directory(directoryPickerResult);
+                          _outputDirectory = Directory(directoryPickerResult);
                         });
                       }
                     },
@@ -101,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                           decoration: const InputDecoration(
                             labelText: 'width',
                           ),
-                          controller: outputImageWidthController,
+                          controller: _outputImageWidthController,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
@@ -117,7 +129,7 @@ class _MyAppState extends State<MyApp> {
                           decoration: const InputDecoration(
                             labelText: 'height',
                           ),
-                          controller: outputImageHeightController,
+                          controller: _outputImageHeightController,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
@@ -130,14 +142,16 @@ class _MyAppState extends State<MyApp> {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () async {
+                    onPressed: isLoading
+                        ? null
+                        : () async {
                       if (_inputFile == null) {
                         setState(() {
                           operationError = 'input file is null';
                         });
                         return;
                       }
-                      if (outputDirectory == null) {
+                      if (_outputDirectory == null) {
                         setState(() {
                           operationError = 'output directory is null';
                         });
@@ -165,11 +179,13 @@ class _MyAppState extends State<MyApp> {
                       final stopwatch = Stopwatch()..start();
                       operationError = await _handlePress();
                       stopwatch.stop();
-                      debugPrint("operation time: ${stopwatch.elapsedMilliseconds}ms");
+                      print("operation time: ${stopwatch.elapsedMilliseconds}ms");
                       setState(() {});
                     },
                     child: const Text('Click Me!'),
                   ),
+                  const SizedBox(height: 10),
+                  if (isLoading) const CircularProgressIndicator(),
                 ],
               ),
             ),
@@ -182,20 +198,28 @@ class _MyAppState extends State<MyApp> {
   // reads an image, then writes it in jpeg format
   Future<String?> _handlePress() async {
     try {
-      _wand.magickReadImage(_inputFile!.path); // read an image file into the wand
+      setState(() => isLoading = true);
 
-      String inputFileNameWithoutExtension =
-          _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
+      await _wand.magickReadImage(_inputFile!.path); // read the image
 
-      _wand.magickWriteImage(
-          "${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image in jpeg format, automatically detects the format from the file extension
+      await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
+      await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
 
-      im.MagickGetExceptionResult e = _wand.magickGetException(); // get error, if any
+      final String ps = Platform.pathSeparator;
+      final String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
+      final String outputFilePath = '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+
+      await _wand.magickWriteImage(outputFilePath); // write the image to a file in the png format
+
+      im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
       if (e.severity != im.ExceptionType.UndefinedException) {
         throw e.description;
       }
+
+      setState(() => isLoading = false);
       return null;
     } catch (e) {
+      setState(() => isLoading = false);
       return e.toString();
     }
   }
