@@ -369,3 +369,41 @@ enum CompositeOperator {
   SaliencyBlendCompositeOp,
   SeamlessBlendCompositeOp
 }
+
+/// Represents a layer method.
+enum LayerMethod {
+  UndefinedLayer,
+  CoalesceLayer,
+  CompareAnyLayer,
+  CompareClearLayer,
+  CompareOverlayLayer,
+  DisposeLayer,
+  OptimizeLayer,
+  OptimizeImageLayer,
+  OptimizePlusLayer,
+  OptimizeTransLayer,
+  RemoveDupsLayer,
+  RemoveZeroLayer,
+  CompositeLayer,
+  MergeLayer,
+  FlattenLayer,
+  MosaicLayer,
+  TrimBoundsLayer
+}
+
+/// Represents a metric type.
+enum MetricType {
+  UndefinedErrorMetric,
+  AbsoluteErrorMetric,
+  FuzzErrorMetric,
+  MeanAbsoluteErrorMetric,
+  MeanErrorPerPixelErrorMetric,
+  MeanSquaredErrorMetric,
+  NormalizedCrossCorrelationErrorMetric,
+  PeakAbsoluteErrorMetric,
+  PeakSignalToNoiseRatioErrorMetric,
+  PerceptualHashErrorMetric,
+  RootMeanSquaredErrorMetric,
+  StructuralSimilarityErrorMetric,
+  StructuralDissimilarityErrorMetric
+}

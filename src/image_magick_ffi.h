@@ -253,6 +253,40 @@ FFI_PLUGIN_EXPORT bool magickBrightnessContrastImage(void* wand, const double br
 
 FFI_PLUGIN_EXPORT bool magickCannyEdgeImage(void* wand, const double radius, const double sigma, const double lower_percent, const double upper_percent);
 
+FFI_PLUGIN_EXPORT void* magickChannelFxImage(void* wand, const char* expression);
+
+FFI_PLUGIN_EXPORT bool magickCharcoalImage(void* wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT bool magickChopImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y);
+
+FFI_PLUGIN_EXPORT bool magickCLAHEImage(void* wand, const size_t width, const size_t height, const double number_bins, const double clip_limit);
+
+FFI_PLUGIN_EXPORT bool magickClampImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickClipImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickClipImagePath(void* wand, const char* pathname, const bool inside);
+
+FFI_PLUGIN_EXPORT bool magickClutImage(void* wand, const void* clut_wand, const int method);
+
+FFI_PLUGIN_EXPORT void* magickCoalesceImages(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickColorDecisionListImage(void* wand, const char* color_correction_collection);
+
+FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, const void* blend);
+
+FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix);
+
+FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void *wand, const void *start_color,const void *stop_color);
+
+FFI_PLUGIN_EXPORT void* magickCombineImages(void *wand, const int colorspace);
+
+FFI_PLUGIN_EXPORT bool magickCommentImage(void *wand, const char *comment);
+
+FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void *wand, const int method);
+
+FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,const int metric, double *distortion);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

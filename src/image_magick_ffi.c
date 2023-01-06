@@ -506,6 +506,74 @@ FFI_PLUGIN_EXPORT bool magickCannyEdgeImage(void* wand, const double radius, con
 	return MagickCannyEdgeImage((MagickWand*)wand, radius, sigma, lower_percent, upper_percent) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT void* magickChannelFxImage(void* wand, const char* expression) {
+	return MagickChannelFxImage((MagickWand*)wand, expression);
+}
+
+FFI_PLUGIN_EXPORT bool magickCharcoalImage(void* wand, const double radius, const double sigma) {
+	return MagickCharcoalImage((MagickWand*)wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickChopImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y) {
+	return MagickChopImage((MagickWand*)wand, width, height, x, y) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickCLAHEImage(void* wand, const size_t width, const size_t height, const double number_bins, const double clip_limit) {
+	return MagickCLAHEImage((MagickWand*)wand, width, height, number_bins, clip_limit) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickClampImage(void* wand) {
+	return MagickClampImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickClipImage(void* wand) {
+	return MagickClipImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickClipImagePath(void* wand, const char* pathname, const bool inside) {
+	return MagickClipImagePath((MagickWand*)wand, pathname, inside) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickClutImage(void* wand, const void* clut_wand, const int method) {
+	return MagickClutImage((MagickWand*)wand, (MagickWand*)clut_wand, method) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* magickCoalesceImages(void* wand) {
+	return MagickCoalesceImages((MagickWand*)wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickColorDecisionListImage(void* wand, const char* color_correction_collection) {
+	return MagickColorDecisionListImage((MagickWand*)wand, color_correction_collection) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, const void* blend) {
+	return MagickColorizeImage((MagickWand*)wand, (PixelWand*)colorize, (PixelWand*)blend) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix) {
+	return MagickColorMatrixImage((MagickWand*)wand, (KernelInfo*)color_matrix) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void *wand, const void *start_color,const void *stop_color){
+    return MagickColorThresholdImage((MagickWand*)wand, (PixelWand*)start_color, (PixelWand*)stop_color) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* magickCombineImages(void *wand, const int colorspace){
+    return MagickCombineImages((MagickWand*)wand, colorspace);
+}
+
+FFI_PLUGIN_EXPORT bool magickCommentImage(void *wand, const char *comment){
+    return MagickCommentImage((MagickWand*)wand, comment) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void *wand, const int method){
+    return MagickCompareImagesLayers((MagickWand*)wand, method);
+}
+
+FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,const int metric, double *distortion){
+    return MagickCompareImages((MagickWand*)wand, (MagickWand*)reference, metric, distortion);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {
