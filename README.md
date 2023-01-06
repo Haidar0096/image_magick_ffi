@@ -68,17 +68,24 @@ Future<String?> _handlePress() async {
       },
     );
 
-    await _wand.magickReadImage(_inputFile!.path);
+    await _wand.magickReadImage(_inputFile!.path); // read the image
+    
+    await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
+    
+    await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
 
     final String ps = Platform.pathSeparator;
     String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
+    
     await _wand.magickWriteImage(
             "${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png"); // write the image to a file in the png format
+    
     im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
     if (e.severity != im.ExceptionType.UndefinedException) {
       throw e.description;
     }
     return null;
+    
   } catch (e) {
     return e.toString();
   }
