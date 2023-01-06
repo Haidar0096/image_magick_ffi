@@ -116,6 +116,15 @@ MagickGetVersionResult magickGetVersion() => using((Arena arena) {
       return MagickGetVersionResult(versionPtr.value, versionString);
     });
 
+/// Sets the limit for a particular resource in megabytes.
+/// - [type]: The resource type.
+/// - [limit]: The limit in megabytes.
+bool magickSetResourceLimit(ResourceType type, int limit) => _bindings.magickSetResourceLimit(type.index, limit);
+
+/// Sets the pseudo-random number generator seed. Use it to generate a predictable
+/// sequence of random numbers.
+void magickSetSeed(int seed) => _bindings.magickSetSeed(seed);
+
 // TODO: continue adding the remaining methods
 
 /// Represents a result to a call to `magickGetQuantumDepth()`.

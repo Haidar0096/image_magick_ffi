@@ -24,7 +24,7 @@ part 'magick_enums.dart';
 
 part 'magick_global_methods.dart';
 
-part 'helpers.dart';
+part 'memory.dart';
 
 const String _libName = 'image_magick_ffi';
 

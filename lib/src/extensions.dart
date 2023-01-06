@@ -38,6 +38,23 @@ extension IntListExtension on List<int> {
   }
 }
 
+extension DoubleListExtension on List<double>{
+  /// Creates a `double` array from this list by copying the list's data, and returns
+  /// a pointer to it.
+  ///
+  /// `nullptr` is returned if the list is empty.
+  Pointer<Double> toDoubleArray({required Allocator allocator}) {
+    if (isEmpty) {
+      return nullptr;
+    }
+    final Pointer<Double> array = allocator(sizeOf<Double>() * length);
+    for (int i = 0; i < length; i++) {
+      array[i] = this[i];
+    }
+    return array;
+  }
+}
+
 extension CharPointerPointerExtension on Pointer<Pointer<Char>> {
   /// Creates a `List<String>` from this pointer by copying the pointer's data.
   ///

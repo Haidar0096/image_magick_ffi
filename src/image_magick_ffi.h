@@ -1,3 +1,4 @@
+#pragma once
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -191,6 +192,66 @@ FFI_PLUGIN_EXPORT bool magickSetPassphrase(void* wand, const char* passphrase);
 FFI_PLUGIN_EXPORT bool magickSetPointsize(void* wand, const double pointsize);
 
 FFI_PLUGIN_EXPORT intptr_t* magickSetProgressMonitorPort(void* wand, intptr_t sendPort);
+
+FFI_PLUGIN_EXPORT bool magickSetResourceLimit(const int type, const unsigned long long limit);
+
+FFI_PLUGIN_EXPORT bool magickSetResolution(void* wand, const double x_resolution, const double y_resolution);
+
+FFI_PLUGIN_EXPORT bool magickSetSamplingFactors(void* wand, const size_t number_factors, const double* sampling_factors);
+
+FFI_PLUGIN_EXPORT void magickSetSeed(const unsigned long seed);
+
+FFI_PLUGIN_EXPORT bool magickSetSecurityPolicy(void* wand, const char* policy);
+
+FFI_PLUGIN_EXPORT bool magickSetSize(void* wand, const size_t columns, const size_t rows);
+
+FFI_PLUGIN_EXPORT bool magickSetSizeOffset(void* wand, const size_t columns, const size_t rows, const ssize_t offset);
+
+FFI_PLUGIN_EXPORT bool magickSetType(void* wand, const int image_type);
+
+FFI_PLUGIN_EXPORT void* getImageFromMagickWand(const void* wand);
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveBlurImage(void* wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveResizeImage(void* wand, const size_t columns, const size_t rows);
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveSharpenImage(void* wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveThresholdImage(void* wand, const size_t width, const size_t height, const double bias);
+
+FFI_PLUGIN_EXPORT bool magickAddImage(void* wand, const void* add_wand);
+
+FFI_PLUGIN_EXPORT bool magickAddNoiseImage(void* wand, const int noise_type, const double attenuate);
+
+FFI_PLUGIN_EXPORT bool magickAffineTransformImage(void* wand, const void* drawing_wand);
+
+FFI_PLUGIN_EXPORT bool magickAnnotateImage(void* wand, const void* drawing_wand, const double x, const double y, const double angle, const char* text);
+
+FFI_PLUGIN_EXPORT bool magickAnimateImages(void* wand, const char* server_name);
+
+FFI_PLUGIN_EXPORT void* magickAppendImages(void* wand, const bool stack);
+
+FFI_PLUGIN_EXPORT bool magickAutoGammaImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickAutoLevelImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickAutoOrientImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickAutoThresholdImage(void* wand, const int method);
+
+FFI_PLUGIN_EXPORT bool magickBilateralBlurImage(void* wand, const double radius, const double sigma, const double intensity_sigma, const double spatial_sigma);
+
+FFI_PLUGIN_EXPORT bool magickBlackThresholdImage(void* wand, const void* threshold_wand);
+
+FFI_PLUGIN_EXPORT bool magickBlueShiftImage(void* wand, const double factor);
+
+FFI_PLUGIN_EXPORT bool magickBlurImage(void* wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT bool magickBorderImage(void* wand, const void* bordercolor_wand, const size_t width, const size_t height, const int compose);
+
+FFI_PLUGIN_EXPORT bool magickBrightnessContrastImage(void* wand, const double brightness, const double contrast);
+
+FFI_PLUGIN_EXPORT bool magickCannyEdgeImage(void* wand, const double radius, const double sigma, const double lower_percent, const double upper_percent);
 
 // TODO: complete adding the other methods
 

@@ -566,6 +566,292 @@ class MagickWand {
     });
   }
 
+  /// Sets the image resolution.
+  bool magickSetResolution(double xResolution, double yResolution) =>
+      _bindings.magickSetResolution(_wandPtr, xResolution, yResolution);
+
+  /// Sets the image sampling factors.
+  /// - [samplingFactors] : An array of doubles representing the sampling factor for each
+  /// color component (in RGB order).
+  bool magickSetSamplingFactors(List<double> samplingFactors) => using((Arena arena) {
+        final Pointer<Double> samplingFactorsPtr = samplingFactors.toDoubleArray(allocator: arena);
+        return _bindings.magickSetSamplingFactors(_wandPtr, samplingFactors.length, samplingFactorsPtr);
+      });
+
+  /// Sets the ImageMagick security policy. It returns false if the policy is already
+  /// set or if the policy does not parse.
+  bool magickSetSecurityPolicy(String securityPolicy) => using((Arena arena) =>
+      _bindings.magickSetSecurityPolicy(_wandPtr, securityPolicy.toNativeUtf8(allocator: arena).cast()));
+
+  /// Sets the size of the magick wand. Set it before you read a raw image format such as RGB,
+  /// GRAY, or CMYK.
+  /// - [width] : the width in pixels.
+  /// - [height] : the height in pixels.
+  bool magickSetSize(int width, int height) => _bindings.magickSetSize(_wandPtr, width, height);
+
+  /// Sets the size and offset of the magick wand. Set it before you read
+  /// a raw image format such as RGB, GRAY, or CMYK.
+  bool magickSetSizeOffset(int columns, int rows, int offset) =>
+      _bindings.magickSetSizeOffset(_wandPtr, columns, rows, offset);
+
+  /// Sets the image type attribute.
+  bool magickSetType(ImageType imageType) => _bindings.magickSetType(_wandPtr, imageType.index);
+
+  /// Returns the current image from the magick wand.
+  // TODO: check if there is an existing image with the same pointer and if we should copy its internal state.
+  Image getImageFromMagickWand() => Image._(_bindings.getImageFromMagickWand(_wandPtr));
+
+  /// Adaptively blurs the image by blurring less intensely near image edges and more intensely
+  /// far from edges. We blur the image with a Gaussian operator of the given radius and standard
+  /// deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius
+  /// of 0 and `magickAdaptiveBlurImage()` selects a suitable radius for you.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [sigma] : the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickAdaptiveBlurImage(double radius, double sigma) async =>
+      await compute(_magickAdaptiveBlurImage, MagickAdaptiveBlurImageParams(_wandPtr.address, radius, sigma));
+
+  /// Adaptively resize image with data dependent triangulation.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [columns] : the number of columns in the scaled image.
+  /// - [rows] : the number of rows in the scaled image.
+  Future<bool> magickAdaptiveResizeImage(int columns, int rows) async =>
+      await compute(_magickAdaptiveResizeImage, MagickAdaptiveResizeImageParams(_wandPtr.address, columns, rows));
+
+  /// Adaptively sharpens the image by sharpening more intensely near image edges
+  /// and less intensely far from edges. We sharpen the image with a Gaussian operator of the given radius
+  /// and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius
+  /// of 0 and `magickAdaptiveSharpenImage()` selects a suitable radius for you.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [sigma] : the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickAdaptiveSharpenImage(double radius, double sigma) async =>
+      await compute(_magickAdaptiveSharpenImage, MagickAdaptiveSharpenImageParams(_wandPtr.address, radius, sigma));
+
+  /// Selects an individual threshold for each pixel based on the range of intensity values in its local
+  /// neighborhood. This allows for thresholding of an image whose global intensity histogram doesn't contain
+  /// distinctive peaks.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [width] : the width of the local neighborhood.
+  /// - [height] : the height of the local neighborhood.
+  /// - [bias] : the mean offset.
+  Future<bool> magickAdaptiveThresholdImage(int width, int height, double bias) async => await compute(
+      _magickAdaptiveThresholdImage, MagickAdaptiveThresholdImageParams(_wandPtr.address, width, height, bias));
+
+  /// Adds a clone of the images from the second wand and inserts them into the first wand.
+  /// Use `magickSetLastIterator()`, to append new images into an existing wand, current image will be set
+  /// to last image so later adds with also be appended to end of wand.
+  /// Use `magickSetFirstIterator()` to prepend new images into wand, any more images added will also be
+  /// prepended before other images in the wand. However the order of a list of new images will not change.
+  /// Otherwise the new images will be inserted just after the current image, and any later image will also
+  /// be added after this current image but before the previously added images. Caution is advised when
+  /// multiple image adds are inserted into the middle of the wand image list.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [other] : the other wand to add images from.
+  Future<bool> magickAddImage(MagickWand other) async =>
+      await compute(_magickAddImage, MagickAddImageParams(_wandPtr.address, other._wandPtr.address));
+
+  /// Adds random noise to the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [noiseType] : the type of noise.
+  /// - [attenuate] : attenuate the random distribution.
+  Future<bool> magickAddNoiseImage(NoiseType noiseType, double attenuate) async =>
+      await compute(_magickAddNoiseImage, MagickAddNoiseImageParams(_wandPtr.address, noiseType.index, attenuate));
+
+  /// Transforms an image as dictated by the affine matrix of the drawing wand.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickAffineTransformImage(DrawingWand drawingWand) async => await compute(
+      _magickAffineTransformImage, MagickAffineTransformImageParams(_wandPtr.address, drawingWand._wandPtr.address));
+
+  /// Annotates an image with text.
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x] : x ordinate to left of text.
+  /// - [y] : y ordinate to text baseline.
+  /// - [angle] : the text rotation angle.
+  /// - [text] : the text to draw.
+  Future<bool> magickAnnotateImage({
+    required DrawingWand drawingWand,
+    required double x,
+    required double y,
+    required double angle,
+    required String text,
+  }) async =>
+      await compute(_magickAnnotateImage,
+          MagickAnnotateImageParams(_wandPtr.address, drawingWand._wandPtr.address, x, y, angle, text));
+
+  /// Animates an image or image sequence.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [serverName] : the X server name.
+  Future<bool> magickAnimateImages(String serverName) async =>
+      await compute(_magickAnimateImages, MagickAnimateImagesParams(_wandPtr.address, serverName));
+
+  /// Append the images in a wand from the current image onwards, creating a new wand with the single image
+  /// result. This is affected by the gravity and background settings of the first image.
+  /// Typically you would call either `magickResetIterator()` or `magickSetFirstImage()` before calling this
+  /// function to ensure that all the images in the wand's image list will be appended together.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [stack] : By default, images are stacked left-to-right. Set stack to true to stack them
+  /// top-to-bottom.
+  // TODO: check if we should copy the wand's internal state of the wand if there is one.
+  Future<MagickWand> magickAppendImages(bool stack) async => MagickWand._(
+        Pointer<Void>.fromAddress(
+          await compute(
+            _magickAppendImages,
+            MagickAppendImagesParams(_wandPtr.address, stack),
+          ),
+        ),
+      );
+
+  /// Extracts the 'mean' from the image and adjust the image to try make set its gamma appropriately.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickAutoGammaImage() async => await compute(_magickAutoGammaImage, _wandPtr.address);
+
+  /// Adjusts the levels of a particular image channel by scaling the minimum and maximum values to the
+  /// full quantum range.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickAutoLevelImage() async => await compute(_magickAutoLevelImage, _wandPtr.address);
+
+  /// Adjusts an image so that its orientation is suitable $ for viewing (i.e. top-left orientation).
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickAutoOrientImage() async => await compute(_magickAutoOrientImage, _wandPtr.address);
+
+  /// Automatically performs image thresholding dependent on which method you specify.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [method] : the method to use.
+  Future<bool> magickAutoThresholdImage(AutoThresholdMethod method) async =>
+      await compute(_magickAutoThresholdImage, MagickAutoThresholdImageParams(_wandPtr.address, method.index));
+
+  /// `magickBilateralBlurImage()` is a non-linear, edge-preserving, and noise-reducing smoothing filter for
+  /// images. It replaces the intensity of each pixel with a weighted average of intensity values from nearby
+  /// pixels. This weight is based on a Gaussian distribution. The weights depend not only on Euclidean distance
+  /// of pixels, but also on the radiometric differences (e.g., range differences, such as color intensity,
+  /// depth distance, etc.). This preserves sharp edges.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [sigma] : the standard deviation of the , in pixels.
+  /// - [intensity_sigma] :  sigma in the intensity space. A larger value means that farther colors within
+  /// the pixel neighborhood (see spatial_sigma) will be mixed together, resulting in larger areas of
+  /// semi-equal color.
+  /// - [spatial_sigma] : sigma in the coordinate space. A larger value means that farther pixels influence
+  /// each other as long as their colors are close enough (see intensity_sigma ). When the neighborhood
+  /// diameter is greater than zero, it specifies the neighborhood size regardless of spatial_sigma.
+  /// Otherwise, the neighborhood diameter is proportional to spatial_sigma.
+  Future<bool> magickBilateralBlurImage({
+    required double radius,
+    required double sigma,
+    required double intensitySigma,
+    required double spatialSigma,
+  }) async =>
+      await compute(
+        _magickBilateralBlurImage,
+        MagickBilateralBlurImageParams(_wandPtr.address, radius, sigma, intensitySigma, spatialSigma),
+      );
+
+  /// `magickBlackThresholdImage()` is like MagickThresholdImage() but forces all pixels below the
+  /// threshold into black while leaving all pixels above the threshold unchanged.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [pixelWand] : the pixel wand to determine the threshold.
+  Future<bool> magickBlackThresholdImage(PixelWand pixelWand) async => await compute(
+      _magickBlackThresholdImage, MagickBlackThresholdImageParams(_wandPtr.address, pixelWand._wandPtr.address));
+
+  /// Mutes the colors of the image to simulate a scene at nighttime in the moonlight.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [factor] : the blue shift factor (default 1.5).
+  Future<bool> magickBlueShiftImage([double factor = 1.5]) async =>
+      await compute(_magickBlueShiftImage, MagickBlueShiftImageParams(_wandPtr.address, factor));
+
+  /// `magickBlurImage()` blurs an image. We convolve the image with a gaussian operator of the given
+  /// radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.
+  /// Use a radius of 0 and BlurImage() selects a suitable radius for you.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [sigma] : the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickBlurImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await compute(_magickBlurImage, MagickBlurImageParams(_wandPtr.address, radius, sigma));
+
+  /// `magickBorderImage()` surrounds the image with a border of the color defined by the bordercolor pixel wand.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [borderColorWand] : the border color pixel wand.
+  /// - [width] : the border width.
+  /// - [height] : the border height.
+  /// - [compose] : the composite operator.
+  Future<bool> magickBorderImage({
+    required PixelWand borderColorWand,
+    required int width,
+    required int height,
+    required CompositeOperator compose,
+  }) async =>
+      await compute(
+        _magickBorderImage,
+        MagickBorderImageParams(
+          _wandPtr.address,
+          borderColorWand._wandPtr.address,
+          width,
+          height,
+          compose.index,
+        ),
+      );
+
+  /// Use `magickBrightnessContrastImage()` to change the brightness and/or contrast of an image.
+  /// It converts the brightness and contrast parameters into slope and intercept and calls a polynomial
+  /// function to apply to the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [brightness] : the brightness percent (-100 .. 100).
+  /// - [contrast] : the contrast percent (-100 .. 100).
+  Future<bool> magickBrightnessContrastImage({
+    required double brightness,
+    required double contrast,
+  }) async =>
+      await compute(
+        _magickBrightnessContrastImage,
+        MagickBrightnessContrastImageParams(_wandPtr.address, brightness, contrast),
+      );
+
+  /// `magickCannyEdgeImage()` uses a multi-stage algorithm to detect a wide range of edges in images.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [radius] : the radius of the gaussian smoothing filter.
+  /// - [sigma] : the sigma of the gaussian smoothing filter.
+  /// - [lowerPercent] : percentage of edge pixels in the lower threshold.
+  /// - [upperPercent] : percentage of edge pixels in the upper threshold.
+  Future<bool> magickCannyEdgeImage({
+    required double radius,
+    required double sigma,
+    required double lowerPercent,
+    required double upperPercent,
+  }) async =>
+      await compute(
+        _magickCannyEdgeImage,
+        MagickCannyEdgeImageParams(_wandPtr.address, radius, sigma, lowerPercent, upperPercent),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -604,6 +890,248 @@ class _MagickWriteImageArgs {
 
 Future<bool> _magickWriteImage(_MagickWriteImageArgs args) async => using((Arena arena) => _bindings.magickWriteImage(
     Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
+
+class MagickAdaptiveBlurImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  MagickAdaptiveBlurImageParams(this.wandPtrAddress, this.radius, this.sigma);
+}
+
+Future<bool> _magickAdaptiveBlurImage(MagickAdaptiveBlurImageParams params) async =>
+    _bindings.magickAdaptiveBlurImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+
+class MagickAdaptiveResizeImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+
+  MagickAdaptiveResizeImageParams(this.wandPtrAddress, this.columns, this.rows);
+}
+
+Future<bool> _magickAdaptiveResizeImage(MagickAdaptiveResizeImageParams params) async =>
+    _bindings.magickAdaptiveResizeImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.columns, params.rows);
+
+class MagickAdaptiveSharpenImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  MagickAdaptiveSharpenImageParams(this.wandPtrAddress, this.radius, this.sigma);
+}
+
+Future<bool> _magickAdaptiveSharpenImage(MagickAdaptiveSharpenImageParams params) async =>
+    _bindings.magickAdaptiveSharpenImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+
+class MagickAdaptiveThresholdImageParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final double bias;
+
+  MagickAdaptiveThresholdImageParams(this.wandPtrAddress, this.width, this.height, this.bias);
+}
+
+Future<bool> _magickAdaptiveThresholdImage(MagickAdaptiveThresholdImageParams params) async =>
+    _bindings.magickAdaptiveThresholdImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress), params.width, params.height, params.bias);
+
+class MagickAddImageParams {
+  final int wandPtrAddress;
+  final int otherWandPtrAddress;
+
+  MagickAddImageParams(this.wandPtrAddress, this.otherWandPtrAddress);
+}
+
+Future<bool> _magickAddImage(MagickAddImageParams params) async => _bindings.magickAddImage(
+    Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.otherWandPtrAddress));
+
+class MagickAddNoiseImageParams {
+  final int wandPtrAddress;
+  final int noiseTypeIndex;
+  final double attenuate;
+
+  MagickAddNoiseImageParams(this.wandPtrAddress, this.noiseTypeIndex, this.attenuate);
+}
+
+Future<bool> _magickAddNoiseImage(MagickAddNoiseImageParams params) async => _bindings.magickAddNoiseImage(
+    Pointer<Void>.fromAddress(params.wandPtrAddress), params.noiseTypeIndex, params.attenuate);
+
+class MagickAffineTransformImageParams {
+  final int wandPtrAddress;
+  final int drawingWandPtrAddress;
+
+  MagickAffineTransformImageParams(this.wandPtrAddress, this.drawingWandPtrAddress);
+}
+
+Future<bool> _magickAffineTransformImage(MagickAffineTransformImageParams params) async =>
+    _bindings.magickAffineTransformImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.drawingWandPtrAddress));
+
+class MagickAnnotateImageParams {
+  final int wandPtrAddress;
+  final int drawingWandPtrAddress;
+  final double x;
+  final double y;
+  final double angle;
+  final String text;
+
+  MagickAnnotateImageParams(this.wandPtrAddress, this.drawingWandPtrAddress, this.x, this.y, this.angle, this.text);
+}
+
+Future<bool> _magickAnnotateImage(MagickAnnotateImageParams params) async => using(
+      (Arena arena) => _bindings.magickAnnotateImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress),
+        Pointer<Void>.fromAddress(params.drawingWandPtrAddress),
+        params.x,
+        params.y,
+        params.angle,
+        params.text.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
+
+class MagickAnimateImagesParams {
+  final int wandPtrAddress;
+  final String serverName;
+
+  MagickAnimateImagesParams(this.wandPtrAddress, this.serverName);
+}
+
+Future<bool> _magickAnimateImages(MagickAnimateImagesParams params) async => using(
+      (Arena arena) => _bindings.magickAnimateImages(
+        Pointer<Void>.fromAddress(params.wandPtrAddress),
+        params.serverName.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
+
+class MagickAppendImagesParams {
+  final int wandPtrAddress;
+  final bool stack;
+
+  MagickAppendImagesParams(this.wandPtrAddress, this.stack);
+}
+
+Future<int> _magickAppendImages(MagickAppendImagesParams params) async =>
+    _bindings.magickAppendImages(Pointer<Void>.fromAddress(params.wandPtrAddress), params.stack).address;
+
+Future<bool> _magickAutoGammaImage(int wandPtrAddress) async =>
+    _bindings.magickAutoGammaImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+Future<bool> _magickAutoLevelImage(int wandPtrAddress) async =>
+    _bindings.magickAutoLevelImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+Future<bool> _magickAutoOrientImage(int wandPtrAddress) async =>
+    _bindings.magickAutoOrientImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+class MagickAutoThresholdImageParams {
+  final int wandPtrAddress;
+  final int thresholdMethodIndex;
+
+  MagickAutoThresholdImageParams(this.wandPtrAddress, this.thresholdMethodIndex);
+}
+
+Future<bool> _magickAutoThresholdImage(MagickAutoThresholdImageParams params) async =>
+    _bindings.magickAutoThresholdImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.thresholdMethodIndex);
+
+class MagickBilateralBlurImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+  final double intensitySigma;
+  final double spatialSigma;
+
+  MagickBilateralBlurImageParams(this.wandPtrAddress, this.radius, this.sigma, this.intensitySigma, this.spatialSigma);
+}
+
+Future<bool> _magickBilateralBlurImage(MagickBilateralBlurImageParams params) async =>
+    _bindings.magickBilateralBlurImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+      params.intensitySigma,
+      params.spatialSigma,
+    );
+
+class MagickBlackThresholdImageParams {
+  final int wandPtrAddress;
+  final int thresholdWandPtrAddress;
+
+  MagickBlackThresholdImageParams(this.wandPtrAddress, this.thresholdWandPtrAddress);
+}
+
+Future<bool> _magickBlackThresholdImage(MagickBlackThresholdImageParams params) async =>
+    _bindings.magickBlackThresholdImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.thresholdWandPtrAddress));
+
+class MagickBlueShiftImageParams {
+  final int wandPtrAddress;
+  final double factor;
+
+  MagickBlueShiftImageParams(this.wandPtrAddress, this.factor);
+}
+
+Future<bool> _magickBlueShiftImage(MagickBlueShiftImageParams params) async =>
+    _bindings.magickBlueShiftImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.factor);
+
+class MagickBlurImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  MagickBlurImageParams(this.wandPtrAddress, this.radius, this.sigma);
+}
+
+Future<bool> _magickBlurImage(MagickBlurImageParams params) async =>
+    _bindings.magickBlurImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+
+class MagickBorderImageParams {
+  final int wandPtrAddress;
+  final int borderWandPtrAddress;
+  final int width;
+  final int height;
+  final int composeIndex;
+
+  MagickBorderImageParams(this.wandPtrAddress, this.borderWandPtrAddress, this.width, this.height, this.composeIndex);
+}
+
+Future<bool> _magickBorderImage(MagickBorderImageParams params) async => _bindings.magickBorderImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      Pointer<Void>.fromAddress(params.borderWandPtrAddress),
+      params.width,
+      params.height,
+      params.composeIndex,
+    );
+
+class MagickBrightnessContrastImageParams {
+  final int wandPtrAddress;
+  final double brightness;
+  final double contrast;
+
+  MagickBrightnessContrastImageParams(this.wandPtrAddress, this.brightness, this.contrast);
+}
+
+Future<bool> _magickBrightnessContrastImage(MagickBrightnessContrastImageParams params) async =>
+    _bindings.magickBrightnessContrastImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress), params.brightness, params.contrast);
+
+class MagickCannyEdgeImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+  final double lowerPercent;
+  final double upperPercent;
+
+  MagickCannyEdgeImageParams(this.wandPtrAddress, this.radius, this.sigma, this.lowerPercent, this.upperPercent);
+}
+
+Future<bool> _magickCannyEdgeImage(MagickCannyEdgeImageParams params) async => _bindings.magickCannyEdgeImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+      params.lowerPercent,
+      params.upperPercent,
+    );
 
 /// Represents an exception that occurred while using the ImageMagick API.
 class MagickGetExceptionResult {

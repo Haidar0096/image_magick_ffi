@@ -22,13 +22,11 @@ FFI_PLUGIN_EXPORT void* destroyMagickWand(void* wand) {
 }
 
 FFI_PLUGIN_EXPORT bool isMagickWand(const void* wand) {
-	MagickBooleanType result = IsMagickWand((const MagickWand*)wand);
-	return result == MagickTrue;
+	return IsMagickWand((const MagickWand*)wand) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickClearException(void* wand) {
-	MagickBooleanType result = MagickClearException((MagickWand*)wand);
-	return result == MagickTrue;
+	return MagickClearException((MagickWand*)wand) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT char* magickGetException(const void* wand, int* severity) {
@@ -80,8 +78,7 @@ FFI_PLUGIN_EXPORT void magickSetFirstIterator(void* wand) {
 }
 
 FFI_PLUGIN_EXPORT bool magickSetIteratorIndex(void* wand, const ssize_t index) {
-	MagickBooleanType result = MagickSetIteratorIndex((MagickWand*)wand, index);
-	return result == MagickTrue;
+	return MagickSetIteratorIndex((MagickWand*)wand, index) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT void magickSetLastIterator(void* wand) {
@@ -105,28 +102,23 @@ FFI_PLUGIN_EXPORT void* newMagickWandFromImage(const void* image) {
 }
 
 FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void) {
-	MagickBooleanType result = IsMagickWandInstantiated();
-	return result == MagickTrue;
+	return IsMagickWandInstantiated() == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickDeleteImageArtifact(void* wand, const char* artifact) {
-	MagickBooleanType result = MagickDeleteImageArtifact((MagickWand*)wand, artifact);
-	return result == MagickTrue;
+	return MagickDeleteImageArtifact((MagickWand*)wand, artifact) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickDeleteImageProperty(void* wand, const char* property) {
-	MagickBooleanType result = MagickDeleteImageProperty((MagickWand*)wand, property);
-	return result == MagickTrue;
+	return MagickDeleteImageProperty((MagickWand*)wand, property) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickDeleteOption(void* wand, const char* option) {
-	MagickBooleanType result = MagickDeleteOption((MagickWand*)wand, option);
-	return result == MagickTrue;
+	return MagickDeleteOption((MagickWand*)wand, option) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickGetAntialias(const void* wand) {
-	MagickBooleanType result = MagickGetAntialias((const MagickWand*)wand);
-	return result == MagickTrue;
+	return MagickGetAntialias((const MagickWand*)wand) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT void* magickGetBackgroundColor(void* wand) {
@@ -218,8 +210,7 @@ FFI_PLUGIN_EXPORT const char* magickGetPackageName(void) {
 }
 
 FFI_PLUGIN_EXPORT bool magickGetPage(const void* wand, size_t* width, size_t* height, ssize_t* x, ssize_t* y) {
-	MagickBooleanType result = MagickGetPage((const MagickWand*)wand, width, height, x, y);
-	return result == MagickTrue;
+	return MagickGetPage((const MagickWand*)wand, width, height, x, y) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT double magickGetPointsize(void* wand) {
@@ -239,8 +230,7 @@ FFI_PLUGIN_EXPORT const char* magickGetReleaseDate(void) {
 }
 
 FFI_PLUGIN_EXPORT bool magickGetResolution(const void* wand, double* x, double* y) {
-	MagickBooleanType result = MagickGetResolution((const MagickWand*)wand, x, y);
-	return result == MagickTrue;
+	return MagickGetResolution((const MagickWand*)wand, x, y) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT unsigned long long magickGetResource(const int type) {
@@ -256,13 +246,11 @@ FFI_PLUGIN_EXPORT double* magickGetSamplingFactors(void* wand, size_t* number_fa
 }
 
 FFI_PLUGIN_EXPORT bool magickGetSize(const void* wand, size_t* columns, size_t* rows) {
-	MagickBooleanType result = MagickGetSize((const MagickWand*)wand, columns, rows);
-	return result == MagickTrue;
+	return MagickGetSize((const MagickWand*)wand, columns, rows) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickGetSizeOffset(const void* wand, ssize_t* offset) {
-	MagickBooleanType result = MagickGetSizeOffset((const MagickWand*)wand, offset);
-	return result == MagickTrue;
+	return MagickGetSizeOffset((const MagickWand*)wand, offset) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT int magickGetType(void* wand) {
@@ -274,8 +262,7 @@ FFI_PLUGIN_EXPORT const char* magickGetVersion(size_t* version) {
 }
 
 FFI_PLUGIN_EXPORT bool magickProfileImage(void* wand, const char* name, const void* profile, const size_t length) {
-	MagickBooleanType result = MagickProfileImage((MagickWand*)wand, name, profile, length);
-	return result;
+	return MagickProfileImage((MagickWand*)wand, name, profile, length) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT unsigned char* magickRemoveImageProfile(void* wand, const char* name, size_t* length) {
@@ -283,109 +270,88 @@ FFI_PLUGIN_EXPORT unsigned char* magickRemoveImageProfile(void* wand, const char
 }
 
 FFI_PLUGIN_EXPORT bool magickSetAntialias(void* wand, const bool antialias) {
-	MagickBooleanType result = MagickSetAntialias((MagickWand*)wand, antialias);
-	return result == MagickTrue;
+	return MagickSetAntialias((MagickWand*)wand, antialias) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetBackgroundColor(void* wand, const void* background) {
 	// TODO: test this when PixelWand is implemented in dart
-	MagickBooleanType result = MagickSetBackgroundColor((MagickWand*)wand, (const PixelWand*)background);
-	return result == MagickTrue;
+	return MagickSetBackgroundColor((MagickWand*)wand, (const PixelWand*)background) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetColorspace(void* wand, const int colorspace) {
-	MagickBooleanType result = MagickSetColorspace((MagickWand*)wand, colorspace);
-	return result == MagickTrue;
+	return MagickSetColorspace((MagickWand*)wand, colorspace) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetCompression(void* wand, const int compression) {
-	MagickBooleanType result = MagickSetCompression((MagickWand*)wand, compression);
-	return result == MagickTrue;
+	return MagickSetCompression((MagickWand*)wand, compression) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetCompressionQuality(void* wand, const size_t quality) {
-	MagickBooleanType result = MagickSetCompressionQuality((MagickWand*)wand, quality);
-	return result == MagickTrue;
+	return MagickSetCompressionQuality((MagickWand*)wand, quality) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetDepth(void* wand, const size_t depth) {
-	MagickBooleanType result = MagickSetDepth((MagickWand*)wand, depth);
-	return result == MagickTrue;
+	return MagickSetDepth((MagickWand*)wand, depth) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetExtract(void* wand, const char* geometry) {
-	MagickBooleanType result = MagickSetExtract((MagickWand*)wand, geometry);
-	return result == MagickTrue;
+	return MagickSetExtract((MagickWand*)wand, geometry) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetFilename(void* wand, const char* filename) {
-	MagickBooleanType result = MagickSetFilename((MagickWand*)wand, filename);
-	return result == MagickTrue;
+	return MagickSetFilename((MagickWand*)wand, filename) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetFont(void* wand, const char* font) {
-	MagickBooleanType result = MagickSetFont((MagickWand*)wand, font);
-	return result == MagickTrue;
+	return MagickSetFont((MagickWand*)wand, font) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetFormat(void* wand, const char* format) {
-	MagickBooleanType result = MagickSetFormat((MagickWand*)wand, format);
-	return result == MagickTrue;
+	return MagickSetFormat((MagickWand*)wand, format) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetGravity(void* wand, const int type) {
-	MagickBooleanType result = MagickSetGravity((MagickWand*)wand, type);
-	return result == MagickTrue;
+	return MagickSetGravity((MagickWand*)wand, type) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetImageArtifact(void* wand, const char* artifact, const char* value) {
-	MagickBooleanType result = MagickSetImageArtifact((MagickWand*)wand, artifact, value);
-	return result == MagickTrue;
+	return MagickSetImageArtifact((MagickWand*)wand, artifact, value) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetImageProfile(void* wand, const char* name, const void* profile, const size_t length) {
-	MagickBooleanType result = MagickSetImageProfile((MagickWand*)wand, name, profile, length);
-	return result == MagickTrue;
+	return MagickSetImageProfile((MagickWand*)wand, name, profile, length) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetImageProperty(void* wand, const char* property, const char* value) {
-	MagickBooleanType result = MagickSetImageProperty((MagickWand*)wand, property, value);
-	return result == MagickTrue;
+	return MagickSetImageProperty((MagickWand*)wand, property, value) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetInterlaceScheme(void* wand, const int interlace_scheme) {
-	MagickBooleanType result = MagickSetInterlaceScheme((MagickWand*)wand, interlace_scheme);
-	return result == MagickTrue;
+	return MagickSetInterlaceScheme((MagickWand*)wand, interlace_scheme) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetInterpolateMethod(void* wand, const int method) {
-	MagickBooleanType result = MagickSetInterpolateMethod((MagickWand*)wand, method);
-	return result == MagickTrue;
+	return MagickSetInterpolateMethod((MagickWand*)wand, method) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetOption(void* wand, const char* key, const char* value) {
-	MagickBooleanType result = MagickSetOption((MagickWand*)wand, key, value);
-	return result == MagickTrue;
+	return MagickSetOption((MagickWand*)wand, key, value) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetOrientation(void* wand, const int orientation) {
-	MagickBooleanType result = MagickSetOrientation((MagickWand*)wand, orientation);
-	return result == MagickTrue;
+	return MagickSetOrientation((MagickWand*)wand, orientation) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetPage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y) {
-	MagickBooleanType result = MagickSetPage((MagickWand*)wand, width, height, x, y);
-	return result == MagickTrue;
+	return MagickSetPage((MagickWand*)wand, width, height, x, y) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetPassphrase(void* wand, const char* passphrase) {
-	MagickBooleanType result = MagickSetPassphrase((MagickWand*)wand, passphrase);
-	return result == MagickTrue;
+	return MagickSetPassphrase((MagickWand*)wand, passphrase) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickSetPointsize(void* wand, const double pointsize) {
-	MagickBooleanType result = MagickSetPointsize((MagickWand*)wand, pointsize);
-	return result == MagickTrue;
+	return MagickSetPointsize((MagickWand*)wand, pointsize) == MagickTrue;
 }
 
 json_object* progressInfoToJsonObject(const char* text, const MagickOffsetType offset, const MagickSizeType size) {
@@ -420,14 +386,132 @@ FFI_PLUGIN_EXPORT intptr_t* magickSetProgressMonitorPort(void* wand, intptr_t se
 	return sendPortPtr;
 }
 
+FFI_PLUGIN_EXPORT bool magickSetResourceLimit(const int type, const unsigned long long limit) {
+	return MagickSetResourceLimit(type, limit) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetResolution(void* wand, const double x_resolution, const double y_resolution) {
+	return MagickSetResolution((MagickWand*)wand, x_resolution, y_resolution) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetSamplingFactors(void* wand, const size_t number_factors, const double* sampling_factors) {
+	return MagickSetSamplingFactors((MagickWand*)wand, number_factors, sampling_factors) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void magickSetSeed(const unsigned long seed) {
+	MagickSetSeed(seed);
+}
+
+FFI_PLUGIN_EXPORT bool magickSetSecurityPolicy(void* wand, const char* policy) {
+	return MagickSetSecurityPolicy((MagickWand*)wand, policy) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetSize(void* wand, const size_t columns, const size_t rows) {
+	return MagickSetSize(wand, columns, rows) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetSizeOffset(void* wand, const size_t columns, const size_t rows, const ssize_t offset) {
+	return MagickSetSizeOffset(wand, columns, rows, offset) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickSetType(void* wand, const int image_type) {
+	return MagickSetType((MagickWand*)wand, image_type) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* getImageFromMagickWand(const void* wand) {
+	return GetImageFromMagickWand((MagickWand*)wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveBlurImage(void* wand, const double radius, const double sigma) {
+	return MagickAdaptiveBlurImage((MagickWand*)wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveResizeImage(void* wand, const size_t columns, const size_t rows) {
+	return MagickAdaptiveResizeImage((MagickWand*)wand, columns, rows) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveSharpenImage(void* wand, const double radius, const double sigma) {
+	return MagickAdaptiveSharpenImage((MagickWand*)wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAdaptiveThresholdImage(void* wand, const size_t width, const size_t height, const double bias) {
+	return MagickAdaptiveThresholdImage((MagickWand*)wand, width, height, bias) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAddImage(void* wand, const void* add_wand) {
+	return MagickAddImage((MagickWand*)wand, (const MagickWand*)add_wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAddNoiseImage(void* wand, const int noise_type, const double attenuate) {
+	return MagickAddNoiseImage((MagickWand*)wand, noise_type, attenuate) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAffineTransformImage(void* wand, const void* drawing_wand) {
+	return MagickAffineTransformImage((MagickWand*)wand, (DrawingWand*)drawing_wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAnnotateImage(void* wand, const void* drawing_wand, const double x, const double y, const double angle, const char* text) {
+	return MagickAnnotateImage((MagickWand*)wand, (DrawingWand*)drawing_wand, x, y, angle, text) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAnimateImages(void* wand, const char* server_name) {
+	return MagickAnimateImages((MagickWand*)wand, server_name) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* magickAppendImages(void* wand, const bool stack) {
+	return MagickAppendImages((MagickWand*)wand, stack);
+}
+
+FFI_PLUGIN_EXPORT bool magickAutoGammaImage(void* wand) {
+	return MagickAutoGammaImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAutoLevelImage(void* wand) {
+	return MagickAutoLevelImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAutoOrientImage(void* wand) {
+	return MagickAutoOrientImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickAutoThresholdImage(void* wand, const AutoThresholdMethod method) {
+	return MagickAutoThresholdImage((MagickWand*)wand, method) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBilateralBlurImage(void* wand, const double radius, const double sigma, const double intensity_sigma, const double spatial_sigma) {
+	return MagickBilateralBlurImage((MagickWand*)wand, radius, sigma, intensity_sigma, spatial_sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBlackThresholdImage(void* wand, const void* threshold_wand) {
+	return MagickBlackThresholdImage((MagickWand*)wand, (PixelWand*)threshold_wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBlueShiftImage(void* wand, const double factor) {
+	return MagickBlueShiftImage((MagickWand*)wand, factor) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBlurImage(void* wand, const double radius, const double sigma) {
+	return MagickBlurImage((MagickWand*)wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBorderImage(void* wand, const void* bordercolor_wand, const size_t width, const size_t height, const int compose) {
+	return MagickBorderImage((MagickWand*)wand, (PixelWand*)bordercolor_wand, width, height, compose) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickBrightnessContrastImage(void* wand, const double brightness, const double contrast) {
+	return MagickBrightnessContrastImage((MagickWand*)wand, brightness, contrast) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickCannyEdgeImage(void* wand, const double radius, const double sigma, const double lower_percent, const double upper_percent) {
+	return MagickCannyEdgeImage((MagickWand*)wand, radius, sigma, lower_percent, upper_percent) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {
-	MagickBooleanType result = MagickReadImage((MagickWand*)wand, filename);
-	return result == MagickTrue;
+	return MagickReadImage((MagickWand*)wand, filename) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickWriteImage(void* wand, const char* filename) {
-	MagickBooleanType result = MagickWriteImage((MagickWand*)wand, filename);
-	return result == MagickTrue;
+	return MagickWriteImage((MagickWand*)wand, filename) == MagickTrue;
 }

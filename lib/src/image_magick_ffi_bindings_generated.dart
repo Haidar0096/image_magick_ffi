@@ -1478,6 +1478,564 @@ class ImageMagickFfiBindings {
       _magickSetProgressMonitorPortPtr.asFunction<
           ffi.Pointer<ffi.IntPtr> Function(ffi.Pointer<ffi.Void>, int)>();
 
+  bool magickSetResourceLimit(
+    int type,
+    int limit,
+  ) {
+    return _magickSetResourceLimit(
+      type,
+      limit,
+    );
+  }
+
+  late final _magickSetResourceLimitPtr = _lookup<
+          ffi.NativeFunction<ffi.Bool Function(ffi.Int, ffi.UnsignedLongLong)>>(
+      'magickSetResourceLimit');
+  late final _magickSetResourceLimit =
+      _magickSetResourceLimitPtr.asFunction<bool Function(int, int)>();
+
+  bool magickSetResolution(
+    ffi.Pointer<ffi.Void> wand,
+    double x_resolution,
+    double y_resolution,
+  ) {
+    return _magickSetResolution(
+      wand,
+      x_resolution,
+      y_resolution,
+    );
+  }
+
+  late final _magickSetResolutionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickSetResolution');
+  late final _magickSetResolution = _magickSetResolutionPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickSetSamplingFactors(
+    ffi.Pointer<ffi.Void> wand,
+    int number_factors,
+    ffi.Pointer<ffi.Double> sampling_factors,
+  ) {
+    return _magickSetSamplingFactors(
+      wand,
+      number_factors,
+      sampling_factors,
+    );
+  }
+
+  late final _magickSetSamplingFactorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size,
+              ffi.Pointer<ffi.Double>)>>('magickSetSamplingFactors');
+  late final _magickSetSamplingFactors =
+      _magickSetSamplingFactorsPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Double>)>();
+
+  void magickSetSeed(
+    int seed,
+  ) {
+    return _magickSetSeed(
+      seed,
+    );
+  }
+
+  late final _magickSetSeedPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.UnsignedLong)>>(
+          'magickSetSeed');
+  late final _magickSetSeed =
+      _magickSetSeedPtr.asFunction<void Function(int)>();
+
+  bool magickSetSecurityPolicy(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> policy,
+  ) {
+    return _magickSetSecurityPolicy(
+      wand,
+      policy,
+    );
+  }
+
+  late final _magickSetSecurityPolicyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickSetSecurityPolicy');
+  late final _magickSetSecurityPolicy = _magickSetSecurityPolicyPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  bool magickSetSize(
+    ffi.Pointer<ffi.Void> wand,
+    int columns,
+    int rows,
+  ) {
+    return _magickSetSize(
+      wand,
+      columns,
+      rows,
+    );
+  }
+
+  late final _magickSetSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size)>>('magickSetSize');
+  late final _magickSetSize = _magickSetSizePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int)>();
+
+  bool magickSetSizeOffset(
+    ffi.Pointer<ffi.Void> wand,
+    int columns,
+    int rows,
+    int offset,
+  ) {
+    return _magickSetSizeOffset(
+      wand,
+      columns,
+      rows,
+      offset,
+    );
+  }
+
+  late final _magickSetSizeOffsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size,
+              ssize_t)>>('magickSetSizeOffset');
+  late final _magickSetSizeOffset = _magickSetSizeOffsetPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int, int)>();
+
+  bool magickSetType(
+    ffi.Pointer<ffi.Void> wand,
+    int image_type,
+  ) {
+    return _magickSetType(
+      wand,
+      image_type,
+    );
+  }
+
+  late final _magickSetTypePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Int)>>('magickSetType');
+  late final _magickSetType =
+      _magickSetTypePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<ffi.Void> getImageFromMagickWand(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _getImageFromMagickWand(
+      wand,
+    );
+  }
+
+  late final _getImageFromMagickWandPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('getImageFromMagickWand');
+  late final _getImageFromMagickWand = _getImageFromMagickWandPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickAdaptiveBlurImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+  ) {
+    return _magickAdaptiveBlurImage(
+      wand,
+      radius,
+      sigma,
+    );
+  }
+
+  late final _magickAdaptiveBlurImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickAdaptiveBlurImage');
+  late final _magickAdaptiveBlurImage = _magickAdaptiveBlurImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickAdaptiveResizeImage(
+    ffi.Pointer<ffi.Void> wand,
+    int columns,
+    int rows,
+  ) {
+    return _magickAdaptiveResizeImage(
+      wand,
+      columns,
+      rows,
+    );
+  }
+
+  late final _magickAdaptiveResizeImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size,
+              ffi.Size)>>('magickAdaptiveResizeImage');
+  late final _magickAdaptiveResizeImage = _magickAdaptiveResizeImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int)>();
+
+  bool magickAdaptiveSharpenImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+  ) {
+    return _magickAdaptiveSharpenImage(
+      wand,
+      radius,
+      sigma,
+    );
+  }
+
+  late final _magickAdaptiveSharpenImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickAdaptiveSharpenImage');
+  late final _magickAdaptiveSharpenImage = _magickAdaptiveSharpenImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickAdaptiveThresholdImage(
+    ffi.Pointer<ffi.Void> wand,
+    int width,
+    int height,
+    double bias,
+  ) {
+    return _magickAdaptiveThresholdImage(
+      wand,
+      width,
+      height,
+      bias,
+    );
+  }
+
+  late final _magickAdaptiveThresholdImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size,
+              ffi.Double)>>('magickAdaptiveThresholdImage');
+  late final _magickAdaptiveThresholdImage = _magickAdaptiveThresholdImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int, double)>();
+
+  bool magickAddImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> add_wand,
+  ) {
+    return _magickAddImage(
+      wand,
+      add_wand,
+    );
+  }
+
+  late final _magickAddImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>('magickAddImage');
+  late final _magickAddImage = _magickAddImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  bool magickAddNoiseImage(
+    ffi.Pointer<ffi.Void> wand,
+    int noise_type,
+    double attenuate,
+  ) {
+    return _magickAddNoiseImage(
+      wand,
+      noise_type,
+      attenuate,
+    );
+  }
+
+  late final _magickAddNoiseImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Int,
+              ffi.Double)>>('magickAddNoiseImage');
+  late final _magickAddNoiseImage = _magickAddNoiseImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, double)>();
+
+  bool magickAffineTransformImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> drawing_wand,
+  ) {
+    return _magickAffineTransformImage(
+      wand,
+      drawing_wand,
+    );
+  }
+
+  late final _magickAffineTransformImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickAffineTransformImage');
+  late final _magickAffineTransformImage =
+      _magickAffineTransformImagePtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  bool magickAnnotateImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> drawing_wand,
+    double x,
+    double y,
+    double angle,
+    ffi.Pointer<ffi.Char> text,
+  ) {
+    return _magickAnnotateImage(
+      wand,
+      drawing_wand,
+      x,
+      y,
+      angle,
+      text,
+    );
+  }
+
+  late final _magickAnnotateImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<ffi.Char>)>>('magickAnnotateImage');
+  late final _magickAnnotateImage = _magickAnnotateImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, double,
+          double, double, ffi.Pointer<ffi.Char>)>();
+
+  bool magickAnimateImages(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> server_name,
+  ) {
+    return _magickAnimateImages(
+      wand,
+      server_name,
+    );
+  }
+
+  late final _magickAnimateImagesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickAnimateImages');
+  late final _magickAnimateImages = _magickAnimateImagesPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Void> magickAppendImages(
+    ffi.Pointer<ffi.Void> wand,
+    bool stack,
+  ) {
+    return _magickAppendImages(
+      wand,
+      stack,
+    );
+  }
+
+  late final _magickAppendImagesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Bool)>>('magickAppendImages');
+  late final _magickAppendImages = _magickAppendImagesPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, bool)>();
+
+  bool magickAutoGammaImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickAutoGammaImage(
+      wand,
+    );
+  }
+
+  late final _magickAutoGammaImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickAutoGammaImage');
+  late final _magickAutoGammaImage = _magickAutoGammaImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickAutoLevelImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickAutoLevelImage(
+      wand,
+    );
+  }
+
+  late final _magickAutoLevelImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickAutoLevelImage');
+  late final _magickAutoLevelImage = _magickAutoLevelImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickAutoOrientImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickAutoOrientImage(
+      wand,
+    );
+  }
+
+  late final _magickAutoOrientImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickAutoOrientImage');
+  late final _magickAutoOrientImage = _magickAutoOrientImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickAutoThresholdImage(
+    ffi.Pointer<ffi.Void> wand,
+    int method,
+  ) {
+    return _magickAutoThresholdImage(
+      wand,
+      method,
+    );
+  }
+
+  late final _magickAutoThresholdImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickAutoThresholdImage');
+  late final _magickAutoThresholdImage = _magickAutoThresholdImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickBilateralBlurImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+    double intensity_sigma,
+    double spatial_sigma,
+  ) {
+    return _magickBilateralBlurImage(
+      wand,
+      radius,
+      sigma,
+      intensity_sigma,
+      spatial_sigma,
+    );
+  }
+
+  late final _magickBilateralBlurImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double, ffi.Double,
+              ffi.Double, ffi.Double)>>('magickBilateralBlurImage');
+  late final _magickBilateralBlurImage =
+      _magickBilateralBlurImagePtr.asFunction<
+          bool Function(
+              ffi.Pointer<ffi.Void>, double, double, double, double)>();
+
+  bool magickBlackThresholdImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> threshold_wand,
+  ) {
+    return _magickBlackThresholdImage(
+      wand,
+      threshold_wand,
+    );
+  }
+
+  late final _magickBlackThresholdImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickBlackThresholdImage');
+  late final _magickBlackThresholdImage =
+      _magickBlackThresholdImagePtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  bool magickBlueShiftImage(
+    ffi.Pointer<ffi.Void> wand,
+    double factor,
+  ) {
+    return _magickBlueShiftImage(
+      wand,
+      factor,
+    );
+  }
+
+  late final _magickBlueShiftImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Double)>>('magickBlueShiftImage');
+  late final _magickBlueShiftImage = _magickBlueShiftImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double)>();
+
+  bool magickBlurImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+  ) {
+    return _magickBlurImage(
+      wand,
+      radius,
+      sigma,
+    );
+  }
+
+  late final _magickBlurImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickBlurImage');
+  late final _magickBlurImage = _magickBlurImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickBorderImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> bordercolor_wand,
+    int width,
+    int height,
+    int compose,
+  ) {
+    return _magickBorderImage(
+      wand,
+      bordercolor_wand,
+      width,
+      height,
+      compose,
+    );
+  }
+
+  late final _magickBorderImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Size, ffi.Size, ffi.Int)>>('magickBorderImage');
+  late final _magickBorderImage = _magickBorderImagePtr.asFunction<
+      bool Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int, int)>();
+
+  bool magickBrightnessContrastImage(
+    ffi.Pointer<ffi.Void> wand,
+    double brightness,
+    double contrast,
+  ) {
+    return _magickBrightnessContrastImage(
+      wand,
+      brightness,
+      contrast,
+    );
+  }
+
+  late final _magickBrightnessContrastImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickBrightnessContrastImage');
+  late final _magickBrightnessContrastImage = _magickBrightnessContrastImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickCannyEdgeImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+    double lower_percent,
+    double upper_percent,
+  ) {
+    return _magickCannyEdgeImage(
+      wand,
+      radius,
+      sigma,
+      lower_percent,
+      upper_percent,
+    );
+  }
+
+  late final _magickCannyEdgeImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double, ffi.Double,
+              ffi.Double, ffi.Double)>>('magickCannyEdgeImage');
+  late final _magickCannyEdgeImage = _magickCannyEdgeImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, double, double, double, double)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,
