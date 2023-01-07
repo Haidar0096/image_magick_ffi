@@ -2369,6 +2369,55 @@ class ImageMagickFfiBindings {
   late final _magickComplexImages = _magickComplexImagesPtr
       .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
 
+  bool magickCompositeImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> source_wand,
+    int compose,
+    bool clip_to_self,
+    int x,
+    int y,
+  ) {
+    return _magickCompositeImage(
+      wand,
+      source_wand,
+      compose,
+      clip_to_self,
+      x,
+      y,
+    );
+  }
+
+  late final _magickCompositeImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Int, ffi.Bool, ssize_t, ssize_t)>>('magickCompositeImage');
+  late final _magickCompositeImage = _magickCompositeImagePtr.asFunction<
+      bool Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, bool, int, int)>();
+
+  bool magickCompositeImageGravity(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> source_wand,
+    int compose,
+    int gravity,
+  ) {
+    return _magickCompositeImageGravity(
+      wand,
+      source_wand,
+      compose,
+      gravity,
+    );
+  }
+
+  late final _magickCompositeImageGravityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Int, ffi.Int)>>('magickCompositeImageGravity');
+  late final _magickCompositeImageGravity =
+      _magickCompositeImageGravityPtr.asFunction<
+          bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

@@ -1129,6 +1129,44 @@ class MagickWand {
     return MagickWand._(resultPtr);
   }
 
+  /// Composite one image onto another at the specified offset.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [sourceImage]: the magick wand holding source image
+  /// - [compose]: This operator affects how the composite is applied to the image.
+  /// The default is Over. These are some of the compose methods available.
+  /// - [clipToSelf]: set to MagickTrue to limit composition to area composed.
+  /// - [x]: the column offset of the composited image.
+  /// - [y]: the row offset of the composited image.
+  Future<bool> magickCompositeImage({
+    required MagickWand sourceImage,
+    required CompositeOperator compose,
+    required bool clipToSelf,
+    required int x,
+    required int y,
+  }) async =>
+      await compute(
+        _magickCompositeImage,
+        _MagickCompositeImageParams(_wandPtr.address, sourceImage._wandPtr.address, compose.index, clipToSelf, x, y),
+      );
+
+  /// Composite one image onto another using the specified gravity.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///  - [sourceWand]: the magick wand holding source image.
+  ///  - [compose]: This operator affects how the composite is applied to the image.
+  ///  The default is Over.
+  ///  - [gravity]: positioning gravity.
+  Future<bool> magickCompositeImageGravity({
+    required MagickWand sourceWand,
+    required CompositeOperator compose,
+    required GravityType gravity,
+  }) async =>
+      await compute(
+        _magickCompositeImageGravity,
+        _MagickCompositeImageGravityParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, gravity.value),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1606,6 +1644,45 @@ class _MagickComplexImagesParams {
 
 Future<int> _magickComplexImages(_MagickComplexImagesParams args) async =>
     _bindings.magickComplexImages(Pointer<Void>.fromAddress(args.wandPtrAddress), args.complexOperator).address;
+
+class _MagickCompositeImageParams {
+  final int wandPtrAddress;
+  final int sourceWandPtrAddress;
+  final int compositeOperator;
+  final bool clipToSelf;
+  final int x;
+  final int y;
+
+  _MagickCompositeImageParams(
+      this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.clipToSelf, this.x, this.y);
+}
+
+Future<bool> _magickCompositeImage(_MagickCompositeImageParams args) async => _bindings.magickCompositeImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
+      args.compositeOperator,
+      args.clipToSelf,
+      args.x,
+      args.y,
+    );
+
+class _MagickCompositeImageGravityParams {
+  final int wandPtrAddress;
+  final int sourceWandPtrAddress;
+  final int compositeOperator;
+  final int gravityType;
+
+  _MagickCompositeImageGravityParams(
+      this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.gravityType);
+}
+
+Future<bool> _magickCompositeImageGravity(_MagickCompositeImageGravityParams args) async =>
+    _bindings.magickCompositeImageGravity(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
+      args.compositeOperator,
+      args.gravityType,
+    );
 
 class _MagickReadImageParams {
   final int wandPtrAddress;

@@ -289,6 +289,10 @@ FFI_PLUGIN_EXPORT void* magickCompareImages(void* wand, const void* reference, c
 
 FFI_PLUGIN_EXPORT void* magickComplexImages(void* wand, const int op);
 
+FFI_PLUGIN_EXPORT bool magickCompositeImage(void *wand, const void *source_wand,const int compose, const bool clip_to_self,const ssize_t x,const ssize_t y);
+
+FFI_PLUGIN_EXPORT bool magickCompositeImageGravity(void *wand, const void *source_wand,const int compose,const int gravity);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);
