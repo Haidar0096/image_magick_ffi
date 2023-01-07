@@ -1,5 +1,5 @@
 # ImageMagickFFi Plugin
-This plugin brings to you the ImageMagick C/C++ library to use with dart.
+This plugin brings to you the [ImageMagick](https://imagemagick.org/) C library [MagickWand](https://imagemagick.org/script/magick-wand.php) to use with dart.
 ## Feel native
 Interact with the underlying ImageMagick C api just as you used to do in C (not with pointers, of course :P).
 
@@ -27,7 +27,7 @@ See the #Usage section below for more insights.
   - Make sure you add the snippet above before this line `include(flutter/generated_plugins.cmake)`
 - #### Android
   Currently only arm64-v8a (64 bits) is supported. If you want to help add support to armeabi-v7a (32 bits), have a look [here](https://github.com/MolotovCherry/Android-ImageMagick7/discussions/95).
-  
+
   To choose one of the variants add this to your **`android/build.gradle`** file as a top-level statement:
     ```
     // Use ImageMagick with Q16 and HDRI enabled.
@@ -46,58 +46,44 @@ See the #Usage section below for more insights.
 # Usage
 ```dart
   import 'package:image_magick_ffi/image_magick_ffi.dart' as im;
-  
-  // ...
-  @override
-  void initState() {
-    im.initialize(); // initialize the plugin (can also be done before `runApp`)
-    wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
-    super.initState();
-  }
-  // ...
+
+// ...
+@override
+void initState() {
+  im.initialize(); // initialize the plugin (can also be done before `runApp`)
+  wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+  super.initState();
+}
+// ...
 
 // reads an image, then writes it in jpeg format
 Future<String?> _handlePress() async {
   try {
-    // set a callback to be called while the image is being processed
-    await _wand.magickSetProgressMonitor(
-      progressMonitorFunction,
-      {
-        'myName': 'fayruz',
-        'myList': [1, 2, 3],
-      },
-    );
+    wand.magickReadImage(_inputFile!.path); // read an image file into the wand
 
-    await _wand.magickReadImage(_inputFile!.path); // read the image
-    
-    await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
-    
-    await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
+    String inputFileNameWithoutExtension =
+            _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
 
-    final String ps = Platform.pathSeparator;
-    String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
-    
-    await _wand.magickWriteImage(
-            "${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png"); // write the image to a file in the png format
-    
-    im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
+    wand.magickWriteImage(
+            "${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image in jpeg format, automatically detects the format from the file extension
+
+    im.MagickGetExceptionResult e = wand.magickGetException(); // get error, if any
     if (e.severity != im.ExceptionType.UndefinedException) {
       throw e.description;
     }
     return null;
-    
   } catch (e) {
     return e.toString();
   }
 }
 
-  // ...
-  @override
-  dispose() {
-    wand.destroyMagickWand(); // we are done with the wand
-    im.dispose(); // we are done with the plugin
-    super.dispose();
-  }
-  // ...
+// ...
+@override
+dispose() {
+  wand.destroyMagickWand(); // we are done with the wand
+  im.dispose(); // we are done with the plugin
+  super.dispose();
+}
+// ...
 ```
 - For more info about code usage, have a look at the example app in this repo.
