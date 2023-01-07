@@ -611,7 +611,13 @@ class MagickWand {
 
   /// Returns the current image from the magick wand.
   // TODO: check if there is an existing image with the same pointer and if we should copy its internal state.
-  Image getImageFromMagickWand() => Image._(_bindings.getImageFromMagickWand(_wandPtr));
+  Image? getImageFromMagickWand() {
+    final Pointer<Void> imagePtr = _bindings.getImageFromMagickWand(_wandPtr);
+    if (imagePtr == nullptr) {
+      return null;
+    }
+    return Image._(imagePtr);
+  }
 
   /// Adaptively blurs the image by blurring less intensely near image edges and more intensely
   /// far from edges. We blur the image with a Gaussian operator of the given radius and standard
@@ -719,20 +725,21 @@ class MagickWand {
   /// Typically you would call either `magickResetIterator()` or `magickSetFirstImage()` before calling this
   /// function to ensure that all the images in the wand's image list will be appended together.
   ///
-  /// Don't forget to dispose the returned `MagickWand` object when done.
+  /// Don't forget to dispose the returned [MagickWand] object when done.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [stack] : By default, images are stacked left-to-right. Set stack to true to stack them
   /// top-to-bottom.
-  // TODO: check if we should copy the wand's internal state of the wand if there is one.
-  Future<MagickWand> magickAppendImages(bool stack) async => MagickWand._(
-        Pointer<Void>.fromAddress(
-          await compute(
-            _magickAppendImages,
-            _MagickAppendImagesParams(_wandPtr.address, stack),
-          ),
-        ),
-      );
+  Future<MagickWand?> magickAppendImages(bool stack) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+      _magickAppendImages,
+      _MagickAppendImagesParams(_wandPtr.address, stack),
+    ));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   /// Extracts the 'mean' from the image and adjust the image to try make set its gamma appropriately.
   ///
@@ -885,11 +892,14 @@ class MagickWand {
   ///
   /// - [expression] : the expression. Sending an invalid expression may crash the app by ending the process,
   /// so make sure to validate the input to this method.
-  Future<MagickWand> magickChannelFxImage(String expression) async => MagickWand._(
-        Pointer<Void>.fromAddress(
-          await compute(_magickChannelFxImage, _MagickChannelFxImageParams(_wandPtr.address, expression)),
-        ),
-      );
+  Future<MagickWand?> magickChannelFxImage(String expression) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+        await compute(_magickChannelFxImage, _MagickChannelFxImageParams(_wandPtr.address, expression)));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   /// Simulates a charcoal drawing.
   ///
@@ -974,8 +984,13 @@ class MagickWand {
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<MagickWand> magickCoalesceImages() async =>
-      MagickWand._(Pointer<Void>.fromAddress(await compute(_magickCoalesceImages, _wandPtr.address)));
+  Future<MagickWand?> magickCoalesceImages() async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(_magickCoalesceImages, _wandPtr.address));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   // ignore: slash_for_doc_comments
   /**`magickColorDecisionListImage()` accepts a lightweight Color Correction Collection (CCC) file which
@@ -1041,8 +1056,16 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [colorSpace]: the colorspace.
-  Future<MagickWand> magickCombineImages(ColorspaceType colorSpace) async => MagickWand._(Pointer<Void>.fromAddress(
-      await compute(_magickCombineImages, _MagickCombineImagesParams(_wandPtr.address, colorSpace.index))));
+  Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+      _magickCombineImages,
+      _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
+    ));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   /// `magickCommentImage()` adds a comment to your image.
   ///
@@ -1058,14 +1081,16 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the compare method.
-  Future<MagickWand> magickCompareImagesLayers(LayerMethod method) async => MagickWand._(
-        Pointer<Void>.fromAddress(
-          await compute(
-            _magickCompareImagesLayers,
-            _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
-          ),
-        ),
-      );
+  Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+      _magickCompareImagesLayers,
+      _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
+    ));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   /// Compares an image to a reconstructed image and returns the specified difference image.
   ///
@@ -1075,16 +1100,17 @@ class MagickWand {
   /// - [reference] : the reference wand.
   /// - [metric] : the metric.
   /// - [distortion] : the computed distortion between the images.
-  Future<MagickWand> magickCompareImages(
-          {required MagickWand reference, required MetricType metric, required List<double> distortion}) async =>
-      MagickWand._(
-        Pointer<Void>.fromAddress(
-          await compute(
-            _magickCompareImages,
-            _MagickCompareImagesParams(_wandPtr.address, reference._wandPtr.address, metric.index, distortion),
-          ),
-        ),
-      );
+  Future<MagickWand?> magickCompareImages(
+      {required MagickWand reference, required MetricType metric, required List<double> distortion}) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+      _magickCompareImages,
+      _MagickCompareImagesParams(_wandPtr.address, reference._wandPtr.address, metric.index, distortion),
+    ));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   /// Performs complex mathematics on an image sequence.
   ///
@@ -1092,11 +1118,16 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [operator]: A complex operator.
-  Future<MagickWand> magickComplexImages(ComplexOperator operator) async => MagickWand._(
-        Pointer<Void>.fromAddress(
-          await compute(_magickComplexImages, _MagickComplexImagesParams(_wandPtr.address, operator.index)),
-        ),
-      );
+  Future<MagickWand?> magickComplexImages(ComplexOperator operator) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+      _magickComplexImages,
+      _MagickComplexImagesParams(_wandPtr.address, operator.index),
+    ));
+    if (resultPtr == nullptr) {
+      return null;
+    }
+    return MagickWand._(resultPtr);
+  }
 
   // TODO: continue adding the remaining methods
 

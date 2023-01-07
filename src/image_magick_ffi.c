@@ -554,28 +554,28 @@ FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matr
 	return MagickColorMatrixImage((MagickWand*)wand, (KernelInfo*)color_matrix) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void *wand, const void *start_color,const void *stop_color){
-    return MagickColorThresholdImage((MagickWand*)wand, (PixelWand*)start_color, (PixelWand*)stop_color) == MagickTrue;
+FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color) {
+	return MagickColorThresholdImage((MagickWand*)wand, (PixelWand*)start_color, (PixelWand*)stop_color) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT void* magickCombineImages(void *wand, const int colorspace){
-    return MagickCombineImages((MagickWand*)wand, colorspace);
+FFI_PLUGIN_EXPORT void* magickCombineImages(void* wand, const int colorspace) {
+	return MagickCombineImages((MagickWand*)wand, colorspace);
 }
 
-FFI_PLUGIN_EXPORT bool magickCommentImage(void *wand, const char *comment){
-    return MagickCommentImage((MagickWand*)wand, comment) == MagickTrue;
+FFI_PLUGIN_EXPORT bool magickCommentImage(void* wand, const char* comment) {
+	return MagickCommentImage((MagickWand*)wand, comment) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void *wand, const int method){
-    return MagickCompareImagesLayers((MagickWand*)wand, method);
+FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void* wand, const int method) {
+	return MagickCompareImagesLayers((MagickWand*)wand, method);
 }
 
-FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,const int metric, double *distortion){
-    return MagickCompareImages((MagickWand*)wand, (MagickWand*)reference, metric, distortion);
+FFI_PLUGIN_EXPORT void* magickCompareImages(void* wand, const void* reference, const int metric, double* distortion) {
+	return MagickCompareImages((MagickWand*)wand, (MagickWand*)reference, metric, distortion);
 }
 
-FFI_PLUGIN_EXPORT void *magickComplexImages(void *wand, const int op){
-    return MagickComplexImages((MagickWand*)wand, op);
+FFI_PLUGIN_EXPORT void* magickComplexImages(void* wand, const int op) {
+	return MagickComplexImages((MagickWand*)wand, op);
 }
 
 // TODO: complete adding the other methods

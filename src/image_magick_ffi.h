@@ -277,17 +277,17 @@ FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, con
 
 FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix);
 
-FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void *wand, const void *start_color,const void *stop_color);
+FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color);
 
-FFI_PLUGIN_EXPORT void* magickCombineImages(void *wand, const int colorspace);
+FFI_PLUGIN_EXPORT void* magickCombineImages(void* wand, const int colorspace);
 
-FFI_PLUGIN_EXPORT bool magickCommentImage(void *wand, const char *comment);
+FFI_PLUGIN_EXPORT bool magickCommentImage(void* wand, const char* comment);
 
-FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void *wand, const int method);
+FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void* wand, const int method);
 
-FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,const int metric, double *distortion);
+FFI_PLUGIN_EXPORT void* magickCompareImages(void* wand, const void* reference, const int metric, double* distortion);
 
-FFI_PLUGIN_EXPORT void *magickComplexImages(void *wand, const int op);
+FFI_PLUGIN_EXPORT void* magickComplexImages(void* wand, const int op);
 
 // TODO: complete adding the other methods
 
