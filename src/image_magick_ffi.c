@@ -586,6 +586,10 @@ FFI_PLUGIN_EXPORT bool magickCompositeImageGravity(void *wand, const void *sourc
     return MagickCompositeImageGravity((MagickWand*)wand, (MagickWand*)source_wand, compose, gravity) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickCompositeLayers(void *wand, const void *source_wand, const int compose, const ssize_t x,const ssize_t y){
+    return MagickCompositeLayers((MagickWand*)wand, (MagickWand*)source_wand, compose, x, y) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

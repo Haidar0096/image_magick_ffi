@@ -1167,6 +1167,38 @@ class MagickWand {
         _MagickCompositeImageGravityParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, gravity.value),
       );
 
+  /// `magickCompositeLayers()` composite the images in the source wand over the images in the
+  /// destination wand in sequence, starting with the current image in both lists.
+  /// Each layer from the two image lists are composted together until the end of one of the image
+  /// lists is reached. The offset of each composition is also adjusted to match the virtual canvas
+  /// offsets of each layer. As such the given offset is relative to the virtual canvas, and not the
+  /// actual image.
+  /// Composition uses given x and y offsets, as the 'origin' location of the source images virtual
+  /// canvas (not the real image) allowing you to compose a list of 'layer images' into the destination
+  /// images. This makes it well suitable for directly composing 'Clears Frame Animations' or
+  /// 'Coalesced Animations' onto a static or other 'Coalesced Animation' destination image list.
+  /// GIF disposal handling is not looked at.
+  /// Special case:- If one of the image sequences is the last image (just a single image remaining),
+  /// that image is repeatedly composed with all the images in the other image list. Either the source
+  /// or destination lists may be the single image, for this situation.
+  /// In the case of a single destination image (or last image given), that image will be cloned to
+  /// match the number of images remaining in the source image list.
+  /// This is equivalent to the "-layer Composite" Shell API operator.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [sourceWand]: the magick wand holding source image.
+  /// - Compose, x, and y are the compose arguments.
+  Future<bool> magickCompositeLayers({
+    required MagickWand sourceWand,
+    required CompositeOperator compose,
+    required int x,
+    required int y,
+  }) async =>
+      await compute(
+        _magickCompositeLayers,
+        _MagickCompositeLayersParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, x, y),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1682,6 +1714,24 @@ Future<bool> _magickCompositeImageGravity(_MagickCompositeImageGravityParams arg
       Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
       args.compositeOperator,
       args.gravityType,
+    );
+
+class _MagickCompositeLayersParams {
+  final int wandPtrAddress;
+  final int sourceWandPtrAddress;
+  final int compositeOperator;
+  final int x;
+  final int y;
+
+  _MagickCompositeLayersParams(this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.x, this.y);
+}
+
+Future<bool> _magickCompositeLayers(_MagickCompositeLayersParams args) async => _bindings.magickCompositeLayers(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
+      args.compositeOperator,
+      args.x,
+      args.y,
     );
 
 class _MagickReadImageParams {

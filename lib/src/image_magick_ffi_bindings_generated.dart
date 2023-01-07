@@ -2418,6 +2418,30 @@ class ImageMagickFfiBindings {
           bool Function(
               ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
 
+  bool magickCompositeLayers(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> source_wand,
+    int compose,
+    int x,
+    int y,
+  ) {
+    return _magickCompositeLayers(
+      wand,
+      source_wand,
+      compose,
+      x,
+      y,
+    );
+  }
+
+  late final _magickCompositeLayersPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Int, ssize_t, ssize_t)>>('magickCompositeLayers');
+  late final _magickCompositeLayers = _magickCompositeLayersPtr.asFunction<
+      bool Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int, int)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,
