@@ -2352,6 +2352,23 @@ class ImageMagickFfiBindings {
       ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
           ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Double>)>();
 
+  ffi.Pointer<ffi.Void> magickComplexImages(
+    ffi.Pointer<ffi.Void> wand,
+    int op,
+  ) {
+    return _magickComplexImages(
+      wand,
+      op,
+    );
+  }
+
+  late final _magickComplexImagesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickComplexImages');
+  late final _magickComplexImages = _magickComplexImagesPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

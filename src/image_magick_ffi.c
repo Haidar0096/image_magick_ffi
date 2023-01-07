@@ -574,6 +574,10 @@ FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,co
     return MagickCompareImages((MagickWand*)wand, (MagickWand*)reference, metric, distortion);
 }
 
+FFI_PLUGIN_EXPORT void *magickComplexImages(void *wand, const int op){
+    return MagickComplexImages((MagickWand*)wand, op);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

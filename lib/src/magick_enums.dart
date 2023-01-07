@@ -407,3 +407,15 @@ enum MetricType {
   StructuralSimilarityErrorMetric,
   StructuralDissimilarityErrorMetric
 }
+
+/// Represents a complex operator.
+enum ComplexOperator {
+  UndefinedComplexOperator,
+  AddComplexOperator,
+  ConjugateComplexOperator,
+  DivideComplexOperator,
+  MagnitudePhaseComplexOperator,
+  MultiplyComplexOperator,
+  RealImaginaryComplexOperator,
+  SubtractComplexOperator
+}

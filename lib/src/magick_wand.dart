@@ -1086,6 +1086,18 @@ class MagickWand {
         ),
       );
 
+  /// Performs complex mathematics on an image sequence.
+  ///
+  /// Don't forget to dispose the returned [MagickWand] when done.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [operator]: A complex operator.
+  Future<MagickWand> magickComplexImages(ComplexOperator operator) async => MagickWand._(
+        Pointer<Void>.fromAddress(
+          await compute(_magickComplexImages, _MagickComplexImagesParams(_wandPtr.address, operator.index)),
+        ),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1509,26 +1521,6 @@ Future<int> _magickCombineImages(_MagickCombineImagesParams params) async => _bi
     )
     .address;
 
-class _MagickReadImageParams {
-  final int wandPtrAddress;
-  final String imageFilePath;
-
-  _MagickReadImageParams(this.wandPtrAddress, this.imageFilePath);
-}
-
-Future<bool> _magickReadImage(_MagickReadImageParams args) async => using((Arena arena) => _bindings.magickReadImage(
-    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
-
-class _MagickWriteImageParams {
-  final int wandPtrAddress;
-  final String imageFilePath;
-
-  _MagickWriteImageParams(this.wandPtrAddress, this.imageFilePath);
-}
-
-Future<bool> _magickWriteImage(_MagickWriteImageParams args) async => using((Arena arena) => _bindings.magickWriteImage(
-    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
-
 class _MagickCommentImageParams {
   final int wandPtrAddress;
   final String comment;
@@ -1573,6 +1565,36 @@ Future<int> _magickCompareImages(_MagickCompareImagesParams args) async => using
           )
           .address,
     );
+
+class _MagickComplexImagesParams {
+  final int wandPtrAddress;
+  final int complexOperator;
+
+  _MagickComplexImagesParams(this.wandPtrAddress, this.complexOperator);
+}
+
+Future<int> _magickComplexImages(_MagickComplexImagesParams args) async =>
+    _bindings.magickComplexImages(Pointer<Void>.fromAddress(args.wandPtrAddress), args.complexOperator).address;
+
+class _MagickReadImageParams {
+  final int wandPtrAddress;
+  final String imageFilePath;
+
+  _MagickReadImageParams(this.wandPtrAddress, this.imageFilePath);
+}
+
+Future<bool> _magickReadImage(_MagickReadImageParams args) async => using((Arena arena) => _bindings.magickReadImage(
+    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
+
+class _MagickWriteImageParams {
+  final int wandPtrAddress;
+  final String imageFilePath;
+
+  _MagickWriteImageParams(this.wandPtrAddress, this.imageFilePath);
+}
+
+Future<bool> _magickWriteImage(_MagickWriteImageParams args) async => using((Arena arena) => _bindings.magickWriteImage(
+    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
 
 /// Represents an exception that occurred while using the ImageMagick API.
 class MagickGetExceptionResult {

@@ -287,6 +287,8 @@ FFI_PLUGIN_EXPORT void* magickCompareImagesLayers(void *wand, const int method);
 
 FFI_PLUGIN_EXPORT void* magickCompareImages(void *wand, const void *reference,const int metric, double *distortion);
 
+FFI_PLUGIN_EXPORT void *magickComplexImages(void *wand, const int op);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);
