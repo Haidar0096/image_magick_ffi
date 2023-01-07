@@ -1218,6 +1218,49 @@ class MagickWand {
       await compute(_magickWriteImage, _MagickWriteImageParams(_wandPtr.address, imageFilePath));
 }
 
+/// Represents an exception that occurred while using the ImageMagick API.
+class MagickGetExceptionResult {
+  /// The type of the exception.
+  final ExceptionType severity;
+
+  /// The description of the exception.
+  final String description;
+
+  const MagickGetExceptionResult(this.severity, this.description);
+
+  @override
+  String toString() {
+    return 'MagickException{severity: $severity, description: $description}';
+  }
+}
+
+/// Represents a result to a call to `magickGetPage()`.
+class MagickGetPageResult {
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  const MagickGetPageResult(this.width, this.height, this.x, this.y);
+}
+
+/// Represents a result to a call to `magickGetResolution()`.
+class MagickGetResolutionResult {
+  final double x;
+  final double y;
+
+  const MagickGetResolutionResult(this.x, this.y);
+}
+
+/// Represents a result to a call to `magickGetSize()`.
+class MagickGetSizeResult {
+  final int width;
+  final int height;
+
+  const MagickGetSizeResult(this.width, this.height);
+}
+
+
 class _MagickAdaptiveBlurImageParams {
   final int wandPtrAddress;
   final double radius;
@@ -1753,45 +1796,3 @@ class _MagickWriteImageParams {
 
 Future<bool> _magickWriteImage(_MagickWriteImageParams args) async => using((Arena arena) => _bindings.magickWriteImage(
     Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
-
-/// Represents an exception that occurred while using the ImageMagick API.
-class MagickGetExceptionResult {
-  /// The type of the exception.
-  final ExceptionType severity;
-
-  /// The description of the exception.
-  final String description;
-
-  const MagickGetExceptionResult(this.severity, this.description);
-
-  @override
-  String toString() {
-    return 'MagickException{severity: $severity, description: $description}';
-  }
-}
-
-/// Represents a result to a call to `magickGetPage()`.
-class MagickGetPageResult {
-  final int width;
-  final int height;
-  final int x;
-  final int y;
-
-  const MagickGetPageResult(this.width, this.height, this.x, this.y);
-}
-
-/// Represents a result to a call to `magickGetResolution()`.
-class MagickGetResolutionResult {
-  final double x;
-  final double y;
-
-  const MagickGetResolutionResult(this.x, this.y);
-}
-
-/// Represents a result to a call to `magickGetSize()`.
-class MagickGetSizeResult {
-  final int width;
-  final int height;
-
-  const MagickGetSizeResult(this.width, this.height);
-}
