@@ -1185,6 +1185,27 @@ class MagickWand {
         _MagickCompositeLayersParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, x, y),
       );
 
+  /// Enhances the intensity differences between the lighter and darker elements of the image.
+  /// Set sharpen to a value other than 0 to increase the image contrast otherwise the contrast
+  /// is reduced.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [sharpen]: Increase or decrease image contrast.
+  Future<bool> magickContrastImage(bool sharpen) async =>
+      await compute(_magickContrastImage, _MagickContrastImageParams(_wandPtr.address, sharpen));
+
+  /// Enhances the contrast of a color image by adjusting the pixels color to span the entire range of
+  /// colors available. You can also reduce the influence of a particular channel with a gamma value of 0.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [blackPoint]: the black point.
+  /// - [whitePoint]: the white point.
+  Future<bool> magickContrastStretchImage({required double whitePoint, required double blackPoint}) async =>
+      await compute(
+        _magickContrastStretchImage,
+        _MagickContrastStretchImageParams(_wandPtr.address, whitePoint, blackPoint),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1245,7 +1266,6 @@ class MagickGetSizeResult {
 
   const MagickGetSizeResult(this.width, this.height);
 }
-
 
 class _MagickAdaptiveBlurImageParams {
   final int wandPtrAddress;
@@ -1761,6 +1781,33 @@ Future<bool> _magickCompositeLayers(_MagickCompositeLayersParams args) async => 
       args.compositeOperator,
       args.x,
       args.y,
+    );
+
+class _MagickContrastImageParams {
+  final int wandPtrAddress;
+  final bool sharpen;
+
+  _MagickContrastImageParams(this.wandPtrAddress, this.sharpen);
+}
+
+Future<bool> _magickContrastImage(_MagickContrastImageParams args) async => _bindings.magickContrastImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.sharpen,
+    );
+
+class _MagickContrastStretchImageParams {
+  final int wandPtrAddress;
+  final double whitePoint;
+  final double blackPoint;
+
+  _MagickContrastStretchImageParams(this.wandPtrAddress, this.whitePoint, this.blackPoint);
+}
+
+Future<bool> _magickContrastStretchImage(_MagickContrastStretchImageParams args) async =>
+    _bindings.magickContrastStretchImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.blackPoint,
+      args.whitePoint,
     );
 
 class _MagickReadImageParams {

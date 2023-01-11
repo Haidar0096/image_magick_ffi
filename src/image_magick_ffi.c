@@ -590,6 +590,15 @@ FFI_PLUGIN_EXPORT bool magickCompositeLayers(void* wand, const void* source_wand
 	return MagickCompositeLayers((MagickWand*)wand, (MagickWand*)source_wand, compose, x, y) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickContrastImage(void* wand, const bool sharpen) {
+	MagickBooleanType _sharpen = sharpen ? MagickTrue : MagickFalse;
+	return MagickContrastImage((MagickWand*)wand, _sharpen) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black_point, const double white_point) {
+	return MagickContrastStretchImage((MagickWand*)wand, black_point, white_point) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

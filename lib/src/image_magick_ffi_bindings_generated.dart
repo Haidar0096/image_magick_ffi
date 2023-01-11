@@ -2442,6 +2442,42 @@ class ImageMagickFfiBindings {
       bool Function(
           ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int, int)>();
 
+  bool magickContrastImage(
+    ffi.Pointer<ffi.Void> wand,
+    bool sharpen,
+  ) {
+    return _magickContrastImage(
+      wand,
+      sharpen,
+    );
+  }
+
+  late final _magickContrastImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Bool)>>('magickContrastImage');
+  late final _magickContrastImage = _magickContrastImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, bool)>();
+
+  bool magickContrastStretchImage(
+    ffi.Pointer<ffi.Void> wand,
+    double black_point,
+    double white_point,
+  ) {
+    return _magickContrastStretchImage(
+      wand,
+      black_point,
+      white_point,
+    );
+  }
+
+  late final _magickContrastStretchImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickContrastStretchImage');
+  late final _magickContrastStretchImage = _magickContrastStretchImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

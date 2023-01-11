@@ -295,6 +295,10 @@ FFI_PLUGIN_EXPORT bool magickCompositeImageGravity(void* wand, const void* sourc
 
 FFI_PLUGIN_EXPORT bool magickCompositeLayers(void* wand, const void* source_wand, const int compose, const ssize_t x, const ssize_t y);
 
+FFI_PLUGIN_EXPORT bool magickContrastImage(void* wand, const bool sharpen);
+
+FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black_point, const double white_point);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);
