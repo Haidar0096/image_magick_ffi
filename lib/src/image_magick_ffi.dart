@@ -18,8 +18,6 @@ part 'drawing_wand.dart';
 
 part 'pixel_wand.dart';
 
-part 'image.dart';
-
 part 'magick_enums.dart';
 
 part 'magick_global_methods.dart';

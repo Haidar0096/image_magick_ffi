@@ -204,10 +204,6 @@ class MagickWand {
   /// Use `destroyMagickWand()` to dispose of the wand when it is no longer needed.
   factory MagickWand.newMagickWand() => MagickWand._(_bindings.newMagickWand());
 
-  /// Returns a wand with an image.
-  factory MagickWand.newMagickWandFromImage(Image image) =>
-      MagickWand._(_bindings.newMagickWandFromImage(image._imagePtr));
-
   /// Deletes a wand artifact.
   bool magickDeleteImageArtifact(String artifact) => using(
       (Arena arena) => _bindings.magickDeleteImageArtifact(_wandPtr, artifact.toNativeUtf8(allocator: arena).cast()));
@@ -608,16 +604,6 @@ class MagickWand {
 
   /// Sets the image type attribute.
   bool magickSetType(ImageType imageType) => _bindings.magickSetType(_wandPtr, imageType.index);
-
-  /// Returns the current image from the magick wand.
-  // TODO: check if there is an existing image with the same pointer and if we should copy its internal state.
-  Image? getImageFromMagickWand() {
-    final Pointer<Void> imagePtr = _bindings.getImageFromMagickWand(_wandPtr);
-    if (imagePtr == nullptr) {
-      return null;
-    }
-    return Image._(imagePtr);
-  }
 
   /// Adaptively blurs the image by blurring less intensely near image edges and more intensely
   /// far from edges. We blur the image with a Gaussian operator of the given radius and standard
