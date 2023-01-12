@@ -377,21 +377,6 @@ class ImageMagickFfiBindings {
   late final _newMagickWand =
       _newMagickWandPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
 
-  ffi.Pointer<ffi.Void> newMagickWandFromImage(
-    ffi.Pointer<ffi.Void> image,
-  ) {
-    return _newMagickWandFromImage(
-      image,
-    );
-  }
-
-  late final _newMagickWandFromImagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>)>>('newMagickWandFromImage');
-  late final _newMagickWandFromImage = _newMagickWandFromImagePtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
-
   bool isMagickWandInstantiated() {
     return _isMagickWandInstantiated();
   }
@@ -2237,23 +2222,6 @@ class ImageMagickFfiBindings {
   late final _magickColorizeImage = _magickColorizeImagePtr.asFunction<
       bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
           ffi.Pointer<ffi.Void>)>();
-
-  bool magickColorMatrixImage(
-    ffi.Pointer<ffi.Void> wand,
-    ffi.Pointer<ffi.Void> color_matrix,
-  ) {
-    return _magickColorMatrixImage(
-      wand,
-      color_matrix,
-    );
-  }
-
-  late final _magickColorMatrixImagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>)>>('magickColorMatrixImage');
-  late final _magickColorMatrixImage = _magickColorMatrixImagePtr.asFunction<
-      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
 
   bool magickColorThresholdImage(
     ffi.Pointer<ffi.Void> wand,

@@ -1011,23 +1011,6 @@ class MagickWand {
         _MagickColorizeImageParams(_wandPtr.address, colorize._wandPtr.address, blend._wandPtr.address),
       );
 
-  /// `magickColorMatrixImage()` apply color transformation to an image. The method permits saturation
-  /// changes, hue rotation, luminance to alpha, and various other effects. Although variable-sized
-  /// transformation matrices can be used, typically one uses a 5x5 matrix for an RGBA image and a 6x6 for
-  /// CMYKA (or RGBA with offsets). The matrix is similar to those used by Adobe Flash except offsets are in
-  /// column 6 rather than 5 (in support of CMYKA images) and offsets are normalized (divide Flash offset
-  /// by 255).
-  ///
-  /// This method runs inside an isolate different from the main isolate.
-  /// - [colorMatrix] : the color matrix.
-  Future<bool> magickColorMatrixImage(KernelInfo colorMatrix) async => using((Arena arena) async => await compute(
-        _magickColorMatrixImage,
-        _MagickColorMatrixImageParams(
-          _wandPtr.address,
-          colorMatrix._toKernelInfoStructPointer(allocator: arena).address,
-        ),
-      ));
-
   /// Forces all pixels in the color range to white otherwise black.
   ///
   /// This method runs inside an isolate different from the main isolate.
@@ -1632,18 +1615,6 @@ Future<bool> _magickColorizeImage(_MagickColorizeImageParams params) async => _b
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       Pointer<Void>.fromAddress(params.colorizePixelWandPtrAddress),
       Pointer<Void>.fromAddress(params.blendPixelWandPtrAddress),
-    );
-
-class _MagickColorMatrixImageParams {
-  final int wandPtrAddress;
-  final int kernelInfoPtrAddress;
-
-  _MagickColorMatrixImageParams(this.wandPtrAddress, this.kernelInfoPtrAddress);
-}
-
-Future<bool> _magickColorMatrixImage(_MagickColorMatrixImageParams params) async => _bindings.magickColorMatrixImage(
-      Pointer<Void>.fromAddress(params.wandPtrAddress),
-      Pointer<Void>.fromAddress(params.kernelInfoPtrAddress),
     );
 
 class _MagickColorThresholdImageParams {

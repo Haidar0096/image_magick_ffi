@@ -63,8 +63,6 @@ FFI_PLUGIN_EXPORT void magickWandTerminus(void);
 
 FFI_PLUGIN_EXPORT void* newMagickWand(void);
 
-FFI_PLUGIN_EXPORT void* newMagickWandFromImage(const void* image);
-
 FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void);
 
 FFI_PLUGIN_EXPORT bool magickDeleteImageArtifact(void* wand, const char* artifact);
@@ -274,8 +272,6 @@ FFI_PLUGIN_EXPORT void* magickCoalesceImages(void* wand);
 FFI_PLUGIN_EXPORT bool magickColorDecisionListImage(void* wand, const char* color_correction_collection);
 
 FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, const void* blend);
-
-FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix);
 
 FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color);
 

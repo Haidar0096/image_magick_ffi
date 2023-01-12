@@ -97,9 +97,6 @@ FFI_PLUGIN_EXPORT void* newMagickWand(void) {
 	return NewMagickWand();
 }
 
-FFI_PLUGIN_EXPORT void* newMagickWandFromImage(const void* image) {
-	return NewMagickWandFromImage((const Image*)image);
-}
 
 FFI_PLUGIN_EXPORT bool isMagickWandInstantiated(void) {
 	return IsMagickWandInstantiated() == MagickTrue;
@@ -548,10 +545,6 @@ FFI_PLUGIN_EXPORT bool magickColorDecisionListImage(void* wand, const char* colo
 
 FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, const void* blend) {
 	return MagickColorizeImage((MagickWand*)wand, (PixelWand*)colorize, (PixelWand*)blend) == MagickTrue;
-}
-
-FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix) {
-	return MagickColorMatrixImage((MagickWand*)wand, (KernelInfo*)color_matrix) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color) {
