@@ -26,7 +26,7 @@ extension IntListExtension on List<int> {
   /// a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
-  Pointer<UnsignedChar> toUnsignedCharArray({required Allocator allocator}) {
+  Pointer<UnsignedChar> toUnsignedCharArrayPointer({required Allocator allocator}) {
     if (isEmpty) {
       return nullptr;
     }
@@ -43,7 +43,7 @@ extension DoubleListExtension on List<double>{
   /// a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
-  Pointer<Double> toDoubleArray({required Allocator allocator}) {
+  Pointer<Double> toDoubleArrayPointer({required Allocator allocator}) {
     if (isEmpty) {
       return nullptr;
     }

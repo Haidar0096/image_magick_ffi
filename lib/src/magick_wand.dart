@@ -428,7 +428,7 @@ class MagickWand {
   /// from the image otherwise added. Use a name of '*' and a profile of NULL to remove all profiles from
   /// the image.
   bool magickProfileImage(String name, List<int>? profile) => using((Arena arena) {
-        final Pointer<UnsignedChar> profilePtr = profile?.toUnsignedCharArray(allocator: arena) ?? nullptr;
+        final Pointer<UnsignedChar> profilePtr = profile?.toUnsignedCharArrayPointer(allocator: arena) ?? nullptr;
         final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
         return _bindings.magickProfileImage(_wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
       });
@@ -499,7 +499,7 @@ class MagickWand {
   /// it is replaced. This method differs from the MagickProfileImage() method in that it does not
   /// apply any CMS color profiles.
   bool magickSetImageProfile(String name, List<int> profile) => using((Arena arena) {
-        final Pointer<UnsignedChar> profilePtr = profile.toUnsignedCharArray(allocator: arena);
+        final Pointer<UnsignedChar> profilePtr = profile.toUnsignedCharArrayPointer(allocator: arena);
         final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
         return _bindings.magickSetImageProfile(_wandPtr, namePtr, profilePtr.cast(), profile.length);
       });
@@ -578,7 +578,7 @@ class MagickWand {
   /// - [samplingFactors] : An array of doubles representing the sampling factor for each
   /// color component (in RGB order).
   bool magickSetSamplingFactors(List<double> samplingFactors) => using((Arena arena) {
-        final Pointer<Double> samplingFactorsPtr = samplingFactors.toDoubleArray(allocator: arena);
+        final Pointer<Double> samplingFactorsPtr = samplingFactors.toDoubleArrayPointer(allocator: arena);
         return _bindings.magickSetSamplingFactors(_wandPtr, samplingFactors.length, samplingFactorsPtr);
       });
 
@@ -1020,8 +1020,13 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [colorMatrix] : the color matrix.
-  Future<bool> magickColorMatrixImage(KernelInfo colorMatrix) async => await compute(
-      _magickColorMatrixImage, _MagickColorMatrixImageParams(_wandPtr.address, colorMatrix._kernelInfoPtr.address));
+  Future<bool> magickColorMatrixImage(KernelInfo colorMatrix) async => using((Arena arena) async => await compute(
+        _magickColorMatrixImage,
+        _MagickColorMatrixImageParams(
+          _wandPtr.address,
+          colorMatrix._toKernelInfoStructPointer(allocator: arena).address,
+        ),
+      ));
 
   /// Forces all pixels in the color range to white otherwise black.
   ///
@@ -1711,7 +1716,7 @@ Future<int> _magickCompareImages(_MagickCompareImagesParams args) async => using
             Pointer<Void>.fromAddress(args.wandPtrAddress),
             Pointer<Void>.fromAddress(args.referenceWandPtrAddress),
             args.metricType,
-            args.distortion.toDoubleArray(allocator: arena),
+            args.distortion.toDoubleArrayPointer(allocator: arena),
           )
           .address,
     );
