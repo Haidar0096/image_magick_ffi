@@ -147,6 +147,7 @@
 - [x] MagickContrastImage
 - [x] MagickContrastStretchImage
 - [ ] MagickConvolveImage
+- [x] MagickCropImage
 
 
 

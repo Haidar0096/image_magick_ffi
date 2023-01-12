@@ -295,6 +295,8 @@ FFI_PLUGIN_EXPORT bool magickContrastImage(void* wand, const bool sharpen);
 
 FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black_point, const double white_point);
 
+FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

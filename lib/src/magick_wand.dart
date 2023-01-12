@@ -1194,6 +1194,24 @@ class MagickWand {
         _MagickContrastStretchImageParams(_wandPtr.address, whitePoint, blackPoint),
       );
 
+  /// Extracts a region of the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [width]: the region width.
+  /// - [height]: the region height.
+  /// - [x]: the region x offset.
+  /// - [y]: the region y offset.
+  Future<bool> magickCropImage({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+  }) async =>
+      await compute(
+        _magickCropImage,
+        _MagickCropImageParams(_wandPtr.address, width, height, x, y),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1784,6 +1802,26 @@ Future<bool> _magickContrastStretchImage(_MagickContrastStretchImageParams args)
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.blackPoint,
       args.whitePoint,
+    );
+
+class _MagickCropImageParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  _MagickCropImageParams(this.wandPtrAddress, this.width, this.height, this.x, this.y);
+}
+
+Future<bool> _magickCropImage(_MagickCropImageParams args) async => using(
+      (Arena arena) => _bindings.magickCropImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.width,
+        args.height,
+        args.x,
+        args.y,
+      ),
     );
 
 class _MagickReadImageParams {

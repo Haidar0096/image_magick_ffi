@@ -592,6 +592,10 @@ FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black
 	return MagickContrastStretchImage((MagickWand*)wand, black_point, white_point) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y) {
+	return MagickCropImage((MagickWand*)wand, width, height, x, y) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

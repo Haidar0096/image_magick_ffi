@@ -2446,6 +2446,29 @@ class ImageMagickFfiBindings {
   late final _magickContrastStretchImage = _magickContrastStretchImagePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
 
+  bool magickCropImage(
+    ffi.Pointer<ffi.Void> wand,
+    int width,
+    int height,
+    int x,
+    int y,
+  ) {
+    return _magickCropImage(
+      wand,
+      width,
+      height,
+      x,
+      y,
+    );
+  }
+
+  late final _magickCropImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size, ssize_t,
+              ssize_t)>>('magickCropImage');
+  late final _magickCropImage = _magickCropImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int, int, int)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,
