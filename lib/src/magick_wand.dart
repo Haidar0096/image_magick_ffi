@@ -1242,6 +1242,13 @@ class MagickWand {
         _MagickCropImageParams(_wandPtr.address, width, height, x, y),
       );
 
+  /// Displaces an image's colormap by a given number of positions. If you cycle the colormap a
+  /// number of times you can produce a psychodelic effect.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickCycleColormapImage(int displace) async =>
+      await compute(_magickCycleColormapImage, _MagickCycleColormapImageParams(_wandPtr.address, displace));
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the current image
@@ -1877,6 +1884,16 @@ Future<bool> _magickCropImage(_MagickCropImageParams args) async => using(
         args.y,
       ),
     );
+
+class _MagickCycleColormapImageParams {
+  final int wandPtrAddress;
+  final int displace;
+
+  _MagickCycleColormapImageParams(this.wandPtrAddress, this.displace);
+}
+
+Future<bool> _magickCycleColormapImage(_MagickCycleColormapImageParams args) async =>
+    _bindings.magickCycleColormapImage(Pointer<Void>.fromAddress(args.wandPtrAddress), args.displace);
 
 class _MagickReadImageParams {
   final int wandPtrAddress;

@@ -301,6 +301,8 @@ FFI_PLUGIN_EXPORT bool magickConvolveImage(void* wand, const void* kernel);
 
 FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y);
 
+FFI_PLUGIN_EXPORT bool magickCycleColormapImage(void* wand, const ssize_t displace);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

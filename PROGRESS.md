@@ -148,6 +148,6 @@
 - [x] MagickContrastStretchImage
 - [x] MagickConvolveImage
 - [x] MagickCropImage
-
+- [x] MagickCycleColormapImage
 
 

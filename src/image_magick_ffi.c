@@ -604,6 +604,10 @@ FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const siz
 	return MagickCropImage((MagickWand*)wand, width, height, x, y) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickCycleColormapImage(void* wand, const ssize_t displace) {
+	return MagickCycleColormapImage((MagickWand*)wand, displace) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {
