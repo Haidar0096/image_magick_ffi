@@ -2223,6 +2223,23 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
           ffi.Pointer<ffi.Void>)>();
 
+  bool magickColorMatrixImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> color_matrix,
+  ) {
+    return _magickColorMatrixImage(
+      wand,
+      color_matrix,
+    );
+  }
+
+  late final _magickColorMatrixImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickColorMatrixImage');
+  late final _magickColorMatrixImage = _magickColorMatrixImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
   bool magickColorThresholdImage(
     ffi.Pointer<ffi.Void> wand,
     ffi.Pointer<ffi.Void> start_color,
@@ -2445,6 +2462,23 @@ class ImageMagickFfiBindings {
               ffi.Double)>>('magickContrastStretchImage');
   late final _magickContrastStretchImage = _magickContrastStretchImagePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickConvolveImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> kernel,
+  ) {
+    return _magickConvolveImage(
+      wand,
+      kernel,
+    );
+  }
+
+  late final _magickConvolveImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickConvolveImage');
+  late final _magickConvolveImage = _magickConvolveImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
 
   bool magickCropImage(
     ffi.Pointer<ffi.Void> wand,

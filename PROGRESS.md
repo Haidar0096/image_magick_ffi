@@ -133,7 +133,7 @@
 - [x] MagickCoalesceImages
 - [x] MagickColorDecisionListImage
 - [x] MagickColorizeImage
-- [ ] MagickColorMatrixImage
+- [x] MagickColorMatrixImage
 - [x] MagickColorThresholdImage
 - [x] MagickCombineImages
 - [x] MagickCommentImage
@@ -146,7 +146,7 @@
 - [ ] MagickConnectedComponentsImage
 - [x] MagickContrastImage
 - [x] MagickContrastStretchImage
-- [ ] MagickConvolveImage
+- [x] MagickConvolveImage
 - [x] MagickCropImage
 
 

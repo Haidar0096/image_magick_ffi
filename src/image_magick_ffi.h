@@ -273,6 +273,8 @@ FFI_PLUGIN_EXPORT bool magickColorDecisionListImage(void* wand, const char* colo
 
 FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, const void* blend);
 
+FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix);
+
 FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color);
 
 FFI_PLUGIN_EXPORT void* magickCombineImages(void* wand, const int colorspace);
@@ -294,6 +296,8 @@ FFI_PLUGIN_EXPORT bool magickCompositeLayers(void* wand, const void* source_wand
 FFI_PLUGIN_EXPORT bool magickContrastImage(void* wand, const bool sharpen);
 
 FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black_point, const double white_point);
+
+FFI_PLUGIN_EXPORT bool magickConvolveImage(void* wand, const void* kernel);
 
 FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y);
 

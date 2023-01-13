@@ -547,6 +547,10 @@ FFI_PLUGIN_EXPORT bool magickColorizeImage(void* wand, const void* colorize, con
 	return MagickColorizeImage((MagickWand*)wand, (PixelWand*)colorize, (PixelWand*)blend) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickColorMatrixImage(void* wand, const void* color_matrix) {
+	return MagickColorMatrixImage((MagickWand*)wand, (const KernelInfo*)color_matrix) == MagickTrue;
+}
+
 FFI_PLUGIN_EXPORT bool magickColorThresholdImage(void* wand, const void* start_color, const void* stop_color) {
 	return MagickColorThresholdImage((MagickWand*)wand, (PixelWand*)start_color, (PixelWand*)stop_color) == MagickTrue;
 }
@@ -590,6 +594,10 @@ FFI_PLUGIN_EXPORT bool magickContrastImage(void* wand, const bool sharpen) {
 
 FFI_PLUGIN_EXPORT bool magickContrastStretchImage(void* wand, const double black_point, const double white_point) {
 	return MagickContrastStretchImage((MagickWand*)wand, black_point, white_point) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickConvolveImage(void* wand, const void* kernel) {
+	return MagickConvolveImage((MagickWand*)wand, (const KernelInfo*)kernel) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y) {

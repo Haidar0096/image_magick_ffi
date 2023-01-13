@@ -419,3 +419,53 @@ enum ComplexOperator {
   RealImaginaryComplexOperator,
   SubtractComplexOperator
 }
+
+/// Represents a kernel type.
+enum KernelInfoType {
+  /* equivalent to UnityKernel */
+  UndefinedKernel,
+  /* The no-op or 'original image' kernel */
+  UnityKernel,
+  /* Convolution Kernels, Gaussian Based */
+  GaussianKernel,
+  DoGKernel,
+  LoGKernel,
+  BlurKernel,
+  CometKernel,
+  BinomialKernel,
+  /* Convolution Kernels, by Name */
+  LaplacianKernel,
+  SobelKernel,
+  FreiChenKernel,
+  RobertsKernel,
+  PrewittKernel,
+  CompassKernel,
+  KirschKernel,
+  /* Shape Kernels */
+  DiamondKernel,
+  SquareKernel,
+  RectangleKernel,
+  OctagonKernel,
+  DiskKernel,
+  PlusKernel,
+  CrossKernel,
+  RingKernel,
+  /* Hit And Miss Kernels */
+  PeaksKernel,
+  EdgesKernel,
+  CornersKernel,
+  DiagonalsKernel,
+  LineEndsKernel,
+  LineJunctionsKernel,
+  RidgesKernel,
+  ConvexHullKernel,
+  ThinSEKernel,
+  SkeletonKernel,
+  /* Distance Measuring Kernels */
+  ChebyshevKernel,
+  ManhattanKernel,
+  OctagonalKernel,
+  EuclideanKernel,
+  /* User Specified Kernel Array */
+  UserDefinedKernel
+}

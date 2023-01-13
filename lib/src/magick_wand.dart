@@ -1011,6 +1011,26 @@ class MagickWand {
         _MagickColorizeImageParams(_wandPtr.address, colorize._wandPtr.address, blend._wandPtr.address),
       );
 
+  /// Apply color transformation to an image. The method permits saturation changes, hue rotation,
+  /// luminance to alpha, and various other effects. Although variable-sized transformation matrices
+  /// can be used, typically one uses a 5x5 matrix for an RGBA image and a 6x6 for CMYKA (or RGBA
+  /// with offsets). The matrix is similar to those used by Adobe Flash except offsets are in
+  /// column 6 rather than 5 (in support of CMYKA images) and offsets are normalized (divide Flash
+  /// offset by 255).
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [colorMatrix] : the color matrix.
+  Future<bool> magickColorMatrixImage({required KernelInfo colorMatrix}) async => using(
+        (Arena arena) async => await compute(
+          _magickColorMatrixImage,
+          _MagickColorMatrixImageParams(
+            _wandPtr.address,
+            colorMatrix._toKernelInfoStructPointer(allocator: arena).address,
+          ),
+        ),
+      );
+
   /// Forces all pixels in the color range to white otherwise black.
   ///
   /// This method runs inside an isolate different from the main isolate.
@@ -1193,6 +1213,16 @@ class MagickWand {
         _magickContrastStretchImage,
         _MagickContrastStretchImageParams(_wandPtr.address, whitePoint, blackPoint),
       );
+
+  /// Applies a custom convolution kernel to the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [kernel]: An array of doubles representing the convolution kernel.
+  Future<bool> magickConvolveImage({required KernelInfo kernel}) async => using((Arena arena) async => await compute(
+        _magickConvolveImage,
+        _MagickConvolveImageParams(_wandPtr.address, kernel._toKernelInfoStructPointer(allocator: arena).address),
+      ));
 
   /// Extracts a region of the image.
   ///
@@ -1635,6 +1665,18 @@ Future<bool> _magickColorizeImage(_MagickColorizeImageParams params) async => _b
       Pointer<Void>.fromAddress(params.blendPixelWandPtrAddress),
     );
 
+class _MagickColorMatrixImageParams {
+  final int wandPtrAddress;
+  final int colorMatrixKernelInfoPtrAddress;
+
+  _MagickColorMatrixImageParams(this.wandPtrAddress, this.colorMatrixKernelInfoPtrAddress);
+}
+
+Future<bool> _magickColorMatrixImage(_MagickColorMatrixImageParams params) async => _bindings.magickColorMatrixImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      Pointer<Void>.fromAddress(params.colorMatrixKernelInfoPtrAddress),
+    );
+
 class _MagickColorThresholdImageParams {
   final int wandPtrAddress;
   final int startColorPixelWandPtrAddress;
@@ -1802,6 +1844,18 @@ Future<bool> _magickContrastStretchImage(_MagickContrastStretchImageParams args)
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.blackPoint,
       args.whitePoint,
+    );
+
+class _MagickConvolveImageParams {
+  final int wandPtrAddress;
+  final int kernelInfoPtrAddress;
+
+  _MagickConvolveImageParams(this.wandPtrAddress, this.kernelInfoPtrAddress);
+}
+
+Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async => _bindings.magickConvolveImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.kernelInfoPtrAddress),
     );
 
 class _MagickCropImageParams {
