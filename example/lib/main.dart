@@ -38,10 +38,14 @@ class _MyAppState extends State<MyApp> {
     im.initialize(); // initialize the plugin, this can be done before `runApp` as well
     _wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
 
-    File file = File("D:\\magick\\Screenshot.png");
+    File file = File("D:\\magick\\screenshot.png");
     if (file.existsSync()) {
       _inputFile = file;
     }
+
+    // set a callback to be called when image processing progress changes
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async => await _wand.magickSetProgressMonitor(
+            (info, offset, size, clientData) => print("Progress: $info, $offset, $size, $clientData")));
 
     _outputImageWidthController.text = _outputImageWidth.toString();
     _outputImageHeightController.text = _outputImageHeight.toString();
@@ -195,7 +199,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // reads an image, then writes it in jpeg format
+  // reads an image, manipulates it, then writes it in png format
   Future<String?> _handlePress() async {
     try {
       setState(() => isLoading = true);
@@ -205,6 +209,7 @@ class _MyAppState extends State<MyApp> {
       await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
       await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
 
+      // set output image name
       final String ps = Platform.pathSeparator;
       final String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
       final String outputFilePath = '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
@@ -215,7 +220,6 @@ class _MyAppState extends State<MyApp> {
       if (e.severity != im.ExceptionType.UndefinedException) {
         throw e.description;
       }
-
       setState(() => isLoading = false);
       return null;
     } catch (e) {

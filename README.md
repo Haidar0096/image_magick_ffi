@@ -56,23 +56,31 @@ void initState() {
 }
 // ...
 
-// reads an image, then writes it in jpeg format
+// reads an image, manipulates it, then writes it in png format
 Future<String?> _handlePress() async {
   try {
-    wand.magickReadImage(_inputFile!.path); // read an image file into the wand
+    setState(() => isLoading = true);
 
-    String inputFileNameWithoutExtension =
-            _inputFile!.path.split('\\').last.split('.').first; // get input image name without extension
+    await _wand.magickReadImage(_inputFile!.path); // read the image
 
-    wand.magickWriteImage(
-            "${outputDirectory!.path}\\out_$inputFileNameWithoutExtension.jpeg"); // write image in jpeg format, automatically detects the format from the file extension
+    await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
+    await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
 
-    im.MagickGetExceptionResult e = wand.magickGetException(); // get error, if any
+    // set output image name
+    final String ps = Platform.pathSeparator;
+    final String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
+    final String outputFilePath = '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+
+    await _wand.magickWriteImage(outputFilePath); // write the image to a file in the png format
+
+    im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
     if (e.severity != im.ExceptionType.UndefinedException) {
       throw e.description;
     }
+    setState(() => isLoading = false);
     return null;
   } catch (e) {
+    setState(() => isLoading = false);
     return e.toString();
   }
 }
