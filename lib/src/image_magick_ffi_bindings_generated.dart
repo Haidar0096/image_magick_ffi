@@ -2520,6 +2520,37 @@ class ImageMagickFfiBindings {
   late final _magickCycleColormapImage = _magickCycleColormapImagePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
 
+  bool magickConstituteImage(
+    ffi.Pointer<ffi.Void> wand,
+    int columns,
+    int rows,
+    ffi.Pointer<ffi.Char> map,
+    int storage,
+    ffi.Pointer<ffi.Void> pixels,
+  ) {
+    return _magickConstituteImage(
+      wand,
+      columns,
+      rows,
+      map,
+      storage,
+      pixels,
+    );
+  }
+
+  late final _magickConstituteImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Size,
+              ffi.Size,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Void>)>>('magickConstituteImage');
+  late final _magickConstituteImage = _magickConstituteImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, int, int, ffi.Pointer<ffi.Char>, int,
+          ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

@@ -26,11 +26,13 @@ extension IntListExtension on List<int> {
   /// a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
-  Pointer<UnsignedChar> toUnsignedCharArrayPointer({required Allocator allocator}) {
+  Pointer<UnsignedChar> toUnsignedCharArrayPointer(
+      {required Allocator allocator}) {
     if (isEmpty) {
       return nullptr;
     }
-    final Pointer<UnsignedChar> array = allocator(sizeOf<UnsignedChar>() * length);
+    final Pointer<UnsignedChar> array =
+        allocator(sizeOf<UnsignedChar>() * length);
     for (int i = 0; i < length; i++) {
       array[i] = this[i];
     }
@@ -38,7 +40,7 @@ extension IntListExtension on List<int> {
   }
 }
 
-extension DoubleListExtension on List<double>{
+extension DoubleListExtension on List<double> {
   /// Creates a `double` array from this list by copying the list's data, and returns
   /// a pointer to it.
   ///
