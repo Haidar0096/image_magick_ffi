@@ -12,9 +12,7 @@ dependencies:
     sdk: flutter
 
   image_magick_ffi:
-    git:
-      url: https://github.com/Haidar0096/image_magick_ffi.git
-      ref: master
+    path: ../
   file_picker: ^5.2.1
 
   path_provider: ^2.0.11
