@@ -28,7 +28,8 @@ part 'kernel_info.dart';
 
 const String _libName = 'image_magick_ffi';
 
-/// The dynamic library in which the symbols for [ImageMagickFfiBindings] can be found.
+/// The dynamic library in which the symbols for [ImageMagickFfiBindings] can
+/// be found.
 final DynamicLibrary _dylib = () {
   if (Platform.isMacOS || Platform.isIOS) {
     return DynamicLibrary.open('$_libName.framework/$_libName');

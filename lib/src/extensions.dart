@@ -22,8 +22,8 @@ extension UnsignedCharPointerExtension on Pointer<UnsignedChar> {
 }
 
 extension IntListExtension on List<int> {
-  /// Creates an `unsigned char` array from this list by copying the list's data, and returns
-  /// a pointer to it.
+  /// Creates an `unsigned char` array from this list by copying the list's
+  /// data, and returns a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
   Pointer<UnsignedChar> toUnsignedCharArrayPointer(
@@ -41,8 +41,8 @@ extension IntListExtension on List<int> {
 }
 
 extension DoubleListExtension on List<double> {
-  /// Creates a `double` array from this list by copying the list's data, and returns
-  /// a pointer to it.
+  /// Creates a `double` array from this list by copying the list's data, and
+  /// returns a pointer to it.
   ///
   /// `nullptr` is returned if the list is empty.
   Pointer<Double> toDoubleArrayPointer({required Allocator allocator}) {

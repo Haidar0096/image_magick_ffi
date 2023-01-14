@@ -1,6 +1,7 @@
 part of 'image_magick_ffi.dart';
 
-/// Initializes the necessary resources used with the plugin. This must be called before any use of the plugin.
+/// Initializes the necessary resources used with the plugin. This must be
+/// called before any use of the plugin.
 void initialize() {
   _magickWandGenesis();
   assert(_bindings.initDartAPI(NativeApi.initializeApiDLData) == 0,
@@ -10,7 +11,8 @@ void initialize() {
 /// Disposes the resources used with the plugin.
 void dispose() => _magickWandTerminus();
 
-/// Returns the value associated with the specified configure option, or null in case of no match.
+/// Returns the value associated with the specified configure option, or null
+/// in case of no match.
 String? magickQueryConfigureOption(String option) => using((Arena arena) {
       final Pointer<Char> optionPtr =
           option.toNativeUtf8(allocator: arena).cast();
@@ -24,8 +26,8 @@ String? magickQueryConfigureOption(String option) => using((Arena arena) {
       return result;
     });
 
-/// Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME,
-/// VERSION, LIB_VERSION, etc.
+/// Returns any configure options that match the specified pattern (e.g. "*"
+/// for all). Options include NAME, VERSION, LIB_VERSION, etc.
 ///
 /// - Note: An empty list is returned if there are no results.
 List<String>? magickQueryConfigureOptions(String pattern) =>
@@ -54,7 +56,8 @@ List<String>? magickQueryFonts(String pattern) => using((Arena arena) {
       return result;
     });
 
-/// Returns any image formats that match the specified pattern (e.g. "*" for all).
+/// Returns any image formats that match the specified pattern (e.g. "*" for
+/// all).
 /// - Note: An empty list is returned if there are no results.
 List<String>? magickQueryFormats(String pattern) => using((Arena arena) {
       final Pointer<Char> patternPtr =
@@ -68,8 +71,8 @@ List<String>? magickQueryFormats(String pattern) => using((Arena arena) {
       return result;
     });
 
-/// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(),
-/// etc.
+/// Relinquishes memory resources returned by such methods as
+/// MagickIdentifyImage(), MagickGetException(), etc.
 Pointer<Void> _magickRelinquishMemory(Pointer<Void> ptr) =>
     _bindings.magickRelinquishMemory(ptr);
 
@@ -79,8 +82,9 @@ void _magickWandGenesis() => _bindings.magickWandGenesis();
 /// Terminates the MagickWand environment.
 void _magickWandTerminus() => _bindings.magickWandTerminus();
 
-/// Returns true if the ImageMagick environment is currently instantiated-- that is,
-/// `magickWandGenesis()` has been called but `magickWandTerminus()` has not.
+/// Returns true if the ImageMagick environment is currently instantiated--
+/// that is, `magickWandGenesis()` has been called but `magickWandTerminus()`
+/// has not.
 bool isMagickWandInstantiated() => _bindings.isMagickWandInstantiated();
 
 /// Returns the ImageMagick API copyright as a string.
@@ -141,8 +145,8 @@ MagickGetVersionResult magickGetVersion() => using((Arena arena) {
 bool magickSetResourceLimit(ResourceType type, int limit) =>
     _bindings.magickSetResourceLimit(type.index, limit);
 
-/// Sets the pseudo-random number generator seed. Use it to generate a predictable
-/// sequence of random numbers.
+/// Sets the pseudo-random number generator seed. Use it to generate a
+/// predictable sequence of random numbers.
 void magickSetSeed(int seed) => _bindings.magickSetSeed(seed);
 
 // TODO: continue adding the remaining methods

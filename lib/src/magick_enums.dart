@@ -2,7 +2,8 @@
 
 part of 'image_magick_ffi.dart';
 
-/// Represents the type of an exception that occurred when using the ImageMagick API.
+/// Represents the type of an exception that occurred when using the ImageMagick
+/// API.
 enum ExceptionType {
   UndefinedException(0),
   WarningException(300),

@@ -12,11 +12,13 @@ typedef MagickProgressMonitor = void Function(
   dynamic clientData,
 );
 
-/// The [MagickWand] can do operations on images like reading, resizing, writing,cropping an image, etc...
+/// The [MagickWand] can do operations on images like reading, resizing,
+/// writing, cropping an image, etc...
 ///
 /// Initialize an instance of it with [MagickWand.newMagickWand].
 /// When done from it, call [destroyMagickWand] to release the resources.
-/// See `https://imagemagick.org/script/magick-wand.php` for more information about the backing C-API.
+/// See `https://imagemagick.org/script/magick-wand.php` for more information
+/// about the backing C-API.
 class MagickWand {
   Pointer<Void> _wandPtr;
 
@@ -32,13 +34,14 @@ class MagickWand {
   /// Stream subscription of the stream of [_progressMonitorStreamController].
   StreamSubscription? _progressMonitorStreamControllerStreamSubscription;
 
-  /// Used to convert the stream of [_progressMonitorReceivePort] to a broadcast stream.
+  /// Used to convert the stream of [_progressMonitorReceivePort] to a broadcast
+  /// stream.
   StreamController<dynamic>? _progressMonitorStreamController;
 
   MagickWand._(this._wandPtr);
 
-  /// Clears resources associated with this wand, leaving the wand blank, and ready to be used for a new
-  /// set of images.
+  /// Clears resources associated with this wand, leaving the wand blank,
+  /// and ready to be used for a new set of images.
   void clearMagickWand() => _bindings.clearMagickWand(_wandPtr);
 
   /// Makes an exact copy of this wand.
@@ -47,7 +50,8 @@ class MagickWand {
   MagickWand cloneMagickWand() =>
       MagickWand._(_bindings.cloneMagickWand(_wandPtr));
 
-  /// Deallocates memory associated with this wand. You can't use the wand after calling this function.
+  /// Deallocates memory associated with this wand. You can't use the wand after
+  /// calling this function.
   Future<void> destroyMagickWand() async {
     _wandPtr = _bindings.destroyMagickWand(_wandPtr);
 
@@ -61,18 +65,21 @@ class MagickWand {
     await _progressMonitorStreamController?.close();
   }
 
-  /// Returns true if this wand is verified as a magick wand. For example, after calling
-  /// [destroyMagickWand] on this wand, then this method will return false.
+  /// Returns true if this wand is verified as a magick wand. For example, after
+  /// calling [destroyMagickWand] on this wand, then this method will return
+  /// false.
   bool isMagickWand() => _bindings.isMagickWand(_wandPtr);
 
   /// Clears any exceptions associated with this wand.
   bool magickClearException() => _bindings.magickClearException(_wandPtr);
 
-  /// Returns the severity, reason, and description of any error that occurs when using other methods
-  /// with this wand. For example, failure to read an image using [magickReadImage] will cause an exception
-  /// to be associated with this wand and which can be retrieved by this method.
+  /// Returns the severity, reason, and description of any error that occurs
+  /// when using other methods with this wand. For example, failure to read an
+  /// image using [magickReadImage] will cause an exception to be associated
+  /// with this wand and which can be retrieved by this method.
   ///
-  /// - Note: if no exception has occurred, `UndefinedExceptionType` is returned.
+  /// - Note: if no exception has occurred, `UndefinedExceptionType` is
+  /// returned.
   MagickGetExceptionResult magickGetException() => using((Arena arena) {
         final Pointer<Int> severity = arena();
         final Pointer<Char> description =
@@ -111,8 +118,8 @@ class MagickWand {
   ///     10 bounding box: y2
   ///     11 origin: x
   ///     12 origin: y
-  /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if
-  /// the [MagickWand] contains no images).
+  /// - Note: null is returned if the font metrics cannot be determined from
+  /// the given input (for ex: if the [MagickWand] contains no images).
   Float64List? magickQueryFontMetrics(DrawingWand drawingWand, String text) =>
       using((Arena arena) {
         final Pointer<Char> textPtr =
@@ -147,10 +154,10 @@ class MagickWand {
   ///     10 bounding box: y2
   ///     11 origin: x
   ///     12 origin: y
-  /// This method is like magickQueryFontMetrics() but it returns the maximum text width and height for
-  /// multiple lines of text.
-  /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if the
-  /// [MagickWand] contains no images).
+  /// This method is like magickQueryFontMetrics() but it returns the maximum
+  /// text width and height for multiple lines of text.
+  /// - Note: null is returned if the font metrics cannot be determined from the
+  /// given input (for ex: if the [MagickWand] contains no images).
   Float64List? magickQueryMultilineFontMetrics(
           DrawingWand drawingWand, String text) =>
       using((Arena arena) {
@@ -172,59 +179,66 @@ class MagickWand {
 
   /// Resets the wand iterator.
   ///
-  /// It is typically used either before iterating though images, or before calling specific functions such as
-  /// `magickAppendImages()` to append all images together.
+  /// It is typically used either before iterating though images, or before
+  /// calling specific functions such as `magickAppendImages()` to append all
+  /// images together.
   ///
-  /// Afterward you can use `magickNextImage()` to iterate over all the images in a wand container, starting
-  /// with the first image.
+  /// Afterward you can use `magickNextImage()` to iterate over all the images
+  /// in a wand container, starting with the first image.
   ///
-  /// Using this before `magickAddImages()` or `magickReadImages()` will cause new images to be inserted
-  /// between the first and second image.
+  /// Using this before `magickAddImages()` or `magickReadImages()` will cause
+  /// new images to be inserted between the first and second image.
   void magickResetIterator() => _bindings.magickResetIterator(_wandPtr);
 
   /// Sets the wand iterator to the first image.
   ///
-  /// After using any images added to the wand using `magickAddImage()` or `magickReadImage()` will be
-  /// prepended before any image in the wand.
+  /// After using any images added to the wand using `magickAddImage()` or
+  /// `magickReadImage()` will be prepended before any image in the wand.
   ///
-  /// Also the current image has been set to the first image (if any) in the Magick Wand. Using
-  /// `magickNextImage()` will then set the current image to the second image in the list (if present).
+  /// Also the current image has been set to the first image (if any) in the
+  /// Magick Wand. Using `magickNextImage()` will then set the current image to
+  /// the second image in the list (if present).
   ///
-  /// This operation is similar to `magickResetIterator()` but differs in how `magickAddImage()`,
-  /// `magickReadImage()`, and magickNextImage()` behaves afterward.
+  /// This operation is similar to `magickResetIterator()` but differs in how
+  /// `magickAddImage()`, `magickReadImage()`, and magickNextImage()` behaves
+  /// afterward.
   void magickSetFirstIterator() => _bindings.magickSetFirstIterator(_wandPtr);
 
-  /// Sets the iterator to the given position in the image list specified with the index parameter.
-  /// A zero index will set the first image as current, and so on. Negative indexes can be used to
-  /// specify an image relative to the end of the images in the wand, with -1 being the last image
-  /// in the wand.
+  /// Sets the iterator to the given position in the image list specified with
+  /// the index parameter. A zero index will set the first image as current,
+  /// and so on. Negative indexes can be used to specify an image relative to
+  /// the end of the images in the wand, with -1 being the last image in the
+  /// wand.
   ///
-  /// If the index is invalid (range too large for number of images in wand) the function will return
-  /// false, but no 'exception' will be raised, as it is not actually an error. In that case the current
-  /// image will not change.
+  /// If the index is invalid (range too large for number of images in wand) the
+  /// function will return false, but no 'exception' will be raised, as it is
+  /// not actually an error. In that case the current image will not change.
   ///
-  /// After using any images added to the wand using `magickAddImage()` or `magickReadImage()` will be
-  /// added after the image indexed, regardless of if a zero (first image in list) or negative index
-  /// (from end) is used.
+  /// After using any images added to the wand using `magickAddImage()` or
+  /// `magickReadImage()` will be added after the image indexed, regardless of
+  /// if a zero (first image in list) or negative index (from end) is used.
   ///
-  /// Jumping to index 0 is similar to `magickResetIterator()` but differs in how `magickNextImage()`
-  /// behaves afterward.
+  /// Jumping to index 0 is similar to `magickResetIterator()` but differs in
+  /// how `magickNextImage()` behaves afterward.
   bool magickSetIteratorIndex(int index) =>
       _bindings.magickSetIteratorIndex(_wandPtr, index);
 
   /// Sets the wand iterator to the last image.
   ///
-  /// The last image is actually the current image, and the next use of `magickPreviousImage()` will not
-  /// change this allowing this function to be used to iterate over the images in the reverse direction.
-  /// In this sense it is more like `magickResetIterator()` than `magickSetFirstIterator()`.
+  /// The last image is actually the current image, and the next use of
+  /// `magickPreviousImage()` will not change this allowing this function to be
+  /// used to iterate over the images in the reverse direction. In this sense
+  /// it is more like `magickResetIterator()` than `magickSetFirstIterator()`.
   ///
-  /// Typically this function is used before `magickAddImage()`, `magickReadImage()` functions to ensure'
-  /// new images are appended to the very end of wand's image list.
+  /// Typically this function is used before `magickAddImage()`,
+  /// `magickReadImage()` functions to ensure' new images are appended to the
+  /// very end of wand's image list.
   void magickSetLastIterator() => _bindings.magickSetLastIterator(_wandPtr);
 
   /// Returns a wand required for all other methods in the API.
-  /// A fatal exception is thrown if there is not enough memory to allocate the wand.
-  /// Use `destroyMagickWand()` to dispose of the wand when it is no longer needed.
+  /// A fatal exception is thrown if there is not enough memory to allocate the
+  /// wand. Use `destroyMagickWand()` to dispose of the wand when it is no
+  /// longer needed.
   factory MagickWand.newMagickWand() => MagickWand._(_bindings.newMagickWand());
 
   /// Deletes a wand artifact.
@@ -307,8 +321,9 @@ class MagickWand {
         return result;
       });
 
-  /// Returns all the artifact names that match the specified pattern associated with a wand.
-  /// Use `magickGetImageProperty()` to return the value of a particular artifact.
+  /// Returns all the artifact names that match the specified pattern associated
+  /// with a wand. Use `magickGetImageProperty()` to return the value of a
+  /// particular artifact.
   List<String>? magickGetImageArtifacts(String pattern) => using((Arena arena) {
         final Pointer<Char> patternPtr =
             pattern.toNativeUtf8(allocator: arena).cast();
@@ -334,8 +349,9 @@ class MagickWand {
         return profile;
       });
 
-  /// MagickGetImageProfiles() returns all the profile names that match the specified pattern associated
-  /// with a wand. Use `magickGetImageProfile()` to return the value of a particular property.
+  /// MagickGetImageProfiles() returns all the profile names that match the
+  /// specified pattern associated with a wand. Use `magickGetImageProfile()`
+  /// to return the value of a particular property.
   /// - Note: An empty list is returned if there are no results.
   List<String>? magickGetImageProfiles(String pattern) => using((Arena arena) {
         final Pointer<Char> patternPtr =
@@ -363,8 +379,9 @@ class MagickWand {
         return result;
       });
 
-  /// Returns all the property names that match the specified pattern associated with a wand.
-  /// Use `magickGetImageProperty()` to return the value of a particular property.
+  /// Returns all the property names that match the specified pattern
+  /// associated with a wand. Use `magickGetImageProperty()` to return the value
+  /// of a particular property.
   List<String>? magickGetImageProperties(String pattern) =>
       using((Arena arena) {
         final Pointer<Char> patternPtr =
@@ -399,8 +416,9 @@ class MagickWand {
         return result;
       });
 
-  /// Returns all the option names that match the specified pattern associated with a wand.
-  /// Use `magickGetOption()` to return the value of a particular option.
+  /// Returns all the option names that match the specified pattern associated
+  /// with a wand. Use `magickGetOption()` to return the value of a particular
+  /// option.
   List<String>? magickGetOptions(String pattern) => using((Arena arena) {
         final Pointer<Char> patternPtr =
             pattern.toNativeUtf8(allocator: arena).cast();
@@ -493,8 +511,9 @@ class MagickWand {
   ImageType magickGetType() =>
       ImageType.values[_bindings.magickGetType(_wandPtr)];
 
-  /// Adds or removes a ICC, IPTC, or generic profile from an image. If the profile is NULL, it is removed
-  /// from the image otherwise added. Use a name of '*' and a profile of NULL to remove all profiles from
+  /// Adds or removes a ICC, IPTC, or generic profile from an image. If the
+  /// profile is NULL, it is removed from the image otherwise added. Use a name
+  /// of '*' and a profile of NULL to remove all profiles from
   /// the image.
   bool magickProfileImage(String name, List<int>? profile) => using(
         (Arena arena) {
@@ -543,8 +562,8 @@ class MagickWand {
   /// Sets the wand pixel depth.
   bool magickSetDepth(int depth) => _bindings.magickSetDepth(_wandPtr, depth);
 
-  /// Sets the extract geometry before you read or write an image file. Use it for inline cropping
-  /// (e.g. 200x200+0+0) or resizing (e.g.200x200).
+  /// Sets the extract geometry before you read or write an image file. Use it
+  /// for inline cropping (e.g. 200x200+0+0) or resizing (e.g.200x200).
   bool magickSetExtract(String geometry) => using(
         (Arena arena) => _bindings.magickSetExtract(
           _wandPtr,
@@ -580,9 +599,10 @@ class MagickWand {
   bool magickSetGravity(GravityType gravityType) =>
       _bindings.magickSetGravity(_wandPtr, gravityType.value);
 
-  /// Sets a key-value pair in the image artifact namespace. Artifacts differ from properties.
-  /// Properties are public and are generally exported to an external image format if the format
-  /// supports it. Artifacts are private and are utilized by the internal ImageMagick API to modify
+  /// Sets a key-value pair in the image artifact namespace. Artifacts differ
+  /// from properties. Properties are public and are generally exported to an
+  /// external image format if the format supports it. Artifacts are private
+  /// and are utilized by the internal ImageMagick API to modify
   /// the behavior of certain algorithms.
   bool magickSetImageArtifact(String key, String value) => using(
         (Arena arena) {
@@ -594,9 +614,10 @@ class MagickWand {
         },
       );
 
-  /// Adds a named profile to the magick wand. If a profile with the same name already exists,
-  /// it is replaced. This method differs from the MagickProfileImage() method in that it does not
-  /// apply any CMS color profiles.
+  /// Adds a named profile to the magick wand. If a profile with the same name
+  /// already exists, it is replaced. This method differs from the
+  /// MagickProfileImage() method in that it does not apply any CMS color
+  /// profiles.
   bool magickSetImageProfile(String name, List<int> profile) => using(
         (Arena arena) {
           final Pointer<UnsignedChar> profilePtr =
@@ -631,7 +652,8 @@ class MagickWand {
         pixelInterpolateMethod.index,
       );
 
-  /// Associates one or options with the wand (.e.g MagickSetOption(wand,"jpeg:perserve","yes")).
+  /// Associates one or options with the wand
+  /// (.e.g MagickSetOption(wand,"jpeg:perserve","yes")).
   bool magickSetOption(String key, String value) => using(
         (Arena arena) {
           final Pointer<Char> keyPtr =
@@ -667,11 +689,13 @@ class MagickWand {
   bool magickSetPointsize(double pointSize) =>
       _bindings.magickSetPointsize(_wandPtr, pointSize);
 
-  /// MagickSetProgressMonitor() sets the wand progress monitor to  monitor the progress of an image operation to
-  /// the specified method.
+  /// MagickSetProgressMonitor() sets the wand progress monitor to  monitor the
+  /// progress of an image operation to the specified method.
   ///
-  /// If the progress monitor method returns false, the current operation is interrupted.
-  /// - [clientData] : any user-provided data that will be passed to the progress monitor callback.
+  //TODO: If the progress monitor method returns false, the current operation is
+  // interrupted.
+  /// - [clientData] : any user-provided data that will be passed to the
+  /// progress monitor callback.
   Future<void> magickSetProgressMonitor(MagickProgressMonitor progressMonitor,
       [dynamic clientData]) async {
     if (_progressMonitorReceivePort == null) {
@@ -703,8 +727,8 @@ class MagickWand {
       _bindings.magickSetResolution(_wandPtr, xResolution, yResolution);
 
   /// Sets the image sampling factors.
-  /// - [samplingFactors] : An array of doubles representing the sampling factor for each
-  /// color component (in RGB order).
+  /// - [samplingFactors] : An array of doubles representing the sampling factor
+  /// for each color component (in RGB order).
   bool magickSetSamplingFactors(List<double> samplingFactors) => using(
         (Arena arena) {
           final Pointer<Double> samplingFactorsPtr =
@@ -714,8 +738,8 @@ class MagickWand {
         },
       );
 
-  /// Sets the ImageMagick security policy. It returns false if the policy is already
-  /// set or if the policy does not parse.
+  /// Sets the ImageMagick security policy. It returns false if the policy is
+  /// already set or if the policy does not parse.
   bool magickSetSecurityPolicy(String securityPolicy) => using(
         (Arena arena) => _bindings.magickSetSecurityPolicy(
           _wandPtr,
@@ -723,8 +747,8 @@ class MagickWand {
         ),
       );
 
-  /// Sets the size of the magick wand. Set it before you read a raw image format such as RGB,
-  /// GRAY, or CMYK.
+  /// Sets the size of the magick wand. Set it before you read a raw image
+  /// format such as RGB, GRAY, or CMYK.
   /// - [width] : the width in pixels.
   /// - [height] : the height in pixels.
   bool magickSetSize(int width, int height) =>
@@ -743,14 +767,16 @@ class MagickWand {
   bool magickSetType(ImageType imageType) =>
       _bindings.magickSetType(_wandPtr, imageType.index);
 
-  /// Adaptively blurs the image by blurring less intensely near image edges and more intensely
-  /// far from edges. We blur the image with a Gaussian operator of the given radius and standard
-  /// deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius
-  /// of 0 and `magickAdaptiveBlurImage()` selects a suitable radius for you.
+  /// Adaptively blurs the image by blurring less intensely near image edges
+  /// and more intensely far from edges. We blur the image with a Gaussian
+  /// operator of the given radius and standard deviation (sigma). For
+  /// reasonable results, radius should be larger than sigma. Use a radius of 0
+  /// and `magickAdaptiveBlurImage()` selects a suitable radius for you.
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
-  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the
+  /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveBlurImage(double radius, double sigma) async =>
       await compute(
@@ -771,13 +797,15 @@ class MagickWand {
       );
 
   /// Adaptively sharpens the image by sharpening more intensely near image edges
-  /// and less intensely far from edges. We sharpen the image with a Gaussian operator of the given radius
-  /// and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius
-  /// of 0 and `magickAdaptiveSharpenImage()` selects a suitable radius for you.
+  /// and less intensely far from edges. We sharpen the image with a Gaussian
+  /// operator of the given radius and standard deviation (sigma). For
+  /// reasonable results, radius should be larger than sigma. Use a radius of 0
+  /// and `magickAdaptiveSharpenImage()` selects a suitable radius for you.
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
-  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the
+  /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveSharpenImage(double radius, double sigma) async =>
       await compute(
@@ -785,9 +813,10 @@ class MagickWand {
         _MagickAdaptiveSharpenImageParams(_wandPtr.address, radius, sigma),
       );
 
-  /// Selects an individual threshold for each pixel based on the range of intensity values in its local
-  /// neighborhood. This allows for thresholding of an image whose global intensity histogram doesn't contain
-  /// distinctive peaks.
+  /// Selects an individual threshold for each pixel based on the range of
+  /// intensity values in its local neighborhood. This allows for thresholding
+  /// of an image whose global intensity histogram doesn't contain distinctive
+  /// peaks.
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
@@ -809,14 +838,17 @@ class MagickWand {
         ),
       );
 
-  /// Adds a clone of the images from the second wand and inserts them into the first wand.
-  /// Use `magickSetLastIterator()`, to append new images into an existing wand, current image will be set
-  /// to last image so later adds with also be appended to end of wand.
-  /// Use `magickSetFirstIterator()` to prepend new images into wand, any more images added will also be
-  /// prepended before other images in the wand. However the order of a list of new images will not change.
-  /// Otherwise the new images will be inserted just after the current image, and any later image will also
-  /// be added after this current image but before the previously added images. Caution is advised when
-  /// multiple image adds are inserted into the middle of the wand image list.
+  /// Adds a clone of the images from the second wand and inserts them into the
+  /// first wand. Use `magickSetLastIterator()`, to append new images into an
+  /// existing wand, current image will be set to last image so later adds with
+  /// also be appended to end of wand. Use `magickSetFirstIterator()` to
+  /// prepend new images into wand, any more images added will also be
+  /// prepended before other images in the wand. However the order of a list of
+  /// new images will not change. Otherwise the new images will be inserted just
+  /// after the current image, and any later image will also be added after this
+  /// current image but before the previously added images. Caution is advised
+  /// when multiple image adds are inserted into the middle of the wand image
+  /// list.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [other] : the other wand to add images from.
@@ -884,16 +916,18 @@ class MagickWand {
         _MagickAnimateImagesParams(_wandPtr.address, serverName),
       );
 
-  /// Append the images in a wand from the current image onwards, creating a new wand with the single image
-  /// result. This is affected by the gravity and background settings of the first image.
-  /// Typically you would call either `magickResetIterator()` or `magickSetFirstImage()` before calling this
-  /// function to ensure that all the images in the wand's image list will be appended together.
+  /// Append the images in a wand from the current image onwards, creating a new
+  /// wand with the single image result. This is affected by the gravity and
+  /// background settings of the first image. Typically you would call either
+  /// `magickResetIterator()` or `magickSetFirstImage()` before calling this
+  /// function to ensure that all the images in the wand's image list will be
+  /// appended together.
   ///
   /// Don't forget to dispose the returned [MagickWand] object when done.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [stack] : By default, images are stacked left-to-right. Set stack to true to stack them
-  /// top-to-bottom.
+  /// - [stack] : By default, images are stacked left-to-right. Set stack to
+  /// true to stack them top-to-bottom.
   Future<MagickWand?> magickAppendImages(bool stack) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
       await compute(
@@ -907,26 +941,30 @@ class MagickWand {
     return MagickWand._(resultPtr);
   }
 
-  /// Extracts the 'mean' from the image and adjust the image to try make set its gamma appropriately.
+  /// Extracts the 'mean' from the image and adjust the image to try make set
+  /// its gamma appropriately.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoGammaImage() async =>
       await compute(_magickAutoGammaImage, _wandPtr.address);
 
-  /// Adjusts the levels of a particular image channel by scaling the minimum and maximum values to the
+  /// Adjusts the levels of a particular image channel by scaling the minimum
+  /// and maximum values to the
   /// full quantum range.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoLevelImage() async =>
       await compute(_magickAutoLevelImage, _wandPtr.address);
 
-  /// Adjusts an image so that its orientation is suitable $ for viewing (i.e. top-left orientation).
+  /// Adjusts an image so that its orientation is suitable $ for viewing (i.e.
+  /// top-left orientation).
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoOrientImage() async =>
       await compute(_magickAutoOrientImage, _wandPtr.address);
 
-  /// Automatically performs image thresholding dependent on which method you specify.
+  /// Automatically performs image thresholding dependent on which method you
+  /// specify.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the method to use.
@@ -936,21 +974,25 @@ class MagickWand {
         _MagickAutoThresholdImageParams(_wandPtr.address, method.index),
       );
 
-  /// `magickBilateralBlurImage()` is a non-linear, edge-preserving, and noise-reducing smoothing filter for
-  /// images. It replaces the intensity of each pixel with a weighted average of intensity values from nearby
-  /// pixels. This weight is based on a Gaussian distribution. The weights depend not only on Euclidean distance
-  /// of pixels, but also on the radiometric differences (e.g., range differences, such as color intensity,
-  /// depth distance, etc.). This preserves sharp edges.
+  /// `magickBilateralBlurImage()` is a non-linear, edge-preserving, and
+  /// noise-reducing smoothing filter for images. It replaces the intensity of
+  /// each pixel with a weighted average of intensity values from nearby pixels.
+  /// This weight is based on a Gaussian distribution. The weights depend not
+  /// only on Euclidean distance of pixels, but also on the radiometric
+  /// differences (e.g., range differences, such as color intensity, depth
+  /// distance, etc.). This preserves sharp edges.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the
+  /// center pixel.
   /// - [sigma] : the standard deviation of the , in pixels.
-  /// - [intensity_sigma] :  sigma in the intensity space. A larger value means that farther colors within
-  /// the pixel neighborhood (see spatial_sigma) will be mixed together, resulting in larger areas of
-  /// semi-equal color.
-  /// - [spatial_sigma] : sigma in the coordinate space. A larger value means that farther pixels influence
-  /// each other as long as their colors are close enough (see intensity_sigma ). When the neighborhood
-  /// diameter is greater than zero, it specifies the neighborhood size regardless of spatial_sigma.
+  /// - [intensity_sigma] :  sigma in the intensity space. A larger value means
+  /// that farther colors within the pixel neighborhood (see spatial_sigma) will
+  /// be mixed together, resulting in larger areas of semi-equal color.
+  /// - [spatial_sigma] : sigma in the coordinate space. A larger value means
+  /// that farther pixels influence each other as long as their colors are close
+  /// enough (see intensity_sigma ). When the neighborhood diameter is greater
+  /// than zero, it specifies the neighborhood size regardless of spatial_sigma.
   /// Otherwise, the neighborhood diameter is proportional to spatial_sigma.
   Future<bool> magickBilateralBlurImage({
     required double radius,
@@ -969,8 +1011,9 @@ class MagickWand {
         ),
       );
 
-  /// `magickBlackThresholdImage()` is like MagickThresholdImage() but forces all pixels below the
-  /// threshold into black while leaving all pixels above the threshold unchanged.
+  /// `magickBlackThresholdImage()` is like MagickThresholdImage() but forces
+  /// all pixels below the threshold into black while leaving all pixels above
+  /// the threshold unchanged.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [pixelWand] : the pixel wand to determine the threshold.
@@ -983,7 +1026,8 @@ class MagickWand {
         ),
       );
 
-  /// Mutes the colors of the image to simulate a scene at nighttime in the moonlight.
+  /// Mutes the colors of the image to simulate a scene at nighttime in the
+  /// moonlight.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [factor] : the blue shift factor (default 1.5).
@@ -993,12 +1037,14 @@ class MagickWand {
         _MagickBlueShiftImageParams(_wandPtr.address, factor),
       );
 
-  /// `magickBlurImage()` blurs an image. We convolve the image with a gaussian operator of the given
-  /// radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.
+  /// `magickBlurImage()` blurs an image. We convolve the image with a gaussian
+  /// operator of the given radius and standard deviation (sigma). For
+  /// reasonable results, the radius should be larger than sigma.
   /// Use a radius of 0 and BlurImage() selects a suitable radius for you.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the
+  /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickBlurImage({
     required double radius,
@@ -1009,7 +1055,8 @@ class MagickWand {
         _MagickBlurImageParams(_wandPtr.address, radius, sigma),
       );
 
-  /// `magickBorderImage()` surrounds the image with a border of the color defined by the bordercolor pixel wand.
+  /// `magickBorderImage()` surrounds the image with a border of the color
+  /// defined by the bordercolor pixel wand.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [borderColorWand] : the border color pixel wand.
@@ -1033,9 +1080,10 @@ class MagickWand {
         ),
       );
 
-  /// Use `magickBrightnessContrastImage()` to change the brightness and/or contrast of an image.
-  /// It converts the brightness and contrast parameters into slope and intercept and calls a polynomial
-  /// function to apply to the image.
+  /// Use `magickBrightnessContrastImage()` to change the brightness and/or
+  /// contrast of an image.
+  /// It converts the brightness and contrast parameters into slope and
+  /// intercept and calls a polynomial function to apply to the image.
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
@@ -1054,7 +1102,8 @@ class MagickWand {
         ),
       );
 
-  /// `magickCannyEdgeImage()` uses a multi-stage algorithm to detect a wide range of edges in images.
+  /// `magickCannyEdgeImage()` uses a multi-stage algorithm to detect a wide
+  /// range of edges in images.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [radius] : the radius of the gaussian smoothing filter.
@@ -1078,19 +1127,23 @@ class MagickWand {
         ),
       );
 
-  /// `magickChannelFxImage()` applies a channel expression to the specified image. The expression consists of
-  /// one or more channels, either mnemonic or numeric (e.g. red, 1), separated by actions as follows:
-  /// <=> exchange two channels (e.g. red<=>blue) => transfer a channel to another (e.g. red=>green) ,
-  /// separate channel operations (e.g. red, green) | read channels from next input image (e.g. red | green) ;
-  /// write channels to next output image (e.g. red; green; blue)
-  /// A channel without a operation symbol implies extract. For example, to create 3 grayscale images from
-  /// the red, green, and blue channels of an image, use: -channel-fx "red; green; blue".
+  /// `magickChannelFxImage()` applies a channel expression to the specified
+  /// image. The expression consists of one or more channels, either mnemonic
+  /// or numeric (e.g. red, 1), separated by actions as follows:
+  /// <=> exchange two channels (e.g. red<=>blue) => transfer a channel to
+  /// another (e.g. red=>green) , separate channel operations (e.g. red, green)
+  /// | read channels from next input image (e.g. red | green) ; write channels
+  /// to next output image (e.g. red; green; blue) A channel without a operation
+  /// symbol implies extract. For example, to create 3 grayscale images from the
+  /// red, green, and blue channels of an image, use: -channel-fx "red; green;
+  /// blue".
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
-  /// - [expression] : the expression. Sending an invalid expression may crash the app by ending the process,
+  /// - [expression] : the expression. Sending an invalid expression may crash
+  /// the app by ending the process,
   /// so make sure to validate the input to this method.
   Future<MagickWand?> magickChannelFxImage(String expression) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
@@ -1105,7 +1158,8 @@ class MagickWand {
   /// Simulates a charcoal drawing.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
+  /// - [radius] : the radius of the Gaussian, in pixels, not counting the
+  /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickCharcoalImage(
           {required double radius, required double sigma}) async =>
@@ -1114,7 +1168,8 @@ class MagickWand {
         _MagickCharcoalImageParams(_wandPtr.address, radius, sigma),
       );
 
-  /// Removes a region of an image and collapses the image to occupy the removed portion.
+  /// Removes a region of an image and collapses the image to occupy the
+  /// removed portion.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [width] : the width of the region.
@@ -1138,15 +1193,20 @@ class MagickWand {
         ),
       );
 
-  /// `magickCLAHEImage()` is a variant of adaptive histogram equalization in which the contrast amplification
-  /// is limited, so as to reduce this problem of noise amplification.
+  /// `magickCLAHEImage()` is a variant of adaptive histogram equalization in
+  /// which the contrast amplification is limited, so as to reduce this problem
+  /// of noise amplification.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [width] : the width of the tile divisions to use in horizontal direction.
-  /// - [height] : the height of the tile divisions to use in vertical direction.
-  /// - [numberBins] : number of bins for histogram ("dynamic range"). Although parameter is currently
+  /// - [width] : the width of the tile divisions to use in horizontal
+  /// direction.
+  /// - [height] : the height of the tile divisions to use in vertical
+  /// direction.
+  /// - [numberBins] : number of bins for histogram ("dynamic range").
+  /// Although parameter is currently
   /// a double, it is cast to size_t internally.
-  /// - [clipLimit] : contrast limit for localised changes in contrast. A limit less than 1 results in
+  /// - [clipLimit] : contrast limit for localised changes in contrast.
+  /// A limit less than 1 results in
   /// standard non-contrast limited AHE.
   Future<bool> magickClaheImage({
     required int width,
@@ -1177,14 +1237,17 @@ class MagickWand {
   Future<bool> magickClipImage() async =>
       await compute(_magickClipImage, _wandPtr.address);
 
-  /// Clips along the named paths from the 8BIM profile, if present. Later operations take effect inside the
-  /// path. Id may be a number if preceded with #, to work on a numbered path, e.g., "#1" to use the first
+  /// Clips along the named paths from the 8BIM profile, if present.
+  /// Later operations take effect inside the path. Id may be a number if
+  /// preceded with #, to work on a numbered path, e.g., "#1" to use the first
   /// path.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  /// - [pathName] : name of clipping path resource. If name is preceded by #, use clipping path numbered
+  /// - [pathName] : name of clipping path resource. If name is preceded by #,
+  /// use clipping path numbered
   /// by name.
-  /// - [inside] : if non-zero, later operations take effect inside clipping path. Otherwise later operations
+  /// - [inside] : if non-zero, later operations take effect inside clipping
+  /// path. Otherwise later operations
   /// take effect outside clipping path.
   Future<bool> magickClipImagePath(
           {required String pathName, required bool inside}) async =>
@@ -1210,11 +1273,12 @@ class MagickWand {
         ),
       );
 
-  /// `magickCoalesceImages()` composites a set of images while respecting any page offsets and disposal
-  /// methods. GIF, MIFF, and MNG animation sequences typically start with an image background and each
-  /// subsequent image varies in size and offset. `magickCoalesceImages()` returns a new sequence where
-  /// each image in the sequence is the same size as the first and composited with the next image in the
-  /// sequence.
+  /// `magickCoalesceImages()` composites a set of images while respecting any
+  /// page offsets and disposal methods. GIF, MIFF, and MNG animation sequences
+  /// typically start with an image background and each subsequent image varies
+  /// in size and offset. `magickCoalesceImages()` returns a new sequence where
+  /// each image in the sequence is the same size as the first and composited
+  /// with the next image in the sequence.
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
@@ -1230,8 +1294,10 @@ class MagickWand {
   }
 
   // ignore: slash_for_doc_comments
-  /**`magickColorDecisionListImage()` accepts a lightweight Color Correction Collection (CCC) file which
-      solely contains one or more color corrections and applies the color correction to the image. Here is
+  /**`magickColorDecisionListImage()` accepts a lightweight Color Correction
+      Collection (CCC) file which
+      solely contains one or more color corrections and applies the color
+      correction to the image. Here is
       a sample CCC file:
       <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
       <ColorCorrection id="cc03345">
@@ -1245,7 +1311,8 @@ class MagickWand {
       </SATNode>
       </ColorCorrection>
       </ColorCorrectionCollection>
-      which includes the offset, slope, and power for each of the RGB channels as well as the saturation.
+      which includes the offset, slope, and power for each of the RGB channels
+      as well as the saturation.
 
       This method runs inside an isolate different from the main isolate.
       - [colorCorrectionCollection] : the color correction collection in XML.*/
@@ -1275,12 +1342,13 @@ class MagickWand {
         ),
       );
 
-  /// Apply color transformation to an image. The method permits saturation changes, hue rotation,
-  /// luminance to alpha, and various other effects. Although variable-sized transformation matrices
-  /// can be used, typically one uses a 5x5 matrix for an RGBA image and a 6x6 for CMYKA (or RGBA
-  /// with offsets). The matrix is similar to those used by Adobe Flash except offsets are in
-  /// column 6 rather than 5 (in support of CMYKA images) and offsets are normalized (divide Flash
-  /// offset by 255).
+  /// Apply color transformation to an image. The method permits saturation
+  /// changes, hue rotation, luminance to alpha, and various other effects.
+  /// Although variable-sized transformation matrices can be used, typically one
+  /// uses a 5x5 matrix for an RGBA image and a 6x6 for CMYKA (or RGBA with
+  /// offsets). The matrix is similar to those used by Adobe Flash except
+  /// offsets are in column 6 rather than 5 (in support of CMYKA images) and
+  /// offsets are normalized (divide Flash offset by 255).
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
@@ -1312,9 +1380,10 @@ class MagickWand {
         ),
       );
 
-  /// `magickCombineImages()` combines one or more images into a single image. The grayscale value of the
-  /// pixels of each image in the sequence is assigned in order to the specified channels of the combined
-  /// image. The typical ordering would be image 1 => Red, 2 => Green, 3 => Blue, etc.
+  /// `magickCombineImages()` combines one or more images into a single image.
+  /// The grayscale value of the pixels of each image in the sequence is
+  /// assigned in order to the specified channels of the combined image.
+  /// The typical ordering would be image 1 => Red, 2 => Green, 3 => Blue, etc.
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
@@ -1342,8 +1411,9 @@ class MagickWand {
         _MagickCommentImageParams(_wandPtr.address, comment),
       );
 
-  /// `magickCompareImagesLayers()` compares each image with the next in a sequence and returns the maximum
-  /// bounding region of any pixel differences it discovers.
+  /// `magickCompareImagesLayers()` compares each image with the next in a
+  /// sequence and returns the maximum bounding region of any pixel differences
+  /// it discovers.
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
@@ -1362,7 +1432,8 @@ class MagickWand {
     return MagickWand._(resultPtr);
   }
 
-  /// Compares an image to a reconstructed image and returns the specified difference image.
+  /// Compares an image to a reconstructed image and returns the specified
+  /// difference image.
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
   ///
@@ -1410,7 +1481,8 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [sourceImage]: the magick wand holding source image
-  /// - [compose]: This operator affects how the composite is applied to the image.
+  /// - [compose]: This operator affects how the composite is applied to the
+  /// image.
   /// The default is Over. These are some of the compose methods available.
   /// - [clipToSelf]: set to MagickTrue to limit composition to area composed.
   /// - [x]: the column offset of the composited image.
@@ -1438,7 +1510,8 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///  - [sourceWand]: the magick wand holding source image.
-  ///  - [compose]: This operator affects how the composite is applied to the image.
+  ///  - [compose]: This operator affects how the composite is applied to the
+  ///  image.
   ///  The default is Over.
   ///  - [gravity]: positioning gravity.
   Future<bool> magickCompositeImageGravity({
@@ -1456,23 +1529,25 @@ class MagickWand {
         ),
       );
 
-  /// `magickCompositeLayers()` composite the images in the source wand over the images in the
-  /// destination wand in sequence, starting with the current image in both lists.
-  /// Each layer from the two image lists are composted together until the end of one of the image
-  /// lists is reached. The offset of each composition is also adjusted to match the virtual canvas
-  /// offsets of each layer. As such the given offset is relative to the virtual canvas, and not the
-  /// actual image.
-  /// Composition uses given x and y offsets, as the 'origin' location of the source images virtual
-  /// canvas (not the real image) allowing you to compose a list of 'layer images' into the destination
-  /// images. This makes it well suitable for directly composing 'Clears Frame Animations' or
-  /// 'Coalesced Animations' onto a static or other 'Coalesced Animation' destination image list.
-  /// GIF disposal handling is not looked at.
-  /// Special case:- If one of the image sequences is the last image (just a single image remaining),
-  /// that image is repeatedly composed with all the images in the other image list. Either the source
-  /// or destination lists may be the single image, for this situation.
-  /// In the case of a single destination image (or last image given), that image will be cloned to
-  /// match the number of images remaining in the source image list.
-  /// This is equivalent to the "-layer Composite" Shell API operator.
+  /// `magickCompositeLayers()` composite the images in the source wand over
+  /// the images in the destination wand in sequence, starting with the current
+  /// image in both lists. Each layer from the two image lists are composted
+  /// together until the end of one of the image lists is reached. The offset
+  /// of each composition is also adjusted to match the virtual canvas offsets
+  /// of each layer. As such the given offset is relative to the virtual canvas,
+  /// and not the actual image. Composition uses given x and y offsets, as the
+  /// 'origin' location of the source images virtual canvas (not the real
+  /// image) allowing you to compose a list of 'layer images' into the
+  /// destination images. This makes it well suitable for directly composing
+  /// 'Clears Frame Animations' or 'Coalesced Animations' onto a static or
+  /// other 'Coalesced Animation' destination image list. GIF disposal handling
+  /// is not looked at. Special case:- If one of the image sequences is the
+  /// last image (just a single image remaining), that image is repeatedly
+  /// composed with all the images in the other image list. Either the source
+  /// or destination lists may be the single image, for this situation. In the
+  /// case of a single destination image (or last image given), that image will
+  /// be cloned to match the number of images remaining in the source image
+  /// list. This is equivalent to the "-layer Composite" Shell API operator.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [sourceWand]: the magick wand holding source image.
@@ -1494,9 +1569,9 @@ class MagickWand {
         ),
       );
 
-  /// Enhances the intensity differences between the lighter and darker elements of the image.
-  /// Set sharpen to a value other than 0 to increase the image contrast otherwise the contrast
-  /// is reduced.
+  /// Enhances the intensity differences between the lighter and darker
+  /// elements of the image. Set sharpen to a value other than 0 to increase
+  /// the image contrast otherwise the contrast is reduced.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [sharpen]: Increase or decrease image contrast.
@@ -1505,8 +1580,9 @@ class MagickWand {
         _MagickContrastImageParams(_wandPtr.address, sharpen),
       );
 
-  /// Enhances the contrast of a color image by adjusting the pixels color to span the entire range of
-  /// colors available. You can also reduce the influence of a particular channel with a gamma value of 0.
+  /// Enhances the contrast of a color image by adjusting the pixels color to
+  /// span the entire range of colors available. You can also reduce the
+  /// influence of a particular channel with a gamma value of 0.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [blackPoint]: the black point.
@@ -1551,8 +1627,8 @@ class MagickWand {
         _MagickCropImageParams(_wandPtr.address, width, height, x, y),
       );
 
-  /// Displaces an image's colormap by a given number of positions. If you cycle the colormap a
-  /// number of times you can produce a psychodelic effect.
+  /// Displaces an image's colormap by a given number of positions. If you
+  /// cycle the colormap a number of times you can produce a psychodelic effect.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickCycleColormapImage(int displace) async => await compute(
@@ -1562,10 +1638,11 @@ class MagickWand {
 
   // TODO: continue adding the remaining methods
 
-  /// Reads an image or image sequence. The images are inserted just before the current image
-  /// pointer position. Use magickSetFirstIterator(), to insert new images before all the current images
-  /// in the wand, magickSetLastIterator() to append add to the end, magickSetIteratorIndex() to place
-  /// images just after the given index.
+  /// Reads an image or image sequence. The images are inserted just before the
+  /// current image pointer position. Use magickSetFirstIterator(), to insert
+  /// new images before all the current images in the wand,
+  /// magickSetLastIterator() to append add to the end,
+  /// magickSetIteratorIndex() to place images just after the given index.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickReadImage(String imageFilePath) async => await compute(
@@ -1573,8 +1650,9 @@ class MagickWand {
         _MagickReadImageParams(_wandPtr.address, imageFilePath),
       );
 
-  /// Writes an image to the specified filename. If the filename parameter is NULL, the image is written
-  /// to the filename set by magickReadImage() or magickSetImageFilename().
+  /// Writes an image to the specified filename. If the filename parameter is
+  /// NULL, the image is written to the filename set by magickReadImage() or
+  /// magickSetImageFilename().
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickWriteImage(String imageFilePath) async => await compute(
