@@ -1,3 +1,9 @@
+# ⚠️Attention⚠️
+This is not a stable release. It is a development release for beta-testers to try out the plugin and report bugs. It is not recommended to use this plugin in production apps yet.
+
+# Contributors
+Special thanks to [Piero5W11](https://github.com/Piero512) for being the "FFI Master" and helping me a lot with this plugin.
+
 # ImageMagickFFi Plugin
 This plugin brings to you the [ImageMagick](https://imagemagick.org/) C library [MagickWand](https://imagemagick.org/script/magick-wand.php) to use with dart.
 ## Feel native
@@ -37,7 +43,7 @@ See the #Usage section below for more insights.
     }
     ```
 - #### Linux
-  Coming Soon
+  Coming Soon (for sure)
 - #### Macos
   Your contributions to provide the binaries are welcomed :)
 - #### IOS
@@ -95,3 +101,7 @@ dispose() {
 // ...
 ```
 - For more info about code usage, have a look at the example app in this repo.
+
+# Contributing
+- Feel free to open an issue if you have any problem or suggestion.
+- Feel free to open a pull request if you want to contribute.
