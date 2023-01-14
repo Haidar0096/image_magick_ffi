@@ -96,9 +96,11 @@ packages:
   image_magick_ffi:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: b3913b60923fb18808107f80b6293b638ebd44fc
+      url: "https://github.com/Haidar0096/image_magick_ffi.git"
+    source: git
     version: "0.0.1-dev.1"
   js:
     dependency: transitive

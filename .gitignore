@@ -24,11 +24,11 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
 /pubspec.lock
+/example/pubspec.lock
 **/doc/api/
 .dart_tool/
 .packages
 build/
-/example/pubspec.lock
 
 # Following files are for use only by ffigen, they should not be checked in.
 /src/ffigen_deps/MagickCore
