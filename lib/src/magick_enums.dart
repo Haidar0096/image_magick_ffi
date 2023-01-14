@@ -82,7 +82,8 @@ enum ExceptionType {
 
   const ExceptionType(this.value);
 
-  static ExceptionType fromValue(int value) => ExceptionType.values.firstWhere((e) => e.value == value);
+  static ExceptionType fromValue(int value) =>
+      ExceptionType.values.firstWhere((e) => e.value == value);
 }
 
 /// Represents a colorspace type.
@@ -177,7 +178,8 @@ enum GravityType {
 
   const GravityType(this.value);
 
-  static GravityType fromValue(int value) => GravityType.values.firstWhere((e) => e.value == value);
+  static GravityType fromValue(int value) =>
+      GravityType.values.firstWhere((e) => e.value == value);
 }
 
 /// Represents an interlace type.

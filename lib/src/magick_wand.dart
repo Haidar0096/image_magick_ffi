@@ -5,7 +5,12 @@ part of 'image_magick_ffi.dart';
 /// - [offset] The offset of the progress.
 /// - [size] The total size of the progress.
 /// - [clientData] The user-provided data.
-typedef MagickProgressMonitor = void Function(String info, int offset, int size, dynamic clientData);
+typedef MagickProgressMonitor = void Function(
+  String info,
+  int offset,
+  int size,
+  dynamic clientData,
+);
 
 /// The [MagickWand] can do operations on images like reading, resizing, writing,cropping an image, etc...
 ///
@@ -39,7 +44,8 @@ class MagickWand {
   /// Makes an exact copy of this wand.
   ///
   /// Don't forget to dispose the returned [MagickWand] when done.
-  MagickWand cloneMagickWand() => MagickWand._(_bindings.cloneMagickWand(_wandPtr));
+  MagickWand cloneMagickWand() =>
+      MagickWand._(_bindings.cloneMagickWand(_wandPtr));
 
   /// Deallocates memory associated with this wand. You can't use the wand after calling this function.
   Future<void> destroyMagickWand() async {
@@ -69,8 +75,10 @@ class MagickWand {
   /// - Note: if no exception has occurred, `UndefinedExceptionType` is returned.
   MagickGetExceptionResult magickGetException() => using((Arena arena) {
         final Pointer<Int> severity = arena();
-        final Pointer<Char> description = _bindings.magickGetException(_wandPtr, severity);
-        final MagickGetExceptionResult magickGetExceptionResult = MagickGetExceptionResult(
+        final Pointer<Char> description =
+            _bindings.magickGetException(_wandPtr, severity);
+        final MagickGetExceptionResult magickGetExceptionResult =
+            MagickGetExceptionResult(
           ExceptionType.fromValue(severity.value),
           description.cast<Utf8>().toDartString(),
         );
@@ -80,7 +88,8 @@ class MagickWand {
 
   /// Returns the exception type associated with this wand.
   /// If no exception has occurred, `UndefinedException` is returned.
-  ExceptionType magickGetExceptionType() => ExceptionType.fromValue(_bindings.magickGetExceptionType(_wandPtr));
+  ExceptionType magickGetExceptionType() =>
+      ExceptionType.fromValue(_bindings.magickGetExceptionType(_wandPtr));
 
   /// Returns the position of the iterator in the image list.
   int magickGetIteratorIndex() => _bindings.magickGetIteratorIndex(_wandPtr);
@@ -104,14 +113,20 @@ class MagickWand {
   ///     12 origin: y
   /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if
   /// the [MagickWand] contains no images).
-  Float64List? magickQueryFontMetrics(DrawingWand drawingWand, String text) => using((Arena arena) {
-        final Pointer<Char> textPtr = text.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Double> metricsPtr = _bindings.magickQueryFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
+  Float64List? magickQueryFontMetrics(DrawingWand drawingWand, String text) =>
+      using((Arena arena) {
+        final Pointer<Char> textPtr =
+            text.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Double> metricsPtr = _bindings.magickQueryFontMetrics(
+            _wandPtr, drawingWand._wandPtr, textPtr);
         if (metricsPtr == nullptr) {
           return null;
         }
         final Float64List metrics = metricsPtr.asTypedList(13);
-        _MagickRelinquishableResource.registerRelinquishable(metrics, metricsPtr.cast());
+        _MagickRelinquishableResource.registerRelinquishable(
+          metrics,
+          metricsPtr.cast(),
+        );
         return metrics;
       });
 
@@ -136,15 +151,22 @@ class MagickWand {
   /// multiple lines of text.
   /// - Note: null is returned if the font metrics cannot be determined from the given input (for ex: if the
   /// [MagickWand] contains no images).
-  Float64List? magickQueryMultilineFontMetrics(DrawingWand drawingWand, String text) => using((Arena arena) {
-        final Pointer<Char> textPtr = text.toNativeUtf8(allocator: arena).cast();
+  Float64List? magickQueryMultilineFontMetrics(
+          DrawingWand drawingWand, String text) =>
+      using((Arena arena) {
+        final Pointer<Char> textPtr =
+            text.toNativeUtf8(allocator: arena).cast();
         final Pointer<Double> metricsPtr =
-            _bindings.magickQueryMultilineFontMetrics(_wandPtr, drawingWand._wandPtr, textPtr);
+            _bindings.magickQueryMultilineFontMetrics(
+                _wandPtr, drawingWand._wandPtr, textPtr);
         if (metricsPtr == nullptr) {
           return null;
         }
         final Float64List metrics = metricsPtr.asTypedList(13);
-        _MagickRelinquishableResource.registerRelinquishable(metrics, metricsPtr.cast());
+        _MagickRelinquishableResource.registerRelinquishable(
+          metrics,
+          metricsPtr.cast(),
+        );
         return metrics;
       });
 
@@ -187,7 +209,8 @@ class MagickWand {
   ///
   /// Jumping to index 0 is similar to `magickResetIterator()` but differs in how `magickNextImage()`
   /// behaves afterward.
-  bool magickSetIteratorIndex(int index) => _bindings.magickSetIteratorIndex(_wandPtr, index);
+  bool magickSetIteratorIndex(int index) =>
+      _bindings.magickSetIteratorIndex(_wandPtr, index);
 
   /// Sets the wand iterator to the last image.
   ///
@@ -206,33 +229,50 @@ class MagickWand {
 
   /// Deletes a wand artifact.
   bool magickDeleteImageArtifact(String artifact) => using(
-      (Arena arena) => _bindings.magickDeleteImageArtifact(_wandPtr, artifact.toNativeUtf8(allocator: arena).cast()));
+        (Arena arena) => _bindings.magickDeleteImageArtifact(
+          _wandPtr,
+          artifact.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Deletes a wand property.
   bool magickDeleteImageProperty(String property) => using(
-      (Arena arena) => _bindings.magickDeleteImageProperty(_wandPtr, property.toNativeUtf8(allocator: arena).cast()));
+        (Arena arena) => _bindings.magickDeleteImageProperty(
+          _wandPtr,
+          property.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Deletes a wand option.
-  bool magickDeleteOption(String option) =>
-      using((Arena arena) => _bindings.magickDeleteOption(_wandPtr, option.toNativeUtf8(allocator: arena).cast()));
+  bool magickDeleteOption(String option) => using(
+        (Arena arena) => _bindings.magickDeleteOption(
+          _wandPtr,
+          option.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Returns the antialias property associated with the wand.
   bool magickGetAntialias() => _bindings.magickGetAntialias(_wandPtr);
 
   /// Returns the wand background color.
-  PixelWand magickGetBackgroundColor() => PixelWand._(_bindings.magickGetBackgroundColor(_wandPtr));
+  PixelWand magickGetBackgroundColor() =>
+      PixelWand._(_bindings.magickGetBackgroundColor(_wandPtr));
 
   /// Gets the wand colorspace type.
-  ColorspaceType magickGetColorspace() => ColorspaceType.values[_bindings.magickGetColorspace(_wandPtr)];
+  ColorspaceType magickGetColorspace() =>
+      ColorspaceType.values[_bindings.magickGetColorspace(_wandPtr)];
 
   /// Gets the wand compression type.
-  CompressionType magickGetCompression() => CompressionType.values[_bindings.magickGetCompression(_wandPtr)];
+  CompressionType magickGetCompression() =>
+      CompressionType.values[_bindings.magickGetCompression(_wandPtr)];
 
   /// Gets the wand compression quality.
-  int magickGetCompressionQuality() => _bindings.magickGetCompressionQuality(_wandPtr);
+  int magickGetCompressionQuality() =>
+      _bindings.magickGetCompressionQuality(_wandPtr);
 
   /// Returns the filename associated with an image sequence.
-  String magickGetFilename() => _bindings.magickGetFilename(_wandPtr).cast<Utf8>().toDartString();
+  String magickGetFilename() =>
+      _bindings.magickGetFilename(_wandPtr).cast<Utf8>().toDartString();
 
   /// Returns the font associated with the MagickWand.
   String? magickGetFont() {
@@ -246,15 +286,19 @@ class MagickWand {
   }
 
   /// Returns the format of the magick wand.
-  String magickGetFormat() => _bindings.magickGetFormat(_wandPtr).cast<Utf8>().toDartString();
+  String magickGetFormat() =>
+      _bindings.magickGetFormat(_wandPtr).cast<Utf8>().toDartString();
 
   /// Gets the wand gravity.
-  GravityType magickGetGravity() => GravityType.fromValue(_bindings.magickGetGravity(_wandPtr));
+  GravityType magickGetGravity() =>
+      GravityType.fromValue(_bindings.magickGetGravity(_wandPtr));
 
   /// Returns a value associated with the specified artifact.
   String? magickGetImageArtifact(String artifact) => using((Arena arena) {
-        final Pointer<Char> artifactPtr = artifact.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> resultPtr = _bindings.magickGetImageArtifact(_wandPtr, artifactPtr);
+        final Pointer<Char> artifactPtr =
+            artifact.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> resultPtr =
+            _bindings.magickGetImageArtifact(_wandPtr, artifactPtr);
         if (resultPtr == nullptr) {
           return null;
         }
@@ -266,10 +310,11 @@ class MagickWand {
   /// Returns all the artifact names that match the specified pattern associated with a wand.
   /// Use `magickGetImageProperty()` to return the value of a particular artifact.
   List<String>? magickGetImageArtifacts(String pattern) => using((Arena arena) {
-        final Pointer<Char> patternPtr = pattern.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> patternPtr =
+            pattern.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> numArtifactsPtr = arena();
-        final Pointer<Pointer<Char>> artifactsPtr =
-            _bindings.magickGetImageArtifacts(_wandPtr, patternPtr, numArtifactsPtr);
+        final Pointer<Pointer<Char>> artifactsPtr = _bindings
+            .magickGetImageArtifacts(_wandPtr, patternPtr, numArtifactsPtr);
         final int numArtifacts = numArtifactsPtr.value;
         final List<String>? result = artifactsPtr.toStringList(numArtifacts);
         _bindings.magickRelinquishMemory(artifactsPtr.cast());
@@ -278,9 +323,11 @@ class MagickWand {
 
   /// Returns the named image profile.
   List<int>? magickGetImageProfile(String name) => using((Arena arena) {
-        final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> namePtr =
+            name.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> lengthPtr = arena();
-        final Pointer<UnsignedChar> profilePtr = _bindings.magickGetImageProfile(_wandPtr, namePtr, lengthPtr);
+        final Pointer<UnsignedChar> profilePtr =
+            _bindings.magickGetImageProfile(_wandPtr, namePtr, lengthPtr);
         final int length = lengthPtr.value;
         final List<int>? profile = profilePtr.toIntList(length);
         _magickRelinquishMemory(profilePtr.cast());
@@ -291,10 +338,11 @@ class MagickWand {
   /// with a wand. Use `magickGetImageProfile()` to return the value of a particular property.
   /// - Note: An empty list is returned if there are no results.
   List<String>? magickGetImageProfiles(String pattern) => using((Arena arena) {
-        final Pointer<Char> patternPtr = pattern.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> patternPtr =
+            pattern.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> numProfilesPtr = arena();
-        final Pointer<Pointer<Char>> profilesPtr =
-            _bindings.magickGetImageProfiles(_wandPtr, patternPtr, numProfilesPtr);
+        final Pointer<Pointer<Char>> profilesPtr = _bindings
+            .magickGetImageProfiles(_wandPtr, patternPtr, numProfilesPtr);
         final int numProfiles = numProfilesPtr.value;
         final List<String>? result = profilesPtr.toStringList(numProfiles);
         _bindings.magickRelinquishMemory(profilesPtr.cast());
@@ -303,8 +351,10 @@ class MagickWand {
 
   /// Returns a value associated with the specified property.
   String? magickGetImageProperty(String property) => using((Arena arena) {
-        final Pointer<Char> propertyPtr = property.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> resultPtr = _bindings.magickGetImageProperty(_wandPtr, propertyPtr);
+        final Pointer<Char> propertyPtr =
+            property.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> resultPtr =
+            _bindings.magickGetImageProperty(_wandPtr, propertyPtr);
         if (resultPtr == nullptr) {
           return null;
         }
@@ -315,11 +365,13 @@ class MagickWand {
 
   /// Returns all the property names that match the specified pattern associated with a wand.
   /// Use `magickGetImageProperty()` to return the value of a particular property.
-  List<String>? magickGetImageProperties(String pattern) => using((Arena arena) {
-        final Pointer<Char> patternPtr = pattern.toNativeUtf8(allocator: arena).cast();
+  List<String>? magickGetImageProperties(String pattern) =>
+      using((Arena arena) {
+        final Pointer<Char> patternPtr =
+            pattern.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> numPropertiesPtr = arena();
-        final Pointer<Pointer<Char>> propertiesPtr =
-            _bindings.magickGetImageProperties(_wandPtr, patternPtr, numPropertiesPtr);
+        final Pointer<Pointer<Char>> propertiesPtr = _bindings
+            .magickGetImageProperties(_wandPtr, patternPtr, numPropertiesPtr);
         final int numProperties = numPropertiesPtr.value;
         final List<String>? result = propertiesPtr.toStringList(numProperties);
         _bindings.magickRelinquishMemory(propertiesPtr.cast());
@@ -327,16 +379,18 @@ class MagickWand {
       });
 
   /// Gets the wand interlace scheme.
-  InterlaceType magickGetInterlaceScheme() => InterlaceType.values[_bindings.magickGetInterlaceScheme(_wandPtr)];
+  InterlaceType magickGetInterlaceScheme() =>
+      InterlaceType.values[_bindings.magickGetInterlaceScheme(_wandPtr)];
 
   /// Gets the wand compression.
-  PixelInterpolateMethod magickGetInterpolateMethod() =>
-      PixelInterpolateMethod.values[_bindings.magickGetInterpolateMethod(_wandPtr)];
+  PixelInterpolateMethod magickGetInterpolateMethod() => PixelInterpolateMethod
+      .values[_bindings.magickGetInterpolateMethod(_wandPtr)];
 
   /// Returns a value associated with a wand and the specified key.
   String? magickGetOption(String key) => using((Arena arena) {
         final Pointer<Char> keyPtr = key.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> resultPtr = _bindings.magickGetOption(_wandPtr, keyPtr);
+        final Pointer<Char> resultPtr =
+            _bindings.magickGetOption(_wandPtr, keyPtr);
         if (resultPtr == nullptr) {
           return null;
         }
@@ -348,9 +402,11 @@ class MagickWand {
   /// Returns all the option names that match the specified pattern associated with a wand.
   /// Use `magickGetOption()` to return the value of a particular option.
   List<String>? magickGetOptions(String pattern) => using((Arena arena) {
-        final Pointer<Char> patternPtr = pattern.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> patternPtr =
+            pattern.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> numOptionsPtr = arena();
-        final Pointer<Pointer<Char>> optionsPtr = _bindings.magickGetOptions(_wandPtr, patternPtr, numOptionsPtr);
+        final Pointer<Pointer<Char>> optionsPtr =
+            _bindings.magickGetOptions(_wandPtr, patternPtr, numOptionsPtr);
         final int numOptions = numOptionsPtr.value;
         final List<String>? result = optionsPtr.toStringList(numOptions);
         _bindings.magickRelinquishMemory(optionsPtr.cast());
@@ -358,7 +414,8 @@ class MagickWand {
       });
 
   /// Gets the wand orientation type.
-  OrientationType magickGetOrientation() => OrientationType.values[_bindings.magickGetOrientation(_wandPtr)];
+  OrientationType magickGetOrientation() =>
+      OrientationType.values[_bindings.magickGetOrientation(_wandPtr)];
 
   /// Returns the page geometry associated with the magick wand.
   MagickGetPageResult? magickGetPage() => using((Arena arena) {
@@ -366,11 +423,13 @@ class MagickWand {
         final Pointer<Size> heightPtr = arena();
         final Pointer<ssize_t> xPtr = arena();
         final Pointer<ssize_t> yPtr = arena();
-        final bool result = _bindings.magickGetPage(_wandPtr, widthPtr, heightPtr, xPtr, yPtr);
+        final bool result =
+            _bindings.magickGetPage(_wandPtr, widthPtr, heightPtr, xPtr, yPtr);
         if (!result) {
           return null;
         }
-        return MagickGetPageResult(widthPtr.value, heightPtr.value, xPtr.value, yPtr.value);
+        return MagickGetPageResult(
+            widthPtr.value, heightPtr.value, xPtr.value, yPtr.value);
       });
 
   /// Returns the font pointsize associated with the MagickWand.
@@ -380,23 +439,30 @@ class MagickWand {
   MagickGetResolutionResult? magickGetResolution() => using((Arena arena) {
         final Pointer<Double> xResolutionPtr = arena();
         final Pointer<Double> yResolutionPtr = arena();
-        final bool result = _bindings.magickGetResolution(_wandPtr, xResolutionPtr, yResolutionPtr);
+        final bool result = _bindings.magickGetResolution(
+          _wandPtr,
+          xResolutionPtr,
+          yResolutionPtr,
+        );
         if (!result) {
           return null;
         }
-        return MagickGetResolutionResult(xResolutionPtr.value, yResolutionPtr.value);
+        return MagickGetResolutionResult(
+            xResolutionPtr.value, yResolutionPtr.value);
       });
 
   /// Gets the horizontal and vertical sampling factor.
   Float64List? magickGetSamplingFactors() => using((Arena arena) {
         final Pointer<Size> numFactorsPtr = arena();
-        final Pointer<Double> factorsPtr = _bindings.magickGetSamplingFactors(_wandPtr, numFactorsPtr);
+        final Pointer<Double> factorsPtr =
+            _bindings.magickGetSamplingFactors(_wandPtr, numFactorsPtr);
         final int numFactors = numFactorsPtr.value;
         if (factorsPtr == nullptr) {
           return null;
         }
         final Float64List factors = factorsPtr.asTypedList(numFactors);
-        _MagickRelinquishableResource.registerRelinquishable(factors, factorsPtr.cast());
+        _MagickRelinquishableResource.registerRelinquishable(
+            factors, factorsPtr.cast());
         return factors;
       });
 
@@ -404,7 +470,8 @@ class MagickWand {
   MagickGetSizeResult? magickGetSize() => using((Arena arena) {
         final Pointer<Size> widthPtr = arena();
         final Pointer<Size> heightPtr = arena();
-        final bool result = _bindings.magickGetSize(_wandPtr, widthPtr, heightPtr);
+        final bool result =
+            _bindings.magickGetSize(_wandPtr, widthPtr, heightPtr);
         if (!result) {
           return null;
         }
@@ -414,7 +481,8 @@ class MagickWand {
   /// Returns the size offset associated with the magick wand.
   int? magickGetSizeOffset() => using((Arena arena) {
         Pointer<ssize_t> sizeOffsetPtr = arena();
-        final bool result = _bindings.magickGetSizeOffset(_wandPtr, sizeOffsetPtr);
+        final bool result =
+            _bindings.magickGetSizeOffset(_wandPtr, sizeOffsetPtr);
         if (!result) {
           return null;
         }
@@ -422,22 +490,30 @@ class MagickWand {
       });
 
   /// Returns the wand type
-  ImageType magickGetType() => ImageType.values[_bindings.magickGetType(_wandPtr)];
+  ImageType magickGetType() =>
+      ImageType.values[_bindings.magickGetType(_wandPtr)];
 
   /// Adds or removes a ICC, IPTC, or generic profile from an image. If the profile is NULL, it is removed
   /// from the image otherwise added. Use a name of '*' and a profile of NULL to remove all profiles from
   /// the image.
-  bool magickProfileImage(String name, List<int>? profile) => using((Arena arena) {
-        final Pointer<UnsignedChar> profilePtr = profile?.toUnsignedCharArrayPointer(allocator: arena) ?? nullptr;
-        final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
-        return _bindings.magickProfileImage(_wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
-      });
+  bool magickProfileImage(String name, List<int>? profile) => using(
+        (Arena arena) {
+          final Pointer<UnsignedChar> profilePtr =
+              profile?.toUnsignedCharArrayPointer(allocator: arena) ?? nullptr;
+          final Pointer<Char> namePtr =
+              name.toNativeUtf8(allocator: arena).cast();
+          return _bindings.magickProfileImage(
+              _wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
+        },
+      );
 
   /// Removes the named image profile and returns it.
   List<int>? magickRemoveImageProfile(String name) => using((Arena arena) {
-        final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
+        final Pointer<Char> namePtr =
+            name.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> lengthPtr = arena();
-        final Pointer<UnsignedChar> profilePtr = _bindings.magickRemoveImageProfile(_wandPtr, namePtr, lengthPtr);
+        final Pointer<UnsignedChar> profilePtr =
+            _bindings.magickRemoveImageProfile(_wandPtr, namePtr, lengthPtr);
         int length = lengthPtr.value;
         List<int>? result = profilePtr.toIntList(length);
         _magickRelinquishMemory(profilePtr.cast());
@@ -445,7 +521,8 @@ class MagickWand {
       });
 
   ///  Sets the antialias property of the wand.
-  bool magickSetAntialias(bool antialias) => _bindings.magickSetAntialias(_wandPtr, antialias);
+  bool magickSetAntialias(bool antialias) =>
+      _bindings.magickSetAntialias(_wandPtr, antialias);
 
   /// Sets the wand background color.
   bool magickSetBackgroundColor(PixelWand pixelWand) =>
@@ -460,71 +537,110 @@ class MagickWand {
       _bindings.magickSetCompression(_wandPtr, compressionType.index);
 
   /// Sets the wand compression quality.
-  bool magickSetCompressionQuality(int quality) => _bindings.magickSetCompressionQuality(_wandPtr, quality);
+  bool magickSetCompressionQuality(int quality) =>
+      _bindings.magickSetCompressionQuality(_wandPtr, quality);
 
   /// Sets the wand pixel depth.
   bool magickSetDepth(int depth) => _bindings.magickSetDepth(_wandPtr, depth);
 
   /// Sets the extract geometry before you read or write an image file. Use it for inline cropping
   /// (e.g. 200x200+0+0) or resizing (e.g.200x200).
-  bool magickSetExtract(String geometry) =>
-      using((Arena arena) => _bindings.magickSetExtract(_wandPtr, geometry.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetExtract(String geometry) => using(
+        (Arena arena) => _bindings.magickSetExtract(
+          _wandPtr,
+          geometry.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the filename before you read or write an image file.
-  bool magickSetFilename(String filename) =>
-      using((Arena arena) => _bindings.magickSetFilename(_wandPtr, filename.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetFilename(String filename) => using(
+        (Arena arena) => _bindings.magickSetFilename(
+          _wandPtr,
+          filename.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the font associated with the MagickWand.
-  bool magickSetFont(String font) =>
-      using((Arena arena) => _bindings.magickSetFont(_wandPtr, font.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetFont(String font) => using(
+        (Arena arena) => _bindings.magickSetFont(
+          _wandPtr,
+          font.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the format of the magick wand.
-  bool magickSetFormat(String format) =>
-      using((Arena arena) => _bindings.magickSetFormat(_wandPtr, format.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetFormat(String format) => using(
+        (Arena arena) => _bindings.magickSetFormat(
+          _wandPtr,
+          format.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the gravity type.
-  bool magickSetGravity(GravityType gravityType) => _bindings.magickSetGravity(_wandPtr, gravityType.value);
+  bool magickSetGravity(GravityType gravityType) =>
+      _bindings.magickSetGravity(_wandPtr, gravityType.value);
 
   /// Sets a key-value pair in the image artifact namespace. Artifacts differ from properties.
   /// Properties are public and are generally exported to an external image format if the format
   /// supports it. Artifacts are private and are utilized by the internal ImageMagick API to modify
   /// the behavior of certain algorithms.
-  bool magickSetImageArtifact(String key, String value) => using((Arena arena) {
-        final Pointer<Char> keyPtr = key.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> valuePtr = value.toNativeUtf8(allocator: arena).cast();
-        return _bindings.magickSetImageArtifact(_wandPtr, keyPtr, valuePtr);
-      });
+  bool magickSetImageArtifact(String key, String value) => using(
+        (Arena arena) {
+          final Pointer<Char> keyPtr =
+              key.toNativeUtf8(allocator: arena).cast();
+          final Pointer<Char> valuePtr =
+              value.toNativeUtf8(allocator: arena).cast();
+          return _bindings.magickSetImageArtifact(_wandPtr, keyPtr, valuePtr);
+        },
+      );
 
   /// Adds a named profile to the magick wand. If a profile with the same name already exists,
   /// it is replaced. This method differs from the MagickProfileImage() method in that it does not
   /// apply any CMS color profiles.
-  bool magickSetImageProfile(String name, List<int> profile) => using((Arena arena) {
-        final Pointer<UnsignedChar> profilePtr = profile.toUnsignedCharArrayPointer(allocator: arena);
-        final Pointer<Char> namePtr = name.toNativeUtf8(allocator: arena).cast();
-        return _bindings.magickSetImageProfile(_wandPtr, namePtr, profilePtr.cast(), profile.length);
-      });
+  bool magickSetImageProfile(String name, List<int> profile) => using(
+        (Arena arena) {
+          final Pointer<UnsignedChar> profilePtr =
+              profile.toUnsignedCharArrayPointer(allocator: arena);
+          final Pointer<Char> namePtr =
+              name.toNativeUtf8(allocator: arena).cast();
+          return _bindings.magickSetImageProfile(
+              _wandPtr, namePtr, profilePtr.cast(), profile.length);
+        },
+      );
 
   /// Associates a property with an image.
-  bool magickSetImageProperty(String key, String value) => using((Arena arena) {
-        final Pointer<Char> keyPtr = key.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> valuePtr = value.toNativeUtf8(allocator: arena).cast();
-        return _bindings.magickSetImageProperty(_wandPtr, keyPtr, valuePtr);
-      });
+  bool magickSetImageProperty(String key, String value) => using(
+        (Arena arena) {
+          final Pointer<Char> keyPtr =
+              key.toNativeUtf8(allocator: arena).cast();
+          final Pointer<Char> valuePtr =
+              value.toNativeUtf8(allocator: arena).cast();
+          return _bindings.magickSetImageProperty(_wandPtr, keyPtr, valuePtr);
+        },
+      );
 
   /// Sets the image compression.
   bool magickSetInterlaceScheme(InterlaceType interlaceType) =>
       _bindings.magickSetInterlaceScheme(_wandPtr, interlaceType.index);
 
   /// Sets the interpolate pixel method.
-  bool magickSetInterpolateMethod(PixelInterpolateMethod pixelInterpolateMethod) =>
-      _bindings.magickSetInterpolateMethod(_wandPtr, pixelInterpolateMethod.index);
+  bool magickSetInterpolateMethod(
+          PixelInterpolateMethod pixelInterpolateMethod) =>
+      _bindings.magickSetInterpolateMethod(
+        _wandPtr,
+        pixelInterpolateMethod.index,
+      );
 
   /// Associates one or options with the wand (.e.g MagickSetOption(wand,"jpeg:perserve","yes")).
-  bool magickSetOption(String key, String value) => using((Arena arena) {
-        final Pointer<Char> keyPtr = key.toNativeUtf8(allocator: arena).cast();
-        final Pointer<Char> valuePtr = value.toNativeUtf8(allocator: arena).cast();
-        return _bindings.magickSetOption(_wandPtr, keyPtr, valuePtr);
-      });
+  bool magickSetOption(String key, String value) => using(
+        (Arena arena) {
+          final Pointer<Char> keyPtr =
+              key.toNativeUtf8(allocator: arena).cast();
+          final Pointer<Char> valuePtr =
+              value.toNativeUtf8(allocator: arena).cast();
+          return _bindings.magickSetOption(_wandPtr, keyPtr, valuePtr);
+        },
+      );
 
   /// Sets the wand orientation type.
   bool magickSetOrientation(OrientationType orientationType) =>
@@ -540,31 +656,43 @@ class MagickWand {
       _bindings.magickSetPage(_wandPtr, width, height, x, y);
 
   /// Sets the passphrase.
-  bool magickSetPassphrase(String passphrase) =>
-      using((Arena arena) => _bindings.magickSetPassphrase(_wandPtr, passphrase.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetPassphrase(String passphrase) => using(
+        (Arena arena) => _bindings.magickSetPassphrase(
+          _wandPtr,
+          passphrase.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the font pointsize associated with the MagickWand.
-  bool magickSetPointsize(double pointSize) => _bindings.magickSetPointsize(_wandPtr, pointSize);
+  bool magickSetPointsize(double pointSize) =>
+      _bindings.magickSetPointsize(_wandPtr, pointSize);
 
   /// MagickSetProgressMonitor() sets the wand progress monitor to  monitor the progress of an image operation to
   /// the specified method.
   ///
   /// If the progress monitor method returns false, the current operation is interrupted.
   /// - [clientData] : any user-provided data that will be passed to the progress monitor callback.
-  Future<void> magickSetProgressMonitor(MagickProgressMonitor progressMonitor, [dynamic clientData]) async {
+  Future<void> magickSetProgressMonitor(MagickProgressMonitor progressMonitor,
+      [dynamic clientData]) async {
     if (_progressMonitorReceivePort == null) {
       _progressMonitorReceivePort = ReceivePort();
       _progressMonitorReceivePortSendPortPtr =
-          _bindings.magickSetProgressMonitorPort(_wandPtr, _progressMonitorReceivePort!.sendPort.nativePort);
+          _bindings.magickSetProgressMonitorPort(
+        _wandPtr,
+        _progressMonitorReceivePort!.sendPort.nativePort,
+      );
       _progressMonitorStreamController = StreamController<dynamic>.broadcast();
-      _progressMonitorReceivePortStreamSubscription = _progressMonitorReceivePort!.listen((dynamic data) {
+      _progressMonitorReceivePortStreamSubscription =
+          _progressMonitorReceivePort!.listen((dynamic data) {
         if (_progressMonitorStreamController!.hasListener) {
           _progressMonitorStreamController!.add(data);
         }
       });
     }
-    await _progressMonitorStreamControllerStreamSubscription?.cancel(); // Cancel previous subscription, if any.
-    _progressMonitorStreamControllerStreamSubscription = _progressMonitorStreamController!.stream.listen((event) {
+    await _progressMonitorStreamControllerStreamSubscription
+        ?.cancel(); // Cancel previous subscription, if any.
+    _progressMonitorStreamControllerStreamSubscription =
+        _progressMonitorStreamController!.stream.listen((event) {
       final data = jsonDecode(event);
       progressMonitor(data['info'], data['offset'], data['size'], clientData);
     });
@@ -577,21 +705,30 @@ class MagickWand {
   /// Sets the image sampling factors.
   /// - [samplingFactors] : An array of doubles representing the sampling factor for each
   /// color component (in RGB order).
-  bool magickSetSamplingFactors(List<double> samplingFactors) => using((Arena arena) {
-        final Pointer<Double> samplingFactorsPtr = samplingFactors.toDoubleArrayPointer(allocator: arena);
-        return _bindings.magickSetSamplingFactors(_wandPtr, samplingFactors.length, samplingFactorsPtr);
-      });
+  bool magickSetSamplingFactors(List<double> samplingFactors) => using(
+        (Arena arena) {
+          final Pointer<Double> samplingFactorsPtr =
+              samplingFactors.toDoubleArrayPointer(allocator: arena);
+          return _bindings.magickSetSamplingFactors(
+              _wandPtr, samplingFactors.length, samplingFactorsPtr);
+        },
+      );
 
   /// Sets the ImageMagick security policy. It returns false if the policy is already
   /// set or if the policy does not parse.
-  bool magickSetSecurityPolicy(String securityPolicy) => using((Arena arena) =>
-      _bindings.magickSetSecurityPolicy(_wandPtr, securityPolicy.toNativeUtf8(allocator: arena).cast()));
+  bool magickSetSecurityPolicy(String securityPolicy) => using(
+        (Arena arena) => _bindings.magickSetSecurityPolicy(
+          _wandPtr,
+          securityPolicy.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
 
   /// Sets the size of the magick wand. Set it before you read a raw image format such as RGB,
   /// GRAY, or CMYK.
   /// - [width] : the width in pixels.
   /// - [height] : the height in pixels.
-  bool magickSetSize(int width, int height) => _bindings.magickSetSize(_wandPtr, width, height);
+  bool magickSetSize(int width, int height) =>
+      _bindings.magickSetSize(_wandPtr, width, height);
 
   /// Sets the size and offset of the magick wand. Set it before you read
   /// a raw image format such as RGB, GRAY, or CMYK.
@@ -603,7 +740,8 @@ class MagickWand {
       _bindings.magickSetSizeOffset(_wandPtr, columns, rows, offset);
 
   /// Sets the image type attribute.
-  bool magickSetType(ImageType imageType) => _bindings.magickSetType(_wandPtr, imageType.index);
+  bool magickSetType(ImageType imageType) =>
+      _bindings.magickSetType(_wandPtr, imageType.index);
 
   /// Adaptively blurs the image by blurring less intensely near image edges and more intensely
   /// far from edges. We blur the image with a Gaussian operator of the given radius and standard
@@ -615,7 +753,10 @@ class MagickWand {
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveBlurImage(double radius, double sigma) async =>
-      await compute(_magickAdaptiveBlurImage, _MagickAdaptiveBlurImageParams(_wandPtr.address, radius, sigma));
+      await compute(
+        _magickAdaptiveBlurImage,
+        _MagickAdaptiveBlurImageParams(_wandPtr.address, radius, sigma),
+      );
 
   /// Adaptively resize image with data dependent triangulation.
   ///
@@ -624,7 +765,10 @@ class MagickWand {
   /// - [columns] : the number of columns in the scaled image.
   /// - [rows] : the number of rows in the scaled image.
   Future<bool> magickAdaptiveResizeImage(int columns, int rows) async =>
-      await compute(_magickAdaptiveResizeImage, _MagickAdaptiveResizeImageParams(_wandPtr.address, columns, rows));
+      await compute(
+        _magickAdaptiveResizeImage,
+        _MagickAdaptiveResizeImageParams(_wandPtr.address, columns, rows),
+      );
 
   /// Adaptively sharpens the image by sharpening more intensely near image edges
   /// and less intensely far from edges. We sharpen the image with a Gaussian operator of the given radius
@@ -636,7 +780,10 @@ class MagickWand {
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveSharpenImage(double radius, double sigma) async =>
-      await compute(_magickAdaptiveSharpenImage, _MagickAdaptiveSharpenImageParams(_wandPtr.address, radius, sigma));
+      await compute(
+        _magickAdaptiveSharpenImage,
+        _MagickAdaptiveSharpenImageParams(_wandPtr.address, radius, sigma),
+      );
 
   /// Selects an individual threshold for each pixel based on the range of intensity values in its local
   /// neighborhood. This allows for thresholding of an image whose global intensity histogram doesn't contain
@@ -653,7 +800,14 @@ class MagickWand {
     required double bias,
   }) async =>
       await compute(
-          _magickAdaptiveThresholdImage, _MagickAdaptiveThresholdImageParams(_wandPtr.address, width, height, bias));
+        _magickAdaptiveThresholdImage,
+        _MagickAdaptiveThresholdImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          bias,
+        ),
+      );
 
   /// Adds a clone of the images from the second wand and inserts them into the first wand.
   /// Use `magickSetLastIterator()`, to append new images into an existing wand, current image will be set
@@ -666,22 +820,35 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [other] : the other wand to add images from.
-  Future<bool> magickAddImage(MagickWand other) async =>
-      await compute(_magickAddImage, _MagickAddImageParams(_wandPtr.address, other._wandPtr.address));
+  Future<bool> magickAddImage(MagickWand other) async => await compute(
+        _magickAddImage,
+        _MagickAddImageParams(_wandPtr.address, other._wandPtr.address),
+      );
 
   /// Adds random noise to the image.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [noiseType] : the type of noise.
   /// - [attenuate] : attenuate the random distribution.
-  Future<bool> magickAddNoiseImage(NoiseType noiseType, double attenuate) async =>
-      await compute(_magickAddNoiseImage, _MagickAddNoiseImageParams(_wandPtr.address, noiseType.index, attenuate));
+  Future<bool> magickAddNoiseImage(
+          NoiseType noiseType, double attenuate) async =>
+      await compute(
+        _magickAddNoiseImage,
+        _MagickAddNoiseImageParams(
+          _wandPtr.address,
+          noiseType.index,
+          attenuate,
+        ),
+      );
 
   /// Transforms an image as dictated by the affine matrix of the drawing wand.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickAffineTransformImage(DrawingWand drawingWand) async => await compute(
-      _magickAffineTransformImage, _MagickAffineTransformImageParams(_wandPtr.address, drawingWand._wandPtr.address));
+  Future<bool> magickAffineTransformImage(DrawingWand drawingWand) async =>
+      await compute(
+          _magickAffineTransformImage,
+          _MagickAffineTransformImageParams(
+              _wandPtr.address, drawingWand._wandPtr.address));
 
   /// Annotates an image with text.
   /// This method runs inside an isolate different from the main isolate.
@@ -696,15 +863,26 @@ class MagickWand {
     required double angle,
     required String text,
   }) async =>
-      await compute(_magickAnnotateImage,
-          _MagickAnnotateImageParams(_wandPtr.address, drawingWand._wandPtr.address, x, y, angle, text));
+      await compute(
+        _magickAnnotateImage,
+        _MagickAnnotateImageParams(
+          _wandPtr.address,
+          drawingWand._wandPtr.address,
+          x,
+          y,
+          angle,
+          text,
+        ),
+      );
 
   /// Animates an image or image sequence.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [serverName] : the X server name.
-  Future<bool> magickAnimateImages(String serverName) async =>
-      await compute(_magickAnimateImages, _MagickAnimateImagesParams(_wandPtr.address, serverName));
+  Future<bool> magickAnimateImages(String serverName) async => await compute(
+        _magickAnimateImages,
+        _MagickAnimateImagesParams(_wandPtr.address, serverName),
+      );
 
   /// Append the images in a wand from the current image onwards, creating a new wand with the single image
   /// result. This is affected by the gravity and background settings of the first image.
@@ -717,10 +895,12 @@ class MagickWand {
   /// - [stack] : By default, images are stacked left-to-right. Set stack to true to stack them
   /// top-to-bottom.
   Future<MagickWand?> magickAppendImages(bool stack) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
-      _magickAppendImages,
-      _MagickAppendImagesParams(_wandPtr.address, stack),
-    ));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(
+        _magickAppendImages,
+        _MagickAppendImagesParams(_wandPtr.address, stack),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -730,25 +910,31 @@ class MagickWand {
   /// Extracts the 'mean' from the image and adjust the image to try make set its gamma appropriately.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickAutoGammaImage() async => await compute(_magickAutoGammaImage, _wandPtr.address);
+  Future<bool> magickAutoGammaImage() async =>
+      await compute(_magickAutoGammaImage, _wandPtr.address);
 
   /// Adjusts the levels of a particular image channel by scaling the minimum and maximum values to the
   /// full quantum range.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickAutoLevelImage() async => await compute(_magickAutoLevelImage, _wandPtr.address);
+  Future<bool> magickAutoLevelImage() async =>
+      await compute(_magickAutoLevelImage, _wandPtr.address);
 
   /// Adjusts an image so that its orientation is suitable $ for viewing (i.e. top-left orientation).
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickAutoOrientImage() async => await compute(_magickAutoOrientImage, _wandPtr.address);
+  Future<bool> magickAutoOrientImage() async =>
+      await compute(_magickAutoOrientImage, _wandPtr.address);
 
   /// Automatically performs image thresholding dependent on which method you specify.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the method to use.
   Future<bool> magickAutoThresholdImage(AutoThresholdMethod method) async =>
-      await compute(_magickAutoThresholdImage, _MagickAutoThresholdImageParams(_wandPtr.address, method.index));
+      await compute(
+        _magickAutoThresholdImage,
+        _MagickAutoThresholdImageParams(_wandPtr.address, method.index),
+      );
 
   /// `magickBilateralBlurImage()` is a non-linear, edge-preserving, and noise-reducing smoothing filter for
   /// images. It replaces the intensity of each pixel with a weighted average of intensity values from nearby
@@ -774,7 +960,13 @@ class MagickWand {
   }) async =>
       await compute(
         _magickBilateralBlurImage,
-        _MagickBilateralBlurImageParams(_wandPtr.address, radius, sigma, intensitySigma, spatialSigma),
+        _MagickBilateralBlurImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          intensitySigma,
+          spatialSigma,
+        ),
       );
 
   /// `magickBlackThresholdImage()` is like MagickThresholdImage() but forces all pixels below the
@@ -782,15 +974,24 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [pixelWand] : the pixel wand to determine the threshold.
-  Future<bool> magickBlackThresholdImage(PixelWand pixelWand) async => await compute(
-      _magickBlackThresholdImage, _MagickBlackThresholdImageParams(_wandPtr.address, pixelWand._wandPtr.address));
+  Future<bool> magickBlackThresholdImage(PixelWand pixelWand) async =>
+      await compute(
+        _magickBlackThresholdImage,
+        _MagickBlackThresholdImageParams(
+          _wandPtr.address,
+          pixelWand._wandPtr.address,
+        ),
+      );
 
   /// Mutes the colors of the image to simulate a scene at nighttime in the moonlight.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [factor] : the blue shift factor (default 1.5).
   Future<bool> magickBlueShiftImage([double factor = 1.5]) async =>
-      await compute(_magickBlueShiftImage, _MagickBlueShiftImageParams(_wandPtr.address, factor));
+      await compute(
+        _magickBlueShiftImage,
+        _MagickBlueShiftImageParams(_wandPtr.address, factor),
+      );
 
   /// `magickBlurImage()` blurs an image. We convolve the image with a gaussian operator of the given
   /// radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.
@@ -803,7 +1004,10 @@ class MagickWand {
     required double radius,
     required double sigma,
   }) async =>
-      await compute(_magickBlurImage, _MagickBlurImageParams(_wandPtr.address, radius, sigma));
+      await compute(
+        _magickBlurImage,
+        _MagickBlurImageParams(_wandPtr.address, radius, sigma),
+      );
 
   /// `magickBorderImage()` surrounds the image with a border of the color defined by the bordercolor pixel wand.
   ///
@@ -843,7 +1047,11 @@ class MagickWand {
   }) async =>
       await compute(
         _magickBrightnessContrastImage,
-        _MagickBrightnessContrastImageParams(_wandPtr.address, brightness, contrast),
+        _MagickBrightnessContrastImageParams(
+          _wandPtr.address,
+          brightness,
+          contrast,
+        ),
       );
 
   /// `magickCannyEdgeImage()` uses a multi-stage algorithm to detect a wide range of edges in images.
@@ -861,7 +1069,13 @@ class MagickWand {
   }) async =>
       await compute(
         _magickCannyEdgeImage,
-        _MagickCannyEdgeImageParams(_wandPtr.address, radius, sigma, lowerPercent, upperPercent),
+        _MagickCannyEdgeImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          lowerPercent,
+          upperPercent,
+        ),
       );
 
   /// `magickChannelFxImage()` applies a channel expression to the specified image. The expression consists of
@@ -879,8 +1093,9 @@ class MagickWand {
   /// - [expression] : the expression. Sending an invalid expression may crash the app by ending the process,
   /// so make sure to validate the input to this method.
   Future<MagickWand?> magickChannelFxImage(String expression) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-        await compute(_magickChannelFxImage, _MagickChannelFxImageParams(_wandPtr.address, expression)));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+        _magickChannelFxImage,
+        _MagickChannelFxImageParams(_wandPtr.address, expression)));
     if (resultPtr == nullptr) {
       return null;
     }
@@ -892,8 +1107,12 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
-  Future<bool> magickCharcoalImage({required double radius, required double sigma}) async =>
-      await compute(_magickCharcoalImage, _MagickCharcoalImageParams(_wandPtr.address, radius, sigma));
+  Future<bool> magickCharcoalImage(
+          {required double radius, required double sigma}) async =>
+      await compute(
+        _magickCharcoalImage,
+        _MagickCharcoalImageParams(_wandPtr.address, radius, sigma),
+      );
 
   /// Removes a region of an image and collapses the image to occupy the removed portion.
   ///
@@ -908,7 +1127,16 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(_magickChopImage, _MagickChopImageParams(_wandPtr.address, width, height, x, y));
+      await compute(
+        _magickChopImage,
+        _MagickChopImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          x,
+          y,
+        ),
+      );
 
   /// `magickCLAHEImage()` is a variant of adaptive histogram equalization in which the contrast amplification
   /// is limited, so as to reduce this problem of noise amplification.
@@ -926,17 +1154,28 @@ class MagickWand {
     required double numberBins,
     required double clipLimit,
   }) async =>
-      await compute(_magickCLAHEImage, _MagickCLAHEImageParams(_wandPtr.address, width, height, numberBins, clipLimit));
+      await compute(
+        _magickCLAHEImage,
+        _MagickCLAHEImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          numberBins,
+          clipLimit,
+        ),
+      );
 
   /// Restricts the color range from 0 to the quantum depth.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickClampImage() async => await compute(_magickClampImage, _wandPtr.address);
+  Future<bool> magickClampImage() async =>
+      await compute(_magickClampImage, _wandPtr.address);
 
   /// Clips along the first path from the 8BIM profile, if present.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickClipImage() async => await compute(_magickClipImage, _wandPtr.address);
+  Future<bool> magickClipImage() async =>
+      await compute(_magickClipImage, _wandPtr.address);
 
   /// Clips along the named paths from the 8BIM profile, if present. Later operations take effect inside the
   /// path. Id may be a number if preceded with #, to work on a numbered path, e.g., "#1" to use the first
@@ -947,18 +1186,28 @@ class MagickWand {
   /// by name.
   /// - [inside] : if non-zero, later operations take effect inside clipping path. Otherwise later operations
   /// take effect outside clipping path.
-  Future<bool> magickClipImagePath({required String pathName, required bool inside}) async =>
-      await compute(_magickClipImagePath, _MagickClipImagePathParams(_wandPtr.address, pathName, inside));
+  Future<bool> magickClipImagePath(
+          {required String pathName, required bool inside}) async =>
+      await compute(
+        _magickClipImagePath,
+        _MagickClipImagePathParams(_wandPtr.address, pathName, inside),
+      );
 
   /// Replaces colors in the image from a color lookup table.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [clutImage] : the clut image.
   /// - [method] : the pixel interpolation method.
-  Future<bool> magickClutImage({required MagickWand clutImage, required PixelInterpolateMethod method}) async =>
+  Future<bool> magickClutImage(
+          {required MagickWand clutImage,
+          required PixelInterpolateMethod method}) async =>
       await compute(
         _magickClutImage,
-        _MagickClutImageParams(_wandPtr.address, clutImage._wandPtr.address, method.index),
+        _MagickClutImageParams(
+          _wandPtr.address,
+          clutImage._wandPtr.address,
+          method.index,
+        ),
       );
 
   /// `magickCoalesceImages()` composites a set of images while respecting any page offsets and disposal
@@ -971,7 +1220,9 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickCoalesceImages() async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(_magickCoalesceImages, _wandPtr.address));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(_magickCoalesceImages, _wandPtr.address),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -998,17 +1249,30 @@ class MagickWand {
 
       This method runs inside an isolate different from the main isolate.
       - [colorCorrectionCollection] : the color correction collection in XML.*/
-  Future<bool> magickColorDecisionListImage(String colorCorrectionCollection) async => await compute(
-      _magickColorDecisionListImage, _MagickColorDecisionListImageParams(_wandPtr.address, colorCorrectionCollection));
+  Future<bool> magickColorDecisionListImage(
+          String colorCorrectionCollection) async =>
+      await compute(
+        _magickColorDecisionListImage,
+        _MagickColorDecisionListImageParams(
+          _wandPtr.address,
+          colorCorrectionCollection,
+        ),
+      );
 
   /// Blends the fill color with each pixel in the image.
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [colorize] : the colorize pixel wand.
   /// - [blend] : the alpha pixel wand.
-  Future<bool> magickColorizeImage({required PixelWand colorize, required PixelWand blend}) async => await compute(
+  Future<bool> magickColorizeImage(
+          {required PixelWand colorize, required PixelWand blend}) async =>
+      await compute(
         _magickColorizeImage,
-        _MagickColorizeImageParams(_wandPtr.address, colorize._wandPtr.address, blend._wandPtr.address),
+        _MagickColorizeImageParams(
+          _wandPtr.address,
+          colorize._wandPtr.address,
+          blend._wandPtr.address,
+        ),
       );
 
   /// Apply color transformation to an image. The method permits saturation changes, hue rotation,
@@ -1021,7 +1285,9 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [colorMatrix] : the color matrix.
-  Future<bool> magickColorMatrixImage({required KernelInfo colorMatrix}) async => await compute(
+  Future<bool> magickColorMatrixImage(
+          {required KernelInfo colorMatrix}) async =>
+      await compute(
         _magickColorMatrixImage,
         _MagickColorMatrixImageParams(
           _wandPtr.address,
@@ -1034,10 +1300,16 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [startColor] : the start color pixel wand.
   /// - [stopColor] : the stop color pixel wand.
-  Future<bool> magickColorThresholdImage({required PixelWand startColor, required PixelWand stopColor}) async =>
+  Future<bool> magickColorThresholdImage(
+          {required PixelWand startColor,
+          required PixelWand stopColor}) async =>
       await compute(
         _magickColorThresholdImage,
-        _MagickColorThresholdImageParams(_wandPtr.address, startColor._wandPtr.address, stopColor._wandPtr.address),
+        _MagickColorThresholdImageParams(
+          _wandPtr.address,
+          startColor._wandPtr.address,
+          stopColor._wandPtr.address,
+        ),
       );
 
   /// `magickCombineImages()` combines one or more images into a single image. The grayscale value of the
@@ -1049,10 +1321,12 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [colorSpace]: the colorspace.
   Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
-      _magickCombineImages,
-      _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
-    ));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(
+        _magickCombineImages,
+        _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -1063,8 +1337,10 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [comment]: the image comment.
-  Future<bool> magickCommentImage(String comment) async =>
-      await compute(_magickCommentImage, _MagickCommentImageParams(_wandPtr.address, comment));
+  Future<bool> magickCommentImage(String comment) async => await compute(
+        _magickCommentImage,
+        _MagickCommentImageParams(_wandPtr.address, comment),
+      );
 
   /// `magickCompareImagesLayers()` compares each image with the next in a sequence and returns the maximum
   /// bounding region of any pixel differences it discovers.
@@ -1074,10 +1350,12 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the compare method.
   Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
-      _magickCompareImagesLayers,
-      _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
-    ));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(
+        _magickCompareImagesLayers,
+        _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -1093,11 +1371,16 @@ class MagickWand {
   /// - [metric] : the metric.
   /// - [distortion] : the computed distortion between the images.
   Future<MagickWand?> magickCompareImages(
-      {required MagickWand reference, required MetricType metric, required List<double> distortion}) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
-      _magickCompareImages,
-      _MagickCompareImagesParams(_wandPtr.address, reference._wandPtr.address, metric.index, distortion),
-    ));
+      {required MagickWand reference,
+      required MetricType metric,
+      required List<double> distortion}) async {
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(
+        _magickCompareImages,
+        _MagickCompareImagesParams(_wandPtr.address, reference._wandPtr.address,
+            metric.index, distortion),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -1111,10 +1394,12 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [operator]: A complex operator.
   Future<MagickWand?> magickComplexImages(ComplexOperator operator) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
-      _magickComplexImages,
-      _MagickComplexImagesParams(_wandPtr.address, operator.index),
-    ));
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await compute(
+        _magickComplexImages,
+        _MagickComplexImagesParams(_wandPtr.address, operator.index),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -1139,7 +1424,14 @@ class MagickWand {
   }) async =>
       await compute(
         _magickCompositeImage,
-        _MagickCompositeImageParams(_wandPtr.address, sourceImage._wandPtr.address, compose.index, clipToSelf, x, y),
+        _MagickCompositeImageParams(
+          _wandPtr.address,
+          sourceImage._wandPtr.address,
+          compose.index,
+          clipToSelf,
+          x,
+          y,
+        ),
       );
 
   /// Composite one image onto another using the specified gravity.
@@ -1156,7 +1448,12 @@ class MagickWand {
   }) async =>
       await compute(
         _magickCompositeImageGravity,
-        _MagickCompositeImageGravityParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, gravity.value),
+        _MagickCompositeImageGravityParams(
+          _wandPtr.address,
+          sourceWand._wandPtr.address,
+          compose.index,
+          gravity.value,
+        ),
       );
 
   /// `magickCompositeLayers()` composite the images in the source wand over the images in the
@@ -1188,7 +1485,13 @@ class MagickWand {
   }) async =>
       await compute(
         _magickCompositeLayers,
-        _MagickCompositeLayersParams(_wandPtr.address, sourceWand._wandPtr.address, compose.index, x, y),
+        _MagickCompositeLayersParams(
+          _wandPtr.address,
+          sourceWand._wandPtr.address,
+          compose.index,
+          x,
+          y,
+        ),
       );
 
   /// Enhances the intensity differences between the lighter and darker elements of the image.
@@ -1197,8 +1500,10 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [sharpen]: Increase or decrease image contrast.
-  Future<bool> magickContrastImage(bool sharpen) async =>
-      await compute(_magickContrastImage, _MagickContrastImageParams(_wandPtr.address, sharpen));
+  Future<bool> magickContrastImage(bool sharpen) async => await compute(
+        _magickContrastImage,
+        _MagickContrastImageParams(_wandPtr.address, sharpen),
+      );
 
   /// Enhances the contrast of a color image by adjusting the pixels color to span the entire range of
   /// colors available. You can also reduce the influence of a particular channel with a gamma value of 0.
@@ -1206,10 +1511,15 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [blackPoint]: the black point.
   /// - [whitePoint]: the white point.
-  Future<bool> magickContrastStretchImage({required double whitePoint, required double blackPoint}) async =>
+  Future<bool> magickContrastStretchImage(
+          {required double whitePoint, required double blackPoint}) async =>
       await compute(
         _magickContrastStretchImage,
-        _MagickContrastStretchImageParams(_wandPtr.address, whitePoint, blackPoint),
+        _MagickContrastStretchImageParams(
+          _wandPtr.address,
+          whitePoint,
+          blackPoint,
+        ),
       );
 
   /// Applies a custom convolution kernel to the image.
@@ -1217,7 +1527,8 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [kernel]: An array of doubles representing the convolution kernel.
-  Future<bool> magickConvolveImage({required KernelInfo kernel}) async => await compute(
+  Future<bool> magickConvolveImage({required KernelInfo kernel}) async =>
+      await compute(
         _magickConvolveImage,
         _MagickConvolveImageParams(_wandPtr.address, kernel),
       );
@@ -1244,8 +1555,10 @@ class MagickWand {
   /// number of times you can produce a psychodelic effect.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickCycleColormapImage(int displace) async =>
-      await compute(_magickCycleColormapImage, _MagickCycleColormapImageParams(_wandPtr.address, displace));
+  Future<bool> magickCycleColormapImage(int displace) async => await compute(
+        _magickCycleColormapImage,
+        _MagickCycleColormapImageParams(_wandPtr.address, displace),
+      );
 
   // TODO: continue adding the remaining methods
 
@@ -1255,15 +1568,19 @@ class MagickWand {
   /// images just after the given index.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickReadImage(String imageFilePath) async =>
-      await compute(_magickReadImage, _MagickReadImageParams(_wandPtr.address, imageFilePath));
+  Future<bool> magickReadImage(String imageFilePath) async => await compute(
+        _magickReadImage,
+        _MagickReadImageParams(_wandPtr.address, imageFilePath),
+      );
 
   /// Writes an image to the specified filename. If the filename parameter is NULL, the image is written
   /// to the filename set by magickReadImage() or magickSetImageFilename().
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickWriteImage(String imageFilePath) async =>
-      await compute(_magickWriteImage, _MagickWriteImageParams(_wandPtr.address, imageFilePath));
+  Future<bool> magickWriteImage(String imageFilePath) async => await compute(
+        _magickWriteImage,
+        _MagickWriteImageParams(_wandPtr.address, imageFilePath),
+      );
 }
 
 /// Represents an exception that occurred while using the ImageMagick API.
@@ -1316,30 +1633,50 @@ class _MagickAdaptiveBlurImageParams {
   _MagickAdaptiveBlurImageParams(this.wandPtrAddress, this.radius, this.sigma);
 }
 
-Future<bool> _magickAdaptiveBlurImage(_MagickAdaptiveBlurImageParams params) async =>
-    _bindings.magickAdaptiveBlurImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+Future<bool> _magickAdaptiveBlurImage(
+        _MagickAdaptiveBlurImageParams params) async =>
+    _bindings.magickAdaptiveBlurImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+    );
 
 class _MagickAdaptiveResizeImageParams {
   final int wandPtrAddress;
   final int columns;
   final int rows;
 
-  _MagickAdaptiveResizeImageParams(this.wandPtrAddress, this.columns, this.rows);
+  _MagickAdaptiveResizeImageParams(
+      this.wandPtrAddress, this.columns, this.rows);
 }
 
-Future<bool> _magickAdaptiveResizeImage(_MagickAdaptiveResizeImageParams params) async =>
-    _bindings.magickAdaptiveResizeImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.columns, params.rows);
+Future<bool> _magickAdaptiveResizeImage(
+        _MagickAdaptiveResizeImageParams params) async =>
+    _bindings.magickAdaptiveResizeImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.columns,
+      params.rows,
+    );
 
 class _MagickAdaptiveSharpenImageParams {
   final int wandPtrAddress;
   final double radius;
   final double sigma;
 
-  _MagickAdaptiveSharpenImageParams(this.wandPtrAddress, this.radius, this.sigma);
+  _MagickAdaptiveSharpenImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.sigma,
+  );
 }
 
-Future<bool> _magickAdaptiveSharpenImage(_MagickAdaptiveSharpenImageParams params) async =>
-    _bindings.magickAdaptiveSharpenImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+Future<bool> _magickAdaptiveSharpenImage(
+        _MagickAdaptiveSharpenImageParams params) async =>
+    _bindings.magickAdaptiveSharpenImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+    );
 
 class _MagickAdaptiveThresholdImageParams {
   final int wandPtrAddress;
@@ -1347,12 +1684,18 @@ class _MagickAdaptiveThresholdImageParams {
   final int height;
   final double bias;
 
-  _MagickAdaptiveThresholdImageParams(this.wandPtrAddress, this.width, this.height, this.bias);
+  _MagickAdaptiveThresholdImageParams(
+      this.wandPtrAddress, this.width, this.height, this.bias);
 }
 
-Future<bool> _magickAdaptiveThresholdImage(_MagickAdaptiveThresholdImageParams params) async =>
+Future<bool> _magickAdaptiveThresholdImage(
+        _MagickAdaptiveThresholdImageParams params) async =>
     _bindings.magickAdaptiveThresholdImage(
-        Pointer<Void>.fromAddress(params.wandPtrAddress), params.width, params.height, params.bias);
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.width,
+      params.height,
+      params.bias,
+    );
 
 class _MagickAddImageParams {
   final int wandPtrAddress;
@@ -1361,30 +1704,44 @@ class _MagickAddImageParams {
   _MagickAddImageParams(this.wandPtrAddress, this.otherWandPtrAddress);
 }
 
-Future<bool> _magickAddImage(_MagickAddImageParams params) async => _bindings.magickAddImage(
-    Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.otherWandPtrAddress));
+Future<bool> _magickAddImage(_MagickAddImageParams params) async =>
+    _bindings.magickAddImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      Pointer<Void>.fromAddress(params.otherWandPtrAddress),
+    );
 
 class _MagickAddNoiseImageParams {
   final int wandPtrAddress;
   final int noiseTypeIndex;
   final double attenuate;
 
-  _MagickAddNoiseImageParams(this.wandPtrAddress, this.noiseTypeIndex, this.attenuate);
+  _MagickAddNoiseImageParams(
+      this.wandPtrAddress, this.noiseTypeIndex, this.attenuate);
 }
 
-Future<bool> _magickAddNoiseImage(_MagickAddNoiseImageParams params) async => _bindings.magickAddNoiseImage(
-    Pointer<Void>.fromAddress(params.wandPtrAddress), params.noiseTypeIndex, params.attenuate);
+Future<bool> _magickAddNoiseImage(_MagickAddNoiseImageParams params) async =>
+    _bindings.magickAddNoiseImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.noiseTypeIndex,
+      params.attenuate,
+    );
 
 class _MagickAffineTransformImageParams {
   final int wandPtrAddress;
   final int drawingWandPtrAddress;
 
-  _MagickAffineTransformImageParams(this.wandPtrAddress, this.drawingWandPtrAddress);
+  _MagickAffineTransformImageParams(
+    this.wandPtrAddress,
+    this.drawingWandPtrAddress,
+  );
 }
 
-Future<bool> _magickAffineTransformImage(_MagickAffineTransformImageParams params) async =>
+Future<bool> _magickAffineTransformImage(
+        _MagickAffineTransformImageParams params) async =>
     _bindings.magickAffineTransformImage(
-        Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.drawingWandPtrAddress));
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      Pointer<Void>.fromAddress(params.drawingWandPtrAddress),
+    );
 
 class _MagickAnnotateImageParams {
   final int wandPtrAddress;
@@ -1394,10 +1751,12 @@ class _MagickAnnotateImageParams {
   final double angle;
   final String text;
 
-  _MagickAnnotateImageParams(this.wandPtrAddress, this.drawingWandPtrAddress, this.x, this.y, this.angle, this.text);
+  _MagickAnnotateImageParams(this.wandPtrAddress, this.drawingWandPtrAddress,
+      this.x, this.y, this.angle, this.text);
 }
 
-Future<bool> _magickAnnotateImage(_MagickAnnotateImageParams params) async => using(
+Future<bool> _magickAnnotateImage(_MagickAnnotateImageParams params) async =>
+    using(
       (Arena arena) => _bindings.magickAnnotateImage(
         Pointer<Void>.fromAddress(params.wandPtrAddress),
         Pointer<Void>.fromAddress(params.drawingWandPtrAddress),
@@ -1415,7 +1774,8 @@ class _MagickAnimateImagesParams {
   _MagickAnimateImagesParams(this.wandPtrAddress, this.serverName);
 }
 
-Future<bool> _magickAnimateImages(_MagickAnimateImagesParams params) async => using(
+Future<bool> _magickAnimateImages(_MagickAnimateImagesParams params) async =>
+    using(
       (Arena arena) => _bindings.magickAnimateImages(
         Pointer<Void>.fromAddress(params.wandPtrAddress),
         params.serverName.toNativeUtf8(allocator: arena).cast(),
@@ -1430,7 +1790,12 @@ class _MagickAppendImagesParams {
 }
 
 Future<int> _magickAppendImages(_MagickAppendImagesParams params) async =>
-    _bindings.magickAppendImages(Pointer<Void>.fromAddress(params.wandPtrAddress), params.stack).address;
+    _bindings
+        .magickAppendImages(
+          Pointer<Void>.fromAddress(params.wandPtrAddress),
+          params.stack,
+        )
+        .address;
 
 Future<bool> _magickAutoGammaImage(int wandPtrAddress) async =>
     _bindings.magickAutoGammaImage(Pointer<Void>.fromAddress(wandPtrAddress));
@@ -1445,11 +1810,16 @@ class _MagickAutoThresholdImageParams {
   final int wandPtrAddress;
   final int thresholdMethodIndex;
 
-  _MagickAutoThresholdImageParams(this.wandPtrAddress, this.thresholdMethodIndex);
+  _MagickAutoThresholdImageParams(
+      this.wandPtrAddress, this.thresholdMethodIndex);
 }
 
-Future<bool> _magickAutoThresholdImage(_MagickAutoThresholdImageParams params) async =>
-    _bindings.magickAutoThresholdImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.thresholdMethodIndex);
+Future<bool> _magickAutoThresholdImage(
+        _MagickAutoThresholdImageParams params) async =>
+    _bindings.magickAutoThresholdImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.thresholdMethodIndex,
+    );
 
 class _MagickBilateralBlurImageParams {
   final int wandPtrAddress;
@@ -1458,10 +1828,17 @@ class _MagickBilateralBlurImageParams {
   final double intensitySigma;
   final double spatialSigma;
 
-  _MagickBilateralBlurImageParams(this.wandPtrAddress, this.radius, this.sigma, this.intensitySigma, this.spatialSigma);
+  _MagickBilateralBlurImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.sigma,
+    this.intensitySigma,
+    this.spatialSigma,
+  );
 }
 
-Future<bool> _magickBilateralBlurImage(_MagickBilateralBlurImageParams params) async =>
+Future<bool> _magickBilateralBlurImage(
+        _MagickBilateralBlurImageParams params) async =>
     _bindings.magickBilateralBlurImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       params.radius,
@@ -1474,12 +1851,16 @@ class _MagickBlackThresholdImageParams {
   final int wandPtrAddress;
   final int thresholdWandPtrAddress;
 
-  _MagickBlackThresholdImageParams(this.wandPtrAddress, this.thresholdWandPtrAddress);
+  _MagickBlackThresholdImageParams(
+      this.wandPtrAddress, this.thresholdWandPtrAddress);
 }
 
-Future<bool> _magickBlackThresholdImage(_MagickBlackThresholdImageParams params) async =>
+Future<bool> _magickBlackThresholdImage(
+        _MagickBlackThresholdImageParams params) async =>
     _bindings.magickBlackThresholdImage(
-        Pointer<Void>.fromAddress(params.wandPtrAddress), Pointer<Void>.fromAddress(params.thresholdWandPtrAddress));
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      Pointer<Void>.fromAddress(params.thresholdWandPtrAddress),
+    );
 
 class _MagickBlueShiftImageParams {
   final int wandPtrAddress;
@@ -1489,7 +1870,10 @@ class _MagickBlueShiftImageParams {
 }
 
 Future<bool> _magickBlueShiftImage(_MagickBlueShiftImageParams params) async =>
-    _bindings.magickBlueShiftImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.factor);
+    _bindings.magickBlueShiftImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.factor,
+    );
 
 class _MagickBlurImageParams {
   final int wandPtrAddress;
@@ -1500,7 +1884,11 @@ class _MagickBlurImageParams {
 }
 
 Future<bool> _magickBlurImage(_MagickBlurImageParams params) async =>
-    _bindings.magickBlurImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+    _bindings.magickBlurImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+    );
 
 class _MagickBorderImageParams {
   final int wandPtrAddress;
@@ -1509,10 +1897,17 @@ class _MagickBorderImageParams {
   final int height;
   final int composeIndex;
 
-  _MagickBorderImageParams(this.wandPtrAddress, this.borderWandPtrAddress, this.width, this.height, this.composeIndex);
+  _MagickBorderImageParams(
+    this.wandPtrAddress,
+    this.borderWandPtrAddress,
+    this.width,
+    this.height,
+    this.composeIndex,
+  );
 }
 
-Future<bool> _magickBorderImage(_MagickBorderImageParams params) async => _bindings.magickBorderImage(
+Future<bool> _magickBorderImage(_MagickBorderImageParams params) async =>
+    _bindings.magickBorderImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       Pointer<Void>.fromAddress(params.borderWandPtrAddress),
       params.width,
@@ -1525,12 +1920,20 @@ class _MagickBrightnessContrastImageParams {
   final double brightness;
   final double contrast;
 
-  _MagickBrightnessContrastImageParams(this.wandPtrAddress, this.brightness, this.contrast);
+  _MagickBrightnessContrastImageParams(
+    this.wandPtrAddress,
+    this.brightness,
+    this.contrast,
+  );
 }
 
-Future<bool> _magickBrightnessContrastImage(_MagickBrightnessContrastImageParams params) async =>
+Future<bool> _magickBrightnessContrastImage(
+        _MagickBrightnessContrastImageParams params) async =>
     _bindings.magickBrightnessContrastImage(
-        Pointer<Void>.fromAddress(params.wandPtrAddress), params.brightness, params.contrast);
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.brightness,
+      params.contrast,
+    );
 
 class _MagickCannyEdgeImageParams {
   final int wandPtrAddress;
@@ -1539,10 +1942,17 @@ class _MagickCannyEdgeImageParams {
   final double lowerPercent;
   final double upperPercent;
 
-  _MagickCannyEdgeImageParams(this.wandPtrAddress, this.radius, this.sigma, this.lowerPercent, this.upperPercent);
+  _MagickCannyEdgeImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.sigma,
+    this.lowerPercent,
+    this.upperPercent,
+  );
 }
 
-Future<bool> _magickCannyEdgeImage(_MagickCannyEdgeImageParams params) async => _bindings.magickCannyEdgeImage(
+Future<bool> _magickCannyEdgeImage(_MagickCannyEdgeImageParams params) async =>
+    _bindings.magickCannyEdgeImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       params.radius,
       params.sigma,
@@ -1557,7 +1967,8 @@ class _MagickChannelFxImageParams {
   _MagickChannelFxImageParams(this.wandPtrAddress, this.expression);
 }
 
-Future<int> _magickChannelFxImage(_MagickChannelFxImageParams params) async => using(
+Future<int> _magickChannelFxImage(_MagickChannelFxImageParams params) async =>
+    using(
       (Arena arena) => _bindings
           .magickChannelFxImage(
             Pointer<Void>.fromAddress(params.wandPtrAddress),
@@ -1575,7 +1986,11 @@ class _MagickCharcoalImageParams {
 }
 
 Future<bool> _magickCharcoalImage(_MagickCharcoalImageParams params) async =>
-    _bindings.magickCharcoalImage(Pointer<Void>.fromAddress(params.wandPtrAddress), params.radius, params.sigma);
+    _bindings.magickCharcoalImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.radius,
+      params.sigma,
+    );
 
 class _MagickChopImageParams {
   final int wandPtrAddress;
@@ -1584,11 +1999,18 @@ class _MagickChopImageParams {
   final int x;
   final int y;
 
-  _MagickChopImageParams(this.wandPtrAddress, this.width, this.height, this.x, this.y);
+  _MagickChopImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.x,
+    this.y,
+  );
 }
 
-Future<bool> _magickChopImage(_MagickChopImageParams params) async => _bindings.magickChopImage(
-    Pointer<Void>.fromAddress(params.wandPtrAddress), params.width, params.height, params.x, params.y);
+Future<bool> _magickChopImage(_MagickChopImageParams params) async =>
+    _bindings.magickChopImage(Pointer<Void>.fromAddress(params.wandPtrAddress),
+        params.width, params.height, params.x, params.y);
 
 class _MagickCLAHEImageParams {
   final int wandPtrAddress;
@@ -1597,11 +2019,23 @@ class _MagickCLAHEImageParams {
   final double numberBins;
   final double clipLimit;
 
-  _MagickCLAHEImageParams(this.wandPtrAddress, this.width, this.height, this.numberBins, this.clipLimit);
+  _MagickCLAHEImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.numberBins,
+    this.clipLimit,
+  );
 }
 
-Future<bool> _magickCLAHEImage(_MagickCLAHEImageParams params) async => _bindings.magickCLAHEImage(
-    Pointer<Void>.fromAddress(params.wandPtrAddress), params.width, params.height, params.numberBins, params.clipLimit);
+Future<bool> _magickCLAHEImage(_MagickCLAHEImageParams params) async =>
+    _bindings.magickCLAHEImage(
+      Pointer<Void>.fromAddress(params.wandPtrAddress),
+      params.width,
+      params.height,
+      params.numberBins,
+      params.clipLimit,
+    );
 
 Future<bool> _magickClampImage(int wandPtrAddress) async =>
     _bindings.magickClampImage(Pointer<Void>.fromAddress(wandPtrAddress));
@@ -1617,7 +2051,8 @@ class _MagickClipImagePathParams {
   _MagickClipImagePathParams(this.wandPtrAddress, this.pathname, this.inside);
 }
 
-Future<bool> _magickClipImagePath(_MagickClipImagePathParams params) async => using(
+Future<bool> _magickClipImagePath(_MagickClipImagePathParams params) async =>
+    using(
       (Arena arena) => _bindings.magickClipImagePath(
         Pointer<Void>.fromAddress(params.wandPtrAddress),
         params.pathname.toNativeUtf8(allocator: arena).cast(),
@@ -1630,26 +2065,37 @@ class _MagickClutImageParams {
   final int clutWandPtrAddress;
   final int interpolateMethod;
 
-  _MagickClutImageParams(this.wandPtrAddress, this.clutWandPtrAddress, this.interpolateMethod);
+  _MagickClutImageParams(
+    this.wandPtrAddress,
+    this.clutWandPtrAddress,
+    this.interpolateMethod,
+  );
 }
 
-Future<bool> _magickClutImage(_MagickClutImageParams params) async => _bindings.magickClutImage(
+Future<bool> _magickClutImage(_MagickClutImageParams params) async =>
+    _bindings.magickClutImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       Pointer<Void>.fromAddress(params.clutWandPtrAddress),
       params.interpolateMethod,
     );
 
-Future<int> _magickCoalesceImages(int wandPtrAddress) async =>
-    _bindings.magickCoalesceImages(Pointer<Void>.fromAddress(wandPtrAddress)).address;
+Future<int> _magickCoalesceImages(int wandPtrAddress) async => _bindings
+    .magickCoalesceImages(Pointer<Void>.fromAddress(wandPtrAddress))
+    .address;
 
 class _MagickColorDecisionListImageParams {
   final int wandPtrAddress;
   final String colorCorrectionCollection;
 
-  _MagickColorDecisionListImageParams(this.wandPtrAddress, this.colorCorrectionCollection);
+  _MagickColorDecisionListImageParams(
+    this.wandPtrAddress,
+    this.colorCorrectionCollection,
+  );
 }
 
-Future<bool> _magickColorDecisionListImage(_MagickColorDecisionListImageParams params) async => using(
+Future<bool> _magickColorDecisionListImage(
+        _MagickColorDecisionListImageParams params) async =>
+    using(
       (Arena arena) => _bindings.magickColorDecisionListImage(
         Pointer<Void>.fromAddress(params.wandPtrAddress),
         params.colorCorrectionCollection.toNativeUtf8(allocator: arena).cast(),
@@ -1661,10 +2107,15 @@ class _MagickColorizeImageParams {
   final int colorizePixelWandPtrAddress;
   final int blendPixelWandPtrAddress;
 
-  _MagickColorizeImageParams(this.wandPtrAddress, this.colorizePixelWandPtrAddress, this.blendPixelWandPtrAddress);
+  _MagickColorizeImageParams(
+    this.wandPtrAddress,
+    this.colorizePixelWandPtrAddress,
+    this.blendPixelWandPtrAddress,
+  );
 }
 
-Future<bool> _magickColorizeImage(_MagickColorizeImageParams params) async => _bindings.magickColorizeImage(
+Future<bool> _magickColorizeImage(_MagickColorizeImageParams params) async =>
+    _bindings.magickColorizeImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       Pointer<Void>.fromAddress(params.colorizePixelWandPtrAddress),
       Pointer<Void>.fromAddress(params.blendPixelWandPtrAddress),
@@ -1677,7 +2128,9 @@ class _MagickColorMatrixImageParams {
   _MagickColorMatrixImageParams(this.wandPtrAddress, this.colorMatrix);
 }
 
-Future<bool> _magickColorMatrixImage(_MagickColorMatrixImageParams params) async => using(
+Future<bool> _magickColorMatrixImage(
+        _MagickColorMatrixImageParams params) async =>
+    using(
       (Arena arena) => _bindings.magickColorMatrixImage(
         Pointer<Void>.fromAddress(params.wandPtrAddress),
         params.colorMatrix._toKernelInfoStructPointer(allocator: arena).cast(),
@@ -1690,10 +2143,14 @@ class _MagickColorThresholdImageParams {
   final int endColorPixelWandPtrAddress;
 
   _MagickColorThresholdImageParams(
-      this.wandPtrAddress, this.startColorPixelWandPtrAddress, this.endColorPixelWandPtrAddress);
+    this.wandPtrAddress,
+    this.startColorPixelWandPtrAddress,
+    this.endColorPixelWandPtrAddress,
+  );
 }
 
-Future<bool> _magickColorThresholdImage(_MagickColorThresholdImageParams params) async =>
+Future<bool> _magickColorThresholdImage(
+        _MagickColorThresholdImageParams params) async =>
     _bindings.magickColorThresholdImage(
       Pointer<Void>.fromAddress(params.wandPtrAddress),
       Pointer<Void>.fromAddress(params.startColorPixelWandPtrAddress),
@@ -1707,12 +2164,13 @@ class _MagickCombineImagesParams {
   _MagickCombineImagesParams(this.wandPtrAddress, this.colorSpaceType);
 }
 
-Future<int> _magickCombineImages(_MagickCombineImagesParams params) async => _bindings
-    .magickCombineImages(
-      Pointer<Void>.fromAddress(params.wandPtrAddress),
-      params.colorSpaceType,
-    )
-    .address;
+Future<int> _magickCombineImages(_MagickCombineImagesParams params) async =>
+    _bindings
+        .magickCombineImages(
+          Pointer<Void>.fromAddress(params.wandPtrAddress),
+          params.colorSpaceType,
+        )
+        .address;
 
 class _MagickCommentImageParams {
   final int wandPtrAddress;
@@ -1732,12 +2190,18 @@ class _MagickCompareImagesLayersParams {
   final int wandPtrAddress;
   final int compareLayerMethod;
 
-  _MagickCompareImagesLayersParams(this.wandPtrAddress, this.compareLayerMethod);
+  _MagickCompareImagesLayersParams(
+      this.wandPtrAddress, this.compareLayerMethod);
 }
 
-Future<int> _magickCompareImagesLayers(_MagickCompareImagesLayersParams args) async => _bindings
-    .magickCompareImagesLayers(Pointer<Void>.fromAddress(args.wandPtrAddress), args.compareLayerMethod)
-    .address;
+Future<int> _magickCompareImagesLayers(
+        _MagickCompareImagesLayersParams args) async =>
+    _bindings
+        .magickCompareImagesLayers(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.compareLayerMethod,
+        )
+        .address;
 
 class _MagickCompareImagesParams {
   final int wandPtrAddress;
@@ -1745,10 +2209,16 @@ class _MagickCompareImagesParams {
   final int metricType;
   final List<double> distortion;
 
-  _MagickCompareImagesParams(this.wandPtrAddress, this.referenceWandPtrAddress, this.metricType, this.distortion);
+  _MagickCompareImagesParams(
+    this.wandPtrAddress,
+    this.referenceWandPtrAddress,
+    this.metricType,
+    this.distortion,
+  );
 }
 
-Future<int> _magickCompareImages(_MagickCompareImagesParams args) async => using(
+Future<int> _magickCompareImages(_MagickCompareImagesParams args) async =>
+    using(
       (Arena arena) => _bindings
           .magickCompareImages(
             Pointer<Void>.fromAddress(args.wandPtrAddress),
@@ -1767,7 +2237,12 @@ class _MagickComplexImagesParams {
 }
 
 Future<int> _magickComplexImages(_MagickComplexImagesParams args) async =>
-    _bindings.magickComplexImages(Pointer<Void>.fromAddress(args.wandPtrAddress), args.complexOperator).address;
+    _bindings
+        .magickComplexImages(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.complexOperator,
+        )
+        .address;
 
 class _MagickCompositeImageParams {
   final int wandPtrAddress;
@@ -1778,10 +2253,17 @@ class _MagickCompositeImageParams {
   final int y;
 
   _MagickCompositeImageParams(
-      this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.clipToSelf, this.x, this.y);
+    this.wandPtrAddress,
+    this.sourceWandPtrAddress,
+    this.compositeOperator,
+    this.clipToSelf,
+    this.x,
+    this.y,
+  );
 }
 
-Future<bool> _magickCompositeImage(_MagickCompositeImageParams args) async => _bindings.magickCompositeImage(
+Future<bool> _magickCompositeImage(_MagickCompositeImageParams args) async =>
+    _bindings.magickCompositeImage(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
       args.compositeOperator,
@@ -1797,10 +2279,15 @@ class _MagickCompositeImageGravityParams {
   final int gravityType;
 
   _MagickCompositeImageGravityParams(
-      this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.gravityType);
+    this.wandPtrAddress,
+    this.sourceWandPtrAddress,
+    this.compositeOperator,
+    this.gravityType,
+  );
 }
 
-Future<bool> _magickCompositeImageGravity(_MagickCompositeImageGravityParams args) async =>
+Future<bool> _magickCompositeImageGravity(
+        _MagickCompositeImageGravityParams args) async =>
     _bindings.magickCompositeImageGravity(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
@@ -1815,10 +2302,17 @@ class _MagickCompositeLayersParams {
   final int x;
   final int y;
 
-  _MagickCompositeLayersParams(this.wandPtrAddress, this.sourceWandPtrAddress, this.compositeOperator, this.x, this.y);
+  _MagickCompositeLayersParams(
+    this.wandPtrAddress,
+    this.sourceWandPtrAddress,
+    this.compositeOperator,
+    this.x,
+    this.y,
+  );
 }
 
-Future<bool> _magickCompositeLayers(_MagickCompositeLayersParams args) async => _bindings.magickCompositeLayers(
+Future<bool> _magickCompositeLayers(_MagickCompositeLayersParams args) async =>
+    _bindings.magickCompositeLayers(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       Pointer<Void>.fromAddress(args.sourceWandPtrAddress),
       args.compositeOperator,
@@ -1833,7 +2327,8 @@ class _MagickContrastImageParams {
   _MagickContrastImageParams(this.wandPtrAddress, this.sharpen);
 }
 
-Future<bool> _magickContrastImage(_MagickContrastImageParams args) async => _bindings.magickContrastImage(
+Future<bool> _magickContrastImage(_MagickContrastImageParams args) async =>
+    _bindings.magickContrastImage(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.sharpen,
     );
@@ -1843,10 +2338,15 @@ class _MagickContrastStretchImageParams {
   final double whitePoint;
   final double blackPoint;
 
-  _MagickContrastStretchImageParams(this.wandPtrAddress, this.whitePoint, this.blackPoint);
+  _MagickContrastStretchImageParams(
+    this.wandPtrAddress,
+    this.whitePoint,
+    this.blackPoint,
+  );
 }
 
-Future<bool> _magickContrastStretchImage(_MagickContrastStretchImageParams args) async =>
+Future<bool> _magickContrastStretchImage(
+        _MagickContrastStretchImageParams args) async =>
     _bindings.magickContrastStretchImage(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.blackPoint,
@@ -1860,7 +2360,8 @@ class _MagickConvolveImageParams {
   _MagickConvolveImageParams(this.wandPtrAddress, this.kernel);
 }
 
-Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async => using(
+Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async =>
+    using(
       (Arena arena) => _bindings.magickConvolveImage(
         Pointer<Void>.fromAddress(args.wandPtrAddress),
         args.kernel._toKernelInfoStructPointer(allocator: arena).cast(),
@@ -1874,7 +2375,13 @@ class _MagickCropImageParams {
   final int x;
   final int y;
 
-  _MagickCropImageParams(this.wandPtrAddress, this.width, this.height, this.x, this.y);
+  _MagickCropImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.x,
+    this.y,
+  );
 }
 
 Future<bool> _magickCropImage(_MagickCropImageParams args) async => using(
@@ -1894,8 +2401,12 @@ class _MagickCycleColormapImageParams {
   _MagickCycleColormapImageParams(this.wandPtrAddress, this.displace);
 }
 
-Future<bool> _magickCycleColormapImage(_MagickCycleColormapImageParams args) async =>
-    _bindings.magickCycleColormapImage(Pointer<Void>.fromAddress(args.wandPtrAddress), args.displace);
+Future<bool> _magickCycleColormapImage(
+        _MagickCycleColormapImageParams args) async =>
+    _bindings.magickCycleColormapImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.displace,
+    );
 
 class _MagickReadImageParams {
   final int wandPtrAddress;
@@ -1904,8 +2415,12 @@ class _MagickReadImageParams {
   _MagickReadImageParams(this.wandPtrAddress, this.imageFilePath);
 }
 
-Future<bool> _magickReadImage(_MagickReadImageParams args) async => using((Arena arena) => _bindings.magickReadImage(
-    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
+Future<bool> _magickReadImage(_MagickReadImageParams args) async => using(
+      (Arena arena) => _bindings.magickReadImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.imageFilePath.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
 
 class _MagickWriteImageParams {
   final int wandPtrAddress;
@@ -1914,5 +2429,9 @@ class _MagickWriteImageParams {
   _MagickWriteImageParams(this.wandPtrAddress, this.imageFilePath);
 }
 
-Future<bool> _magickWriteImage(_MagickWriteImageParams args) async => using((Arena arena) => _bindings.magickWriteImage(
-    Pointer<Void>.fromAddress(args.wandPtrAddress), args.imageFilePath.toNativeUtf8(allocator: arena).cast()));
+Future<bool> _magickWriteImage(_MagickWriteImageParams args) async => using(
+      (Arena arena) => _bindings.magickWriteImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.imageFilePath.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
