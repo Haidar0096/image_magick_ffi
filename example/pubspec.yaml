@@ -13,6 +13,7 @@ dependencies:
 
   image_magick_ffi:
     path: ../
+
   file_picker: ^5.2.1
 
   path_provider: ^2.0.11
