@@ -1021,13 +1021,11 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [colorMatrix] : the color matrix.
-  Future<bool> magickColorMatrixImage({required KernelInfo colorMatrix}) async => using(
-        (Arena arena) async => await compute(
-          _magickColorMatrixImage,
-          _MagickColorMatrixImageParams(
-            _wandPtr.address,
-            colorMatrix._toKernelInfoStructPointer(allocator: arena).address,
-          ),
+  Future<bool> magickColorMatrixImage({required KernelInfo colorMatrix}) async => await compute(
+        _magickColorMatrixImage,
+        _MagickColorMatrixImageParams(
+          _wandPtr.address,
+          colorMatrix,
         ),
       );
 
@@ -1219,10 +1217,10 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [kernel]: An array of doubles representing the convolution kernel.
-  Future<bool> magickConvolveImage({required KernelInfo kernel}) async => using((Arena arena) async => await compute(
+  Future<bool> magickConvolveImage({required KernelInfo kernel}) async => await compute(
         _magickConvolveImage,
-        _MagickConvolveImageParams(_wandPtr.address, kernel._toKernelInfoStructPointer(allocator: arena).address),
-      ));
+        _MagickConvolveImageParams(_wandPtr.address, kernel),
+      );
 
   /// Extracts a region of the image.
   ///
@@ -1674,14 +1672,16 @@ Future<bool> _magickColorizeImage(_MagickColorizeImageParams params) async => _b
 
 class _MagickColorMatrixImageParams {
   final int wandPtrAddress;
-  final int colorMatrixKernelInfoPtrAddress;
+  final KernelInfo colorMatrix;
 
-  _MagickColorMatrixImageParams(this.wandPtrAddress, this.colorMatrixKernelInfoPtrAddress);
+  _MagickColorMatrixImageParams(this.wandPtrAddress, this.colorMatrix);
 }
 
-Future<bool> _magickColorMatrixImage(_MagickColorMatrixImageParams params) async => _bindings.magickColorMatrixImage(
-      Pointer<Void>.fromAddress(params.wandPtrAddress),
-      Pointer<Void>.fromAddress(params.colorMatrixKernelInfoPtrAddress),
+Future<bool> _magickColorMatrixImage(_MagickColorMatrixImageParams params) async => using(
+      (Arena arena) => _bindings.magickColorMatrixImage(
+        Pointer<Void>.fromAddress(params.wandPtrAddress),
+        params.colorMatrix._toKernelInfoStructPointer(allocator: arena).cast(),
+      ),
     );
 
 class _MagickColorThresholdImageParams {
@@ -1855,14 +1855,16 @@ Future<bool> _magickContrastStretchImage(_MagickContrastStretchImageParams args)
 
 class _MagickConvolveImageParams {
   final int wandPtrAddress;
-  final int kernelInfoPtrAddress;
+  final KernelInfo kernel;
 
-  _MagickConvolveImageParams(this.wandPtrAddress, this.kernelInfoPtrAddress);
+  _MagickConvolveImageParams(this.wandPtrAddress, this.kernel);
 }
 
-Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async => _bindings.magickConvolveImage(
-      Pointer<Void>.fromAddress(args.wandPtrAddress),
-      Pointer<Void>.fromAddress(args.kernelInfoPtrAddress),
+Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async => using(
+      (Arena arena) => _bindings.magickConvolveImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.kernel._toKernelInfoStructPointer(allocator: arena).cast(),
+      ),
     );
 
 class _MagickCropImageParams {
