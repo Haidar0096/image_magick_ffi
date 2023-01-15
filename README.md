@@ -8,8 +8,11 @@ Special thanks to [Piero5W11](https://github.com/Piero512) for being the "FFI Ma
 This plugin brings to you the [ImageMagick](https://imagemagick.org/) C library [MagickWand](https://imagemagick.org/script/magick-wand.php) to use with dart.
 ## Feel native
 Interact with the underlying ImageMagick C api just as you used to do in C (not with pointers, of course :P).
+## Features
+See for yourself from this image from ImageMagick's website some of the things you can do with this plugin:
+![ImageMagick](https://imagemagick.org/image/examples.jpg)
 
-See the #Usage section below for more insights.
+Have a look the #Usage section below for more insights.
 
 # Install
 `image_magick_ffi: <latest_version>`
@@ -62,32 +65,52 @@ void initState() {
 }
 // ...
 
-// reads an image, manipulates it, then writes it in png format
-Future<String?> _handlePress() async {
+// reads an image, then writes it in jpeg format
+Future<String> _handlePress() async {
   try {
     setState(() => isLoading = true);
 
     await _wand.magickReadImage(_inputFile!.path); // read the image
 
-    await _wand.magickAdaptiveResizeImage(_outputImageWidth, _outputImageHeight); // resize the image
-    await _wand.magickAddNoiseImage(im.NoiseType.UniformNoise, 10); // add noise to the image
+    ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
-    // set output image name
+    im.KernelInfo kernel = im.KernelInfo(
+      width: 3,
+      height: 3,
+      values: Float64List.fromList([1, 0, 1, 0, 1, 0, 1, 0, 1]),
+    );
+    await _wand.magickColorMatrixImage(
+            colorMatrix: kernel); // apply color matrix to image
+    await _wand.magickAdaptiveResizeImage(600, 800); // resize image
+    await _wand.magickContrastImage(true); // apply contrast to image
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
     final String ps = Platform.pathSeparator;
-    final String inputFileNameWithoutExtension = _inputFile!.path.split(ps).last.split('.').first;
-    final String outputFilePath = '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+    final String inputFileNameWithoutExtension =
+            _inputFile!.path.split(ps).last.split('.').first;
+    final String outputFilePath =
+            '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
 
-    await _wand.magickWriteImage(outputFilePath); // write the image to a file in the png format
+    await _wand.magickWriteImage(
+            outputFilePath); // write the image to a file in the png format
 
-    im.MagickGetExceptionResult e = _wand.magickGetException(); // get the exception if any
+    im.MagickGetExceptionResult e =
+    _wand.magickGetException(); // get the exception if any
     if (e.severity != im.ExceptionType.UndefinedException) {
       throw e.description;
     }
-    setState(() => isLoading = false);
-    return null;
+    setState(() {
+      _outputFile = File(outputFilePath);
+      isLoading = false;
+    });
+    return 'Operation Successful!';
   } catch (e) {
-    setState(() => isLoading = false);
-    return e.toString();
+    setState(() {
+      _outputFile = null;
+      isLoading = false;
+    });
+    return 'Error: ${e.toString()}';
   }
 }
 
@@ -100,7 +123,7 @@ dispose() {
 }
 // ...
 ```
-- For more info about code usage, have a look at the example app in this repo.
+- For more info about code usage, have a look at the example app in this repo, there is a complete working app there that is ready for you to play around with.
 
 # Contributing
 - Feel free to open an issue if you have any problem or suggestion.
