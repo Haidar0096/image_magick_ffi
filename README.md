@@ -1,6 +1,15 @@
 # ⚠️Attention⚠️
 This is not a stable release. It is a development release for beta-testers to try out the plugin and report bugs. It is not recommended to use this plugin in production apps yet.
 
+# Table Of Contents
+- [Contributors](#contributors)
+- [ImageMagickFFi Plugin](#imagemagickffi-plugin)
+  - [Feel native](#feel-native)
+  - [Features](#features)
+- [Install](#install)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
 # Contributors
 Special thanks to [Piero5W11](https://github.com/Piero512) for being the "FFI Master" and helping me a lot with this plugin.
 
