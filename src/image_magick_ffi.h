@@ -303,6 +303,8 @@ FFI_PLUGIN_EXPORT bool magickCropImage(void* wand, const size_t width, const siz
 
 FFI_PLUGIN_EXPORT bool magickCycleColormapImage(void* wand, const ssize_t displace);
 
+FFI_PLUGIN_EXPORT bool magickConstituteImage(void* wand, const size_t columns, const size_t rows, const char* map, const int storage, void* pixels);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

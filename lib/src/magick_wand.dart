@@ -337,14 +337,13 @@ class MagickWand {
       });
 
   /// Returns the named image profile.
-  List<int>? magickGetImageProfile(String name) => using((Arena arena) {
+  Uint8List? magickGetImageProfile(String name) => using((Arena arena) {
         final Pointer<Char> namePtr =
             name.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> lengthPtr = arena();
         final Pointer<UnsignedChar> profilePtr =
             _bindings.magickGetImageProfile(_wandPtr, namePtr, lengthPtr);
-        final int length = lengthPtr.value;
-        final List<int>? profile = profilePtr.toIntList(length);
+        final Uint8List? profile = profilePtr.toUint8List(lengthPtr.value);
         _magickRelinquishMemory(profilePtr.cast());
         return profile;
       });
@@ -515,26 +514,29 @@ class MagickWand {
   /// profile is NULL, it is removed from the image otherwise added. Use a name
   /// of '*' and a profile of NULL to remove all profiles from
   /// the image.
-  bool magickProfileImage(String name, List<int>? profile) => using(
+  bool magickProfileImage(String name, Uint8List? profile) => using(
         (Arena arena) {
           final Pointer<UnsignedChar> profilePtr =
               profile?.toUnsignedCharArrayPointer(allocator: arena) ?? nullptr;
           final Pointer<Char> namePtr =
               name.toNativeUtf8(allocator: arena).cast();
           return _bindings.magickProfileImage(
-              _wandPtr, namePtr, profilePtr.cast(), profile?.length ?? 0);
+            _wandPtr,
+            namePtr,
+            profilePtr.cast(),
+            profile?.length ?? 0,
+          );
         },
       );
 
   /// Removes the named image profile and returns it.
-  List<int>? magickRemoveImageProfile(String name) => using((Arena arena) {
+  Uint8List? magickRemoveImageProfile(String name) => using((Arena arena) {
         final Pointer<Char> namePtr =
             name.toNativeUtf8(allocator: arena).cast();
         final Pointer<Size> lengthPtr = arena();
         final Pointer<UnsignedChar> profilePtr =
             _bindings.magickRemoveImageProfile(_wandPtr, namePtr, lengthPtr);
-        int length = lengthPtr.value;
-        List<int>? result = profilePtr.toIntList(length);
+        Uint8List? result = profilePtr.toUint8List(lengthPtr.value);
         _magickRelinquishMemory(profilePtr.cast());
         return result;
       });
@@ -618,14 +620,18 @@ class MagickWand {
   /// already exists, it is replaced. This method differs from the
   /// MagickProfileImage() method in that it does not apply any CMS color
   /// profiles.
-  bool magickSetImageProfile(String name, List<int> profile) => using(
+  bool magickSetImageProfile(String name, Uint8List profile) => using(
         (Arena arena) {
           final Pointer<UnsignedChar> profilePtr =
               profile.toUnsignedCharArrayPointer(allocator: arena);
           final Pointer<Char> namePtr =
               name.toNativeUtf8(allocator: arena).cast();
           return _bindings.magickSetImageProfile(
-              _wandPtr, namePtr, profilePtr.cast(), profile.length);
+            _wandPtr,
+            namePtr,
+            profilePtr.cast(),
+            profile.length,
+          );
         },
       );
 
@@ -729,13 +735,12 @@ class MagickWand {
   /// Sets the image sampling factors.
   /// - [samplingFactors] : An array of doubles representing the sampling factor
   /// for each color component (in RGB order).
-  bool magickSetSamplingFactors(List<double> samplingFactors) => using(
-        (Arena arena) {
-          final Pointer<Double> samplingFactorsPtr =
-              samplingFactors.toDoubleArrayPointer(allocator: arena);
-          return _bindings.magickSetSamplingFactors(
-              _wandPtr, samplingFactors.length, samplingFactorsPtr);
-        },
+  bool magickSetSamplingFactors(Float64List samplingFactors) => using(
+        (Arena arena) => _bindings.magickSetSamplingFactors(
+          _wandPtr,
+          samplingFactors.length,
+          samplingFactors.toDoubleArrayPointer(allocator: arena),
+        ),
       );
 
   /// Sets the ImageMagick security policy. It returns false if the policy is
@@ -1441,15 +1446,20 @@ class MagickWand {
   /// - [reference] : the reference wand.
   /// - [metric] : the metric.
   /// - [distortion] : the computed distortion between the images.
-  Future<MagickWand?> magickCompareImages(
-      {required MagickWand reference,
-      required MetricType metric,
-      required List<double> distortion}) async {
+  Future<MagickWand?> magickCompareImages({
+    required MagickWand reference,
+    required MetricType metric,
+    required Float64List distortion,
+  }) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
       await compute(
         _magickCompareImages,
-        _MagickCompareImagesParams(_wandPtr.address, reference._wandPtr.address,
-            metric.index, distortion),
+        _MagickCompareImagesParams(
+          _wandPtr.address,
+          reference._wandPtr.address,
+          metric.index,
+          distortion,
+        ),
       ),
     );
     if (resultPtr == nullptr) {
@@ -1634,6 +1644,228 @@ class MagickWand {
   Future<bool> magickCycleColormapImage(int displace) async => await compute(
         _magickCycleColormapImage,
         _MagickCycleColormapImageParams(_wandPtr.address, displace),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom. For example, to create
+  /// a 640x480 image from unsigned red-green-blue character data, in the C API,
+  /// you would use
+  ///
+  /// ```
+  /// MagickConstituteImage(wand,640,480,"RGB",CharPixel,pixels);
+  /// ```
+  ///
+  /// And the equivalent dart code here would be
+  ///
+  /// ```
+  /// wand.magickConstituteImageFromCharPixel(640,640,'RGB',pixels)
+  /// ```
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Uint8List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromCharPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint8List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.CharPixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Float64List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromDoublePixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Float64List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.DoublePixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Float32List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromFloatPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Float32List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.FloatPixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Uint32List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromLongPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint32List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.LongPixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Uint64List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromLongLongPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint64List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.LongLongPixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Uint16List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromQuantumPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint16List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.QuantumPixel,
+          pixels,
+        ),
+      );
+
+  /// Adds an image to the wand comprised of the pixel data you supply. The
+  /// pixel data must be in scanline order top-to-bottom.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [columns]: width in pixels of the image.
+  /// - [rows]: height in pixels of the image.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue,
+  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
+  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: A Uint16List of values contain the pixel components as defined
+  /// by map.
+  Future<bool> magickConstituteImageFromShortPixel({
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint16List pixels,
+  }) async =>
+      await compute(
+        _magickConstituteImage,
+        _MagickConstituteImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          map,
+          StorageType.ShortPixel,
+          pixels,
+        ),
       );
 
   // TODO: continue adding the remaining methods
@@ -2285,7 +2517,7 @@ class _MagickCompareImagesParams {
   final int wandPtrAddress;
   final int referenceWandPtrAddress;
   final int metricType;
-  final List<double> distortion;
+  final Float64List distortion;
 
   _MagickCompareImagesParams(
     this.wandPtrAddress,
@@ -2484,6 +2716,81 @@ Future<bool> _magickCycleColormapImage(
     _bindings.magickCycleColormapImage(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.displace,
+    );
+
+class _MagickConstituteImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+  final String map;
+  final StorageType storageType;
+  final TypedData pixels;
+
+  _MagickConstituteImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+    this.map,
+    this.storageType,
+    this.pixels,
+  );
+}
+
+Future<bool> _magickConstituteImage(_MagickConstituteImageParams args) async =>
+    using(
+      (Arena arena) {
+        if (args.pixels.lengthInBytes == 0) {
+          return false;
+        }
+        final Pointer<Void> pixelsPtr;
+        switch (args.storageType) {
+          case StorageType.UndefinedPixel:
+            return false;
+          case StorageType.CharPixel:
+            pixelsPtr = (args.pixels as Uint8List)
+                .toUnsignedCharArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.DoublePixel:
+            pixelsPtr = (args.pixels as Float64List)
+                .toDoubleArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.FloatPixel:
+            pixelsPtr = (args.pixels as Float32List)
+                .toFloatArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.LongPixel:
+            pixelsPtr = (args.pixels as Uint32List)
+                .toUint32ArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.LongLongPixel:
+            pixelsPtr = (args.pixels as Uint64List)
+                .toUint64ArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.QuantumPixel:
+            pixelsPtr = (args.pixels as Uint16List)
+                .toUint16ArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case StorageType.ShortPixel:
+            pixelsPtr = (args.pixels as Uint16List)
+                .toUint16ArrayPointer(allocator: arena)
+                .cast();
+            break;
+        }
+        return _bindings.magickConstituteImage(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          args.storageType.index,
+          pixelsPtr,
+        );
+      },
     );
 
 class _MagickReadImageParams {

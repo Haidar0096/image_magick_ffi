@@ -7,7 +7,7 @@ class KernelInfo {
   int? height;
   int? x;
   int? y;
-  List<double>? values;
+  Float64List? values;
   double? minimum;
   double? maximum;
   double? negativeRange;

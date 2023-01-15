@@ -472,3 +472,15 @@ enum KernelInfoType {
   /* User Specified Kernel Array */
   UserDefinedKernel
 }
+
+/// Represents a storage type.
+enum StorageType {
+  UndefinedPixel,
+  CharPixel,
+  DoublePixel,
+  FloatPixel,
+  LongPixel,
+  LongLongPixel,
+  QuantumPixel,
+  ShortPixel
+}

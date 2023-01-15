@@ -149,5 +149,5 @@
 - [x] MagickConvolveImage
 - [x] MagickCropImage
 - [x] MagickCycleColormapImage
-
+- [x] MagickConstituteImage
 

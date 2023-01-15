@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +227,7 @@ class _MyAppState extends State<MyApp> {
       im.KernelInfo kernel = im.KernelInfo(
         width: 3,
         height: 3,
-        values: [1, 0, 1, 0, 1, 0, 1, 0, 1],
+        values: Float64List.fromList([1, 0, 1, 0, 1, 0, 1, 0, 1]),
       );
       await _wand.magickColorMatrixImage(
           colorMatrix: kernel); // apply color matrix to image
