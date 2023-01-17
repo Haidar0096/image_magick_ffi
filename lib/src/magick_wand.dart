@@ -1143,9 +1143,9 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
-  /// - [expression] : the expression. Sending an invalid expression may crash
-  /// the app by ending the process,
-  /// so make sure to validate the input to this method.
+  /// - [expression] : the expression. <b>Sending an invalid expression may crash
+  /// the app and shutdown the process,
+  /// so make sure to validate the input to this method.</b>
   Future<MagickWand?> magickChannelFxImage(String expression) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
         _magickChannelFxImage,
