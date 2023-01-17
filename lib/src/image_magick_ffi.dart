@@ -45,3 +45,7 @@ final DynamicLibrary _dylib = () {
 
 /// The bindings to the native functions in [_dylib].
 final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
+
+class ImageMagickFFIPlugin {
+  static void registerWith() => _initialize(); // initialize the plugin
+}

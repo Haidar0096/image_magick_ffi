@@ -26,5 +26,7 @@ flutter:
     platforms:
       android:
         ffiPlugin: true
+        dartPluginClass: ImageMagickFFIPlugin
       windows:
         ffiPlugin: true
+        dartPluginClass: ImageMagickFFIPlugin

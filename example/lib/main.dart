@@ -32,7 +32,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    im.initialize(); // initialize the plugin, this can be done before `runApp` as well
     _wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
 
     final File file = File("D:\\magick\\screenshot.png");
@@ -69,65 +68,90 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              const Text("Input Image",
-                                  style: TextStyle(fontSize: 20)),
-                              if (_inputFile != null)
-                                Text(_inputFile!.path,
-                                    style: const TextStyle(fontSize: 20)),
-                              _inputFile != null
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
-                                      ),
-                                      child: Image.memory(
-                                        _inputFile!.readAsBytesSync(),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                const Text("Input Image",
+                                    style: TextStyle(fontSize: 20)),
+                                SizedBox(
+                                  width: displayImageWidth,
+                                  height: displayImageHeight / 2.5,
+                                  child: _inputFile != null
+                                      ? Text(
+                                          _inputFile!.path,
+                                          textAlign: TextAlign.center,
+                                        )
+                                      : const Text(
+                                          "No file selected",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                ),
+                                _inputFile != null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.black),
+                                        ),
+                                        child: Image.file(
+                                          _inputFile!,
+                                          width: displayImageWidth,
+                                          height: displayImageHeight,
+                                        ),
+                                      )
+                                    : Container(
                                         width: displayImageWidth,
                                         height: displayImageHeight,
+                                        color: Colors.grey,
+                                        child: const Center(
+                                            child: Text('No image selected')),
                                       ),
-                                    )
-                                  : Container(
-                                      width: displayImageWidth,
-                                      height: displayImageHeight,
-                                      color: Colors.grey,
-                                      child: const Center(
-                                          child: Text('No image selected')),
-                                    ),
-                            ],
-                          ),
-                          const SizedBox(width: 20),
-                          Column(
-                            children: [
-                              const Text("Output Image",
-                                  style: TextStyle(fontSize: 20)),
-                              if (_outputFile != null)
-                                Text(_outputFile!.path,
-                                    style: const TextStyle(fontSize: 20)),
-                              _outputFile != null
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
-                                      ),
-                                      child: Image.memory(
-                                        _outputFile!.readAsBytesSync(),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              children: [
+                                const Text("Output Image",
+                                    style: TextStyle(fontSize: 20)),
+                                SizedBox(
+                                  width: displayImageWidth,
+                                  height: displayImageHeight / 2.5,
+                                  child: _outputFile != null
+                                      ? Text(
+                                          _outputFile!.path,
+                                          textAlign: TextAlign.center,
+                                        )
+                                      : const Text(
+                                          "No file selected",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                ),
+                                _outputFile != null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.black),
+                                        ),
+                                        child: Image.memory(
+                                          _outputFile!.readAsBytesSync(),
+                                          width: displayImageWidth,
+                                          height: displayImageHeight,
+                                        ),
+                                      )
+                                    : Container(
                                         width: displayImageWidth,
                                         height: displayImageHeight,
+                                        color: Colors.grey,
+                                        child: const Center(
+                                            child: Text('No image selected')),
                                       ),
-                                    )
-                                  : Container(
-                                      width: displayImageWidth,
-                                      height: displayImageHeight,
-                                      color: Colors.grey,
-                                      child: const Center(
-                                          child: Text('No image selected')),
-                                    ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Text(
@@ -206,7 +230,12 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('Start Processing'),
                     ),
                     const SizedBox(height: 10),
-                    if (isLoading) const CircularProgressIndicator(),
+                    SizedBox(
+                      height: displayImageHeight / 9,
+                      child: isLoading
+                          ? const CircularProgressIndicator()
+                          : Container(),
+                    )
                   ],
                 ),
               ),
@@ -223,7 +252,6 @@ class _MyAppState extends State<MyApp> {
       await _wand.magickReadImage(_inputFile!.path); // read the image
 
       ///////////////////////// Do Some Operations On The Wand /////////////////////////
-
       im.KernelInfo kernel = im.KernelInfo(
         width: 3,
         height: 3,
@@ -233,8 +261,7 @@ class _MyAppState extends State<MyApp> {
           colorMatrix: kernel); // apply color matrix to image
       await _wand.magickAdaptiveResizeImage(600, 800); // resize image
       await _wand.magickContrastImage(true); // apply contrast to image
-
-      ///////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////
 
       final String ps = Platform.pathSeparator;
       final String inputFileNameWithoutExtension =

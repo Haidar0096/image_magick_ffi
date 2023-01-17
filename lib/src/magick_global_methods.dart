@@ -2,7 +2,7 @@ part of 'image_magick_ffi.dart';
 
 /// Initializes the necessary resources used with the plugin. This must be
 /// called before any use of the plugin.
-void initialize() {
+void _initialize() {
   _magickWandGenesis();
   assert(_bindings.initDartAPI(NativeApi.initializeApiDLData) == 0,
       'Failed to initialize Dart_API_DL');
