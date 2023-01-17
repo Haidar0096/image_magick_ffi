@@ -109,7 +109,7 @@
 - [x] MagickAddNoiseImage
 - [x] MagickAffineTransformImage
 - [x] MagickAnnotateImage
-- [x] MagickAnimateImages
+- [ ] MagickAnimateImages
 - [x] MagickAppendImages
 - [x] MagickAutoGammaImage
 - [x] MagickAutoLevelImage
@@ -152,3 +152,13 @@
 - [x] MagickConstituteImage
 - [x] MagickDecipherImage
 - [x] MagickDeconstructImages
+- [x] MagickDeskewImage
+- [x] MagickDespeckleImage
+- [ ] MagickDestroyImage
+- [ ] MagickDisplayImage
+- [ ] MagickDisplayImages
+- [x] MagickDistortImage
+- [x] MagickDrawImage
+- [x] MagickEdgeImage
+
+

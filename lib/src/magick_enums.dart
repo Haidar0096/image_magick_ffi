@@ -484,3 +484,29 @@ enum StorageType {
   QuantumPixel,
   ShortPixel
 }
+
+/// Represent an image distortion method.
+enum DistortMethod {
+  UndefinedDistortion,
+  AffineDistortion,
+  AffineProjectionDistortion,
+  ScaleRotateTranslateDistortion,
+  PerspectiveDistortion,
+  PerspectiveProjectionDistortion,
+  BilinearForwardDistortion,
+  BilinearReverseDistortion,
+  PolynomialDistortion,
+  ArcDistortion,
+  PolarDistortion,
+  DePolarDistortion,
+  Cylinder2PlaneDistortion,
+  Plane2CylinderDistortion,
+  BarrelDistortion,
+  BarrelInverseDistortion,
+  ShepardsDistortion,
+  ResizeDistortion,
+  SentinelDistortion,
+  RigidAffineDistortion;
+
+  static const DistortMethod BilinearDistortion = BilinearForwardDistortion;
+}

@@ -225,8 +225,6 @@ FFI_PLUGIN_EXPORT bool magickAffineTransformImage(void* wand, const void* drawin
 
 FFI_PLUGIN_EXPORT bool magickAnnotateImage(void* wand, const void* drawing_wand, const double x, const double y, const double angle, const char* text);
 
-FFI_PLUGIN_EXPORT bool magickAnimateImages(void* wand, const char* server_name);
-
 FFI_PLUGIN_EXPORT void* magickAppendImages(void* wand, const bool stack);
 
 FFI_PLUGIN_EXPORT bool magickAutoGammaImage(void* wand);
@@ -308,6 +306,16 @@ FFI_PLUGIN_EXPORT bool magickConstituteImage(void* wand, const size_t columns, c
 FFI_PLUGIN_EXPORT bool magickDecipherImage(void* wand, const char* passphrase);
 
 FFI_PLUGIN_EXPORT void* magickDeconstructImages(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickDeskewImage(void* wand, const double threshold);
+
+FFI_PLUGIN_EXPORT bool magickDespeckleImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickDistortImage(void* wand, const int method, const size_t number_arguments, const double* arguments, const bool bestfit);
+
+FFI_PLUGIN_EXPORT bool magickDrawImage(void* wand, const void* drawing_wand);
+
+FFI_PLUGIN_EXPORT bool magickEdgeImage(void* wand, const double radius);
 
 // TODO: complete adding the other methods
 

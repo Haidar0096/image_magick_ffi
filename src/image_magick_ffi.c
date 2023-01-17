@@ -451,9 +451,6 @@ FFI_PLUGIN_EXPORT bool magickAnnotateImage(void* wand, const void* drawing_wand,
 	return MagickAnnotateImage((MagickWand*)wand, (DrawingWand*)drawing_wand, x, y, angle, text) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT bool magickAnimateImages(void* wand, const char* server_name) {
-	return MagickAnimateImages((MagickWand*)wand, server_name) == MagickTrue;
-}
 
 FFI_PLUGIN_EXPORT void* magickAppendImages(void* wand, const bool stack) {
 	return MagickAppendImages((MagickWand*)wand, stack);
@@ -618,6 +615,27 @@ FFI_PLUGIN_EXPORT bool magickDecipherImage(void* wand, const char* passphrase) {
 
 FFI_PLUGIN_EXPORT void* magickDeconstructImages(void* wand) {
 	return MagickDeconstructImages((MagickWand*)wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickDeskewImage(void* wand, const double threshold) {
+	return MagickDeskewImage((MagickWand*)wand, threshold) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDespeckleImage(void* wand) {
+	return MagickDespeckleImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDistortImage(void* wand, const int method, const size_t number_arguments, const double* arguments, const bool bestfit) {
+	MagickBooleanType _bestfit = bestfit ? MagickTrue : MagickFalse;
+	return MagickDistortImage((MagickWand*)wand, method, number_arguments, arguments, _bestfit) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDrawImage(void* wand, const void* drawing_wand) {
+    return MagickDrawImage((MagickWand*)wand, (DrawingWand*)drawing_wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEdgeImage(void* wand, const double radius) {
+    return MagickEdgeImage((MagickWand*)wand, radius) == MagickTrue;
 }
 
 // TODO: complete adding the other methods

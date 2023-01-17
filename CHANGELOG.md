@@ -5,3 +5,10 @@
 ## 0.0.1-dev.2
 
 * Added new bindings and updated README.md to include showcase of the power of imagemagick.
+
+## 0.0.1-dev.3
+
+* `initialize()` method is now called automatically when the app launches,
+no need to call it manually.
+* Updated README.md with a table of contents.
+* Added new bindings for MagickWand methods. 

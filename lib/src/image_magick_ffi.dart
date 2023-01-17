@@ -26,6 +26,8 @@ part 'memory.dart';
 
 part 'kernel_info.dart';
 
+part 'magick_wand_helper_classes.dart';
+
 const String _libName = 'image_magick_ffi';
 
 /// The dynamic library in which the symbols for [ImageMagickFfiBindings] can
