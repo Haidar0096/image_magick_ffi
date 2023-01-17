@@ -2655,6 +2655,89 @@ class ImageMagickFfiBindings {
   late final _magickEdgeImage = _magickEdgeImagePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, double)>();
 
+  bool magickEmbossImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+  ) {
+    return _magickEmbossImage(
+      wand,
+      radius,
+      sigma,
+    );
+  }
+
+  late final _magickEmbossImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickEmbossImage');
+  late final _magickEmbossImage = _magickEmbossImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  bool magickEncipherImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> passphrase,
+  ) {
+    return _magickEncipherImage(
+      wand,
+      passphrase,
+    );
+  }
+
+  late final _magickEncipherImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickEncipherImage');
+  late final _magickEncipherImage = _magickEncipherImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  bool magickEnhanceImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickEnhanceImage(
+      wand,
+    );
+  }
+
+  late final _magickEnhanceImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickEnhanceImage');
+  late final _magickEnhanceImage =
+      _magickEnhanceImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickEqualizeImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickEqualizeImage(
+      wand,
+    );
+  }
+
+  late final _magickEqualizeImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickEqualizeImage');
+  late final _magickEqualizeImage = _magickEqualizeImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickEvaluateImage(
+    ffi.Pointer<ffi.Void> wand,
+    int operator1,
+    double value,
+  ) {
+    return _magickEvaluateImage(
+      wand,
+      operator1,
+      value,
+    );
+  }
+
+  late final _magickEvaluateImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Int,
+              ffi.Double)>>('magickEvaluateImage');
+  late final _magickEvaluateImage = _magickEvaluateImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, double)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

@@ -966,6 +966,57 @@ Future<bool> _magickEdgeImage(_MagickEdgeImageParams args) async =>
       args.radius,
     );
 
+class _MagickEmbossImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  _MagickEmbossImageParams(this.wandPtrAddress, this.radius, this.sigma);
+}
+
+Future<bool> _magickEmbossImage(_MagickEmbossImageParams args) async =>
+    _bindings.magickEmbossImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.radius,
+      args.sigma,
+    );
+
+class _MagickEncipherImageParams {
+  final int wandPtrAddress;
+  final String passphrase;
+
+  _MagickEncipherImageParams(this.wandPtrAddress, this.passphrase);
+}
+
+Future<bool> _magickEncipherImage(_MagickEncipherImageParams args) async =>
+    using(
+      (Arena arena) => _bindings.magickEncipherImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.passphrase.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
+
+Future<bool> _magickEnhanceImage(int wandPtrAddress) async =>
+    _bindings.magickEnhanceImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+Future<bool> _magickEqualizeImage(int wandPtrAddress) async =>
+    _bindings.magickEqualizeImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+class _MagickEvaluateImageParams {
+  final int wandPtrAddress;
+  final MagickEvaluateOperator operator;
+  final double value;
+
+  _MagickEvaluateImageParams(this.wandPtrAddress, this.operator, this.value);
+}
+
+Future<bool> _magickEvaluateImage(_MagickEvaluateImageParams args) async =>
+    _bindings.magickEvaluateImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.operator.index,
+      args.value,
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

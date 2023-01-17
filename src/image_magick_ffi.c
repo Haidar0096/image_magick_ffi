@@ -631,11 +631,31 @@ FFI_PLUGIN_EXPORT bool magickDistortImage(void* wand, const int method, const si
 }
 
 FFI_PLUGIN_EXPORT bool magickDrawImage(void* wand, const void* drawing_wand) {
-    return MagickDrawImage((MagickWand*)wand, (DrawingWand*)drawing_wand) == MagickTrue;
+	return MagickDrawImage((MagickWand*)wand, (DrawingWand*)drawing_wand) == MagickTrue;
 }
 
 FFI_PLUGIN_EXPORT bool magickEdgeImage(void* wand, const double radius) {
-    return MagickEdgeImage((MagickWand*)wand, radius) == MagickTrue;
+	return MagickEdgeImage((MagickWand*)wand, radius) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEmbossImage(void* wand, const double radius, const double sigma) {
+	return MagickEmbossImage((MagickWand*)wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEncipherImage(void* wand, const char* passphrase) {
+	return MagickEncipherImage((MagickWand*)wand, passphrase) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEnhanceImage(void* wand) {
+	return MagickEnhanceImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEqualizeImage(void* wand) {
+	return MagickEqualizeImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickEvaluateImage(void* wand, const int operator,const double value) {
+	return MagickEvaluateImage((MagickWand*)wand, operator, value) == MagickTrue;
 }
 
 // TODO: complete adding the other methods

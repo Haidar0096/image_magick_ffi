@@ -15,6 +15,11 @@ typedef MagickProgressMonitor = void Function(
 /// The [MagickWand] can do operations on images like reading, resizing,
 /// writing, cropping an image, etc...
 ///
+/// The [MagickWand] can hold reference to multiple images, and you can set the
+/// current referenced image by [MagickSetIteratorIndex] or reset it by
+/// [MagickResetIterator]. In general the operations called on the wand are done
+/// on the image at the current iterator index.
+///
 /// Initialize an instance of it with [MagickWand.newMagickWand].
 /// When done from it, call [destroyMagickWand] to release the resources.
 /// See `https://imagemagick.org/script/magick-wand.php` for more information
@@ -1958,12 +1963,73 @@ class MagickWand {
 
   /// Enhance edges within the image with a convolution filter of the given
   /// radius. Use a radius of 0 and Edge() selects a suitable radius for you.
-  /// 
+  ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [radius]: the radius of the pixel neighborhood.
   Future<bool> magickEdgeImage(double radius) async => await compute(
         _magickEdgeImage,
         _MagickEdgeImageParams(_wandPtr.address, radius),
+      );
+
+  /// MagickEmbossImage() returns a grayscale image with a three-dimensional
+  /// effect. We convolve the image with a Gaussian operator of the given radius
+  /// and standard deviation (sigma). For reasonable results, radius should be
+  /// larger than sigma. Use a radius of 0 and Emboss() selects a suitable
+  /// radius for you.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickEmbossImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await compute(
+        _magickEmbossImage,
+        _MagickEmbossImageParams(_wandPtr.address, radius, sigma),
+      );
+
+  /// MagickEncipherImage() converts plaint pixels to cipher pixels.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [passphrase]: the passphrase
+  Future<bool> magickEncipherImage(String passphrase) async => await compute(
+        _magickEncipherImage,
+        _MagickEncipherImageParams(_wandPtr.address, passphrase),
+      );
+
+  /// MagickEnhanceImage() applies a digital filter that improves the quality
+  /// of a noisy image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickEnhanceImage() async => await compute(
+        _magickEnhanceImage,
+        _wandPtr.address,
+      );
+
+  /// MagickEqualizeImage() equalizes the image histogram.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickEqualizeImage() async => await compute(
+        _magickEqualizeImage,
+        _wandPtr.address,
+      );
+
+  /// MagickEvaluateImage() applies an arithmetic, relational, or logical
+  /// expression to an image. Use these operators to lighten or darken an image,
+  /// to increase or decrease contrast in an image, or to produce the "negative"
+  /// of an image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [operator]: the operator channel.
+  Future<bool> magickEvaluateImage({
+    required MagickEvaluateOperator operator,
+    required double value,
+  }) async =>
+      await compute(
+        _magickEvaluateImage,
+        _MagickEvaluateImageParams(_wandPtr.address, operator, value),
       );
 
   // TODO: continue adding the remaining methods

@@ -510,3 +510,41 @@ enum DistortMethod {
 
   static const DistortMethod BilinearDistortion = BilinearForwardDistortion;
 }
+
+/// Represents an evaluation operator.
+enum MagickEvaluateOperator {
+  UndefinedEvaluateOperator,
+  AbsEvaluateOperator,
+  AddEvaluateOperator,
+  AddModulusEvaluateOperator,
+  AndEvaluateOperator,
+  CosineEvaluateOperator,
+  DivideEvaluateOperator,
+  ExponentialEvaluateOperator,
+  GaussianNoiseEvaluateOperator,
+  ImpulseNoiseEvaluateOperator,
+  LaplacianNoiseEvaluateOperator,
+  LeftShiftEvaluateOperator,
+  LogEvaluateOperator,
+  MaxEvaluateOperator,
+  MeanEvaluateOperator,
+  MedianEvaluateOperator,
+  MinEvaluateOperator,
+  MultiplicativeNoiseEvaluateOperator,
+  MultiplyEvaluateOperator,
+  OrEvaluateOperator,
+  PoissonNoiseEvaluateOperator,
+  PowEvaluateOperator,
+  RightShiftEvaluateOperator,
+  RootMeanSquareEvaluateOperator,
+  SetEvaluateOperator,
+  SineEvaluateOperator,
+  SubtractEvaluateOperator,
+  SumEvaluateOperator,
+  ThresholdBlackEvaluateOperator,
+  ThresholdEvaluateOperator,
+  ThresholdWhiteEvaluateOperator,
+  UniformNoiseEvaluateOperator,
+  XorEvaluateOperator,
+  InverseLogEvaluateOperator
+}

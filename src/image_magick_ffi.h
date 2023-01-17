@@ -4,7 +4,7 @@
 
 /* Include the local headers if __FFIGEN__ is defined. */
 #ifdef __FFIGEN__
-#include "ffigen_deps/MagickCore/magick-baseconfig.h"
+typedef long long ssize_t;
 #else
 #include <MagickCore/magick-baseconfig.h>
 #endif
@@ -316,6 +316,16 @@ FFI_PLUGIN_EXPORT bool magickDistortImage(void* wand, const int method, const si
 FFI_PLUGIN_EXPORT bool magickDrawImage(void* wand, const void* drawing_wand);
 
 FFI_PLUGIN_EXPORT bool magickEdgeImage(void* wand, const double radius);
+
+FFI_PLUGIN_EXPORT bool magickEmbossImage(void* wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT bool magickEncipherImage(void* wand, const char* passphrase);
+
+FFI_PLUGIN_EXPORT bool magickEnhanceImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickEqualizeImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickEvaluateImage(void* wand, const int operator,const double value);
 
 // TODO: complete adding the other methods
 

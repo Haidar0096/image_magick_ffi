@@ -160,5 +160,11 @@
 - [x] MagickDistortImage
 - [x] MagickDrawImage
 - [x] MagickEdgeImage
+- [x] MagickEmbossImage
+- [x] MagickEncipherImage
+- [x] MagickEnhanceImage
+- [x] MagickEqualizeImage
+- [x] MagickEvaluateImage
+- [ ] MagickEvaluateImages
 
 
