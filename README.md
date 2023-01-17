@@ -54,6 +54,7 @@ Have a look the #Usage section below for more insights.
         HDRI = 1
     }
     ```
+    Also note that you might need to get write permissions from the system for some operations as writing an image.
 - #### Linux
   Coming Soon (for sure)
 - #### Macos
@@ -68,13 +69,12 @@ Have a look the #Usage section below for more insights.
 // ...
 @override
 void initState() {
-  im.initialize(); // initialize the plugin (can also be done before `runApp`)
   wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
   super.initState();
 }
 // ...
 
-// reads an image, then writes it in jpeg format
+// reads an image, does some operations on it, then writes saves it.
 Future<String> _handlePress() async {
   try {
     setState(() => isLoading = true);
@@ -83,6 +83,7 @@ Future<String> _handlePress() async {
 
     ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
+    // define a matrix to be applied to the image
     im.KernelInfo kernel = im.KernelInfo(
       width: 3,
       height: 3,
@@ -90,7 +91,9 @@ Future<String> _handlePress() async {
     );
     await _wand.magickColorMatrixImage(
             colorMatrix: kernel); // apply color matrix to image
+    
     await _wand.magickAdaptiveResizeImage(600, 800); // resize image
+    
     await _wand.magickContrastImage(true); // apply contrast to image
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +136,7 @@ dispose() {
 // ...
 ```
 - For more info about code usage, have a look at the example app in this repo, there is a complete working app there that is ready for you to play around with.
-
+- Also check out [this](https://imagemagick.org/), [this](https://imagemagick.org/Usage/), [this](http://www.fmwconcepts.com/imagemagick/index.php), and [this](http://im.snibgo.com/) link for more info about ImageMagick and how to use it.
 # Contributing
 - Feel free to open an issue if you have any problem or suggestion.
 - Feel free to open a pull request if you want to contribute.
