@@ -1868,6 +1868,29 @@ class MagickWand {
         ),
       );
 
+  /// Converts cipher pixels to plain pixels.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [passphrase]: the passphrase
+  Future<bool> magickDecipherImage(String passphrase) async => await compute(
+        _magickDecipherImage,
+        _MagickDecipherImageParams(_wandPtr.address, passphrase),
+      );
+
+  /// Compares each image with the next in a sequence and returns the maximum
+  /// bounding region of any pixel differences it discovers.
+  ///
+  /// Don't forget to dispose the returned [MagickWand] when done.
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickWand?> magickDeconstructImages() async {
+    final int resultWandAddress =
+        await compute(_magickDeconstructImages, _wandPtr.address);
+    if (resultWandAddress == 0) {
+      return null;
+    }
+    return MagickWand._(Pointer<Void>.fromAddress(resultWandAddress));
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
@@ -2792,6 +2815,25 @@ Future<bool> _magickConstituteImage(_MagickConstituteImageParams args) async =>
         );
       },
     );
+
+class _MagickDecipherImageParams {
+  final int wandPtrAddress;
+  final String passphrase;
+
+  _MagickDecipherImageParams(this.wandPtrAddress, this.passphrase);
+}
+
+Future<bool> _magickDecipherImage(_MagickDecipherImageParams args) async =>
+    using(
+      (Arena arena) => _bindings.magickDecipherImage(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.passphrase.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );
+
+Future<int> _magickDeconstructImages(int wandPtrAddress) async => _bindings
+    .magickDeconstructImages(Pointer<Void>.fromAddress(wandPtrAddress))
+    .address;
 
 class _MagickReadImageParams {
   final int wandPtrAddress;

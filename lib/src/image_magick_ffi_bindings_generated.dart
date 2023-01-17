@@ -2551,6 +2551,38 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, int, int, ffi.Pointer<ffi.Char>, int,
           ffi.Pointer<ffi.Void>)>();
 
+  bool magickDecipherImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> passphrase,
+  ) {
+    return _magickDecipherImage(
+      wand,
+      passphrase,
+    );
+  }
+
+  late final _magickDecipherImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>)>>('magickDecipherImage');
+  late final _magickDecipherImage = _magickDecipherImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Void> magickDeconstructImages(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickDeconstructImages(
+      wand,
+    );
+  }
+
+  late final _magickDeconstructImagesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickDeconstructImages');
+  late final _magickDeconstructImages = _magickDeconstructImagesPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

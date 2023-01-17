@@ -150,4 +150,5 @@
 - [x] MagickCropImage
 - [x] MagickCycleColormapImage
 - [x] MagickConstituteImage
-
+- [x] MagickDecipherImage
+- [x] MagickDeconstructImages

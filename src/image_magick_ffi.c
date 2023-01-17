@@ -471,7 +471,7 @@ FFI_PLUGIN_EXPORT bool magickAutoOrientImage(void* wand) {
 	return MagickAutoOrientImage((MagickWand*)wand) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT bool magickAutoThresholdImage(void* wand, const AutoThresholdMethod method) {
+FFI_PLUGIN_EXPORT bool magickAutoThresholdImage(void* wand, const int method) {
 	return MagickAutoThresholdImage((MagickWand*)wand, method) == MagickTrue;
 }
 
@@ -610,6 +610,14 @@ FFI_PLUGIN_EXPORT bool magickCycleColormapImage(void* wand, const ssize_t displa
 
 FFI_PLUGIN_EXPORT bool magickConstituteImage(void* wand, const size_t columns, const size_t rows, const char* map, const int storage, void* pixels) {
 	return MagickConstituteImage((MagickWand*)wand, columns, rows, map, storage, pixels) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickDecipherImage(void* wand, const char* passphrase) {
+	return MagickDecipherImage((MagickWand*)wand, passphrase) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void* magickDeconstructImages(void* wand) {
+	return MagickDeconstructImages((MagickWand*)wand);
 }
 
 // TODO: complete adding the other methods
