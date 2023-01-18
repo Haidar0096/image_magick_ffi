@@ -1,6 +1,6 @@
 part of 'image_magick_ffi.dart';
 
-/// Signature for a callback to be called when the process's progress changes.
+/// Signature for a callback to be called when an operation's progress changes.
 /// - [info] The progress information.
 /// - [offset] The offset of the progress.
 /// - [size] The total size of the progress.
@@ -1143,9 +1143,10 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
-  /// - [expression] : the expression. <b>Sending an invalid expression may crash
-  /// the app and shutdown the process,
-  /// so make sure to validate the input to this method.</b>
+  /// - [expression] : the expression.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<MagickWand?> magickChannelFxImage(String expression) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
         _magickChannelFxImage,
@@ -1666,6 +1667,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Uint8List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromCharPixel({
     required int columns,
     required int rows,
@@ -1696,6 +1700,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Float64List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromDoublePixel({
     required int columns,
     required int rows,
@@ -1726,6 +1733,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Float32List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromFloatPixel({
     required int columns,
     required int rows,
@@ -1756,6 +1766,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Uint32List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromLongPixel({
     required int columns,
     required int rows,
@@ -1786,6 +1799,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Uint64List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromLongLongPixel({
     required int columns,
     required int rows,
@@ -1816,6 +1832,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Uint16List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromQuantumPixel({
     required int columns,
     required int rows,
@@ -1846,6 +1865,9 @@ class MagickWand {
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
   /// - [pixels]: A Uint16List of values contain the pixel components as defined
   /// by map.
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly,
+  /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromShortPixel({
     required int columns,
     required int rows,
