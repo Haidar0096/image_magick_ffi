@@ -815,7 +815,7 @@ class _MagickConstituteImageParams {
   final int columns;
   final int rows;
   final String map;
-  final StorageType storageType;
+  final _StorageType storageType;
   final TypedData pixels;
 
   _MagickConstituteImageParams(
@@ -836,39 +836,38 @@ Future<bool> _magickConstituteImage(_MagickConstituteImageParams args) async =>
         }
         final Pointer<Void> pixelsPtr;
         switch (args.storageType) {
-          case StorageType.UndefinedPixel:
+          case _StorageType.UndefinedPixel:
             return false;
-          case StorageType.CharPixel:
+          case _StorageType.CharPixel:
             pixelsPtr = (args.pixels as Uint8List)
                 .toUnsignedCharArrayPointer(allocator: arena)
                 .cast();
             break;
-          case StorageType.DoublePixel:
+          case _StorageType.DoublePixel:
             pixelsPtr = (args.pixels as Float64List)
                 .toDoubleArrayPointer(allocator: arena)
                 .cast();
             break;
-          case StorageType.FloatPixel:
+          case _StorageType.FloatPixel:
             pixelsPtr = (args.pixels as Float32List)
                 .toFloatArrayPointer(allocator: arena)
                 .cast();
             break;
-          case StorageType.LongPixel:
+          case _StorageType.LongPixel:
             pixelsPtr = (args.pixels as Uint32List)
                 .toUint32ArrayPointer(allocator: arena)
                 .cast();
             break;
-          case StorageType.LongLongPixel:
+          case _StorageType.LongLongPixel:
             pixelsPtr = (args.pixels as Uint64List)
                 .toUint64ArrayPointer(allocator: arena)
                 .cast();
             break;
-          case StorageType.QuantumPixel:
-            pixelsPtr = (args.pixels as Uint16List)
-                .toUint16ArrayPointer(allocator: arena)
-                .cast();
-            break;
-          case StorageType.ShortPixel:
+          case _StorageType.QuantumPixel:
+            // TODO: support this when it becomes clear how to map the `Quantum`
+            // C type to dart
+            return false;
+          case _StorageType.ShortPixel:
             pixelsPtr = (args.pixels as Uint16List)
                 .toUint16ArrayPointer(allocator: arena)
                 .cast();
@@ -1015,6 +1014,186 @@ Future<bool> _magickEvaluateImage(_MagickEvaluateImageParams args) async =>
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       args.operator.index,
       args.value,
+    );
+
+class _MagickExportImagePixelsParams {
+  final int wandPtrAddress;
+  final int x;
+  final int y;
+  final int columns;
+  final int rows;
+  final String map;
+
+  _MagickExportImagePixelsParams(
+    this.wandPtrAddress,
+    this.x,
+    this.y,
+    this.columns,
+    this.rows,
+    this.map,
+  );
+}
+
+Future<Uint8List?> _magickExportImageCharPixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<UnsignedChar>();
+        final Pointer<UnsignedChar> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.CharPixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          return pixelsPtr.cast<UnsignedChar>().toUint8List(pixelsArraySize);
+        }
+        return null;
+      },
+    );
+
+Future<Float64List?> _magickExportImageDoublePixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<Double>();
+        final Pointer<Double> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.DoublePixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          // TODO: see if we can return the list using `asTypedData` instead
+          // of copying, while still freeing the pointer automatically when the
+          // list is garbage collected.
+          return pixelsPtr.cast<Double>().toFloat64List(pixelsArraySize);
+        }
+        return null;
+      },
+    );
+
+Future<Float32List?> _magickExportImageFloatPixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<Float>();
+        final Pointer<Float> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.FloatPixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          // TODO: see if we can return the list using `asTypedData` instead
+          // of copying, while still freeing the pointer automatically when the
+          // list is garbage collected.
+          return pixelsPtr.cast<Float>().toFloat32List(pixelsArraySize);
+        }
+        return null;
+      },
+    );
+
+Future<Uint32List?> _magickExportImageLongPixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<Uint32>();
+        final Pointer<Uint32> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.LongPixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          // TODO: see if we can return the list using `asTypedData` instead
+          // of copying, while still freeing the pointer automatically when the
+          // list is garbage collected.
+          return pixelsPtr.cast<Uint32>().toUint32List(pixelsArraySize);
+        }
+        return null;
+      },
+    );
+
+Future<Uint64List?> _magickExportImageLongLongPixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<Uint64>();
+        final Pointer<Uint64> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.LongLongPixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          // TODO: see if we can return the list using `asTypedData` instead
+          // of copying, while still freeing the pointer automatically when the
+          // list is garbage collected.
+          return pixelsPtr.cast<Uint64>().toUint64List(pixelsArraySize);
+        }
+        return null;
+      },
+    );
+
+// TODO: support _magickExportImageQuantumPixels when it becomes clear how to
+// map the `Quantum` type to Dart.
+
+Future<Uint16List?> _magickExportImageShortPixels(
+        _MagickExportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        int pixelsArraySize =
+            args.columns * args.rows * args.map.length * sizeOf<Uint16>();
+        final Pointer<Uint16> pixelsPtr = arena(pixelsArraySize);
+        bool result = _bindings.magickExportImagePixels(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          _StorageType.ShortPixel.index,
+          pixelsPtr.cast(),
+        );
+        if (result) {
+          // TODO: see if we can return the list using `asTypedData` instead
+          // of copying, while still freeing the pointer automatically when the
+          // list is garbage collected.
+          return pixelsPtr.cast<Uint16>().toUint16List(pixelsArraySize);
+        }
+        return null;
+      },
     );
 
 // TODO: continue adding helper classes here

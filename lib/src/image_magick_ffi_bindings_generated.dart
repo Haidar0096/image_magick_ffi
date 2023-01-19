@@ -2738,6 +2738,43 @@ class ImageMagickFfiBindings {
   late final _magickEvaluateImage = _magickEvaluateImagePtr
       .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, double)>();
 
+  bool magickExportImagePixels(
+    ffi.Pointer<ffi.Void> wand,
+    int x,
+    int y,
+    int columns,
+    int rows,
+    ffi.Pointer<ffi.Char> map,
+    int storage,
+    ffi.Pointer<ffi.Void> pixels,
+  ) {
+    return _magickExportImagePixels(
+      wand,
+      x,
+      y,
+      columns,
+      rows,
+      map,
+      storage,
+      pixels,
+    );
+  }
+
+  late final _magickExportImagePixelsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ssize_t,
+              ssize_t,
+              ffi.Size,
+              ffi.Size,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Void>)>>('magickExportImagePixels');
+  late final _magickExportImagePixels = _magickExportImagePixelsPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, int, int, int, int,
+          ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

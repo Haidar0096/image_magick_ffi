@@ -2,10 +2,11 @@
 This is not a stable release. It is a development release for beta-testers to try out the plugin and report bugs. It is not recommended to use this plugin in production apps yet.
 
 # Table Of Contents
+- [Table Of Contents](#table-of-contents)
 - [Contributors](#contributors)
 - [ImageMagickFFi Plugin](#imagemagickffi-plugin)
   - [Feel native](#feel-native)
-  - [Features](#features)
+  - [What Can It Do?](#what-can-it-do)
 - [Install](#install)
 - [Setup](#setup)
 - [Usage](#usage)
@@ -17,7 +18,7 @@ Special thanks to [Piero5W11](https://github.com/Piero512) for being the "FFI Ma
 This plugin brings to you the [ImageMagick](https://imagemagick.org/) C library [MagickWand](https://imagemagick.org/script/magick-wand.php) to use with dart.
 ## Feel native
 Interact with the underlying ImageMagick C api just as you used to do in C (not with pointers, of course :P).
-## Features
+## What Can It Do?
 See for yourself from this image from ImageMagick's website some of the things you can do with this plugin:
 ![ImageMagick](https://imagemagick.org/image/examples.jpg)
 
@@ -136,7 +137,7 @@ dispose() {
 // ...
 ```
 - For more info about code usage, have a look at the example app in this repo, there is a complete working app there that is ready for you to play around with.
-- Also check out [this](https://imagemagick.org/), [this](https://imagemagick.org/Usage/), [this](http://www.fmwconcepts.com/imagemagick/index.php), and [this](http://im.snibgo.com/) link for more info about ImageMagick and how to use it.
+- Also check out [the official ImgeMagick website](https://imagemagick.org/), [ImageMagick usage documentation](https://imagemagick.org/Usage/), [this site](http://www.fmwconcepts.com/imagemagick/index.php), and [Snibgo's examples](http://im.snibgo.com/) for more info about ImageMagick and how to use it.
 # Contributing
 - Feel free to open an issue if you have any problem or suggestion.
 - Feel free to open a pull request if you want to contribute.

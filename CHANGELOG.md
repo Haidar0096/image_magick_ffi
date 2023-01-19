@@ -10,5 +10,6 @@
 
 * `initialize()` method is now called automatically when the app launches,
 no need to call it manually.
-* Updated README.md with a table of contents.
+* Updated README.md.
 * Added new bindings for MagickWand methods. 
+* Removed the method `magickConstituteImageFromQuantumPixel`.

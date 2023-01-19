@@ -1491,7 +1491,7 @@ class MagickWand {
   /// - [compose]: This operator affects how the composite is applied to the
   /// image.
   /// The default is Over. These are some of the compose methods available.
-  /// - [clipToSelf]: set to MagickTrue to limit composition to area composed.
+  /// - [clipToSelf]: set to true to limit composition to area composed.
   /// - [x]: the column offset of the composited image.
   /// - [y]: the row offset of the composited image.
   Future<bool> magickCompositeImage({
@@ -1668,6 +1668,8 @@ class MagickWand {
   /// - [pixels]: A Uint8List of values contain the pixel components as defined
   /// by map.
   ///
+  /// - See also: [magickExportImageCharPixels].
+  ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromCharPixel({
@@ -1683,7 +1685,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.CharPixel,
+          _StorageType.CharPixel,
           pixels,
         ),
       );
@@ -1698,8 +1700,10 @@ class MagickWand {
   /// It can be any combination or order of R = red, G = green, B = blue,
   /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
   /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
-  /// - [pixels]: A Float64List of values contain the pixel components as defined
-  /// by map.
+  /// - [pixels]: A Float64List of values contain the pixel components as
+  /// defined  by map.
+  ///
+  /// - See also: [magickExportImageDoublePixels].
   ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
@@ -1716,7 +1720,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.DoublePixel,
+          _StorageType.DoublePixel,
           pixels,
         ),
       );
@@ -1734,6 +1738,8 @@ class MagickWand {
   /// - [pixels]: A Float32List of values contain the pixel components as defined
   /// by map.
   ///
+  /// - See also: [magickExportImageFloatPixels].
+  ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromFloatPixel({
@@ -1749,7 +1755,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.FloatPixel,
+          _StorageType.FloatPixel,
           pixels,
         ),
       );
@@ -1767,6 +1773,8 @@ class MagickWand {
   /// - [pixels]: A Uint32List of values contain the pixel components as defined
   /// by map.
   ///
+  /// - See also: [magickExportImageLongPixels].
+  ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromLongPixel({
@@ -1782,7 +1790,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.LongPixel,
+          _StorageType.LongPixel,
           pixels,
         ),
       );
@@ -1800,6 +1808,8 @@ class MagickWand {
   /// - [pixels]: A Uint64List of values contain the pixel components as defined
   /// by map.
   ///
+  /// - See also: [magickExportImageLongLongPixels].
+  ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
   Future<bool> magickConstituteImageFromLongLongPixel({
@@ -1815,7 +1825,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.LongLongPixel,
+          _StorageType.LongLongPixel,
           pixels,
         ),
       );
@@ -1833,38 +1843,7 @@ class MagickWand {
   /// - [pixels]: A Uint16List of values contain the pixel components as defined
   /// by map.
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
-  Future<bool> magickConstituteImageFromQuantumPixel({
-    required int columns,
-    required int rows,
-    required String map,
-    required Uint16List pixels,
-  }) async =>
-      await compute(
-        _magickConstituteImage,
-        _MagickConstituteImageParams(
-          _wandPtr.address,
-          columns,
-          rows,
-          map,
-          StorageType.QuantumPixel,
-          pixels,
-        ),
-      );
-
-  /// Adds an image to the wand comprised of the pixel data you supply. The
-  /// pixel data must be in scanline order top-to-bottom.
-  ///
-  /// This method runs inside an isolate different from the main isolate.
-  /// - [columns]: width in pixels of the image.
-  /// - [rows]: height in pixels of the image.
-  /// - [map]: This string reflects the expected ordering of the pixel array.
-  /// It can be any combination or order of R = red, G = green, B = blue,
-  /// A = alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y =
-  /// yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
-  /// - [pixels]: A Uint16List of values contain the pixel components as defined
-  /// by map.
+  /// - See also: [magickExportImageShortPixels].
   ///
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
@@ -1881,7 +1860,7 @@ class MagickWand {
           columns,
           rows,
           map,
-          StorageType.ShortPixel,
+          _StorageType.ShortPixel,
           pixels,
         ),
       );
@@ -1921,7 +1900,8 @@ class MagickWand {
         _MagickDeskewImageParams(_wandPtr.address, threshold),
       );
 
-  /// Reduces the speckle noise in an image while preserving the edges of the original image.
+  /// Reduces the speckle noise in an image while preserving the edges of the
+  /// original image.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickDespeckleImage() async => await compute(
@@ -2052,6 +2032,222 @@ class MagickWand {
       await compute(
         _magickEvaluateImage,
         _MagickEvaluateImageParams(_wandPtr.address, operator, value),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromCharPixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Uint8List?> magickExportImageCharPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageCharPixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromDoublePixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Float64List?> magickExportImageDoublePixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageDoublePixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromFloatPixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Float32List?> magickExportImageFloatPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageFloatPixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromLongPixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Uint32List?> magickExportImageLongPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageLongPixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromLongLongPixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Uint64List?> magickExportImageLongLongPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageLongLongPixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
+      );
+
+  /// Extracts pixel data from an image and returns it to you.
+  /// The data is returned as in the order specified by map.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  ///
+  /// - See also: [magickConstituteImageFromShortPixel]
+  ///
+  /// <b>Sending an invalid input will crash the app abruptly, so you should be
+  /// careful not sending invalid input to this method.</b>
+  Future<Uint16List?> magickExportImageShortPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+  }) async =>
+      await compute(
+        _magickExportImageShortPixels,
+        _MagickExportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+        ),
       );
 
   // TODO: continue adding the remaining methods

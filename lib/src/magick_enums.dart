@@ -474,7 +474,7 @@ enum KernelInfoType {
 }
 
 /// Represents a storage type.
-enum StorageType {
+enum _StorageType {
   UndefinedPixel,
   CharPixel,
   DoublePixel,

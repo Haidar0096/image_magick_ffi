@@ -166,5 +166,7 @@
 - [x] MagickEqualizeImage
 - [x] MagickEvaluateImage
 - [ ] MagickEvaluateImages
+- [x] MagickExportImagePixels
+
 
 

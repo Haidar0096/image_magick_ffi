@@ -658,6 +658,10 @@ FFI_PLUGIN_EXPORT bool magickEvaluateImage(void* wand, const int operator,const 
 	return MagickEvaluateImage((MagickWand*)wand, operator, value) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickExportImagePixels(void* wand, const ssize_t x, const ssize_t y, const size_t columns, const size_t rows, const char* map, const int storage, void* pixels) {
+	return MagickExportImagePixels((MagickWand*)wand, x, y, columns, rows, map, storage, pixels) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

@@ -15,7 +15,96 @@ extension UnsignedCharPointerExtension on Pointer<UnsignedChar> {
     }
     final Uint8List list = Uint8List(length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
+extension Uint16PointerExtension on Pointer<Uint16> {
+  /// Creates a `Uint16List` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  Uint16List? toUint16List(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final Uint16List list = Uint16List(length);
+    for (int i = 0; i < length; i++) {
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
+extension Uint32PointerExtension on Pointer<Uint32> {
+  /// Creates a `Uint32List` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  Uint32List? toUint32List(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final Uint32List list = Uint32List(length);
+    for (int i = 0; i < length; i++) {
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
+extension Uint64PointerExtension on Pointer<Uint64> {
+  /// Creates a `Uint64List` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  Uint64List? toUint64List(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final Uint64List list = Uint64List(length);
+    for (int i = 0; i < length; i++) {
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
+extension FloatPointerExtension on Pointer<Float> {
+  /// Creates a `Float32List` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  Float32List? toFloat32List(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final Float32List list = Float32List(length);
+    for (int i = 0; i < length; i++) {
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
+extension DoublePointerExtension on Pointer<Double> {
+  /// Creates a `Float64List` from this pointer by copying the pointer's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the pointer is equal to `nullptr`.
+  Float64List? toFloat64List(int length) {
+    if (this == nullptr) {
+      return null;
+    }
+    final Float64List list = Float64List(length);
+    for (int i = 0; i < length; i++) {
       list[i] = this[i];
     }
     return list;
@@ -34,7 +123,6 @@ extension CharPointerPointerExtension on Pointer<Pointer<Char>> {
     }
     final List<String> list = [];
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       list.add(this[i].cast<Utf8>().toDartString());
     }
     return list;
@@ -54,7 +142,6 @@ extension Uint8ListExtension on Uint8List {
     final Pointer<UnsignedChar> ptr =
         allocator(sizeOf<UnsignedChar>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;
@@ -72,7 +159,6 @@ extension Uint16ListExtension on Uint16List {
     }
     final Pointer<Uint16> ptr = allocator(sizeOf<Uint16>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;
@@ -90,7 +176,6 @@ extension Uint32ListExtension on Uint32List {
     }
     final Pointer<Uint32> ptr = allocator(sizeOf<Uint32>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;
@@ -108,7 +193,6 @@ extension Uint64ListExtension on Uint64List {
     }
     final Pointer<Uint64> ptr = allocator(sizeOf<Uint64>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;
@@ -126,7 +210,6 @@ extension Float32ListExtension on Float32List {
     }
     final Pointer<Float> ptr = allocator(sizeOf<Float>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;
@@ -144,7 +227,6 @@ extension Float64ListExtension on Float64List {
     }
     final Pointer<Double> ptr = allocator(sizeOf<Double>() * length);
     for (int i = 0; i < length; i++) {
-      // this is sad, see if this can be done without copying the data.
       ptr[i] = this[i];
     }
     return ptr;

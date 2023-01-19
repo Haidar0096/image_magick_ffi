@@ -327,6 +327,8 @@ FFI_PLUGIN_EXPORT bool magickEqualizeImage(void* wand);
 
 FFI_PLUGIN_EXPORT bool magickEvaluateImage(void* wand, const int operator,const double value);
 
+FFI_PLUGIN_EXPORT bool magickExportImagePixels(void* wand, const ssize_t x, const ssize_t y, const size_t columns, const size_t rows, const char* map, const int storage, void* pixels);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);
