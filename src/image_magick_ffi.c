@@ -662,6 +662,23 @@ FFI_PLUGIN_EXPORT bool magickExportImagePixels(void* wand, const ssize_t x, cons
 	return MagickExportImagePixels((MagickWand*)wand, x, y, columns, rows, map, storage, pixels) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickExtentImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y) {
+	return MagickExtentImage((MagickWand*)wand, width, height, x, y) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickFlipImage(void* wand) {
+	return MagickFlipImage((MagickWand*)wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickFloodfillPaintImage(void* wand, const void* fill, const double fuzz, const void* bordercolor, const ssize_t x, const ssize_t y, const bool invert) {
+	MagickBooleanType _invert = invert ? MagickTrue : MagickFalse;
+	return MagickFloodfillPaintImage((MagickWand*)wand, (PixelWand*)fill, fuzz, (PixelWand*)bordercolor, x, y, _invert) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickFlopImage(void* wand) {
+	return MagickFlopImage((MagickWand*)wand) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {

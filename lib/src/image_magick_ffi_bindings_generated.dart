@@ -2775,6 +2775,92 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, int, int, int, int,
           ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Void>)>();
 
+  bool magickExtentImage(
+    ffi.Pointer<ffi.Void> wand,
+    int width,
+    int height,
+    int x,
+    int y,
+  ) {
+    return _magickExtentImage(
+      wand,
+      width,
+      height,
+      x,
+      y,
+    );
+  }
+
+  late final _magickExtentImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size, ssize_t,
+              ssize_t)>>('magickExtentImage');
+  late final _magickExtentImage = _magickExtentImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, int, int, int, int)>();
+
+  bool magickFlipImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickFlipImage(
+      wand,
+    );
+  }
+
+  late final _magickFlipImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickFlipImage');
+  late final _magickFlipImage =
+      _magickFlipImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickFloodfillPaintImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> fill,
+    double fuzz,
+    ffi.Pointer<ffi.Void> bordercolor,
+    int x,
+    int y,
+    bool invert,
+  ) {
+    return _magickFloodfillPaintImage(
+      wand,
+      fill,
+      fuzz,
+      bordercolor,
+      x,
+      y,
+      invert,
+    );
+  }
+
+  late final _magickFloodfillPaintImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Double,
+              ffi.Pointer<ffi.Void>,
+              ssize_t,
+              ssize_t,
+              ffi.Bool)>>('magickFloodfillPaintImage');
+  late final _magickFloodfillPaintImage =
+      _magickFloodfillPaintImagePtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, double,
+              ffi.Pointer<ffi.Void>, int, int, bool)>();
+
+  bool magickFlopImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickFlopImage(
+      wand,
+    );
+  }
+
+  late final _magickFlopImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickFlopImage');
+  late final _magickFlopImage =
+      _magickFlopImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

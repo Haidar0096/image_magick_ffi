@@ -329,6 +329,14 @@ FFI_PLUGIN_EXPORT bool magickEvaluateImage(void* wand, const int operator,const 
 
 FFI_PLUGIN_EXPORT bool magickExportImagePixels(void* wand, const ssize_t x, const ssize_t y, const size_t columns, const size_t rows, const char* map, const int storage, void* pixels);
 
+FFI_PLUGIN_EXPORT bool magickExtentImage(void* wand, const size_t width, const size_t height, const ssize_t x, const ssize_t y);
+
+FFI_PLUGIN_EXPORT bool magickFlipImage(void* wand);
+
+FFI_PLUGIN_EXPORT bool magickFloodfillPaintImage(void* wand, const void* fill, const double fuzz, const void* bordercolor, const ssize_t x, const ssize_t y, const bool invert);
+
+FFI_PLUGIN_EXPORT bool magickFlopImage(void* wand);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

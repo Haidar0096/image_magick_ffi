@@ -1196,6 +1196,69 @@ Future<Uint16List?> _magickExportImageShortPixels(
       },
     );
 
+class _MagickExtentImageParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  _MagickExtentImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.x,
+    this.y,
+  );
+}
+
+Future<bool> _magickExtentImage(_MagickExtentImageParams args) async =>
+    _bindings.magickExtentImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.width,
+      args.height,
+      args.x,
+      args.y,
+    );
+
+Future<bool> _magickFlipImage(int wandPtrAddress) async =>
+    _bindings.magickFlipImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
+class _MagickFloodfillPaintImageParams {
+  final int wandPtrAddress;
+  final int fillPixelWandAddress;
+  final double fuzz;
+  final int bordercolorPixelWandAddress;
+  final int x;
+  final int y;
+  final bool invert;
+
+  _MagickFloodfillPaintImageParams(
+    this.wandPtrAddress,
+    this.fillPixelWandAddress,
+    this.fuzz,
+    this.bordercolorPixelWandAddress,
+    this.x,
+    this.y,
+    this.invert,
+  );
+}
+
+Future<bool> _magickFloodfillPaintImage(
+        _MagickFloodfillPaintImageParams args) async =>
+    _bindings.magickFloodfillPaintImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.fillPixelWandAddress),
+      args.fuzz,
+      Pointer<Void>.fromAddress(args.bordercolorPixelWandAddress),
+      args.x,
+      args.y,
+      args.invert,
+    );
+
+Future<bool> _magickFlopImage(int wandPtrAddress) async =>
+    _bindings.magickFlopImage(Pointer<Void>.fromAddress(wandPtrAddress));
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

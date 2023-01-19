@@ -167,6 +167,10 @@
 - [x] MagickEvaluateImage
 - [ ] MagickEvaluateImages
 - [x] MagickExportImagePixels
+- [x] MagickExtentImage
+- [x] MagickFlipImage
+- [x] MagickFloodfillPaintImage
+- [x] MagickFlopImage
 
 
 

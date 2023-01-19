@@ -2250,6 +2250,88 @@ class MagickWand {
         ),
       );
 
+  /// Extends the image as defined by the geometry, gravity, and wand background
+  /// color. Set the (x,y) offset of the geometry to move the original wand
+  /// relative to the extended wand.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [width]: the region width.
+  /// - [height]: the region height.
+  /// - [x]: the region x offset.
+  /// - [y]: the region y offset.
+  Future<bool> magickExtentImage({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+  }) async =>
+      await compute(
+        _magickExtentImage,
+        _MagickExtentImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          x,
+          y,
+        ),
+      );
+
+  /// Creates a vertical mirror image by reflecting the pixels around the
+  /// central x-axis.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickFlipImage() async => await compute(
+        _magickFlipImage,
+        _wandPtr.address,
+      );
+
+  /// Changes the color value of any pixel that matches target and is an
+  /// immediate neighbor. If the method FillToBorderMethod is specified, the
+  /// color value is changed for any neighbor pixel that does not match the
+  /// bordercolor member of image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [fill]: the floodfill color pixel wand.
+  /// - [fuzz]: By default target must match a particular pixel color exactly.
+  /// However, in many cases two colors may differ by a small amount. The fuzz
+  /// member of image defines how much tolerance is acceptable to consider two
+  /// colors as the same. For example, set fuzz to 10 and the color red at
+  /// intensities of 100 and 102 respectively are now interpreted as the same
+  /// color for the purposes of the floodfill.
+  /// - [bordercolor]: the border color pixel wand.
+  /// - [x]: the x starting location of the operation.
+  /// - [y]: the y starting location of the operation.
+  /// - [invert]:  paint any pixel that does not match the target color.
+  Future<bool> magickFloodfillPaintImage({
+    required PixelWand fill,
+    required double fuzz,
+    required PixelWand bordercolor,
+    required int x,
+    required int y,
+    required bool invert,
+  }) async =>
+      await compute(
+        _magickFloodfillPaintImage,
+        _MagickFloodfillPaintImageParams(
+          _wandPtr.address,
+          fill._wandPtr.address,
+          fuzz,
+          bordercolor._wandPtr.address,
+          x,
+          y,
+          invert,
+        ),
+      );
+
+  /// Creates a horizontal mirror image by reflecting the pixels around the
+  /// central y-axis.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickFlopImage() async => await compute(
+        _magickFlopImage,
+        _wandPtr.address,
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
