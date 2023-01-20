@@ -6,9 +6,9 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
+import 'dart:developer';
 
 import 'package:ffi/ffi.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image_magick_ffi/src/extensions.dart';
 import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
 
@@ -27,6 +27,8 @@ part 'memory.dart';
 part 'kernel_info.dart';
 
 part 'magick_wand_helper_classes.dart';
+
+part 'magick_compute.dart';
 
 const String _libName = 'image_magick_ffi';
 

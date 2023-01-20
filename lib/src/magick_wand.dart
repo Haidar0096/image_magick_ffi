@@ -789,7 +789,7 @@ class MagickWand {
   /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveBlurImage(double radius, double sigma) async =>
-      await compute(
+      await _magickCompute(
         _magickAdaptiveBlurImage,
         _MagickAdaptiveBlurImageParams(_wandPtr.address, radius, sigma),
       );
@@ -801,7 +801,7 @@ class MagickWand {
   /// - [columns] : the number of columns in the scaled image.
   /// - [rows] : the number of rows in the scaled image.
   Future<bool> magickAdaptiveResizeImage(int columns, int rows) async =>
-      await compute(
+      await _magickCompute(
         _magickAdaptiveResizeImage,
         _MagickAdaptiveResizeImageParams(_wandPtr.address, columns, rows),
       );
@@ -818,7 +818,7 @@ class MagickWand {
   /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickAdaptiveSharpenImage(double radius, double sigma) async =>
-      await compute(
+      await _magickCompute(
         _magickAdaptiveSharpenImage,
         _MagickAdaptiveSharpenImageParams(_wandPtr.address, radius, sigma),
       );
@@ -838,7 +838,7 @@ class MagickWand {
     required int height,
     required double bias,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickAdaptiveThresholdImage,
         _MagickAdaptiveThresholdImageParams(
           _wandPtr.address,
@@ -862,7 +862,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [other] : the other wand to add images from.
-  Future<bool> magickAddImage(MagickWand other) async => await compute(
+  Future<bool> magickAddImage(MagickWand other) async => await _magickCompute(
         _magickAddImage,
         _MagickAddImageParams(_wandPtr.address, other._wandPtr.address),
       );
@@ -874,7 +874,7 @@ class MagickWand {
   /// - [attenuate] : attenuate the random distribution.
   Future<bool> magickAddNoiseImage(
           NoiseType noiseType, double attenuate) async =>
-      await compute(
+      await _magickCompute(
         _magickAddNoiseImage,
         _MagickAddNoiseImageParams(
           _wandPtr.address,
@@ -887,7 +887,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAffineTransformImage(DrawingWand drawingWand) async =>
-      await compute(
+      await _magickCompute(
           _magickAffineTransformImage,
           _MagickAffineTransformImageParams(
               _wandPtr.address, drawingWand._wandPtr.address));
@@ -905,7 +905,7 @@ class MagickWand {
     required double angle,
     required String text,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickAnnotateImage,
         _MagickAnnotateImageParams(
           _wandPtr.address,
@@ -931,7 +931,7 @@ class MagickWand {
   /// true to stack them top-to-bottom.
   Future<MagickWand?> magickAppendImages(bool stack) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(
+      await _magickCompute(
         _magickAppendImages,
         _MagickAppendImagesParams(_wandPtr.address, stack),
       ),
@@ -947,7 +947,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoGammaImage() async =>
-      await compute(_magickAutoGammaImage, _wandPtr.address);
+      await _magickCompute(_magickAutoGammaImage, _wandPtr.address);
 
   /// Adjusts the levels of a particular image channel by scaling the minimum
   /// and maximum values to the
@@ -955,14 +955,14 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoLevelImage() async =>
-      await compute(_magickAutoLevelImage, _wandPtr.address);
+      await _magickCompute(_magickAutoLevelImage, _wandPtr.address);
 
   /// Adjusts an image so that its orientation is suitable $ for viewing (i.e.
   /// top-left orientation).
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickAutoOrientImage() async =>
-      await compute(_magickAutoOrientImage, _wandPtr.address);
+      await _magickCompute(_magickAutoOrientImage, _wandPtr.address);
 
   /// Automatically performs image thresholding dependent on which method you
   /// specify.
@@ -970,7 +970,7 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the method to use.
   Future<bool> magickAutoThresholdImage(AutoThresholdMethod method) async =>
-      await compute(
+      await _magickCompute(
         _magickAutoThresholdImage,
         _MagickAutoThresholdImageParams(_wandPtr.address, method.index),
       );
@@ -1001,7 +1001,7 @@ class MagickWand {
     required double intensitySigma,
     required double spatialSigma,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickBilateralBlurImage,
         _MagickBilateralBlurImageParams(
           _wandPtr.address,
@@ -1019,7 +1019,7 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [pixelWand] : the pixel wand to determine the threshold.
   Future<bool> magickBlackThresholdImage(PixelWand pixelWand) async =>
-      await compute(
+      await _magickCompute(
         _magickBlackThresholdImage,
         _MagickBlackThresholdImageParams(
           _wandPtr.address,
@@ -1033,7 +1033,7 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   /// - [factor] : the blue shift factor (default 1.5).
   Future<bool> magickBlueShiftImage([double factor = 1.5]) async =>
-      await compute(
+      await _magickCompute(
         _magickBlueShiftImage,
         _MagickBlueShiftImageParams(_wandPtr.address, factor),
       );
@@ -1051,7 +1051,7 @@ class MagickWand {
     required double radius,
     required double sigma,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickBlurImage,
         _MagickBlurImageParams(_wandPtr.address, radius, sigma),
       );
@@ -1070,7 +1070,7 @@ class MagickWand {
     required int height,
     required CompositeOperator compose,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickBorderImage,
         _MagickBorderImageParams(
           _wandPtr.address,
@@ -1094,7 +1094,7 @@ class MagickWand {
     required double brightness,
     required double contrast,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickBrightnessContrastImage,
         _MagickBrightnessContrastImageParams(
           _wandPtr.address,
@@ -1117,7 +1117,7 @@ class MagickWand {
     required double lowerPercent,
     required double upperPercent,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCannyEdgeImage,
         _MagickCannyEdgeImageParams(
           _wandPtr.address,
@@ -1148,9 +1148,12 @@ class MagickWand {
   /// <b>Sending an invalid input will crash the app abruptly,
   /// so you should be careful not sending invalid input to this method.</b>
   Future<MagickWand?> magickChannelFxImage(String expression) async {
-    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(await compute(
+    final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
+      await _magickCompute(
         _magickChannelFxImage,
-        _MagickChannelFxImageParams(_wandPtr.address, expression)));
+        _MagickChannelFxImageParams(_wandPtr.address, expression),
+      ),
+    );
     if (resultPtr == nullptr) {
       return null;
     }
@@ -1165,7 +1168,7 @@ class MagickWand {
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
   Future<bool> magickCharcoalImage(
           {required double radius, required double sigma}) async =>
-      await compute(
+      await _magickCompute(
         _magickCharcoalImage,
         _MagickCharcoalImageParams(_wandPtr.address, radius, sigma),
       );
@@ -1184,7 +1187,7 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickChopImage,
         _MagickChopImageParams(
           _wandPtr.address,
@@ -1216,7 +1219,7 @@ class MagickWand {
     required double numberBins,
     required double clipLimit,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCLAHEImage,
         _MagickCLAHEImageParams(
           _wandPtr.address,
@@ -1231,13 +1234,13 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickClampImage() async =>
-      await compute(_magickClampImage, _wandPtr.address);
+      await _magickCompute(_magickClampImage, _wandPtr.address);
 
   /// Clips along the first path from the 8BIM profile, if present.
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<bool> magickClipImage() async =>
-      await compute(_magickClipImage, _wandPtr.address);
+      await _magickCompute(_magickClipImage, _wandPtr.address);
 
   /// Clips along the named paths from the 8BIM profile, if present.
   /// Later operations take effect inside the path. Id may be a number if
@@ -1253,7 +1256,7 @@ class MagickWand {
   /// take effect outside clipping path.
   Future<bool> magickClipImagePath(
           {required String pathName, required bool inside}) async =>
-      await compute(
+      await _magickCompute(
         _magickClipImagePath,
         _MagickClipImagePathParams(_wandPtr.address, pathName, inside),
       );
@@ -1266,7 +1269,7 @@ class MagickWand {
   Future<bool> magickClutImage(
           {required MagickWand clutImage,
           required PixelInterpolateMethod method}) async =>
-      await compute(
+      await _magickCompute(
         _magickClutImage,
         _MagickClutImageParams(
           _wandPtr.address,
@@ -1287,7 +1290,7 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickCoalesceImages() async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(_magickCoalesceImages, _wandPtr.address),
+      await _magickCompute(_magickCoalesceImages, _wandPtr.address),
     );
     if (resultPtr == nullptr) {
       return null;
@@ -1320,7 +1323,7 @@ class MagickWand {
       - [colorCorrectionCollection] : the color correction collection in XML.*/
   Future<bool> magickColorDecisionListImage(
           String colorCorrectionCollection) async =>
-      await compute(
+      await _magickCompute(
         _magickColorDecisionListImage,
         _MagickColorDecisionListImageParams(
           _wandPtr.address,
@@ -1335,7 +1338,7 @@ class MagickWand {
   /// - [blend] : the alpha pixel wand.
   Future<bool> magickColorizeImage(
           {required PixelWand colorize, required PixelWand blend}) async =>
-      await compute(
+      await _magickCompute(
         _magickColorizeImage,
         _MagickColorizeImageParams(
           _wandPtr.address,
@@ -1357,7 +1360,7 @@ class MagickWand {
   /// - [colorMatrix] : the color matrix.
   Future<bool> magickColorMatrixImage(
           {required KernelInfo colorMatrix}) async =>
-      await compute(
+      await _magickCompute(
         _magickColorMatrixImage,
         _MagickColorMatrixImageParams(
           _wandPtr.address,
@@ -1373,7 +1376,7 @@ class MagickWand {
   Future<bool> magickColorThresholdImage(
           {required PixelWand startColor,
           required PixelWand stopColor}) async =>
-      await compute(
+      await _magickCompute(
         _magickColorThresholdImage,
         _MagickColorThresholdImageParams(
           _wandPtr.address,
@@ -1393,7 +1396,7 @@ class MagickWand {
   /// - [colorSpace]: the colorspace.
   Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(
+      await _magickCompute(
         _magickCombineImages,
         _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
       ),
@@ -1408,7 +1411,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [comment]: the image comment.
-  Future<bool> magickCommentImage(String comment) async => await compute(
+  Future<bool> magickCommentImage(String comment) async => await _magickCompute(
         _magickCommentImage,
         _MagickCommentImageParams(_wandPtr.address, comment),
       );
@@ -1423,7 +1426,7 @@ class MagickWand {
   /// - [method] : the compare method.
   Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(
+      await _magickCompute(
         _magickCompareImagesLayers,
         _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
       ),
@@ -1449,7 +1452,7 @@ class MagickWand {
     required Float64List distortion,
   }) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(
+      await _magickCompute(
         _magickCompareImages,
         _MagickCompareImagesParams(
           _wandPtr.address,
@@ -1473,7 +1476,7 @@ class MagickWand {
   /// - [operator]: A complex operator.
   Future<MagickWand?> magickComplexImages(ComplexOperator operator) async {
     final Pointer<Void> resultPtr = Pointer<Void>.fromAddress(
-      await compute(
+      await _magickCompute(
         _magickComplexImages,
         _MagickComplexImagesParams(_wandPtr.address, operator.index),
       ),
@@ -1501,7 +1504,7 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCompositeImage,
         _MagickCompositeImageParams(
           _wandPtr.address,
@@ -1526,7 +1529,7 @@ class MagickWand {
     required CompositeOperator compose,
     required GravityType gravity,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCompositeImageGravity,
         _MagickCompositeImageGravityParams(
           _wandPtr.address,
@@ -1565,7 +1568,7 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCompositeLayers,
         _MagickCompositeLayersParams(
           _wandPtr.address,
@@ -1582,7 +1585,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [sharpen]: Increase or decrease image contrast.
-  Future<bool> magickContrastImage(bool sharpen) async => await compute(
+  Future<bool> magickContrastImage(bool sharpen) async => await _magickCompute(
         _magickContrastImage,
         _MagickContrastImageParams(_wandPtr.address, sharpen),
       );
@@ -1596,7 +1599,7 @@ class MagickWand {
   /// - [whitePoint]: the white point.
   Future<bool> magickContrastStretchImage(
           {required double whitePoint, required double blackPoint}) async =>
-      await compute(
+      await _magickCompute(
         _magickContrastStretchImage,
         _MagickContrastStretchImageParams(
           _wandPtr.address,
@@ -1611,7 +1614,7 @@ class MagickWand {
   ///
   /// - [kernel]: An array of doubles representing the convolution kernel.
   Future<bool> magickConvolveImage({required KernelInfo kernel}) async =>
-      await compute(
+      await _magickCompute(
         _magickConvolveImage,
         _MagickConvolveImageParams(_wandPtr.address, kernel),
       );
@@ -1629,7 +1632,7 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickCropImage,
         _MagickCropImageParams(_wandPtr.address, width, height, x, y),
       );
@@ -1638,7 +1641,8 @@ class MagickWand {
   /// cycle the colormap a number of times you can produce a psychodelic effect.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickCycleColormapImage(int displace) async => await compute(
+  Future<bool> magickCycleColormapImage(int displace) async =>
+      await _magickCompute(
         _magickCycleColormapImage,
         _MagickCycleColormapImageParams(_wandPtr.address, displace),
       );
@@ -1678,7 +1682,7 @@ class MagickWand {
     required String map,
     required Uint8List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1713,7 +1717,7 @@ class MagickWand {
     required String map,
     required Float64List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1748,7 +1752,7 @@ class MagickWand {
     required String map,
     required Float32List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1783,7 +1787,7 @@ class MagickWand {
     required String map,
     required Uint32List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1818,7 +1822,7 @@ class MagickWand {
     required String map,
     required Uint64List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1853,7 +1857,7 @@ class MagickWand {
     required String map,
     required Uint16List pixels,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickConstituteImage,
         _MagickConstituteImageParams(
           _wandPtr.address,
@@ -1869,7 +1873,8 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [passphrase]: the passphrase
-  Future<bool> magickDecipherImage(String passphrase) async => await compute(
+  Future<bool> magickDecipherImage(String passphrase) async =>
+      await _magickCompute(
         _magickDecipherImage,
         _MagickDecipherImageParams(_wandPtr.address, passphrase),
       );
@@ -1881,7 +1886,7 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickDeconstructImages() async {
     final int resultWandAddress =
-        await compute(_magickDeconstructImages, _wandPtr.address);
+        await _magickCompute(_magickDeconstructImages, _wandPtr.address);
     if (resultWandAddress == 0) {
       return null;
     }
@@ -1895,7 +1900,8 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [threshold]: separate background from foreground.
-  Future<bool> magickDeskewImage(double threshold) async => await compute(
+  Future<bool> magickDeskewImage(double threshold) async =>
+      await _magickCompute(
         _magickDeskewImage,
         _MagickDeskewImageParams(_wandPtr.address, threshold),
       );
@@ -1904,7 +1910,7 @@ class MagickWand {
   /// original image.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickDespeckleImage() async => await compute(
+  Future<bool> magickDespeckleImage() async => await _magickCompute(
         _magickDespeckleImage,
         _wandPtr.address,
       );
@@ -1945,7 +1951,7 @@ class MagickWand {
     required Float64List arguments,
     required bool bestFit,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickDistortImage,
         _MagickDistortImageParams(
           _wandPtr.address,
@@ -1958,7 +1964,8 @@ class MagickWand {
   /// Renders the drawing wand on the current image.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickDrawImage(DrawingWand drawWand) async => await compute(
+  Future<bool> magickDrawImage(DrawingWand drawWand) async =>
+      await _magickCompute(
         _magickDrawImage,
         _MagickDrawImageParams(_wandPtr.address, drawWand._wandPtr.address),
       );
@@ -1968,7 +1975,7 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [radius]: the radius of the pixel neighborhood.
-  Future<bool> magickEdgeImage(double radius) async => await compute(
+  Future<bool> magickEdgeImage(double radius) async => await _magickCompute(
         _magickEdgeImage,
         _MagickEdgeImageParams(_wandPtr.address, radius),
       );
@@ -1987,7 +1994,7 @@ class MagickWand {
     required double radius,
     required double sigma,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickEmbossImage,
         _MagickEmbossImageParams(_wandPtr.address, radius, sigma),
       );
@@ -1996,7 +2003,8 @@ class MagickWand {
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [passphrase]: the passphrase
-  Future<bool> magickEncipherImage(String passphrase) async => await compute(
+  Future<bool> magickEncipherImage(String passphrase) async =>
+      await _magickCompute(
         _magickEncipherImage,
         _MagickEncipherImageParams(_wandPtr.address, passphrase),
       );
@@ -2005,7 +2013,7 @@ class MagickWand {
   /// of a noisy image.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickEnhanceImage() async => await compute(
+  Future<bool> magickEnhanceImage() async => await _magickCompute(
         _magickEnhanceImage,
         _wandPtr.address,
       );
@@ -2013,7 +2021,7 @@ class MagickWand {
   /// MagickEqualizeImage() equalizes the image histogram.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickEqualizeImage() async => await compute(
+  Future<bool> magickEqualizeImage() async => await _magickCompute(
         _magickEqualizeImage,
         _wandPtr.address,
       );
@@ -2029,7 +2037,7 @@ class MagickWand {
     required MagickEvaluateOperator operator,
     required double value,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickEvaluateImage,
         _MagickEvaluateImageParams(_wandPtr.address, operator, value),
       );
@@ -2058,7 +2066,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageCharPixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2094,7 +2102,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageDoublePixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2130,7 +2138,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageFloatPixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2166,7 +2174,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageLongPixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2202,7 +2210,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageLongLongPixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2238,7 +2246,7 @@ class MagickWand {
     required int rows,
     required String map,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExportImageShortPixels,
         _MagickExportImagePixelsParams(
           _wandPtr.address,
@@ -2265,7 +2273,7 @@ class MagickWand {
     required int x,
     required int y,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickExtentImage,
         _MagickExtentImageParams(
           _wandPtr.address,
@@ -2280,7 +2288,7 @@ class MagickWand {
   /// central x-axis.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickFlipImage() async => await compute(
+  Future<bool> magickFlipImage() async => await _magickCompute(
         _magickFlipImage,
         _wandPtr.address,
       );
@@ -2310,7 +2318,7 @@ class MagickWand {
     required int y,
     required bool invert,
   }) async =>
-      await compute(
+      await _magickCompute(
         _magickFloodfillPaintImage,
         _MagickFloodfillPaintImageParams(
           _wandPtr.address,
@@ -2327,7 +2335,7 @@ class MagickWand {
   /// central y-axis.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickFlopImage() async => await compute(
+  Future<bool> magickFlopImage() async => await _magickCompute(
         _magickFlopImage,
         _wandPtr.address,
       );
@@ -2341,7 +2349,8 @@ class MagickWand {
   /// magickSetIteratorIndex() to place images just after the given index.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickReadImage(String imageFilePath) async => await compute(
+  Future<bool> magickReadImage(String imageFilePath) async =>
+      await _magickCompute(
         _magickReadImage,
         _MagickReadImageParams(_wandPtr.address, imageFilePath),
       );
@@ -2351,7 +2360,8 @@ class MagickWand {
   /// magickSetImageFilename().
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickWriteImage(String imageFilePath) async => await compute(
+  Future<bool> magickWriteImage(String imageFilePath) async =>
+      await _magickCompute(
         _magickWriteImage,
         _MagickWriteImageParams(_wandPtr.address, imageFilePath),
       );

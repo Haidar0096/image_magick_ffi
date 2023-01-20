@@ -13,3 +13,8 @@ no need to call it manually.
 * Updated README.md.
 * Added new bindings for MagickWand methods. 
 * Removed the method `magickConstituteImageFromQuantumPixel`.
+
+## 0.0.1-dev.4 - Date To be Set
+
+* Added new bindings for MagickWand methods.
+* Removed the plugin's dependency on Flutter.
