@@ -2339,7 +2339,7 @@ class MagickWand {
         _magickFlopImage,
         _wandPtr.address,
       );
-  
+
   /// Adds a simulated three-dimensional border around the image. The width and
   /// height specify the border width of the vertical and horizontal sides of
   /// the frame. The inner and outer bevels indicate the width of the inner and
@@ -2392,7 +2392,6 @@ class MagickWand {
           arguments,
         ),
       );
-
 
   // TODO: continue adding the remaining methods
 

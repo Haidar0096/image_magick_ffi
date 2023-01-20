@@ -1259,7 +1259,7 @@ Future<bool> _magickFloodfillPaintImage(
 Future<bool> _magickFlopImage(int wandPtrAddress) async =>
     _bindings.magickFlopImage(Pointer<Void>.fromAddress(wandPtrAddress));
 
-class _MagickFrameImageParams{
+class _MagickFrameImageParams {
   final int wandPtrAddress;
   final int matteColorPixelWandAddress;
   final int width;
@@ -1290,7 +1290,7 @@ Future<bool> _magickFrameImage(_MagickFrameImageParams args) async =>
       args.compose.index,
     );
 
-class _MagickFunctionImageParams{
+class _MagickFunctionImageParams {
   final int wandPtrAddress;
   final MagickFunctionType function;
   final Float64List arguments;
@@ -1305,7 +1305,8 @@ class _MagickFunctionImageParams{
 Future<bool> _magickFunctionImage(_MagickFunctionImageParams args) async =>
     using(
       (Arena arena) {
-        final Pointer<Double> argumentsPtr = args.arguments.toDoubleArrayPointer(allocator: arena);
+        final Pointer<Double> argumentsPtr =
+            args.arguments.toDoubleArrayPointer(allocator: arena);
         return _bindings.magickFunctionImage(
           Pointer<Void>.fromAddress(args.wandPtrAddress),
           args.function.index,
