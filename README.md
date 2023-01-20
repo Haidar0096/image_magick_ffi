@@ -75,29 +75,24 @@ void initState() {
 }
 // ...
 
-// reads an image, does some operations on it, then writes saves it.
+// read an image, do some operations on it, then save it
 Future<String> _handlePress() async {
   try {
     setState(() => isLoading = true);
+
+    String? result;
 
     await _wand.magickReadImage(_inputFile!.path); // read the image
 
     ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
-    // define a matrix to be applied to the image
-    im.KernelInfo kernel = im.KernelInfo(
-      width: 3,
-      height: 3,
-      values: Float64List.fromList([1, 0, 1, 0, 1, 0, 1, 0, 1]),
-    );
-    await _wand.magickColorMatrixImage(
-            colorMatrix: kernel); // apply color matrix to image
-    
-    await _wand.magickAdaptiveResizeImage(600, 800); // resize image
-    
-    await _wand.magickContrastImage(true); // apply contrast to image
+    await _wand.magickAdaptiveResizeImage(1200, 800); // resize the image
+    await _wand.magickFlipImage(); // flip the image
+    await _wand.magickEnhanceImage(); // enhance the image
+    await _wand.magickAddNoiseImage(
+            NoiseType.GaussianNoise, 2.0); // add noise to the image
 
-    ///////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
 
     final String ps = Platform.pathSeparator;
     final String inputFileNameWithoutExtension =
@@ -108,21 +103,17 @@ Future<String> _handlePress() async {
     await _wand.magickWriteImage(
             outputFilePath); // write the image to a file in the png format
 
-    im.MagickGetExceptionResult e =
+    MagickGetExceptionResult e =
     _wand.magickGetException(); // get the exception if any
-    if (e.severity != im.ExceptionType.UndefinedException) {
+    if (e.severity != ExceptionType.UndefinedException) {
       throw e.description;
     }
-    setState(() {
-      _outputFile = File(outputFilePath);
-      isLoading = false;
-    });
-    return 'Operation Successful!';
+    _outputFile = File(outputFilePath);
+    isLoading = false;
+    return 'Operation Successful! Result is $result.';
   } catch (e) {
-    setState(() {
-      _outputFile = null;
-      isLoading = false;
-    });
+    _outputFile = null;
+    isLoading = false;
     return 'Error: ${e.toString()}';
   }
 }

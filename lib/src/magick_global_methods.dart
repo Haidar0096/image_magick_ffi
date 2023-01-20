@@ -9,7 +9,7 @@ void _initialize() {
 }
 
 /// Disposes the resources used with the plugin.
-void dispose() => _magickWandTerminus();
+void disposeImageMagick() => _magickWandTerminus();
 
 /// Returns the value associated with the specified configure option, or null
 /// in case of no match.

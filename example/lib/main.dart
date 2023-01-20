@@ -1,12 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_magick_ffi/image_magick_ffi.dart'
-    as im; // use named import to avoid naming conflicts
+import 'package:image_magick_ffi/image_magick_ffi.dart'; // use named import to avoid naming conflicts
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -28,11 +26,13 @@ class _MyAppState extends State<MyApp> {
 
   String status = 'Idle';
 
-  late im.MagickWand _wand;
+  int? _operationTimeInMillis;
+
+  late MagickWand _wand;
 
   @override
   void initState() {
-    _wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+    _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images
 
     final File file = File("D:\\magick\\screenshot.png");
     if (file.existsSync()) {
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   dispose() {
     _wand.destroyMagickWand(); // we are done with the wand
-    im.dispose(); // we are done with the plugin
+    disposeImageMagick(); // we are done with the whole plugin
     super.dispose();
   }
 
@@ -159,6 +159,11 @@ class _MyAppState extends State<MyApp> {
                       style: const TextStyle(fontSize: 20),
                     ),
                     const SizedBox(height: 10),
+                    Text(
+                      'Operation time: ${_operationTimeInMillis ?? 0} ms',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -225,6 +230,8 @@ class _MyAppState extends State<MyApp> {
                               stopwatch.stop();
                               print(
                                   "operation time: ${stopwatch.elapsedMilliseconds}ms");
+                              _operationTimeInMillis =
+                                  stopwatch.elapsedMilliseconds;
                               setState(() {});
                             },
                       child: const Text('Start Processing'),
@@ -244,23 +251,23 @@ class _MyAppState extends State<MyApp> {
         }),
       );
 
-  // reads an image, then writes it in jpeg format
+  // read an image, do some operations on it, then save it
   Future<String> _handlePress() async {
     try {
       setState(() => isLoading = true);
 
+      String? result;
+
       await _wand.magickReadImage(_inputFile!.path); // read the image
 
       ///////////////////////// Do Some Operations On The Wand /////////////////////////
-      im.KernelInfo kernel = im.KernelInfo(
-        width: 3,
-        height: 3,
-        values: Float64List.fromList([1, 0, 1, 0, 1, 0, 1, 0, 1]),
-      );
-      await _wand.magickColorMatrixImage(
-          colorMatrix: kernel); // apply color matrix to image
-      await _wand.magickAdaptiveResizeImage(600, 800); // resize image
-      await _wand.magickContrastImage(true); // apply contrast to image
+
+      await _wand.magickAdaptiveResizeImage(1200, 800); // resize the image
+      await _wand.magickFlipImage(); // flip the image
+      await _wand.magickEnhanceImage(); // enhance the image
+      await _wand.magickAddNoiseImage(
+          NoiseType.GaussianNoise, 2.0); // add noise to the image
+
       /////////////////////////////////////////////////////////////////////////////////
 
       final String ps = Platform.pathSeparator;
@@ -272,21 +279,17 @@ class _MyAppState extends State<MyApp> {
       await _wand.magickWriteImage(
           outputFilePath); // write the image to a file in the png format
 
-      im.MagickGetExceptionResult e =
+      MagickGetExceptionResult e =
           _wand.magickGetException(); // get the exception if any
-      if (e.severity != im.ExceptionType.UndefinedException) {
+      if (e.severity != ExceptionType.UndefinedException) {
         throw e.description;
       }
-      setState(() {
-        _outputFile = File(outputFilePath);
-        isLoading = false;
-      });
-      return 'Operation Successful!';
+      _outputFile = File(outputFilePath);
+      isLoading = false;
+      return 'Operation Successful! Result is $result.';
     } catch (e) {
-      setState(() {
-        _outputFile = null;
-        isLoading = false;
-      });
+      _outputFile = null;
+      isLoading = false;
       return 'Error: ${e.toString()}';
     }
   }

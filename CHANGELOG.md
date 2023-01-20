@@ -17,4 +17,5 @@ no need to call it manually.
 ## 0.0.1-dev.4 - Date To be Set
 
 * Added new bindings for MagickWand methods.
+* `dispose` is now called `disposeImageMagick` to avoid naming conflicts.
 * Removed the plugin's dependency on Flutter.
