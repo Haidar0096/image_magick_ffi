@@ -2917,6 +2917,24 @@ class ImageMagickFfiBindings {
       bool Function(
           ffi.Pointer<ffi.Void>, int, int, ffi.Pointer<ffi.Double>)>();
 
+  ffi.Pointer<ffi.Void> magickFxImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Char> expression,
+  ) {
+    return _magickFxImage(
+      wand,
+      expression,
+    );
+  }
+
+  late final _magickFxImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>('magickFxImage');
+  late final _magickFxImage = _magickFxImagePtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

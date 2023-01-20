@@ -1316,6 +1316,25 @@ Future<bool> _magickFunctionImage(_MagickFunctionImageParams args) async =>
       },
     );
 
+class _MagickFxImageParams {
+  final int wandPtrAddress;
+  final String expression;
+
+  _MagickFxImageParams(
+    this.wandPtrAddress,
+    this.expression,
+  );
+}
+
+Future<int> _magickFxImage(_MagickFxImageParams args) async => using(
+      (Arena arena) => _bindings
+          .magickFxImage(
+            Pointer<Void>.fromAddress(args.wandPtrAddress),
+            args.expression.toNativeUtf8(allocator: arena).cast(),
+          )
+          .address,
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

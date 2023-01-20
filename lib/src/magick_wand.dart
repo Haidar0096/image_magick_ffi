@@ -2393,6 +2393,25 @@ class MagickWand {
         ),
       );
 
+  /// Evaluate expression for each pixel in the image.
+  ///
+  /// Don't forget to dispose the returned [MagickWand] when done.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [expression]: the expression.
+  Future<MagickWand?> magickFxImage(String expression) async {
+    final int resultWandAddress = await _magickCompute(
+      _magickFxImage,
+      _MagickFxImageParams(
+        _wandPtr.address,
+        expression,
+      ),
+    );
+    return resultWandAddress == 0
+        ? null
+        : MagickWand._(Pointer<Void>.fromAddress(resultWandAddress));
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

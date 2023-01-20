@@ -174,6 +174,7 @@
 - [ ] MagickForwardFourierTransformImage
 - [x] MagickFrameImage
 - [x] MagickFunctionImage
+- [x] MagickFxImage
 
 
 

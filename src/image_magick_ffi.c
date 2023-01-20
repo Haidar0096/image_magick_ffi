@@ -721,6 +721,10 @@ magickFunctionImage(void *wand, const int function, const size_t number_argument
     return MagickFunctionImage((MagickWand *) wand, function, number_arguments, arguments) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT void *magickFxImage(void *wand, const char *expression) {
+    return MagickFxImage((MagickWand *) wand, expression);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

@@ -372,6 +372,8 @@ FFI_PLUGIN_EXPORT bool magickFrameImage(void *wand, const void *matte_color, con
 FFI_PLUGIN_EXPORT bool
 magickFunctionImage(void *wand, const int function, const size_t number_arguments, const double *arguments);
 
+FFI_PLUGIN_EXPORT void *magickFxImage(void *wand, const char *expression);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
