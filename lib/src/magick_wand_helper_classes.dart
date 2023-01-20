@@ -1259,6 +1259,62 @@ Future<bool> _magickFloodfillPaintImage(
 Future<bool> _magickFlopImage(int wandPtrAddress) async =>
     _bindings.magickFlopImage(Pointer<Void>.fromAddress(wandPtrAddress));
 
+class _MagickFrameImageParams{
+  final int wandPtrAddress;
+  final int matteColorPixelWandAddress;
+  final int width;
+  final int height;
+  final int innerBevel;
+  final int outerBevel;
+  final CompositeOperator compose;
+
+  _MagickFrameImageParams(
+    this.wandPtrAddress,
+    this.matteColorPixelWandAddress,
+    this.width,
+    this.height,
+    this.innerBevel,
+    this.outerBevel,
+    this.compose,
+  );
+}
+
+Future<bool> _magickFrameImage(_MagickFrameImageParams args) async =>
+    _bindings.magickFrameImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.matteColorPixelWandAddress),
+      args.width,
+      args.height,
+      args.innerBevel,
+      args.outerBevel,
+      args.compose.index,
+    );
+
+class _MagickFunctionImageParams{
+  final int wandPtrAddress;
+  final MagickFunctionType function;
+  final Float64List arguments;
+
+  _MagickFunctionImageParams(
+    this.wandPtrAddress,
+    this.function,
+    this.arguments,
+  );
+}
+
+Future<bool> _magickFunctionImage(_MagickFunctionImageParams args) async =>
+    using(
+      (Arena arena) {
+        final Pointer<Double> argumentsPtr = args.arguments.toDoubleArrayPointer(allocator: arena);
+        return _bindings.magickFunctionImage(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.function.index,
+          args.arguments.length,
+          argumentsPtr,
+        );
+      },
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

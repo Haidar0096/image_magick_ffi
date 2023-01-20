@@ -337,6 +337,10 @@ FFI_PLUGIN_EXPORT bool magickFloodfillPaintImage(void* wand, const void* fill, c
 
 FFI_PLUGIN_EXPORT bool magickFlopImage(void* wand);
 
+FFI_PLUGIN_EXPORT bool magickFrameImage(void *wand, const void *matte_color,const size_t width, const size_t height,const ssize_t inner_bevel, const ssize_t outer_bevel,const int compose);
+
+FFI_PLUGIN_EXPORT bool magickFunctionImage(void *wand, const int function,const size_t number_arguments, const double *arguments);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename);

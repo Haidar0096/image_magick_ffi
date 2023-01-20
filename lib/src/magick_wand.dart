@@ -2339,6 +2339,60 @@ class MagickWand {
         _magickFlopImage,
         _wandPtr.address,
       );
+  
+  /// Adds a simulated three-dimensional border around the image. The width and
+  /// height specify the border width of the vertical and horizontal sides of
+  /// the frame. The inner and outer bevels indicate the width of the inner and
+  /// outer shadows of the frame.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [matteColor]: the frame color pixel wand.
+  /// - [width]: the border width.
+  /// - [height]: the border height.
+  /// - [innerBevel]: the inner bevel width.
+  /// - [outerBevel]: the outer bevel width.
+  /// - [compose]: the composite operator.
+  Future<bool> magickFrameImage({
+    required PixelWand matteColor,
+    required int width,
+    required int height,
+    required int innerBevel,
+    required int outerBevel,
+    required CompositeOperator compose,
+  }) async =>
+      await _magickCompute(
+        _magickFrameImage,
+        _MagickFrameImageParams(
+          _wandPtr.address,
+          matteColor._wandPtr.address,
+          width,
+          height,
+          innerBevel,
+          outerBevel,
+          compose,
+        ),
+      );
+
+  /// Applies an arithmetic, relational, or logical expression to an image. Use
+  /// these operators to lighten or darken an image, to increase or decrease
+  /// contrast in an image, or to produce the "negative" of an image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [function]: the image function.
+  /// - [arguments]: the function arguments.
+  Future<bool> magickFunctionImage({
+    required MagickFunctionType function,
+    required Float64List arguments,
+  }) async =>
+      await _magickCompute(
+        _magickFunctionImage,
+        _MagickFunctionImageParams(
+          _wandPtr.address,
+          function,
+          arguments,
+        ),
+      );
+
 
   // TODO: continue adding the remaining methods
 

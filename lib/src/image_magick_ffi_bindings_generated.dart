@@ -2861,6 +2861,62 @@ class ImageMagickFfiBindings {
   late final _magickFlopImage =
       _magickFlopImagePtr.asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
 
+  bool magickFrameImage(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> matte_color,
+    int width,
+    int height,
+    int inner_bevel,
+    int outer_bevel,
+    int compose,
+  ) {
+    return _magickFrameImage(
+      wand,
+      matte_color,
+      width,
+      height,
+      inner_bevel,
+      outer_bevel,
+      compose,
+    );
+  }
+
+  late final _magickFrameImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Size,
+              ffi.Size,
+              ssize_t,
+              ssize_t,
+              ffi.Int)>>('magickFrameImage');
+  late final _magickFrameImage = _magickFrameImagePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int, int,
+          int, int)>();
+
+  bool magickFunctionImage(
+    ffi.Pointer<ffi.Void> wand,
+    int function,
+    int number_arguments,
+    ffi.Pointer<ffi.Double> arguments,
+  ) {
+    return _magickFunctionImage(
+      wand,
+      function,
+      number_arguments,
+      arguments,
+    );
+  }
+
+  late final _magickFunctionImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size,
+              ffi.Pointer<ffi.Double>)>>('magickFunctionImage');
+  late final _magickFunctionImage = _magickFunctionImagePtr.asFunction<
+      bool Function(
+          ffi.Pointer<ffi.Void>, int, int, ffi.Pointer<ffi.Double>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

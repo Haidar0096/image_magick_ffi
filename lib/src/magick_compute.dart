@@ -7,6 +7,7 @@ part of 'image_magick_ffi.dart';
 
 typedef _ComputeCallback<Q, R> = FutureOr<R> Function(Q message);
 
+/// Clone of `isolates.compute` but does not depend on flutter.
 Future<R> _magickCompute<Q, R>(_ComputeCallback<Q, R> callback, Q message,
     {String? debugLabel}) async {
   debugLabel ??= callback.toString();

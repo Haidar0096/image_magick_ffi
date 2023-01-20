@@ -171,6 +171,9 @@
 - [x] MagickFlipImage
 - [x] MagickFloodfillPaintImage
 - [x] MagickFlopImage
+- [ ] MagickForwardFourierTransformImage
+- [x] MagickFrameImage
+- [x] MagickFunctionImage
 
 
 

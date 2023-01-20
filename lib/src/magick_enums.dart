@@ -548,3 +548,12 @@ enum MagickEvaluateOperator {
   XorEvaluateOperator,
   InverseLogEvaluateOperator
 }
+
+/// Represents a magick function
+enum MagickFunctionType {
+  UndefinedFunction,
+  ArcsinFunction,
+  ArctanFunction,
+  PolynomialFunction,
+  SinusoidFunction
+}

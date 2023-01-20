@@ -679,6 +679,14 @@ FFI_PLUGIN_EXPORT bool magickFlopImage(void* wand) {
 	return MagickFlopImage((MagickWand*)wand) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickFrameImage(void *wand, const void *matte_color,const size_t width, const size_t height,const ssize_t inner_bevel, const ssize_t outer_bevel,const int compose){
+    return MagickFrameImage((MagickWand*)wand, (PixelWand*)matte_color, width, height, inner_bevel, outer_bevel, compose) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickFunctionImage(void *wand, const int function,const size_t number_arguments, const double *arguments){
+    return MagickFunctionImage((MagickWand*)wand, function, number_arguments, arguments) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void* wand, const char* filename) {
