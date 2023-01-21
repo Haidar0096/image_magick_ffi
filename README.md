@@ -181,8 +181,7 @@ dispose() {
     - [The official ImageMagick website](https://imagemagick.org/).
     - [ImageMagick usage documentation](https://imagemagick.org/Usage/).
     - [Fred's ImageMagick scripts](http://www.fmwconcepts.com/imagemagick/index.php).
-    - [Snibgo's examples](http://im.snibgo.com/) for more info about ImageMagick and how to use
-      it.
+    - [Snibgo's examples](http://im.snibgo.com/).
 
 # Contributing
 

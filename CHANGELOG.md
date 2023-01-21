@@ -21,3 +21,7 @@
 * Added new bindings for MagickWand methods.
 * Removed the plugin's dependency on Flutter.
 * Fixed a bug that caused dependent apps to crash in release mode because some native data was not initialized in release mode.
+
+## 0.0.1-dev.4 - Date to be set
+
+* Fixed broken links in README.md.
