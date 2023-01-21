@@ -14,8 +14,8 @@ no need to call it manually.
 * Added new bindings for MagickWand methods. 
 * Removed the method `magickConstituteImageFromQuantumPixel`.
 
-## 0.0.1-dev.4 - Date To be Set
+## 0.0.1-dev.4 - Jan 21, 2023 [Breaking Changes]
 
+* [Breaking] `dispose` is now called `disposeImageMagick` to avoid naming conflicts.
 * Added new bindings for MagickWand methods.
-* `dispose` is now called `disposeImageMagick` to avoid naming conflicts.
 * Removed the plugin's dependency on Flutter.
