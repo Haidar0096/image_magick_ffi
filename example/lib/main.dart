@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   File? _inputFile;
-  Directory? _outputDirectory = Directory("D:\\magick");
+  Directory? _outputDirectory;
   File? _outputFile;
   bool isLoading = false;
 
@@ -39,9 +39,18 @@ class _MyAppState extends State<MyApp> {
       _inputFile = file;
     }
 
+    Directory directory = Directory("D:\\magick");
+    if (directory.existsSync()) {
+      _outputDirectory = directory;
+    }
+
     // set a callback to be called when image processing progress changes
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async => await _wand.magickSetProgressMonitor(
-    //     (info, offset, size, clientData) => print('Progress: $info, $offset, $size, $clientData')));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async => await _wand.magickSetProgressMonitor(
+        (info, offset, size, clientData) => setState(() =>
+            status = '[${info.split('/').first}, $offset, $size, $clientData]'),
+      ),
+    );
 
     super.initState();
   }
@@ -259,38 +268,55 @@ class _MyAppState extends State<MyApp> {
       String? result;
 
       await _wand.magickReadImage(_inputFile!.path); // read the image
+      _throwWandExceptionIfExists(_wand);
 
       ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
-      await _wand.magickAdaptiveResizeImage(1200, 800); // resize the image
-      await _wand.magickFlipImage(); // flip the image
-      await _wand.magickEnhanceImage(); // enhance the image
-      await _wand.magickAddNoiseImage(
-          NoiseType.GaussianNoise, 2.0); // add noise to the image
+      // resize the image
+      await _wand.magickAdaptiveResizeImage(1200, 800);
+      _throwWandExceptionIfExists(_wand);
+      // flip the image
+      await _wand.magickFlipImage();
+      _throwWandExceptionIfExists(_wand);
+      // enhance the image
+      await _wand.magickEnhanceImage();
+      _throwWandExceptionIfExists(_wand);
+      // add noise to the image
+      await _wand.magickAddNoiseImage(NoiseType.GaussianNoise, 1.5);
+      _throwWandExceptionIfExists(_wand);
 
       /////////////////////////////////////////////////////////////////////////////////
 
-      final String ps = Platform.pathSeparator;
-      final String inputFileNameWithoutExtension =
-          _inputFile!.path.split(ps).last.split('.').first;
-      final String outputFilePath =
-          '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+      String outputFilePath = _getOutputFilePath();
 
       await _wand.magickWriteImage(
           outputFilePath); // write the image to a file in the png format
+      _throwWandExceptionIfExists(_wand);
 
-      MagickGetExceptionResult e =
-          _wand.magickGetException(); // get the exception if any
-      if (e.severity != ExceptionType.UndefinedException) {
-        throw e.description;
-      }
       _outputFile = File(outputFilePath);
       isLoading = false;
-      return 'Operation Successful! Result is $result.';
+      return result ?? 'Operation Successful!';
     } catch (e) {
       _outputFile = null;
       isLoading = false;
       return 'Error: ${e.toString()}';
+    }
+  }
+
+  String _getOutputFilePath() {
+    final String ps = Platform.pathSeparator;
+    final String inputFileNameWithoutExtension =
+        _inputFile!.path.split(ps).last.split('.').first;
+    final String outputFilePath =
+        '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+    return outputFilePath;
+  }
+
+  void _throwWandExceptionIfExists(MagickWand wand) {
+    MagickGetExceptionResult e =
+        _wand.magickGetException(); // get the exception if any
+    if (e.severity != ExceptionType.UndefinedException) {
+      throw e;
     }
   }
 }

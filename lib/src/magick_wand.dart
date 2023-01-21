@@ -712,7 +712,7 @@ class MagickWand {
         ?.cancel(); // Cancel previous subscription, if any.
     _progressMonitorStreamControllerStreamSubscription =
         _progressMonitorStreamController!.stream.listen((event) {
-      final data = jsonDecode(event);
+      final dynamic data = jsonDecode(event);
       progressMonitor(data['info'], data['offset'], data['size'], clientData);
     });
   }

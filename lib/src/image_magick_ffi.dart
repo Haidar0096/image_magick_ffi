@@ -54,5 +54,5 @@ class ImageMagickFFIPlugin {
   /// This method is called automatically to initialize the plugin.
   ///
   /// Do not call this method manually.
-  static void registerWith() => _initialize(); // initialize the plugin
+  static void registerWith() => _initializeImageMagick(); // initialize the plugin
 }
