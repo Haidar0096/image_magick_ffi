@@ -131,14 +131,8 @@ class MagickWand {
             text.toNativeUtf8(allocator: arena).cast();
         final Pointer<Double> metricsPtr = _bindings.magickQueryFontMetrics(
             _wandPtr, drawingWand._wandPtr, textPtr);
-        if (metricsPtr == nullptr) {
-          return null;
-        }
-        final Float64List metrics = metricsPtr.asTypedList(13);
-        _MagickRelinquishableResource.registerRelinquishable(
-          metrics,
-          metricsPtr.cast(),
-        );
+        final Float64List? metrics = metricsPtr.toFloat64List(13);
+        _magickRelinquishMemory(metricsPtr.cast());
         return metrics;
       });
 
@@ -171,14 +165,8 @@ class MagickWand {
         final Pointer<Double> metricsPtr =
             _bindings.magickQueryMultilineFontMetrics(
                 _wandPtr, drawingWand._wandPtr, textPtr);
-        if (metricsPtr == nullptr) {
-          return null;
-        }
-        final Float64List metrics = metricsPtr.asTypedList(13);
-        _MagickRelinquishableResource.registerRelinquishable(
-          metrics,
-          metricsPtr.cast(),
-        );
+        final Float64List? metrics = metricsPtr.toFloat64List(13);
+        _magickRelinquishMemory(metricsPtr.cast());
         return metrics;
       });
 
@@ -479,12 +467,8 @@ class MagickWand {
         final Pointer<Double> factorsPtr =
             _bindings.magickGetSamplingFactors(_wandPtr, numFactorsPtr);
         final int numFactors = numFactorsPtr.value;
-        if (factorsPtr == nullptr) {
-          return null;
-        }
-        final Float64List factors = factorsPtr.asTypedList(numFactors);
-        _MagickRelinquishableResource.registerRelinquishable(
-            factors, factorsPtr.cast());
+        final Float64List? factors = factorsPtr.toFloat64List(numFactors);
+        _bindings.magickRelinquishMemory(factorsPtr.cast());
         return factors;
       });
 
@@ -2411,6 +2395,111 @@ class MagickWand {
         ? null
         : MagickWand._(Pointer<Void>.fromAddress(resultWandAddress));
   }
+
+  /// Gamma-corrects an image. The same image viewed on different devices will
+  /// have perceptual differences in the way the image's intensities are
+  /// represented on the screen. Specify individual gamma levels for the red,
+  /// green, and blue channels, or adjust all three with the gamma parameter.
+  /// Values typically range from 0.8 to 2.3.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [level]: defines the level of gamma correction.
+  Future<bool> magickGammaImage(double level) async => await _magickCompute(
+        _magickGammaImage,
+        _MagickGammaImageParams(
+          _wandPtr.address,
+          level,
+        ),
+      );
+
+  /// Blurs an image. We convolve the image with a Gaussian operator of the
+  /// given radius and standard deviation (sigma). For reasonable results, the
+  /// radius should be larger than sigma. Use a radius of 0 and
+  /// `magickGaussianBlurImage()` selects a suitable radius for you.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [radius]: the radius of the, in pixels, not counting the center pixel.
+  /// - [sigma]: the standard deviation of the, in pixels.
+  Future<bool> magickGaussianBlurImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await _magickCompute(
+        _magickGaussianBlurImage,
+        _MagickGaussianBlurImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+        ),
+      );
+
+  /// Gets the image at the current image index.
+  ///
+  /// Don't forget to dispose the returned [MagickWand] when done.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickWand?> magickGetImage() async {
+    final int resultWandAddress = await _magickCompute(
+      _magickGetImage,
+      _wandPtr.address,
+    );
+    return resultWandAddress == 0
+        ? null
+        : MagickWand._(Pointer<Void>.fromAddress(resultWandAddress));
+  }
+
+  /// Returns false if the image alpha channel is not activated. That is, the
+  /// image is RGB rather than RGBA or CMYK rather than CMYKA.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickGetImageAlphaChannel() async => await _magickCompute(
+        _magickGetImageAlphaChannel,
+        _wandPtr.address,
+      );
+
+  /// Gets the image clip mask at the current image index.
+  ///
+  /// Don't forget to dispose the returned [MagickWand] when done.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  /// - [clipMask]: the type of the clip mask.
+  Future<MagickWand?> magickGetImageMask(PixelMask type) async {
+    final int resultWandAddress = await _magickCompute(
+      _magickGetImageMask,
+      _MagickGetImageMaskParams(
+        _wandPtr.address,
+        type,
+      ),
+    );
+    return resultWandAddress == 0
+        ? null
+        : MagickWand._(Pointer<Void>.fromAddress(resultWandAddress));
+  }
+
+  /// Returns the image background color.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<bool> magickGetImageBackgroundColor(PixelWand backgroundColor) async =>
+      await _magickCompute(
+        _magickGetImageBackgroundColor,
+        _MagickGetImageBackgroundColorParams(
+          _wandPtr.address,
+          backgroundColor._wandPtr.address,
+        ),
+      );
+
+  /// Implements direct to memory image formats. It returns the image as a blob
+  /// (a formatted "file" in memory) and its length, starting from the current
+  /// position in the image sequence. Use MagickSetImageFormat() to set the
+  /// format to write to the blob (GIF, JPEG, PNG, etc.).
+  /// Utilize `magickResetIterator()` to ensure the write is from the beginning
+  /// of the image sequence.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<Uint8List?> magickGetImageBlob() async => await _magickCompute(
+        _magickGetImageBlob,
+        _wandPtr.address,
+      );
 
   // TODO: continue adding the remaining methods
 

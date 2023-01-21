@@ -557,3 +557,18 @@ enum MagickFunctionType {
   PolynomialFunction,
   SinusoidFunction
 }
+
+/// Represents a pixel mask.
+enum PixelMask {
+  UndefinedPixelMask(0x000000),
+  ReadPixelMask(0x000001),
+  WritePixelMask(0x000002),
+  CompositePixelMask(0x000004);
+
+  final int value;
+
+  const PixelMask(this.value);
+
+  static PixelMask fromValue(int value) =>
+      PixelMask.values.firstWhere((e) => e.value == value);
+}

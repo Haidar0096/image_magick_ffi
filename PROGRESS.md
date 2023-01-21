@@ -175,6 +175,13 @@
 - [x] MagickFrameImage
 - [x] MagickFunctionImage
 - [x] MagickFxImage
+- [x] MagickGammaImage
+- [x] MagickGaussianBlurImage
+- [x] MagickGetImage
+- [x] MagickGetImageAlphaChannel
+- [x] MagickGetImageMask
+- [x] MagickGetImageBackgroundColor
+- [x] MagickGetImageBlob
 
 
 

@@ -374,6 +374,20 @@ magickFunctionImage(void *wand, const int function, const size_t number_argument
 
 FFI_PLUGIN_EXPORT void *magickFxImage(void *wand, const char *expression);
 
+FFI_PLUGIN_EXPORT bool magickGammaImage(void *wand, const double gamma);
+
+FFI_PLUGIN_EXPORT bool magickGaussianBlurImage(void *wand, const double radius, const double sigma);
+
+FFI_PLUGIN_EXPORT void *magickGetImage(void *wand);
+
+FFI_PLUGIN_EXPORT bool magickGetImageAlphaChannel(void *wand);
+
+FFI_PLUGIN_EXPORT void *magickGetImageMask(void *wand, const int type);
+
+FFI_PLUGIN_EXPORT bool magickGetImageBackgroundColor(void *wand, void *background_color);
+
+FFI_PLUGIN_EXPORT unsigned char *magickGetImageBlob(void *wand, size_t *length);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

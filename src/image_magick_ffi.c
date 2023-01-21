@@ -725,6 +725,34 @@ FFI_PLUGIN_EXPORT void *magickFxImage(void *wand, const char *expression) {
     return MagickFxImage((MagickWand *) wand, expression);
 }
 
+FFI_PLUGIN_EXPORT bool magickGammaImage(void *wand, const double gamma) {
+    return MagickGammaImage((MagickWand *) wand, gamma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickGaussianBlurImage(void *wand, const double radius, const double sigma) {
+    return MagickGaussianBlurImage((MagickWand *) wand, radius, sigma) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void *magickGetImage(void *wand) {
+    return MagickGetImage((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageAlphaChannel(void *wand) {
+    return MagickGetImageAlphaChannel((MagickWand *) wand) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void *magickGetImageMask(void *wand, const int type) {
+    return MagickGetImageMask((MagickWand *) wand, type);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageBackgroundColor(void *wand, void *background_color) {
+    return MagickGetImageBackgroundColor((MagickWand *) wand, (PixelWand *) background_color) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT unsigned char *magickGetImageBlob(void *wand, size_t *length) {
+    return MagickGetImageBlob((MagickWand *) wand, length);
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

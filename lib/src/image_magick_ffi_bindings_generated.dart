@@ -2935,6 +2935,124 @@ class ImageMagickFfiBindings {
       ffi.Pointer<ffi.Void> Function(
           ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 
+  bool magickGammaImage(
+    ffi.Pointer<ffi.Void> wand,
+    double gamma,
+  ) {
+    return _magickGammaImage(
+      wand,
+      gamma,
+    );
+  }
+
+  late final _magickGammaImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>, ffi.Double)>>('magickGammaImage');
+  late final _magickGammaImage = _magickGammaImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double)>();
+
+  bool magickGaussianBlurImage(
+    ffi.Pointer<ffi.Void> wand,
+    double radius,
+    double sigma,
+  ) {
+    return _magickGaussianBlurImage(
+      wand,
+      radius,
+      sigma,
+    );
+  }
+
+  late final _magickGaussianBlurImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Double,
+              ffi.Double)>>('magickGaussianBlurImage');
+  late final _magickGaussianBlurImage = _magickGaussianBlurImagePtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>, double, double)>();
+
+  ffi.Pointer<ffi.Void> magickGetImage(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetImage(
+      wand,
+    );
+  }
+
+  late final _magickGetImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetImage');
+  late final _magickGetImage = _magickGetImagePtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickGetImageAlphaChannel(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetImageAlphaChannel(
+      wand,
+    );
+  }
+
+  late final _magickGetImageAlphaChannelPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>)>>(
+          'magickGetImageAlphaChannel');
+  late final _magickGetImageAlphaChannel = _magickGetImageAlphaChannelPtr
+      .asFunction<bool Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> magickGetImageMask(
+    ffi.Pointer<ffi.Void> wand,
+    int type,
+  ) {
+    return _magickGetImageMask(
+      wand,
+      type,
+    );
+  }
+
+  late final _magickGetImageMaskPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('magickGetImageMask');
+  late final _magickGetImageMask = _magickGetImageMaskPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickGetImageBackgroundColor(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> background_color,
+  ) {
+    return _magickGetImageBackgroundColor(
+      wand,
+      background_color,
+    );
+  }
+
+  late final _magickGetImageBackgroundColorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickGetImageBackgroundColor');
+  late final _magickGetImageBackgroundColor =
+      _magickGetImageBackgroundColorPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.UnsignedChar> magickGetImageBlob(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Size> length,
+  ) {
+    return _magickGetImageBlob(
+      wand,
+      length,
+    );
+  }
+
+  late final _magickGetImageBlobPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImageBlob');
+  late final _magickGetImageBlob = _magickGetImageBlobPtr.asFunction<
+      ffi.Pointer<ffi.UnsignedChar> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

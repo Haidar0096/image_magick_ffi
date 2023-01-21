@@ -1335,6 +1335,86 @@ Future<int> _magickFxImage(_MagickFxImageParams args) async => using(
           .address,
     );
 
+class _MagickGammaImageParams {
+  final int wandPtrAddress;
+  final double gamma;
+
+  _MagickGammaImageParams(this.wandPtrAddress, this.gamma);
+}
+
+Future<bool> _magickGammaImage(_MagickGammaImageParams args) async =>
+    _bindings.magickGammaImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.gamma,
+    );
+
+class _MagickGaussianBlurImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  _MagickGaussianBlurImageParams(this.wandPtrAddress, this.radius, this.sigma);
+}
+
+Future<bool> _magickGaussianBlurImage(
+        _MagickGaussianBlurImageParams args) async =>
+    _bindings.magickGaussianBlurImage(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      args.radius,
+      args.sigma,
+    );
+
+Future<int> _magickGetImage(int wandPtrAddress) async =>
+    _bindings.magickGetImage(Pointer<Void>.fromAddress(wandPtrAddress)).address;
+
+Future<bool> _magickGetImageAlphaChannel(int wandPtrAddress) async => _bindings
+    .magickGetImageAlphaChannel(Pointer<Void>.fromAddress(wandPtrAddress));
+
+class _MagickGetImageMaskParams {
+  final int wandPtrAddress;
+  final PixelMask type;
+
+  _MagickGetImageMaskParams(this.wandPtrAddress, this.type);
+}
+
+Future<int> _magickGetImageMask(_MagickGetImageMaskParams args) async =>
+    _bindings
+        .magickGetImageMask(
+          Pointer<Void>.fromAddress(args.wandPtrAddress),
+          args.type.value,
+        )
+        .address;
+
+class _MagickGetImageBackgroundColorParams {
+  final int wandPtrAddress;
+  final int pixelWandPtrAddress;
+
+  _MagickGetImageBackgroundColorParams(
+      this.wandPtrAddress, this.pixelWandPtrAddress);
+}
+
+Future<bool> _magickGetImageBackgroundColor(
+        _MagickGetImageBackgroundColorParams args) async =>
+    _bindings.magickGetImageBackgroundColor(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.pixelWandPtrAddress),
+    );
+
+Future<Uint8List?> _magickGetImageBlob(int wandPtrAddress) async => using(
+      (Arena arena) async {
+        final Pointer<Size> lengthPtr = arena();
+        final Pointer<UnsignedChar> blobPtr = _bindings.magickGetImageBlob(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          lengthPtr,
+        );
+        final Uint8List? result =
+            Pointer<UnsignedChar>.fromAddress(blobPtr.address)
+                .toUint8List(lengthPtr.value);
+        _bindings.magickRelinquishMemory(blobPtr.cast());
+        return result;
+      },
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {
