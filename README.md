@@ -14,6 +14,7 @@ report bugs. It is not recommended to use this plugin in production apps yet.
 - [Setup](#setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
+- [Become a Supporter](#become-a-supporter)
 
 # Contributors
 
@@ -199,3 +200,6 @@ dispose() {
 
 - Feel free to open an issue if you have any problem or suggestion.
 - Feel free to open a pull request if you want to contribute.
+
+# Become a Supporter
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/haidarmehsen)
