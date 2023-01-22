@@ -22,6 +22,7 @@
 * Removed the plugin's dependency on Flutter.
 * Fixed a bug that caused dependent apps to crash in release mode because some native data was not initialized in release mode.
 
-## 0.0.1-dev.4 - Date to be set
+## 0.0.1-dev.5 - Jan 21, 2023
 
-* Fixed broken links in README.md.
+* Fixed broken link in README.md.
+* Corrected package's metadata.
