@@ -761,8 +761,16 @@ FFI_PLUGIN_EXPORT bool magickGetImageBluePrimary(void *wand, double *x, double *
     return MagickGetImageBluePrimary((MagickWand *) wand, x, y, z) == MagickTrue;
 }
 
-FFI_PLUGIN_EXPORT bool magickGetImageBorderColor(void *wand, void *border_color){
+FFI_PLUGIN_EXPORT bool magickGetImageBorderColor(void *wand, void *border_color) {
     return MagickGetImageBorderColor((MagickWand *) wand, (PixelWand *) border_color) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void *magickGetImageFeatures(void *wand, const size_t distance) {
+    return MagickGetImageFeatures((MagickWand *) wand, distance);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageKurtosis(void *wand, double *kurtosis, double *skewness) {
+    return MagickGetImageKurtosis((MagickWand *) wand, kurtosis, skewness) == MagickTrue;
 }
 
 // TODO: complete adding the other methods

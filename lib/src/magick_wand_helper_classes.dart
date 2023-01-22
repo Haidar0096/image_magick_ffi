@@ -1419,7 +1419,7 @@ Future<Uint8List?> _magickGetImageBlob(int wandPtrAddress) async => using(
         final Uint8List? result =
             Pointer<UnsignedChar>.fromAddress(blobPtr.address)
                 .toUint8List(lengthPtr.value);
-        _bindings.magickRelinquishMemory(blobPtr.cast());
+        _magickRelinquishMemory(blobPtr.cast());
         return result;
       },
     );
@@ -1434,7 +1434,7 @@ Future<Uint8List?> _magickGetImagesBlob(int wandPtrAddress) async => using(
         final Uint8List? result =
             Pointer<UnsignedChar>.fromAddress(blobPtr.address)
                 .toUint8List(lengthPtr.value);
-        _bindings.magickRelinquishMemory(blobPtr.cast());
+        _magickRelinquishMemory(blobPtr.cast());
         return result;
       },
     );
@@ -1494,6 +1494,62 @@ Future<bool> _magickGetImageBorderColor(
     _bindings.magickGetImageBorderColor(
       Pointer<Void>.fromAddress(args.wandPtrAddress),
       Pointer<Void>.fromAddress(args.pixelWandPtrAddress),
+    );
+
+class _MagickGetImageFeaturesParams {
+  final int wandPtrAddress;
+  final int distance;
+
+  _MagickGetImageFeaturesParams(this.wandPtrAddress, this.distance);
+}
+
+Future<ChannelFeatures?> _magickGetImageFeatures(
+    _MagickGetImageFeaturesParams args) async {
+  final Pointer<_ChannelFeaturesStruct> featuresPtr = _bindings
+      .magickGetImageFeatures(
+        Pointer<Void>.fromAddress(args.wandPtrAddress),
+        args.distance,
+      )
+      .cast();
+  ChannelFeatures? result =
+      ChannelFeatures._fromChannelFeaturesStructPointer(featuresPtr);
+  _magickRelinquishMemory(featuresPtr.cast());
+  return result;
+}
+
+class MagickGetImageKurtosisResult {
+  /// The kurtosis of the corresponding image channel.
+  final double kurtosis;
+
+  /// The skewness of the corresponding image channel.
+  final double skewness;
+
+  const MagickGetImageKurtosisResult(this.kurtosis, this.skewness);
+
+  @override
+  String toString() =>
+      'MagickGetImageKurtosisResult{kurtosis: $kurtosis, skewness: $skewness}';
+}
+
+Future<MagickGetImageKurtosisResult?> _magickGetImageKurtosis(
+        int wandPtrAddress) async =>
+    using(
+      (Arena arena) {
+        final Pointer<Double> kurtosisPtr = arena();
+        final Pointer<Double> skewnessPtr = arena();
+        bool result = _bindings.magickGetImageKurtosis(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          kurtosisPtr,
+          skewnessPtr,
+        );
+        if (!result) {
+          return null;
+        }
+        return MagickGetImageKurtosisResult(
+          kurtosisPtr.value,
+          skewnessPtr.value,
+        );
+      },
     );
 
 // TODO: continue adding helper classes here

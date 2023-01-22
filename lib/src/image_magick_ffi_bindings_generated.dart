@@ -3115,6 +3115,43 @@ class ImageMagickFfiBindings {
       _magickGetImageBorderColorPtr.asFunction<
           bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
 
+  ffi.Pointer<ffi.Void> magickGetImageFeatures(
+    ffi.Pointer<ffi.Void> wand,
+    int distance,
+  ) {
+    return _magickGetImageFeatures(
+      wand,
+      distance,
+    );
+  }
+
+  late final _magickGetImageFeaturesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('magickGetImageFeatures');
+  late final _magickGetImageFeatures = _magickGetImageFeaturesPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+
+  bool magickGetImageKurtosis(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Double> kurtosis,
+    ffi.Pointer<ffi.Double> skewness,
+  ) {
+    return _magickGetImageKurtosis(
+      wand,
+      kurtosis,
+      skewness,
+    );
+  }
+
+  late final _magickGetImageKurtosisPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('magickGetImageKurtosis');
+  late final _magickGetImageKurtosis = _magickGetImageKurtosisPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

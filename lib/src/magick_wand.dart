@@ -293,7 +293,7 @@ class MagickWand {
       return null;
     }
     final String result = fontPtr.cast<Utf8>().toDartString();
-    _bindings.magickRelinquishMemory(fontPtr.cast());
+    _magickRelinquishMemory(fontPtr.cast());
     return result;
   }
 
@@ -315,7 +315,7 @@ class MagickWand {
           return null;
         }
         final String result = resultPtr.cast<Utf8>().toDartString();
-        _bindings.magickRelinquishMemory(resultPtr.cast());
+        _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
 
@@ -330,7 +330,7 @@ class MagickWand {
             .magickGetImageArtifacts(_wandPtr, patternPtr, numArtifactsPtr);
         final int numArtifacts = numArtifactsPtr.value;
         final List<String>? result = artifactsPtr.toStringList(numArtifacts);
-        _bindings.magickRelinquishMemory(artifactsPtr.cast());
+        _magickRelinquishMemory(artifactsPtr.cast());
         return result;
       });
 
@@ -358,7 +358,7 @@ class MagickWand {
             .magickGetImageProfiles(_wandPtr, patternPtr, numProfilesPtr);
         final int numProfiles = numProfilesPtr.value;
         final List<String>? result = profilesPtr.toStringList(numProfiles);
-        _bindings.magickRelinquishMemory(profilesPtr.cast());
+        _magickRelinquishMemory(profilesPtr.cast());
         return result;
       });
 
@@ -372,7 +372,7 @@ class MagickWand {
           return null;
         }
         final String result = resultPtr.cast<Utf8>().toDartString();
-        _bindings.magickRelinquishMemory(resultPtr.cast());
+        _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
 
@@ -388,7 +388,7 @@ class MagickWand {
             .magickGetImageProperties(_wandPtr, patternPtr, numPropertiesPtr);
         final int numProperties = numPropertiesPtr.value;
         final List<String>? result = propertiesPtr.toStringList(numProperties);
-        _bindings.magickRelinquishMemory(propertiesPtr.cast());
+        _magickRelinquishMemory(propertiesPtr.cast());
         return result;
       });
 
@@ -409,7 +409,7 @@ class MagickWand {
           return null;
         }
         final String result = resultPtr.cast<Utf8>().toDartString();
-        _bindings.magickRelinquishMemory(resultPtr.cast());
+        _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
 
@@ -424,7 +424,7 @@ class MagickWand {
             _bindings.magickGetOptions(_wandPtr, patternPtr, numOptionsPtr);
         final int numOptions = numOptionsPtr.value;
         final List<String>? result = optionsPtr.toStringList(numOptions);
-        _bindings.magickRelinquishMemory(optionsPtr.cast());
+        _magickRelinquishMemory(optionsPtr.cast());
         return result;
       });
 
@@ -473,7 +473,7 @@ class MagickWand {
             _bindings.magickGetSamplingFactors(_wandPtr, numFactorsPtr);
         final int numFactors = numFactorsPtr.value;
         final Float64List? factors = factorsPtr.toFloat64List(numFactors);
-        _bindings.magickRelinquishMemory(factorsPtr.cast());
+        _magickRelinquishMemory(factorsPtr.cast());
         return factors;
       });
 
@@ -2542,6 +2542,33 @@ class MagickWand {
           _wandPtr.address,
           borderColor._wandPtr.address,
         ),
+      );
+
+  /// Returns features for each channel in the image in each of four directions
+  /// (horizontal, vertical, left and right diagonals) for the specified
+  /// distance. The features include the angular second moment, contrast,
+  /// correlation, sum of squares: variance, inverse difference moment, sum
+  /// average, sum variance, sum entropy, entropy, difference variance,
+  /// difference entropy, information measures of correlation 1, information
+  /// measures of correlation 2, and maximum correlation coefficient.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<ChannelFeatures?> magickGetImageFeatures(int distance) async =>
+      await _magickCompute(
+        _magickGetImageFeatures,
+        _MagickGetImageFeaturesParams(
+          _wandPtr.address,
+          distance,
+        ),
+      );
+
+  /// Gets the kurtosis and skewness of one or more image channels.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickGetImageKurtosisResult?> magickGetImageKurtosis() async =>
+      await _magickCompute(
+        _magickGetImageKurtosis,
+        _wandPtr.address,
       );
 
   // TODO: continue adding the remaining methods

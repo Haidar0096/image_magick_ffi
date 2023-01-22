@@ -129,6 +129,24 @@ extension CharPointerPointerExtension on Pointer<Pointer<Char>> {
   }
 }
 
+extension DoubleArrayExtension on Array<Double> {
+  /// Creates a `Float64List` from this array by copying the array's data.
+  ///
+  /// `length` is the length of the array.
+  ///
+  /// null is returned if the array is empty.
+  Float64List? toFloat64List(int length) {
+    if (length == 0) {
+      return null;
+    }
+    final Float64List list = Float64List(length);
+    for (int i = 0; i < length; i++) {
+      list[i] = this[i];
+    }
+    return list;
+  }
+}
+
 extension Uint8ListExtension on Uint8List {
   /// Creates an `unsigned char` array from this list by copying the
   /// list's data, and returns a pointer to it.

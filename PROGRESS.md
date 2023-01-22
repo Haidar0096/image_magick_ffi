@@ -185,6 +185,8 @@
 - [x] MagickGetImagesBlob
 - [x] MagickGetImageBluePrimary
 - [x] MagickGetImageBorderColor
+- [x] MagickGetImageFeatures
+- [x] MagickGetImageKurtosis
 
 
 

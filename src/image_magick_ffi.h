@@ -394,6 +394,10 @@ FFI_PLUGIN_EXPORT bool magickGetImageBluePrimary(void *wand, double *x, double *
 
 FFI_PLUGIN_EXPORT bool magickGetImageBorderColor(void *wand, void *border_color);
 
+FFI_PLUGIN_EXPORT void *magickGetImageFeatures(void *wand, const size_t distance);
+
+FFI_PLUGIN_EXPORT bool magickGetImageKurtosis(void *wand, double *kurtosis, double *skewness);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);
