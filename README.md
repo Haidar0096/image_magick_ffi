@@ -57,7 +57,7 @@ Have a look the #Usage section below for more insights.
   - To choose one of the variants add this to your `windows/CMakeLists.txt` file:
 
  ```    
- # Use ImageMagick with Q8 and HDRI enabled.  
+# Use ImageMagick with Q8 and HDRI enabled.  
 set(Q8 1) set(HDRI 1) 
 ```
 
@@ -92,44 +92,78 @@ for some operations as writing an image.
 
 # Usage
 
-## Initialize the plugin
+## Initialize a MagickWand
 
-```dart @override void initState() {    
- _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images    
- // set a callback to be called when image processing progress changes
- WidgetsBinding.instance.addPostFrameCallback( (timeStamp) async => await _wand.magickSetProgressMonitor( (info, offset, size, clientData) => setState(() => status = '[${info .split('/') .first}, $offset, $size, $clientData]'), ), );    
-super.initState();}
- ```   
+```dart
+  @override
+  void initState() {
+    _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images
+
+    // set a callback to be called when image processing progress changes
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async => await _wand.magickSetProgressMonitor(
+        (info, offset, size, clientData) => setState(() =>
+            status = '[${info.split('/').first}, $offset, $size, $clientData]'),
+      ),
+    );
+
+    super.initState();
+  }
+```
 
 ## Use the plugin
 
 ```dart
-void _doSomeOperations() async {
-  await _wand.magickReadImage(_inputFile!.path); // read the image
-  _throwWandExceptionIfExists(_wand); // see below
+  // read an image, do some operations on it, then save it
+Future<String> _handlePress() async {
+  try {
+    setState(() => isLoading = true);
 
-  ///////////////////////// Do Some Operations On The Wand /////////////////////////
+    String? result;
 
-  // resize the image
-  await _wand.magickAdaptiveResizeImage(1200, 800);
-  _throwWandExceptionIfExists(_wand);
-  // flip the image
-  await _wand.magickFlipImage();
-  _throwWandExceptionIfExists(_wand);
-  // enhance the image
-  await _wand.magickEnhanceImage();
-  _throwWandExceptionIfExists(_wand);
-  // add noise to the image
-  await _wand.magickAddNoiseImage(NoiseType.GaussianNoise, 1.5);
-  _throwWandExceptionIfExists(_wand);
+    await _wand.magickReadImage(_inputFile!.path); // read the image
+    _throwWandExceptionIfExists(_wand);
 
-  /////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
-  String outputFilePath = _getOutputFilePath();
+    // resize the image
+    await _wand.magickAdaptiveResizeImage(1200, 800);
+    _throwWandExceptionIfExists(_wand);
+    // flip the image
+    await _wand.magickFlipImage();
+    _throwWandExceptionIfExists(_wand);
+    // enhance the image
+    await _wand.magickEnhanceImage();
+    _throwWandExceptionIfExists(_wand);
+    // add noise to the image
+    await _wand.magickAddNoiseImage(NoiseType.GaussianNoise, 1.5);
+    _throwWandExceptionIfExists(_wand);
 
-  await _wand.magickWriteImage(
-          outputFilePath); // write the image to a file in the png format
-  _throwWandExceptionIfExists(_wand);
+    /////////////////////////////////////////////////////////////////////////////////
+
+    String outputFilePath = _getOutputFilePath();
+
+    await _wand.magickWriteImage(
+            outputFilePath); // write the image to a file
+    _throwWandExceptionIfExists(_wand);
+
+    _outputFile = File(outputFilePath);
+    isLoading = false;
+    return result ?? 'Operation Successful!';
+  } catch (e) {
+    _outputFile = null;
+    isLoading = false;
+    return 'Error: ${e.toString()}';
+  }
+}
+
+String _getOutputFilePath() {
+  final String ps = Platform.pathSeparator;
+  final String inputFileNameWithoutExtension =
+          _inputFile!.path.split(ps).last.split('.').first;
+  final String outputFilePath =
+          '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
+  return outputFilePath;
 }
 
 void _throwWandExceptionIfExists(MagickWand wand) {
@@ -141,7 +175,7 @@ void _throwWandExceptionIfExists(MagickWand wand) {
 }
 ```   
 
-## Dispose the plugin
+## Dispose the MagickWand and the plugin
 
 ```dart
 @override

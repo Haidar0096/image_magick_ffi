@@ -290,7 +290,7 @@ class _MyAppState extends State<MyApp> {
       String outputFilePath = _getOutputFilePath();
 
       await _wand.magickWriteImage(
-          outputFilePath); // write the image to a file in the png format
+          outputFilePath); // write the image to a file
       _throwWandExceptionIfExists(_wand);
 
       _outputFile = File(outputFilePath);
