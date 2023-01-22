@@ -92,13 +92,20 @@ Have a look the #Usage section below for more insights.
 ```dart
   import 'package:image_magick_ffi/image_magick_ffi.dart' as im;
 
-// ...
 @override
 void initState() {
-  wand = im.MagickWand.newMagickWand(); // create a MagickWand to edit images
+  _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images
+
+  // set a callback to be called when image processing progress changes
+  WidgetsBinding.instance.addPostFrameCallback(
+            (timeStamp) async => await _wand.magickSetProgressMonitor(
+              (info, offset, size, clientData) => setState(() =>
+      status = '[${info.split('/').first}, $offset, $size, $clientData]'),
+    ),
+  );
+
   super.initState();
 }
-// ...
 
 // read an image, do some operations on it, then save it
 Future<String> _handlePress() async {
@@ -168,8 +175,8 @@ void _throwWandExceptionIfExists(MagickWand wand) {
 // ...
 @override
 dispose() {
-  wand.destroyMagickWand(); // we are done with the wand
-  im.dispose(); // we are done with the plugin
+  _wand.destroyMagickWand(); // we are done with the wand
+  disposeImageMagick(); // we are done with the whole plugin
   super.dispose();
 }
 // ...
