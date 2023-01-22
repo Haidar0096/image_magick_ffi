@@ -753,6 +753,18 @@ FFI_PLUGIN_EXPORT unsigned char *magickGetImageBlob(void *wand, size_t *length) 
     return MagickGetImageBlob((MagickWand *) wand, length);
 }
 
+FFI_PLUGIN_EXPORT unsigned char *magickGetImagesBlob(void *wand, size_t *length) {
+    return MagickGetImagesBlob((MagickWand *) wand, length);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageBluePrimary(void *wand, double *x, double *y, double *z) {
+    return MagickGetImageBluePrimary((MagickWand *) wand, x, y, z) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageBorderColor(void *wand, void *border_color){
+    return MagickGetImageBorderColor((MagickWand *) wand, (PixelWand *) border_color) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

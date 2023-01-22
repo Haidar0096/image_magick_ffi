@@ -11,9 +11,8 @@ class MagickGetExceptionResult {
   const MagickGetExceptionResult(this.severity, this.description);
 
   @override
-  String toString() {
-    return 'MagickException{severity: $severity, description: $description}';
-  }
+  String toString() =>
+      'MagickException{severity: $severity, description: $description}';
 }
 
 /// Represents a result to a call to `magickGetPage()`.
@@ -24,6 +23,10 @@ class MagickGetPageResult {
   final int y;
 
   const MagickGetPageResult(this.width, this.height, this.x, this.y);
+
+  @override
+  String toString() =>
+      'MagickGetPageResult{width: $width, height: $height, x: $x, y: $y}';
 }
 
 /// Represents a result to a call to `magickGetResolution()`.
@@ -32,6 +35,9 @@ class MagickGetResolutionResult {
   final double y;
 
   const MagickGetResolutionResult(this.x, this.y);
+
+  @override
+  String toString() => 'MagickGetResolutionResult{x: $x, y: $y}';
 }
 
 /// Represents a result to a call to `magickGetSize()`.
@@ -40,6 +46,9 @@ class MagickGetSizeResult {
   final int height;
 
   const MagickGetSizeResult(this.width, this.height);
+
+  @override
+  String toString() => 'MagickGetSizeResult{width: $width, height: $height}';
 }
 
 class _MagickAdaptiveBlurImageParams {
@@ -1413,6 +1422,78 @@ Future<Uint8List?> _magickGetImageBlob(int wandPtrAddress) async => using(
         _bindings.magickRelinquishMemory(blobPtr.cast());
         return result;
       },
+    );
+
+Future<Uint8List?> _magickGetImagesBlob(int wandPtrAddress) async => using(
+      (Arena arena) async {
+        final Pointer<Size> lengthPtr = arena();
+        final Pointer<UnsignedChar> blobPtr = _bindings.magickGetImagesBlob(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          lengthPtr,
+        );
+        final Uint8List? result =
+            Pointer<UnsignedChar>.fromAddress(blobPtr.address)
+                .toUint8List(lengthPtr.value);
+        _bindings.magickRelinquishMemory(blobPtr.cast());
+        return result;
+      },
+    );
+
+class MagickGetImageBluePrimaryResult {
+  /// The chromaticity blue primary x-point
+  final double x;
+
+  /// The chromaticity blue primary y-point
+  final double y;
+
+  /// The chromaticity blue primary z-point
+  final double z;
+
+  const MagickGetImageBluePrimaryResult(this.x, this.y, this.z);
+
+  @override
+  String toString() => 'MagickGetImageBluePrimaryResult{x: $x, y: $y, z: $z}';
+}
+
+Future<MagickGetImageBluePrimaryResult?> _magickGetImageBluePrimary(
+        int wandPtrAddress) async =>
+    using(
+      (Arena arena) {
+        final Pointer<Double> xPtr = arena();
+        final Pointer<Double> yPtr = arena();
+        final Pointer<Double> zPtr = arena();
+        bool result = _bindings.magickGetImageBluePrimary(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          xPtr,
+          yPtr,
+          zPtr,
+        );
+        if (!result) {
+          return null;
+        }
+        return MagickGetImageBluePrimaryResult(
+          xPtr.value,
+          yPtr.value,
+          zPtr.value,
+        );
+      },
+    );
+
+class _MagickGetImageBorderColorParams {
+  final int wandPtrAddress;
+  final int pixelWandPtrAddress;
+
+  _MagickGetImageBorderColorParams(
+    this.wandPtrAddress,
+    this.pixelWandPtrAddress,
+  );
+}
+
+Future<bool> _magickGetImageBorderColor(
+        _MagickGetImageBorderColorParams args) async =>
+    _bindings.magickGetImageBorderColor(
+      Pointer<Void>.fromAddress(args.wandPtrAddress),
+      Pointer<Void>.fromAddress(args.pixelWandPtrAddress),
     );
 
 // TODO: continue adding helper classes here

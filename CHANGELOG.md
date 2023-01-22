@@ -26,3 +26,8 @@
 
 * Fixed broken link in README.md.
 * Corrected package's metadata.
+
+## 0.0.1-dev.6 - Jan 21, 2023
+
+* Added new bindings for MagickWand methods.
+* Updated package's metadata.

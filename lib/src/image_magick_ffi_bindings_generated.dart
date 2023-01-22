@@ -3053,6 +3053,68 @@ class ImageMagickFfiBindings {
       ffi.Pointer<ffi.UnsignedChar> Function(
           ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>)>();
 
+  ffi.Pointer<ffi.UnsignedChar> magickGetImagesBlob(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Size> length,
+  ) {
+    return _magickGetImagesBlob(
+      wand,
+      length,
+    );
+  }
+
+  late final _magickGetImagesBlobPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.UnsignedChar> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Size>)>>('magickGetImagesBlob');
+  late final _magickGetImagesBlob = _magickGetImagesBlobPtr.asFunction<
+      ffi.Pointer<ffi.UnsignedChar> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Size>)>();
+
+  bool magickGetImageBluePrimary(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Double> x,
+    ffi.Pointer<ffi.Double> y,
+    ffi.Pointer<ffi.Double> z,
+  ) {
+    return _magickGetImageBluePrimary(
+      wand,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _magickGetImageBluePrimaryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('magickGetImageBluePrimary');
+  late final _magickGetImageBluePrimary =
+      _magickGetImageBluePrimaryPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>();
+
+  bool magickGetImageBorderColor(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Void> border_color,
+  ) {
+    return _magickGetImageBorderColor(
+      wand,
+      border_color,
+    );
+  }
+
+  late final _magickGetImageBorderColorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>)>>('magickGetImageBorderColor');
+  late final _magickGetImageBorderColor =
+      _magickGetImageBorderColorPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

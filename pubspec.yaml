@@ -1,6 +1,6 @@
 name: image_magick_ffi
 description: Dart bindings for ImageMagick C library which is used to edit images.
-version: 0.0.1-dev.5
+version: 0.0.1-dev.6
 homepage: https://github.com/Haidar0096/image_magick_ffi
 repository: https://github.com/Haidar0096/image_magick_ffi
 documentation: https://github.com/Haidar0096/image_magick_ffi

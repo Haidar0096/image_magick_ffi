@@ -8,8 +8,8 @@ report bugs. It is not recommended to use this plugin in production apps yet.
 - [Table Of Contents](#table-of-contents)
 - [Contributors](#contributors)
 - [ImageMagickFFi Plugin](#imagemagickffi-plugin)
-    - [Feel Native](#feel-native)
-    - [What Can It Do?](#what-can-it-do)
+  - [Feel Native](#feel-native)
+  - [What Can It Do?](#what-can-it-do)
 - [Install](#install)
 - [Setup](#setup)
 - [Usage](#usage)
@@ -33,7 +33,7 @@ course :P).
 ## What Can It Do?
 
 See for yourself from this image from ImageMagick's website some of the things you can do with this
-plugin:
+plugin:    
 ![ImageMagick](https://imagemagick.org/image/examples.jpg)
 
 Have a look the #Usage section below for more insights.
@@ -44,26 +44,29 @@ Have a look the #Usage section below for more insights.
 
 # Setup
 
-- Currently there are 4 variants of the ImageMagick library that come with this plugin: Q8, Q16,
+- Currently there are 4 variants of the ImageMagick library that come with this plugin: Q8, Q16,    
   Q8-HDRI, and Q16-HDRI.
 - You can choose which one you want to use.
 - Your decision must be made at the build-time (not runtime) of your project.
-- No need to worry about the files of other variants that you didn't choose in the previous step,
-  only the files of the variant you had chosen will be bundled with your app when you build your
+- No need to worry about the files of other variants that you didn't choose in the previous
+  step,    
+  only the files of the variant you had chosen will be bundled with your app when you build your    
   app.
 - #### Windows
-    - Windows x64 (32 bits) and window x86 (32 bits) are both supported.
-    - To choose one of the variants add this to your `windows/CMakeLists.txt` file:
-      ```
-      # Use ImageMagick with Q8 and HDRI enabled.
-      set(Q8 1)
-      set(HDRI 1)
-      ```
-  **Note**:
-    - Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or an error will occur.
-    - If you don't set any configuration then by default "Q8-No HDRI" will be used.
-    - Make sure you add the snippet above before this
-      line `include(flutter/generated_plugins.cmake)`
+  - Windows x64 (32 bits) and window x86 (32 bits) are both supported.
+  - To choose one of the variants add this to your `windows/CMakeLists.txt` file:
+
+ ```    
+ # Use ImageMagick with Q8 and HDRI enabled.  
+set(Q8 1) set(HDRI 1) 
+```
+
+**Note**:
+
+- Do not try to `set(Q8 1)` and `set(Q16 1)` at the same time, or an error will occur.
+- If you don't set any configuration then by default "Q8-No HDRI" will be used.
+- Make sure you add the snippet above before this    
+  line `include(flutter/generated_plugins.cmake)`
 - #### Android
   Currently only arm64-v8a (64 bits) is supported. If you want to help add support to armeabi-v7a (
   32 bits), have a look [here](https://github.com/MolotovCherry/Android-ImageMagick7/discussions/95)
@@ -71,15 +74,15 @@ Have a look the #Usage section below for more insights.
 
   To choose one of the variants add this to your **`android/build.gradle`** file as a top-level
   statement:
-    ```
-    // Use ImageMagick with Q16 and HDRI enabled.
-    ext {
-        Q16 = 1
-        HDRI = 1
-    }
-    ```
-  Also note that you might need to get write permissions from the system for some operations as
-  writing an image.
+
+```    
+// Use ImageMagick with Q16 and HDRI enabled.   
+ext { Q16 = 1 HDRI = 1 }
+ ``` 
+
+Also note that you might need to get write permissions from the system  
+for some operations as writing an image.
+
 - #### Linux
   Coming Soon (for sure)
 - #### Macos
@@ -89,79 +92,44 @@ Have a look the #Usage section below for more insights.
 
 # Usage
 
+## Initialize the plugin
+
+```dart @override void initState() {    
+ _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images    
+ // set a callback to be called when image processing progress changes
+ WidgetsBinding.instance.addPostFrameCallback( (timeStamp) async => await _wand.magickSetProgressMonitor( (info, offset, size, clientData) => setState(() => status = '[${info .split('/') .first}, $offset, $size, $clientData]'), ), );    
+super.initState();}
+ ```   
+
+## Use the plugin
+
 ```dart
-  import 'package:image_magick_ffi/image_magick_ffi.dart' as im;
+void _doSomeOperations() async {
+  await _wand.magickReadImage(_inputFile!.path); // read the image
+  _throwWandExceptionIfExists(_wand); // see below
 
-@override
-void initState() {
-  _wand = MagickWand.newMagickWand(); // create a MagickWand to edit images
+  ///////////////////////// Do Some Operations On The Wand /////////////////////////
 
-  // set a callback to be called when image processing progress changes
-  WidgetsBinding.instance.addPostFrameCallback(
-            (timeStamp) async => await _wand.magickSetProgressMonitor(
-              (info, offset, size, clientData) => setState(() =>
-      status = '[${info.split('/').first}, $offset, $size, $clientData]'),
-    ),
-  );
+  // resize the image
+  await _wand.magickAdaptiveResizeImage(1200, 800);
+  _throwWandExceptionIfExists(_wand);
+  // flip the image
+  await _wand.magickFlipImage();
+  _throwWandExceptionIfExists(_wand);
+  // enhance the image
+  await _wand.magickEnhanceImage();
+  _throwWandExceptionIfExists(_wand);
+  // add noise to the image
+  await _wand.magickAddNoiseImage(NoiseType.GaussianNoise, 1.5);
+  _throwWandExceptionIfExists(_wand);
 
-  super.initState();
-}
+  /////////////////////////////////////////////////////////////////////////////////
 
-// read an image, do some operations on it, then save it
-Future<String> _handlePress() async {
-  try {
-    setState(() => isLoading = true);
+  String outputFilePath = _getOutputFilePath();
 
-    String? result;
-
-    await _wand.magickReadImage(_inputFile!.path); // read the image
-    _throwWandExceptionIfExists(_wand);
-
-    ///////////////////////// Do Some Operations On The Wand /////////////////////////
-
-    // resize the image
-    await _wand.magickAdaptiveResizeImage(1200, 800);
-    _throwWandExceptionIfExists(_wand);
-    // flip the image
-    await _wand.magickFlipImage();
-    _throwWandExceptionIfExists(_wand);
-    // enhance the image
-    await _wand.magickEnhanceImage();
-    _throwWandExceptionIfExists(_wand);
-    // add noise to the image
-    await _wand.magickAddNoiseImage(NoiseType.GaussianNoise, 1.5);
-    _throwWandExceptionIfExists(_wand);
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    String outputFilePath = _getOutputFilePath();
-
-    await _wand.magickWriteImage(
-        outputFilePath); // write the image to a file in the png format
-    _throwWandExceptionIfExists(_wand);
-
-    _outputFile = File(outputFilePath);
-    isLoading = false;
-    return result ?? 'Operation Successful!';
-  } catch (e) {
-    _outputFile = null;
-    isLoading = false;
-    return 'Error: ${e.toString()}';
-  }
-}
-
-String _getOutputFilePath() {
-  final String ps = Platform.pathSeparator;
-  final String inputFileNameWithoutExtension =
-      _inputFile!
-          .path
-          .split(ps)
-          .last
-          .split('.')
-          .first;
-  final String outputFilePath =
-      '${_outputDirectory!.path}${ps}out_$inputFileNameWithoutExtension.png';
-  return outputFilePath;
+  await _wand.magickWriteImage(
+          outputFilePath); // write the image to a file in the png format
+  _throwWandExceptionIfExists(_wand);
 }
 
 void _throwWandExceptionIfExists(MagickWand wand) {
@@ -171,24 +139,27 @@ void _throwWandExceptionIfExists(MagickWand wand) {
     throw e;
   }
 }
+```   
 
-// ...
+## Dispose the plugin
+
+```dart
 @override
 dispose() {
-  _wand.destroyMagickWand(); // we are done with the wand
+  _wand.destroyMagickWand(); // we are done with the wand 
   disposeImageMagick(); // we are done with the whole plugin
   super.dispose();
 }
-// ...
 ```
 
-- For more info about code usage, have a look at the example app in this repo, there is a complete
+- For more info about code usage, have a look at the example app in this repo, there is a
+  complete    
   working app there that is ready for you to play around with.
 - Also check out
-    - [The official ImageMagick website](https://imagemagick.org/).
-    - [ImageMagick usage documentation](https://imagemagick.org/Usage/).
-    - [Fred's ImageMagick scripts](http://www.fmwconcepts.com/imagemagick/index.php).
-    - [Snibgo's examples](http://im.snibgo.com/).
+  - [The official ImageMagick website](https://imagemagick.org/).
+  - [ImageMagick usage documentation](https://imagemagick.org/Usage/).
+  - [Fred's ImageMagick scripts](http://www.fmwconcepts.com/imagemagick/index.php).
+  - [Snibgo's examples](http://im.snibgo.com/).
 
 # Contributing
 

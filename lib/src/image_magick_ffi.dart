@@ -22,8 +22,6 @@ part 'magick_enums.dart';
 
 part 'magick_global_methods.dart';
 
-part 'memory.dart';
-
 part 'kernel_info.dart';
 
 part 'magick_wand_helper_classes.dart';
@@ -54,5 +52,6 @@ class ImageMagickFFIPlugin {
   /// This method is called automatically to initialize the plugin.
   ///
   /// Do not call this method manually.
-  static void registerWith() => _initializeImageMagick(); // initialize the plugin
+  static void registerWith() =>
+      _initializeImageMagick(); // initialize the plugin
 }

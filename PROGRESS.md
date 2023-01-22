@@ -182,6 +182,9 @@
 - [x] MagickGetImageMask
 - [x] MagickGetImageBackgroundColor
 - [x] MagickGetImageBlob
+- [x] MagickGetImagesBlob
+- [x] MagickGetImageBluePrimary
+- [x] MagickGetImageBorderColor
 
 
 

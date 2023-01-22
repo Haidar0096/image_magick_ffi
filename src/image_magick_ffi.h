@@ -388,6 +388,12 @@ FFI_PLUGIN_EXPORT bool magickGetImageBackgroundColor(void *wand, void *backgroun
 
 FFI_PLUGIN_EXPORT unsigned char *magickGetImageBlob(void *wand, size_t *length);
 
+FFI_PLUGIN_EXPORT unsigned char *magickGetImagesBlob(void *wand, size_t *length);
+
+FFI_PLUGIN_EXPORT bool magickGetImageBluePrimary(void *wand, double *x, double *y, double *z);
+
+FFI_PLUGIN_EXPORT bool magickGetImageBorderColor(void *wand, void *border_color);
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename);

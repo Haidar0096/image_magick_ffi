@@ -22,6 +22,11 @@ typedef MagickProgressMonitor = void Function(
 ///
 /// Initialize an instance of it with [MagickWand.newMagickWand].
 /// When done from it, call [destroyMagickWand] to release the resources.
+///
+/// <strong>
+/// Never use a [MagickWand] after calling [destroyMagickWand] on it.
+/// </strong>
+///
 /// See `https://imagemagick.org/script/magick-wand.php` for more information
 /// about the backing C-API.
 class MagickWand {
@@ -2499,6 +2504,44 @@ class MagickWand {
   Future<Uint8List?> magickGetImageBlob() async => await _magickCompute(
         _magickGetImageBlob,
         _wandPtr.address,
+      );
+
+  /// Implements direct to memory image formats. It returns the image sequence
+  /// as a blob and its length. The format of the image determines the format
+  /// of the returned blob (GIF, JPEG, PNG, etc.). To return a different image
+  /// format, use MagickSetImageFormat().
+  ///
+  /// Note, some image formats do not permit multiple images to the same image
+  /// stream (e.g. JPEG). in this instance, just the first image of the sequence
+  /// is returned as a blob.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<Uint8List?> magickGetImagesBlob() async => await _magickCompute(
+        _magickGetImagesBlob,
+        _wandPtr.address,
+      );
+
+  /// Returns the chromaticity blue primary point for the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickGetImageBluePrimaryResult?> magickGetImageBluePrimary() async =>
+      await _magickCompute(
+        _magickGetImageBluePrimary,
+        _wandPtr.address,
+      );
+
+  /// Returns the image border color.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ///
+  /// - [borderColor]: the border color.
+  Future<bool> magickGetImageBorderColor(PixelWand borderColor) async =>
+      await _magickCompute(
+        _magickGetImageBorderColor,
+        _MagickGetImageBorderColorParams(
+          _wandPtr.address,
+          borderColor._wandPtr.address,
+        ),
       );
 
   // TODO: continue adding the remaining methods
