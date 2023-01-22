@@ -31,3 +31,8 @@
 
 * Added new bindings for MagickWand methods.
 * Updated package's metadata.
+
+## 0.0.1-dev.7 - Jan 21, 2023
+
+* Added new bindings for MagickWand methods.
+* Updated package's metadata.
