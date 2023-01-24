@@ -773,6 +773,22 @@ FFI_PLUGIN_EXPORT bool magickGetImageKurtosis(void *wand, double *kurtosis, doub
     return MagickGetImageKurtosis((MagickWand *) wand, kurtosis, skewness) == MagickTrue;
 }
 
+FFI_PLUGIN_EXPORT bool magickGetImageMean(void *wand,double *mean, double *standard_deviation){
+    return MagickGetImageMean((MagickWand *) wand, mean, standard_deviation) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageRange(void *wand,double *minima, double *maxima){
+    return MagickGetImageRange((MagickWand *) wand, minima, maxima) == MagickTrue;
+}
+
+FFI_PLUGIN_EXPORT void *magickGetImageStatistics(void *wand){
+    return MagickGetImageStatistics((MagickWand *) wand);
+}
+
+FFI_PLUGIN_EXPORT bool magickGetImageColormapColor(void *wand, const size_t index,void *color){
+    return MagickGetImageColormapColor((MagickWand *) wand, index, (PixelWand *) color) == MagickTrue;
+}
+
 // TODO: complete adding the other methods
 
 FFI_PLUGIN_EXPORT bool magickReadImage(void *wand, const char *filename) {

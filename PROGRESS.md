@@ -187,6 +187,10 @@
 - [x] MagickGetImageBorderColor
 - [x] MagickGetImageFeatures
 - [x] MagickGetImageKurtosis
+- [x] magickGetImageMean
+- [x] MagickGetImageRange
+- [x] MagickGetImageStatistics
+- [x] MagickGetImageColormapColor
 
 
 

@@ -30,6 +30,8 @@ part 'magick_compute.dart';
 
 part 'channel_features.dart';
 
+part 'channel_statistics.dart';
+
 const String _libName = 'image_magick_ffi';
 
 /// The dynamic library in which the symbols for [ImageMagickFfiBindings] can

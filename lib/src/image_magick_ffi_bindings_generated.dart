@@ -3152,6 +3152,81 @@ class ImageMagickFfiBindings {
       bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>)>();
 
+  bool magickGetImageMean(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Double> mean,
+    ffi.Pointer<ffi.Double> standard_deviation,
+  ) {
+    return _magickGetImageMean(
+      wand,
+      mean,
+      standard_deviation,
+    );
+  }
+
+  late final _magickGetImageMeanPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('magickGetImageMean');
+  late final _magickGetImageMean = _magickGetImageMeanPtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
+
+  bool magickGetImageRange(
+    ffi.Pointer<ffi.Void> wand,
+    ffi.Pointer<ffi.Double> minima,
+    ffi.Pointer<ffi.Double> maxima,
+  ) {
+    return _magickGetImageRange(
+      wand,
+      minima,
+      maxima,
+    );
+  }
+
+  late final _magickGetImageRangePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('magickGetImageRange');
+  late final _magickGetImageRange = _magickGetImageRangePtr.asFunction<
+      bool Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
+
+  ffi.Pointer<ffi.Void> magickGetImageStatistics(
+    ffi.Pointer<ffi.Void> wand,
+  ) {
+    return _magickGetImageStatistics(
+      wand,
+    );
+  }
+
+  late final _magickGetImageStatisticsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>)>>('magickGetImageStatistics');
+  late final _magickGetImageStatistics = _magickGetImageStatisticsPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
+
+  bool magickGetImageColormapColor(
+    ffi.Pointer<ffi.Void> wand,
+    int index,
+    ffi.Pointer<ffi.Void> color,
+  ) {
+    return _magickGetImageColormapColor(
+      wand,
+      index,
+      color,
+    );
+  }
+
+  late final _magickGetImageColormapColorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size,
+              ffi.Pointer<ffi.Void>)>>('magickGetImageColormapColor');
+  late final _magickGetImageColormapColor =
+      _magickGetImageColormapColorPtr.asFunction<
+          bool Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Void>)>();
+
   /// TODO: complete adding the other methods
   bool magickReadImage(
     ffi.Pointer<ffi.Void> wand,

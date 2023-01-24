@@ -2571,6 +2571,46 @@ class MagickWand {
         _wandPtr.address,
       );
 
+  /// Gets the mean and standard deviation of one or more image channels.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickGetImageMeanResult?> magickGetImageMean() async =>
+      await _magickCompute(
+        _magickGetImageMean,
+        _wandPtr.address,
+      );
+
+  /// Gets the range for one or more image channels.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<MagickGetImageRangeResult?> magickGetImageRange() async =>
+      await _magickCompute(
+        _magickGetImageRange,
+        _wandPtr.address,
+      );
+
+  /// Returns statistics for each channel in the image. The statistics include
+  /// the channel depth, its minima and maxima, the mean, the standard
+  /// deviation, the kurtosis and the skewness.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<ChannelStatistics?> magickGetImageStatistics() async =>
+      await _magickCompute(
+        _magickGetImageStatistics,
+        _wandPtr.address,
+      );
+
+  /// Returns the color of the specified colormap index.
+  ///
+  /// - [index]: the offset into the image colormap.
+  /// - [color]: the colormap color in this wand.
+  bool magickGetImageColormapColor(int index, PixelWand color) =>
+      _bindings.magickGetImageColormapColor(
+        _wandPtr,
+        index,
+        color._wandPtr,
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

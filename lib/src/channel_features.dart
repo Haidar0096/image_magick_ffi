@@ -59,6 +59,10 @@ class ChannelFeatures {
                 ptr.ref.maximumCorrelationCoefficient.toFloat64List(4),
           );
   }
+
+  @override
+  String toString() =>
+      'ChannelFeatures{angularSecondMoment: $angularSecondMoment, contrast: $contrast, correlation: $correlation, varianceSumOfSquares: $varianceSumOfSquares, inverseDifferenceMoment: $inverseDifferenceMoment, sumAverage: $sumAverage, sumVariance: $sumVariance, sumEntropy: $sumEntropy, entropy: $entropy, differenceVariance: $differenceVariance, differenceEntropy: $differenceEntropy, measureOfCorrelation1: $measureOfCorrelation1, measureOfCorrelation2: $measureOfCorrelation2, maximumCorrelationCoefficient: $maximumCorrelationCoefficient}';
 }
 
 class _ChannelFeaturesStruct extends Struct {

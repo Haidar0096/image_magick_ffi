@@ -1517,6 +1517,7 @@ Future<ChannelFeatures?> _magickGetImageFeatures(
   return result;
 }
 
+/// Represents the result of a call to [magickGetImageKurtosis].
 class MagickGetImageKurtosisResult {
   /// The kurtosis of the corresponding image channel.
   final double kurtosis;
@@ -1551,6 +1552,90 @@ Future<MagickGetImageKurtosisResult?> _magickGetImageKurtosis(
         );
       },
     );
+
+/// Represents the result of a call to [magickGetImageMean].
+class MagickGetImageMeanResult {
+  /// The mean of the image.
+  final double mean;
+
+  /// The standard deviation of the image.
+  final double standardDeviation;
+
+  const MagickGetImageMeanResult(this.mean, this.standardDeviation);
+
+  @override
+  String toString() =>
+      'MagickGetMeanResult{mean: $mean, standardDeviation: $standardDeviation}';
+}
+
+Future<MagickGetImageMeanResult?> _magickGetImageMean(
+        int wandPtrAddress) async =>
+    using(
+      (Arena arena) {
+        final Pointer<Double> meanPtr = arena();
+        final Pointer<Double> standardDeviationPtr = arena();
+        bool result = _bindings.magickGetImageMean(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          meanPtr,
+          standardDeviationPtr,
+        );
+        if (!result) {
+          return null;
+        }
+        return MagickGetImageMeanResult(
+          meanPtr.value,
+          standardDeviationPtr.value,
+        );
+      },
+    );
+
+/// Represents the result of a call to [magickGetImageRange].
+class MagickGetImageRangeResult {
+  /// The minimum pixel value for the specified channel(s).
+  final double minima;
+
+  /// The maximum pixel value for the specified channel(s).
+  final double maxima;
+
+  const MagickGetImageRangeResult(this.minima, this.maxima);
+
+  @override
+  String toString() =>
+      'MagickGetImageRangeResult{minima: $minima, maxima: $maxima}';
+}
+
+Future<MagickGetImageRangeResult?> _magickGetImageRange(
+        int wandPtrAddress) async =>
+    using(
+      (Arena arena) {
+        final Pointer<Double> minimaPtr = arena();
+        final Pointer<Double> maximaPtr = arena();
+        bool result = _bindings.magickGetImageRange(
+          Pointer<Void>.fromAddress(wandPtrAddress),
+          minimaPtr,
+          maximaPtr,
+        );
+        if (!result) {
+          return null;
+        }
+        return MagickGetImageRangeResult(
+          minimaPtr.value,
+          maximaPtr.value,
+        );
+      },
+    );
+
+Future<ChannelStatistics?> _magickGetImageStatistics(int wandPtrAddress) async {
+  final Pointer<_ChannelStatisticsStruct> statisticsPtr = _bindings
+      .magickGetImageStatistics(
+        Pointer<Void>.fromAddress(wandPtrAddress),
+      )
+      .cast();
+  ChannelStatistics? result =
+      ChannelStatistics._fromChannelStatisticsStructPointer(statisticsPtr);
+  _magickRelinquishMemory(statisticsPtr.cast());
+  return result;
+}
 
 // TODO: continue adding helper classes here
 

@@ -53,6 +53,10 @@ class KernelInfo {
     kernelInfoStruct.ref.signature = signature ?? 0;
     return kernelInfoStruct;
   }
+
+  @override
+  String toString() =>
+      'KernelInfo{type: $type, width: $width, height: $height, x: $x, y: $y, values: $values, minimum: $minimum, maximum: $maximum, negativeRange: $negativeRange, positiveRange: $positiveRange, angle: $angle, next: $next, signature: $signature}';
 }
 
 class _KernelInfoStruct extends Struct {
