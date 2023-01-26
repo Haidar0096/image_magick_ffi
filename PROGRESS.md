@@ -191,6 +191,7 @@
 - [x] MagickGetImageRange
 - [x] MagickGetImageStatistics
 - [x] MagickGetImageColormapColor
+- [x] MagickGetImageColors
 
 
 

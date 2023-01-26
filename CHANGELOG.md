@@ -36,3 +36,7 @@
 
 * Added new bindings for MagickWand methods.
 * Updated package's metadata.
+
+## 0.0.1-dev.8 - TODO: set Date
+
+* Added new bindings for MagickWand methods.

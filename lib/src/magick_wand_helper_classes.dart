@@ -1723,6 +1723,11 @@ Future<ChannelStatistics?> _magickGetImageStatistics(int wandPtrAddress) async {
   return result;
 }
 
+Future<int> _magickGetImageColors(int wandPtrAddress) async =>
+    _magickWandBindings.MagickGetImageColors(
+      Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

@@ -2702,6 +2702,14 @@ class MagickWand {
       ) ==
       1;
 
+  /// Gets the number of unique colors in the image.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<int> magickGetImageColors() async => await _magickCompute(
+        _magickGetImageColors,
+        _wandPtr.address,
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
