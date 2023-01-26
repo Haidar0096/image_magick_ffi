@@ -4,7 +4,8 @@ part of 'image_magick_ffi.dart';
 /// called before any use of the plugin.
 void _initializeImageMagick() {
   _magickWandGenesis();
-  int initDartApiResult = _bindings.initDartAPI(NativeApi.initializeApiDLData);
+  int initDartApiResult =
+      _pluginBindings.initDartAPI(NativeApi.initializeApiDLData);
   if (initDartApiResult != 0) {
     throw Exception('Failed to initialize Dart_API_DL');
   }
@@ -19,7 +20,7 @@ String? magickQueryConfigureOption(String option) => using((Arena arena) {
       final Pointer<Char> optionPtr =
           option.toNativeUtf8(allocator: arena).cast();
       final Pointer<Char> resultPtr =
-          _bindings.magickQueryConfigureOption(optionPtr);
+          _magickWandBindings.MagickQueryConfigureOption(optionPtr);
       if (resultPtr == nullptr) {
         return null;
       }
@@ -38,7 +39,8 @@ List<String>? magickQueryConfigureOptions(String pattern) =>
           pattern.toNativeUtf8(allocator: arena).cast();
       final Pointer<Size> numOptionsPtr = arena();
       final Pointer<Pointer<Char>> resultPtr =
-          _bindings.magickQueryConfigureOptions(patternPtr, numOptionsPtr);
+          _magickWandBindings.MagickQueryConfigureOptions(
+              patternPtr, numOptionsPtr);
       int numOptions = numOptionsPtr.value;
       final List<String>? result = resultPtr.toStringList(numOptions);
       _magickRelinquishMemory(resultPtr.cast());
@@ -51,7 +53,7 @@ List<String>? magickQueryFonts(String pattern) => using((Arena arena) {
           pattern.toNativeUtf8(allocator: arena).cast();
       final Pointer<Size> numFontsPtr = arena();
       final Pointer<Pointer<Char>> resultPtr =
-          _bindings.magickQueryFonts(patternPtr, numFontsPtr);
+          _magickWandBindings.MagickQueryFonts(patternPtr, numFontsPtr);
       int numFonts = numFontsPtr.value;
       final List<String>? result = resultPtr.toStringList(numFonts);
       _magickRelinquishMemory(resultPtr.cast());
@@ -66,7 +68,7 @@ List<String>? magickQueryFormats(String pattern) => using((Arena arena) {
           pattern.toNativeUtf8(allocator: arena).cast();
       final Pointer<Size> numFormatsPtr = arena();
       final Pointer<Pointer<Char>> resultPtr =
-          _bindings.magickQueryFormats(patternPtr, numFormatsPtr);
+          _magickWandBindings.MagickQueryFormats(patternPtr, numFormatsPtr);
       int numFormats = numFormatsPtr.value;
       final List<String>? result = resultPtr.toStringList(numFormats);
       _magickRelinquishMemory(resultPtr.cast());
@@ -76,26 +78,27 @@ List<String>? magickQueryFormats(String pattern) => using((Arena arena) {
 /// Relinquishes memory resources returned by such methods as
 /// MagickIdentifyImage(), MagickGetException(), etc.
 Pointer<Void> _magickRelinquishMemory(Pointer<Void> ptr) =>
-    _bindings.magickRelinquishMemory(ptr);
+    _magickWandBindings.MagickRelinquishMemory(ptr);
 
 /// Initializes the MagickWand environment.
-void _magickWandGenesis() => _bindings.magickWandGenesis();
+void _magickWandGenesis() => _magickWandBindings.MagickWandGenesis();
 
 /// Terminates the MagickWand environment.
-void _magickWandTerminus() => _bindings.magickWandTerminus();
+void _magickWandTerminus() => _magickWandBindings.MagickWandTerminus();
 
 /// Returns true if the ImageMagick environment is currently instantiated--
 /// that is, `magickWandGenesis()` has been called but `magickWandTerminus()`
 /// has not.
-bool isMagickWandInstantiated() => _bindings.isMagickWandInstantiated();
+bool isMagickWandInstantiated() =>
+    _magickWandBindings.IsMagickWandInstantiated() == 1;
 
 /// Returns the ImageMagick API copyright as a string.
 String magickGetCopyright() =>
-    _bindings.magickGetCopyright().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetCopyright().cast<Utf8>().toDartString();
 
 /// Returns the ImageMagick home URL.
 String magickGetHomeURL() {
-  Pointer<Char> resultPtr = _bindings.magickGetHomeURL();
+  Pointer<Char> resultPtr = _magickWandBindings.MagickGetHomeURL();
   String result = resultPtr.cast<Utf8>().toDartString();
   _magickRelinquishMemory(resultPtr.cast());
   return result;
@@ -103,41 +106,44 @@ String magickGetHomeURL() {
 
 /// Returns the ImageMagick package name.
 String magickGetPackageName() =>
-    _bindings.magickGetPackageName().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetPackageName().cast<Utf8>().toDartString();
 
 /// Returns the ImageMagick quantum depth.
 MagickGetQuantumDepthResult magickGetQuantumDepth() => using((Arena arena) {
       final Pointer<Size> depthPtr = arena();
-      String depthString =
-          _bindings.magickGetQuantumDepth(depthPtr).cast<Utf8>().toDartString();
+      String depthString = _magickWandBindings.MagickGetQuantumDepth(depthPtr)
+          .cast<Utf8>()
+          .toDartString();
       return MagickGetQuantumDepthResult(depthPtr.value, depthString);
     });
 
 ///  Returns the ImageMagick quantum range.
 MagickGetQuantumRangeResult magickGetQuantumRange() => using((Arena arena) {
       final Pointer<Size> rangePtr = arena();
-      String rangeString =
-          _bindings.magickGetQuantumRange(rangePtr).cast<Utf8>().toDartString();
+      String rangeString = _magickWandBindings.MagickGetQuantumRange(rangePtr)
+          .cast<Utf8>()
+          .toDartString();
       return MagickGetQuantumRangeResult(rangePtr.value, rangeString);
     });
 
 /// Returns the ImageMagick release date.
 String magickGetReleaseDate() =>
-    _bindings.magickGetReleaseDate().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetReleaseDate().cast<Utf8>().toDartString();
 
 /// Returns the specified resource in megabytes.
 int magickGetResource(ResourceType type) =>
-    _bindings.magickGetResource(type.index);
+    _magickWandBindings.MagickGetResource(type.index);
 
 /// Returns the specified resource limit in megabytes.
 int magickGetResourceLimit(ResourceType type) =>
-    _bindings.magickGetResourceLimit(type.index);
+    _magickWandBindings.MagickGetResourceLimit(type.index);
 
 /// Returns the ImageMagick version.
 MagickGetVersionResult magickGetVersion() => using((Arena arena) {
       final Pointer<Size> versionPtr = arena();
-      String versionString =
-          _bindings.magickGetVersion(versionPtr).cast<Utf8>().toDartString();
+      String versionString = _magickWandBindings.MagickGetVersion(versionPtr)
+          .cast<Utf8>()
+          .toDartString();
       return MagickGetVersionResult(versionPtr.value, versionString);
     });
 
@@ -145,11 +151,11 @@ MagickGetVersionResult magickGetVersion() => using((Arena arena) {
 /// - [type]: The resource type.
 /// - [limit]: The limit in megabytes.
 bool magickSetResourceLimit(ResourceType type, int limit) =>
-    _bindings.magickSetResourceLimit(type.index, limit);
+    _magickWandBindings.MagickSetResourceLimit(type.index, limit) == 1;
 
 /// Sets the pseudo-random number generator seed. Use it to generate a
 /// predictable sequence of random numbers.
-void magickSetSeed(int seed) => _bindings.magickSetSeed(seed);
+void magickSetSeed(int seed) => _magickWandBindings.MagickSetSeed(seed);
 
 // TODO: continue adding the remaining methods
 

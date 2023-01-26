@@ -35,63 +35,33 @@ class ChannelFeatures {
   });
 
   static ChannelFeatures? _fromChannelFeaturesStructPointer(
-      Pointer<_ChannelFeaturesStruct> ptr) {
+      Pointer<mwbg.ChannelFeatures> ptr) {
     return ptr == nullptr
         ? null
         : ChannelFeatures(
-            angularSecondMoment: ptr.ref.angularSecondMoment.toFloat64List(4),
+            angularSecondMoment: ptr.ref.angular_second_moment.toFloat64List(4),
             contrast: ptr.ref.contrast.toFloat64List(4),
             correlation: ptr.ref.correlation.toFloat64List(4),
-            varianceSumOfSquares: ptr.ref.varianceSumOfSquares.toFloat64List(4),
+            varianceSumOfSquares:
+                ptr.ref.variance_sum_of_squares.toFloat64List(4),
             inverseDifferenceMoment:
-                ptr.ref.inverseDifferenceMoment.toFloat64List(4),
-            sumAverage: ptr.ref.sumAverage.toFloat64List(4),
-            sumVariance: ptr.ref.sumVariance.toFloat64List(4),
-            sumEntropy: ptr.ref.sumEntropy.toFloat64List(4),
+                ptr.ref.inverse_difference_moment.toFloat64List(4),
+            sumAverage: ptr.ref.sum_average.toFloat64List(4),
+            sumVariance: ptr.ref.sum_variance.toFloat64List(4),
+            sumEntropy: ptr.ref.sum_entropy.toFloat64List(4),
             entropy: ptr.ref.entropy.toFloat64List(4),
-            differenceVariance: ptr.ref.differenceVariance.toFloat64List(4),
-            differenceEntropy: ptr.ref.differenceEntropy.toFloat64List(4),
+            differenceVariance: ptr.ref.difference_variance.toFloat64List(4),
+            differenceEntropy: ptr.ref.difference_entropy.toFloat64List(4),
             measureOfCorrelation1:
-                ptr.ref.measureOfCorrelation1.toFloat64List(4),
+                ptr.ref.measure_of_correlation_1.toFloat64List(4),
             measureOfCorrelation2:
-                ptr.ref.measureOfCorrelation2.toFloat64List(4),
+                ptr.ref.measure_of_correlation_2.toFloat64List(4),
             maximumCorrelationCoefficient:
-                ptr.ref.maximumCorrelationCoefficient.toFloat64List(4),
+                ptr.ref.maximum_correlation_coefficient.toFloat64List(4),
           );
   }
 
   @override
   String toString() =>
       'ChannelFeatures{angularSecondMoment: $angularSecondMoment, contrast: $contrast, correlation: $correlation, varianceSumOfSquares: $varianceSumOfSquares, inverseDifferenceMoment: $inverseDifferenceMoment, sumAverage: $sumAverage, sumVariance: $sumVariance, sumEntropy: $sumEntropy, entropy: $entropy, differenceVariance: $differenceVariance, differenceEntropy: $differenceEntropy, measureOfCorrelation1: $measureOfCorrelation1, measureOfCorrelation2: $measureOfCorrelation2, maximumCorrelationCoefficient: $maximumCorrelationCoefficient}';
-}
-
-class _ChannelFeaturesStruct extends Struct {
-  @Array(4)
-  external Array<Double> angularSecondMoment;
-  @Array(4)
-  external Array<Double> contrast;
-  @Array(4)
-  external Array<Double> correlation;
-  @Array(4)
-  external Array<Double> varianceSumOfSquares;
-  @Array(4)
-  external Array<Double> inverseDifferenceMoment;
-  @Array(4)
-  external Array<Double> sumAverage;
-  @Array(4)
-  external Array<Double> sumVariance;
-  @Array(4)
-  external Array<Double> sumEntropy;
-  @Array(4)
-  external Array<Double> entropy;
-  @Array(4)
-  external Array<Double> differenceVariance;
-  @Array(4)
-  external Array<Double> differenceEntropy;
-  @Array(4)
-  external Array<Double> measureOfCorrelation1;
-  @Array(4)
-  external Array<Double> measureOfCorrelation2;
-  @Array(4)
-  external Array<Double> maximumCorrelationCoefficient;
 }

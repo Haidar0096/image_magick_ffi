@@ -10,7 +10,9 @@ import 'dart:developer';
 
 import 'package:ffi/ffi.dart';
 import 'package:image_magick_ffi/src/extensions.dart';
-import 'package:image_magick_ffi/src/image_magick_ffi_bindings_generated.dart';
+import 'package:image_magick_ffi/src/magick_wand_bindings_generated.dart'
+    as mwbg;
+import 'package:image_magick_ffi/src/plugin_bindings_generated.dart' as pbg;
 
 part 'magick_wand.dart';
 
@@ -32,25 +34,40 @@ part 'channel_features.dart';
 
 part 'channel_statistics.dart';
 
-const String _libName = 'image_magick_ffi';
+typedef _PluginFfiBindings = pbg.PluginFfiBindings;
+typedef _MagickWandFfiBindings = mwbg.MagickWandFfiBindings;
 
-/// The dynamic library in which the symbols for [ImageMagickFfiBindings] can
-/// be found.
-final DynamicLibrary _dylib = () {
+const String _pluginLibName = 'image_magick_ffi';
+
+const String _magickWandWindowsLibName = 'CORE_RL_MagickWand_';
+
+DynamicLibrary _openDynamicLibrary(String libName) {
   if (Platform.isMacOS || Platform.isIOS) {
-    return DynamicLibrary.open('$_libName.framework/$_libName');
+    return DynamicLibrary.open('$libName.framework/$libName');
   }
   if (Platform.isAndroid || Platform.isLinux) {
-    return DynamicLibrary.open('lib$_libName.so');
+    return DynamicLibrary.open('lib$libName.so');
   }
   if (Platform.isWindows) {
-    return DynamicLibrary.open('$_libName.dll');
+    return DynamicLibrary.open('$libName.dll');
   }
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
-}();
+}
 
-/// The bindings to the native functions in [_dylib].
-final ImageMagickFfiBindings _bindings = ImageMagickFfiBindings(_dylib);
+/// The dynamic libraries in which the symbols for [ImageMagickFfiBindings] can
+/// be found.
+final DynamicLibrary _pluginLibraryDylib = _openDynamicLibrary(_pluginLibName);
+final DynamicLibrary _magickWandDylib = Platform.isWindows
+    ? _openDynamicLibrary(_magickWandWindowsLibName)
+    : _pluginLibraryDylib;
+
+/// The bindings to the native functions in [_pluginLibraryDylib].
+final _PluginFfiBindings _pluginBindings =
+    _PluginFfiBindings(_pluginLibraryDylib);
+
+/// The bindings to the native functions in [_magickWandDylib].
+final _MagickWandFfiBindings _magickWandBindings =
+    _MagickWandFfiBindings(_magickWandDylib);
 
 class ImageMagickFFIPlugin {
   /// This method is called automatically to initialize the plugin.

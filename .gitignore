@@ -29,5 +29,5 @@ migrate_working_dir/
 .packages
 build/
 
-# Following files are for use only by ffigen, they should not be checked in.
-/src/ffigen_deps/MagickCore
+# Following files are for use only with ffigen, they should not be checked in.
+/src/ffi_gen

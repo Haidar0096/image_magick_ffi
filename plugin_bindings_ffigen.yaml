@@ -1,14 +1,11 @@
-# Run with `flutter pub run ffigen --config ffigen.yaml`.
-name: ImageMagickFfiBindings
+name: PluginFfiBindings
 description: |
   Bindings for `src/image_magick_ffi.h`.
 
-  Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
-output: 'lib/src/image_magick_ffi_bindings_generated.dart'
+  Regenerate bindings with `flutter pub run ffigen --config plugin_bindings_ffigen.yaml`.
+output: 'lib/src/plugin_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/image_magick_ffi.h'
-  include-directives:
     - 'src/image_magick_ffi.h'
 preamble: |
   // ignore_for_file: always_specify_types
@@ -20,6 +17,3 @@ comments:
 llvm-path:
   - '/usr/lib/llvm-14'
   - 'C:\Program Files\LLVM'
-compiler-opts:
-  - '-Isrc/Dependencies/ImageMagick/x64/Q8/include'
-  - '-D__FFIGEN__'

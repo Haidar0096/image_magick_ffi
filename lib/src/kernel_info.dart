@@ -32,10 +32,9 @@ class KernelInfo {
     this.signature,
   });
 
-  Pointer<_KernelInfoStruct> _toKernelInfoStructPointer(
+  Pointer<mwbg.KernelInfo> _toKernelInfoStructPointer(
       {required Allocator allocator}) {
-    final Pointer<_KernelInfoStruct> kernelInfoStruct =
-        allocator<_KernelInfoStruct>();
+    final Pointer<mwbg.KernelInfo> kernelInfoStruct = allocator();
     kernelInfoStruct.ref.type = type?.index ?? 0;
     kernelInfoStruct.ref.width = width ?? 0;
     kernelInfoStruct.ref.height = height ?? 0;
@@ -45,8 +44,8 @@ class KernelInfo {
         values?.toDoubleArrayPointer(allocator: allocator) ?? nullptr;
     kernelInfoStruct.ref.minimum = minimum ?? 0.0;
     kernelInfoStruct.ref.maximum = maximum ?? 0.0;
-    kernelInfoStruct.ref.negativeRange = negativeRange ?? 0.0;
-    kernelInfoStruct.ref.positiveRange = positiveRange ?? 0.0;
+    kernelInfoStruct.ref.negative_range = negativeRange ?? 0.0;
+    kernelInfoStruct.ref.positive_range = positiveRange ?? 0.0;
     kernelInfoStruct.ref.angle = angle ?? 0.0;
     kernelInfoStruct.ref.next =
         next?._toKernelInfoStructPointer(allocator: allocator) ?? nullptr;
@@ -57,43 +56,4 @@ class KernelInfo {
   @override
   String toString() =>
       'KernelInfo{type: $type, width: $width, height: $height, x: $x, y: $y, values: $values, minimum: $minimum, maximum: $maximum, negativeRange: $negativeRange, positiveRange: $positiveRange, angle: $angle, next: $next, signature: $signature}';
-}
-
-class _KernelInfoStruct extends Struct {
-  @Int32()
-  external int type;
-
-  @Uint64()
-  external int width;
-
-  @Uint64()
-  external int height;
-
-  @Int64()
-  external int x;
-
-  @Int64()
-  external int y;
-
-  external Pointer<Double> values;
-
-  @Double()
-  external double minimum;
-
-  @Double()
-  external double maximum;
-
-  @Double()
-  external double negativeRange;
-
-  @Double()
-  external double positiveRange;
-
-  @Double()
-  external double angle;
-
-  external Pointer<_KernelInfoStruct> next;
-
-  @Uint64()
-  external int signature;
 }

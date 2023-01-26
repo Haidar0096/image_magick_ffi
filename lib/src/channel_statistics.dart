@@ -36,7 +36,7 @@ class ChannelStatistics {
   });
 
   static ChannelStatistics? _fromChannelStatisticsStructPointer(
-      Pointer<_ChannelStatisticsStruct> ptr) {
+      Pointer<mwbg.ChannelStatistics> ptr) {
     return ptr == nullptr
         ? null
         : ChannelStatistics(
@@ -45,12 +45,12 @@ class ChannelStatistics {
             minima: ptr.ref.minima,
             maxima: ptr.ref.maxima,
             sum: ptr.ref.sum,
-            sumSquared: ptr.ref.sumSquared,
-            sumCubed: ptr.ref.sumCubed,
-            sumFourthPower: ptr.ref.sumFourthPower,
+            sumSquared: ptr.ref.sum_squared,
+            sumCubed: ptr.ref.sum_cubed,
+            sumFourthPower: ptr.ref.sum_fourth_power,
             mean: ptr.ref.mean,
             variance: ptr.ref.variance,
-            standardDeviation: ptr.ref.standardDeviation,
+            standardDeviation: ptr.ref.standard_deviation,
             kurtosis: ptr.ref.kurtosis,
             skewness: ptr.ref.skewness,
             entropy: ptr.ref.entropy,
@@ -61,51 +61,4 @@ class ChannelStatistics {
   @override
   String toString() =>
       'ChannelStatistics(depth: $depth, area: $area, minima: $minima, maxima: $maxima, sum: $sum, sumSquared: $sumSquared, sumCubed: $sumCubed, sumFourthPower: $sumFourthPower, mean: $mean, variance: $variance, standardDeviation: $standardDeviation, kurtosis: $kurtosis, skewness: $skewness, entropy: $entropy, median: $median)';
-}
-
-class _ChannelStatisticsStruct extends Struct {
-  @Size()
-  external int depth;
-
-  @Double()
-  external double area;
-
-  @Double()
-  external double minima;
-
-  @Double()
-  external double maxima;
-
-  @Double()
-  external double sum;
-
-  @Double()
-  external double sumSquared;
-
-  @Double()
-  external double sumCubed;
-
-  @Double()
-  external double sumFourthPower;
-
-  @Double()
-  external double mean;
-
-  @Double()
-  external double variance;
-
-  @Double()
-  external double standardDeviation;
-
-  @Double()
-  external double kurtosis;
-
-  @Double()
-  external double skewness;
-
-  @Double()
-  external double entropy;
-
-  @Double()
-  external double median;
 }

@@ -2,7 +2,7 @@ part of 'image_magick_ffi.dart';
 
 // TODO: add docs
 class PixelWand {
-  final Pointer<Void> _wandPtr;
+  final Pointer<mwbg.PixelWand> _wandPtr;
 
   const PixelWand._(this._wandPtr);
 
