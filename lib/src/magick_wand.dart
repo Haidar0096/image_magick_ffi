@@ -56,8 +56,10 @@ class MagickWand {
 
   /// Makes an exact copy of this wand.
   ///
+  /// {@template magick_wand.do_not_forget_to_destroy_returned_wand}
   /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
   /// done.
+  /// {@endtemplate}
   MagickWand cloneMagickWand() =>
       MagickWand._(_magickWandBindings.CloneMagickWand(_wandPtr));
 
@@ -985,7 +987,7 @@ class MagickWand {
   /// function to ensure that all the images in the wand's image list will be
   /// appended together.
   ///
-  /// Don't forget to dispose the returned [MagickWand] object when done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [stack] : By default, images are stacked left-to-right. Set stack to
@@ -1201,15 +1203,16 @@ class MagickWand {
   /// red, green, and blue channels of an image, use: -channel-fx "red; green;
   /// blue".
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [expression] : the expression.
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@template magick_wand.invalid_params_crash_the_app}
+  /// <b>Sending invalid parameters will cause an invalid state and may crash
+  /// the app, so you should make sure to validate the input to this method.</b>
+  /// {@endtemplate}
   Future<MagickWand?> magickChannelFxImage(String expression) async {
     final Pointer<mwbg.MagickWand> resultPtr =
         Pointer<mwbg.MagickWand>.fromAddress(
@@ -1349,8 +1352,7 @@ class MagickWand {
   /// each image in the sequence is the same size as the first and composited
   /// with the next image in the sequence.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickCoalesceImages() async {
@@ -1456,8 +1458,7 @@ class MagickWand {
   /// assigned in order to the specified channels of the combined image.
   /// The typical ordering would be image 1 => Red, 2 => Green, 3 => Blue, etc.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [colorSpace]: the colorspace.
@@ -1488,8 +1489,7 @@ class MagickWand {
   /// sequence and returns the maximum bounding region of any pixel differences
   /// it discovers.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [method] : the compare method.
@@ -1510,8 +1510,7 @@ class MagickWand {
   /// Compares an image to a reconstructed image and returns the specified
   /// difference image.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [reference] : the reference wand.
@@ -1542,8 +1541,7 @@ class MagickWand {
 
   /// Performs complex mathematics on an image sequence.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [operator]: A complex operator.
@@ -1748,8 +1746,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageCharPixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromCharPixel({
     required int columns,
     required int rows,
@@ -1783,8 +1780,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageDoublePixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromDoublePixel({
     required int columns,
     required int rows,
@@ -1818,8 +1814,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageFloatPixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromFloatPixel({
     required int columns,
     required int rows,
@@ -1853,8 +1848,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageLongPixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromLongPixel({
     required int columns,
     required int rows,
@@ -1888,8 +1882,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageLongLongPixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromLongLongPixel({
     required int columns,
     required int rows,
@@ -1923,8 +1916,7 @@ class MagickWand {
   ///
   /// - See also: [magickExportImageShortPixels].
   ///
-  /// <b>Sending an invalid input will crash the app abruptly,
-  /// so you should be careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<bool> magickConstituteImageFromShortPixel({
     required int columns,
     required int rows,
@@ -1956,8 +1948,7 @@ class MagickWand {
   /// Compares each image with the next in a sequence and returns the maximum
   /// bounding region of any pixel differences it discovers.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickDeconstructImages() async {
     final int resultWandAddress =
@@ -2133,8 +2124,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromCharPixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Uint8List?> magickExportImageCharPixels({
     required int x,
     required int y,
@@ -2169,8 +2159,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromDoublePixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Float64List?> magickExportImageDoublePixels({
     required int x,
     required int y,
@@ -2205,8 +2194,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromFloatPixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Float32List?> magickExportImageFloatPixels({
     required int x,
     required int y,
@@ -2241,8 +2229,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromLongPixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Uint32List?> magickExportImageLongPixels({
     required int x,
     required int y,
@@ -2277,8 +2264,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromLongLongPixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Uint64List?> magickExportImageLongLongPixels({
     required int x,
     required int y,
@@ -2313,8 +2299,7 @@ class MagickWand {
   ///
   /// - See also: [magickConstituteImageFromShortPixel]
   ///
-  /// <b>Sending an invalid input will crash the app abruptly, so you should be
-  /// careful not sending invalid input to this method.</b>
+  /// {@macro magick_wand.invalid_params_crash_the_app}
   Future<Uint16List?> magickExportImageShortPixels({
     required int x,
     required int y,
@@ -2471,8 +2456,7 @@ class MagickWand {
 
   /// Evaluate expression for each pixel in the image.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [expression]: the expression.
@@ -2528,8 +2512,7 @@ class MagickWand {
 
   /// Gets the image at the current image index.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   Future<MagickWand?> magickGetImage() async {
@@ -2553,8 +2536,7 @@ class MagickWand {
 
   /// Gets the image clip mask at the current image index.
   ///
-  /// Don't forget to call [destroyMagickWand] on the returned [MagickWand] when
-  /// done.
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// This method runs inside an isolate different from the main isolate.
   /// - [clipMask]: the type of the clip mask.
@@ -2709,6 +2691,12 @@ class MagickWand {
         _magickGetImageColors,
         _wandPtr.address,
       );
+
+  /// Gets the image colorspace.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  ColorspaceType magickGetImageColorspace() => ColorspaceType
+      .values[_magickWandBindings.MagickGetImageColorspace(_wandPtr)];
 
   // TODO: continue adding the remaining methods
 
