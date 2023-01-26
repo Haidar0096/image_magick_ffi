@@ -54,9 +54,12 @@ DynamicLibrary _openDynamicLibrary(String libName) {
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }
 
-/// The dynamic libraries in which the symbols for [ImageMagickFfiBindings] can
+/// The dynamic libraries in which the symbols for [_PluginFfiBindings] can
 /// be found.
 final DynamicLibrary _pluginLibraryDylib = _openDynamicLibrary(_pluginLibName);
+
+/// The dynamic libraries in which the symbols for [_MagickWandFfiBindings] can
+/// be found.
 final DynamicLibrary _magickWandDylib = Platform.isWindows
     ? _openDynamicLibrary(_magickWandWindowsLibName)
     : _pluginLibraryDylib;
