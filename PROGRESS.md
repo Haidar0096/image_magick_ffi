@@ -193,6 +193,12 @@
 - [x] MagickGetImageColormapColor
 - [x] MagickGetImageColors
 - [x] MagickGetImageColorspace
+- [x] MagickGetImageCompose
+- [x] MagickGetImageCompression
+- [x] MagickGetImageCompressionQuality
+- [x] MagickGetImageDelay
+- [x] MagickGetImageDepth
+- [x] MagickGetImageDispose
 
 
 
