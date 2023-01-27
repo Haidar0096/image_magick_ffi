@@ -2,7 +2,11 @@ part of 'image_magick_ffi.dart';
 
 /// Initializes the necessary resources used with the plugin. This must be
 /// called before any use of the plugin.
-void _initializeImageMagick() {
+///
+/// If this plugin is being used within a Flutter app, this method will be
+/// automatically called on boot. Otherwise, you need to call this method before
+/// any usage of the plugin.
+void initializeImageMagick() {
   _magickWandGenesis();
   int initDartApiResult =
       _pluginBindings.initDartAPI(NativeApi.initializeApiDLData);
