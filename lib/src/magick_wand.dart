@@ -15,7 +15,9 @@ typedef MagickProgressMonitor = void Function(
 /// The [MagickWand] can do operations on images like reading, resizing,
 /// writing, cropping an image, etc...
 ///
-/// The [MagickWand] can hold reference to multiple images, and you can set the
+/// The [MagickWand] can hold reference to multiple images at a point in time,
+/// and thus it is an object that has a state. This state controls how the
+/// images are treated when you use the wand's methods. You can set the
 /// current referenced image by [MagickSetIteratorIndex] or reset it by
 /// [MagickResetIterator]. In general the operations called on the wand are done
 /// on the image at the current iterator index.
@@ -81,11 +83,11 @@ class MagickWand {
   /// Returns true if this wand is verified as a magick wand. For example, after
   /// calling [destroyMagickWand] on this wand, then this method will return
   /// false.
-  bool isMagickWand() => _magickWandBindings.IsMagickWand(_wandPtr) == 1;
+  bool isMagickWand() => _magickWandBindings.IsMagickWand(_wandPtr).toBool();
 
   /// Clears any exceptions associated with this wand.
   bool magickClearException() =>
-      _magickWandBindings.MagickClearException(_wandPtr) == 1;
+      _magickWandBindings.MagickClearException(_wandPtr).toBool();
 
   /// Returns the severity, reason, and description of any error that occurs
   /// when using other methods with this wand. For example, failure to read an
@@ -230,7 +232,7 @@ class MagickWand {
   /// Jumping to index 0 is similar to `magickResetIterator()` but differs in
   /// how `magickNextImage()` behaves afterward.
   bool magickSetIteratorIndex(int index) =>
-      _magickWandBindings.MagickSetIteratorIndex(_wandPtr, index) == 1;
+      _magickWandBindings.MagickSetIteratorIndex(_wandPtr, index).toBool();
 
   /// Sets the wand iterator to the last image.
   ///
@@ -253,38 +255,32 @@ class MagickWand {
       MagickWand._(_magickWandBindings.NewMagickWand());
 
   /// Deletes a wand artifact.
-  bool magickDeleteImageArtifact(String artifact) =>
-      using(
+  bool magickDeleteImageArtifact(String artifact) => using(
         (Arena arena) => _magickWandBindings.MagickDeleteImageArtifact(
           _wandPtr,
           artifact.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Deletes a wand property.
-  bool magickDeleteImageProperty(String property) =>
-      using(
+  bool magickDeleteImageProperty(String property) => using(
         (Arena arena) => _magickWandBindings.MagickDeleteImageProperty(
           _wandPtr,
           property.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Deletes a wand option.
-  bool magickDeleteOption(String option) =>
-      using(
+  bool magickDeleteOption(String option) => using(
         (Arena arena) => _magickWandBindings.MagickDeleteOption(
           _wandPtr,
           option.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Returns the antialias property associated with the wand.
   bool magickGetAntialias() =>
-      _magickWandBindings.MagickGetAntialias(_wandPtr) == 1;
+      _magickWandBindings.MagickGetAntialias(_wandPtr).toBool();
 
   /// Returns the wand background color.
   PixelWand magickGetBackgroundColor() =>
@@ -465,8 +461,8 @@ class MagickWand {
         final Pointer<mwbg.ssize_t> xPtr = arena();
         final Pointer<mwbg.ssize_t> yPtr = arena();
         final bool result = _magickWandBindings.MagickGetPage(
-                _wandPtr, widthPtr, heightPtr, xPtr, yPtr) ==
-            1;
+                _wandPtr, widthPtr, heightPtr, xPtr, yPtr)
+            .toBool();
         if (!result) {
           return null;
         }
@@ -483,11 +479,10 @@ class MagickWand {
         final Pointer<Double> xResolutionPtr = arena();
         final Pointer<Double> yResolutionPtr = arena();
         final bool result = _magickWandBindings.MagickGetResolution(
-              _wandPtr,
-              xResolutionPtr,
-              yResolutionPtr,
-            ) ==
-            1;
+          _wandPtr,
+          xResolutionPtr,
+          yResolutionPtr,
+        ).toBool();
         if (!result) {
           return null;
         }
@@ -512,8 +507,8 @@ class MagickWand {
         final Pointer<Size> widthPtr = arena();
         final Pointer<Size> heightPtr = arena();
         final bool result =
-            _magickWandBindings.MagickGetSize(_wandPtr, widthPtr, heightPtr) ==
-                1;
+            _magickWandBindings.MagickGetSize(_wandPtr, widthPtr, heightPtr)
+                .toBool();
         if (!result) {
           return null;
         }
@@ -524,8 +519,8 @@ class MagickWand {
   int? magickGetSizeOffset() => using((Arena arena) {
         Pointer<mwbg.ssize_t> sizeOffsetPtr = arena();
         final bool result =
-            _magickWandBindings.MagickGetSizeOffset(_wandPtr, sizeOffsetPtr) ==
-                1;
+            _magickWandBindings.MagickGetSizeOffset(_wandPtr, sizeOffsetPtr)
+                .toBool();
         if (!result) {
           return null;
         }
@@ -547,12 +542,11 @@ class MagickWand {
           final Pointer<Char> namePtr =
               name.toNativeUtf8(allocator: arena).cast();
           return _magickWandBindings.MagickProfileImage(
-                _wandPtr,
-                namePtr,
-                profilePtr.cast(),
-                profile?.length ?? 0,
-              ) ==
-              1;
+            _wandPtr,
+            namePtr,
+            profilePtr.cast(),
+            profile?.length ?? 0,
+          ).toBool();
         },
       );
 
@@ -571,85 +565,77 @@ class MagickWand {
 
   ///  Sets the antialias property of the wand.
   bool magickSetAntialias(bool antialias) =>
-      _magickWandBindings.MagickSetAntialias(_wandPtr, antialias ? 1 : 0) == 1;
+      _magickWandBindings.MagickSetAntialias(_wandPtr, antialias ? 1 : 0)
+          .toBool();
 
   /// Sets the wand background color.
   bool magickSetBackgroundColor(PixelWand pixelWand) =>
-      _magickWandBindings.MagickSetBackgroundColor(
-          _wandPtr, pixelWand._wandPtr) ==
-      1;
+      _magickWandBindings.MagickSetBackgroundColor(_wandPtr, pixelWand._wandPtr)
+          .toBool();
 
   /// Sets the wand colorspace type.
   bool magickSetColorspace(ColorspaceType colorspaceType) =>
-      _magickWandBindings.MagickSetColorspace(_wandPtr, colorspaceType.index) ==
-      1;
+      _magickWandBindings.MagickSetColorspace(_wandPtr, colorspaceType.index)
+          .toBool();
 
   /// Sets the wand compression type.
   bool magickSetCompression(CompressionType compressionType) =>
-      _magickWandBindings.MagickSetCompression(
-          _wandPtr, compressionType.index) ==
-      1;
+      _magickWandBindings.MagickSetCompression(_wandPtr, compressionType.index)
+          .toBool();
 
   /// Sets the wand compression quality.
   bool magickSetCompressionQuality(int quality) =>
-      _magickWandBindings.MagickSetCompressionQuality(_wandPtr, quality) == 1;
+      _magickWandBindings.MagickSetCompressionQuality(_wandPtr, quality)
+          .toBool();
 
   /// Sets the wand pixel depth.
   bool magickSetDepth(int depth) =>
-      _magickWandBindings.MagickSetDepth(_wandPtr, depth) == 1;
+      _magickWandBindings.MagickSetDepth(_wandPtr, depth).toBool();
 
   /// Sets the extract geometry before you read or write an image file. Use it
   /// for inline cropping (e.g. 200x200+0+0) or resizing (e.g.200x200).
-  bool magickSetExtract(String geometry) =>
-      using(
+  bool magickSetExtract(String geometry) => using(
         (Arena arena) => _magickWandBindings.MagickSetExtract(
           _wandPtr,
           geometry.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the filename before you read or write an image file.
-  bool magickSetFilename(String filename) =>
-      using(
+  bool magickSetFilename(String filename) => using(
         (Arena arena) => _magickWandBindings.MagickSetFilename(
           _wandPtr,
           filename.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the font associated with the MagickWand.
-  bool magickSetFont(String font) =>
-      using(
+  bool magickSetFont(String font) => using(
         (Arena arena) => _magickWandBindings.MagickSetFont(
           _wandPtr,
           font.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the format of the magick wand.
-  bool magickSetFormat(String format) =>
-      using(
+  bool magickSetFormat(String format) => using(
         (Arena arena) => _magickWandBindings.MagickSetFormat(
           _wandPtr,
           format.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the gravity type.
   bool magickSetGravity(GravityType gravityType) =>
-      _magickWandBindings.MagickSetGravity(_wandPtr, gravityType.value) == 1;
+      _magickWandBindings.MagickSetGravity(_wandPtr, gravityType.value)
+          .toBool();
 
   /// Sets a key-value pair in the image artifact namespace. Artifacts differ
   /// from properties. Properties are public and are generally exported to an
   /// external image format if the format supports it. Artifacts are private
   /// and are utilized by the internal ImageMagick API to modify
   /// the behavior of certain algorithms.
-  bool magickSetImageArtifact(String key, String value) =>
-      using(
+  bool magickSetImageArtifact(String key, String value) => using(
         (Arena arena) {
           final Pointer<Char> keyPtr =
               key.toNativeUtf8(allocator: arena).cast();
@@ -658,15 +644,13 @@ class MagickWand {
           return _magickWandBindings.MagickSetImageArtifact(
               _wandPtr, keyPtr, valuePtr);
         },
-      ) ==
-      1;
+      ).toBool();
 
   /// Adds a named profile to the magick wand. If a profile with the same name
   /// already exists, it is replaced. This method differs from the
   /// MagickProfileImage() method in that it does not apply any CMS color
   /// profiles.
-  bool magickSetImageProfile(String name, Uint8List profile) =>
-      using(
+  bool magickSetImageProfile(String name, Uint8List profile) => using(
         (Arena arena) {
           final Pointer<UnsignedChar> profilePtr =
               profile.toUnsignedCharArrayPointer(allocator: arena);
@@ -679,12 +663,10 @@ class MagickWand {
             profile.length,
           );
         },
-      ) ==
-      1;
+      ).toBool();
 
   /// Associates a property with an image.
-  bool magickSetImageProperty(String key, String value) =>
-      using(
+  bool magickSetImageProperty(String key, String value) => using(
         (Arena arena) {
           final Pointer<Char> keyPtr =
               key.toNativeUtf8(allocator: arena).cast();
@@ -693,14 +675,13 @@ class MagickWand {
           return _magickWandBindings.MagickSetImageProperty(
               _wandPtr, keyPtr, valuePtr);
         },
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the image compression.
   bool magickSetInterlaceScheme(InterlaceType interlaceType) =>
       _magickWandBindings.MagickSetInterlaceScheme(
-          _wandPtr, interlaceType.index) ==
-      1;
+              _wandPtr, interlaceType.index)
+          .toBool();
 
   /// Sets the interpolate pixel method.
   bool magickSetInterpolateMethod(
@@ -708,13 +689,11 @@ class MagickWand {
       _magickWandBindings.MagickSetInterpolateMethod(
         _wandPtr,
         pixelInterpolateMethod.index,
-      ) ==
-      1;
+      ).toBool();
 
   /// Associates one or options with the wand
   /// (.e.g MagickSetOption(wand,"jpeg:perserve","yes")).
-  bool magickSetOption(String key, String value) =>
-      using(
+  bool magickSetOption(String key, String value) => using(
         (Arena arena) {
           final Pointer<Char> keyPtr =
               key.toNativeUtf8(allocator: arena).cast();
@@ -723,14 +702,12 @@ class MagickWand {
           return _magickWandBindings.MagickSetOption(
               _wandPtr, keyPtr, valuePtr);
         },
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the wand orientation type.
   bool magickSetOrientation(OrientationType orientationType) =>
-      _magickWandBindings.MagickSetOrientation(
-          _wandPtr, orientationType.index) ==
-      1;
+      _magickWandBindings.MagickSetOrientation(_wandPtr, orientationType.index)
+          .toBool();
 
   /// Sets the page geometry of the magick wand.
   bool magickSetPage({
@@ -739,21 +716,19 @@ class MagickWand {
     required int x,
     required int y,
   }) =>
-      _magickWandBindings.MagickSetPage(_wandPtr, width, height, x, y) == 1;
+      _magickWandBindings.MagickSetPage(_wandPtr, width, height, x, y).toBool();
 
   /// Sets the passphrase.
-  bool magickSetPassphrase(String passphrase) =>
-      using(
+  bool magickSetPassphrase(String passphrase) => using(
         (Arena arena) => _magickWandBindings.MagickSetPassphrase(
           _wandPtr,
           passphrase.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the font pointsize associated with the MagickWand.
   bool magickSetPointsize(double pointSize) =>
-      _magickWandBindings.MagickSetPointsize(_wandPtr, pointSize) == 1;
+      _magickWandBindings.MagickSetPointsize(_wandPtr, pointSize).toBool();
 
   /// MagickSetProgressMonitor() sets the wand progress monitor to  monitor the
   /// progress of an image operation to the specified method.
@@ -791,39 +766,35 @@ class MagickWand {
   /// Sets the image resolution.
   bool magickSetResolution(double xResolution, double yResolution) =>
       _magickWandBindings.MagickSetResolution(
-          _wandPtr, xResolution, yResolution) ==
-      1;
+              _wandPtr, xResolution, yResolution)
+          .toBool();
 
   /// Sets the image sampling factors.
   /// - [samplingFactors] : An array of doubles representing the sampling factor
   /// for each color component (in RGB order).
-  bool magickSetSamplingFactors(Float64List samplingFactors) =>
-      using(
+  bool magickSetSamplingFactors(Float64List samplingFactors) => using(
         (Arena arena) => _magickWandBindings.MagickSetSamplingFactors(
           _wandPtr,
           samplingFactors.length,
           samplingFactors.toDoubleArrayPointer(allocator: arena),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the ImageMagick security policy. It returns false if the policy is
   /// already set or if the policy does not parse.
-  bool magickSetSecurityPolicy(String securityPolicy) =>
-      using(
+  bool magickSetSecurityPolicy(String securityPolicy) => using(
         (Arena arena) => _magickWandBindings.MagickSetSecurityPolicy(
           _wandPtr,
           securityPolicy.toNativeUtf8(allocator: arena).cast(),
         ),
-      ) ==
-      1;
+      ).toBool();
 
   /// Sets the size of the magick wand. Set it before you read a raw image
   /// format such as RGB, GRAY, or CMYK.
   /// - [width] : the width in pixels.
   /// - [height] : the height in pixels.
   bool magickSetSize(int width, int height) =>
-      _magickWandBindings.MagickSetSize(_wandPtr, width, height) == 1;
+      _magickWandBindings.MagickSetSize(_wandPtr, width, height).toBool();
 
   /// Sets the size and offset of the magick wand. Set it before you read
   /// a raw image format such as RGB, GRAY, or CMYK.
@@ -832,13 +803,12 @@ class MagickWand {
     required int rows,
     required int offset,
   }) =>
-      _magickWandBindings.MagickSetSizeOffset(
-          _wandPtr, columns, rows, offset) ==
-      1;
+      _magickWandBindings.MagickSetSizeOffset(_wandPtr, columns, rows, offset)
+          .toBool();
 
   /// Sets the image type attribute.
   bool magickSetType(ImageType imageType) =>
-      _magickWandBindings.MagickSetType(_wandPtr, imageType.index) == 1;
+      _magickWandBindings.MagickSetType(_wandPtr, imageType.index).toBool();
 
   /// Adaptively blurs the image by blurring less intensely near image edges
   /// and more intensely far from edges. We blur the image with a Gaussian
@@ -2527,12 +2497,8 @@ class MagickWand {
 
   /// Returns false if the image alpha channel is not activated. That is, the
   /// image is RGB rather than RGBA or CMYK rather than CMYKA.
-  ///
-  /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickGetImageAlphaChannel() async => await _magickCompute(
-        _magickGetImageAlphaChannel,
-        _wandPtr.address,
-      );
+  bool magickGetImageAlphaChannel() =>
+      _magickWandBindings.MagickGetImageAlphaChannel(_wandPtr).toBool();
 
   /// Gets the image clip mask at the current image index.
   ///
@@ -2554,16 +2520,11 @@ class MagickWand {
   }
 
   /// Returns the image background color.
-  ///
-  /// This method runs inside an isolate different from the main isolate.
-  Future<bool> magickGetImageBackgroundColor(PixelWand backgroundColor) async =>
-      await _magickCompute(
-        _magickGetImageBackgroundColor,
-        _MagickGetImageBackgroundColorParams(
-          _wandPtr.address,
-          backgroundColor._wandPtr.address,
-        ),
-      );
+  bool magickGetImageBackgroundColor(PixelWand backgroundColor) =>
+      _magickWandBindings.MagickGetImageBackgroundColor(
+        _wandPtr,
+        backgroundColor._wandPtr,
+      ).toBool();
 
   /// Implements direct to memory image formats. It returns the image as a blob
   /// (a formatted "file" in memory) and its length, starting from the current
@@ -2596,10 +2557,26 @@ class MagickWand {
   /// Returns the chromaticity blue primary point for the image.
   ///
   /// This method runs inside an isolate different from the main isolate.
-  Future<MagickGetImageBluePrimaryResult?> magickGetImageBluePrimary() async =>
-      await _magickCompute(
-        _magickGetImageBluePrimary,
-        _wandPtr.address,
+  MagickGetImageBluePrimaryResult? magickGetImageBluePrimary() => using(
+        (Arena arena) {
+          final Pointer<Double> xPtr = arena();
+          final Pointer<Double> yPtr = arena();
+          final Pointer<Double> zPtr = arena();
+          bool result = _magickWandBindings.MagickGetImageBluePrimary(
+            _wandPtr,
+            xPtr,
+            yPtr,
+            zPtr,
+          ).toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImageBluePrimaryResult(
+            xPtr.value,
+            yPtr.value,
+            zPtr.value,
+          );
+        },
       );
 
   /// Returns the image border color.
@@ -2607,14 +2584,11 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ///
   /// - [borderColor]: the border color.
-  Future<bool> magickGetImageBorderColor(PixelWand borderColor) async =>
-      await _magickCompute(
-        _magickGetImageBorderColor,
-        _MagickGetImageBorderColorParams(
-          _wandPtr.address,
-          borderColor._wandPtr.address,
-        ),
-      );
+  bool magickGetImageBorderColor(PixelWand borderColor) =>
+      _magickWandBindings.MagickGetImageBorderColor(
+        _wandPtr,
+        borderColor._wandPtr,
+      ).toBool();
 
   /// Returns features for each channel in the image in each of four directions
   /// (horizontal, vertical, left and right diagonals) for the specified
@@ -2681,8 +2655,7 @@ class MagickWand {
         _wandPtr,
         index,
         color._wandPtr,
-      ) ==
-      1;
+      ).toBool();
 
   /// Gets the number of unique colors in the image.
   ///
@@ -2697,6 +2670,31 @@ class MagickWand {
   /// This method runs inside an isolate different from the main isolate.
   ColorspaceType magickGetImageColorspace() => ColorspaceType
       .values[_magickWandBindings.MagickGetImageColorspace(_wandPtr)];
+
+  /// MagickGetImageCompose() returns the composite operator associated with the
+  /// image.
+  CompositeOperator magickGetImageCompose() => CompositeOperator
+      .values[_magickWandBindings.MagickGetImageCompose(_wandPtr)];
+
+  /// MagickGetImageCompression() gets the image compression.
+  CompressionType magickGetImageCompression() => CompressionType
+      .values[_magickWandBindings.MagickGetImageCompression(_wandPtr)];
+
+  /// MagickGetImageCompressionQuality() gets the image compression quality.
+  int magickGetImageCompressionQuality() =>
+      _magickWandBindings.MagickGetImageCompressionQuality(_wandPtr);
+
+  /// MagickGetImageDelay() gets the image delay.
+  int magickGetImageDelay() =>
+      _magickWandBindings.MagickGetImageDelay(_wandPtr);
+
+  /// MagickGetImageDepth() gets the image depth.
+  int magickGetImageDepth() =>
+      _magickWandBindings.MagickGetImageDepth(_wandPtr);
+
+  /// MagickGetImageDispose() gets the image disposal method.
+  DisposeType magickGetImageDispose() => DisposeType.fromValue(
+      _magickWandBindings.MagickGetImageDispose(_wandPtr));
 
   // TODO: continue adding the remaining methods
 

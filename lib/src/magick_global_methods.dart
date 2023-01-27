@@ -90,7 +90,7 @@ void _magickWandTerminus() => _magickWandBindings.MagickWandTerminus();
 /// that is, `magickWandGenesis()` has been called but `magickWandTerminus()`
 /// has not.
 bool isMagickWandInstantiated() =>
-    _magickWandBindings.IsMagickWandInstantiated() == 1;
+    _magickWandBindings.IsMagickWandInstantiated().toBool();
 
 /// Returns the ImageMagick API copyright as a string.
 String magickGetCopyright() =>
@@ -151,7 +151,7 @@ MagickGetVersionResult magickGetVersion() => using((Arena arena) {
 /// - [type]: The resource type.
 /// - [limit]: The limit in megabytes.
 bool magickSetResourceLimit(ResourceType type, int limit) =>
-    _magickWandBindings.MagickSetResourceLimit(type.index, limit) == 1;
+    _magickWandBindings.MagickSetResourceLimit(type.index, limit).toBool();
 
 /// Sets the pseudo-random number generator seed. Use it to generate a
 /// predictable sequence of random numbers.

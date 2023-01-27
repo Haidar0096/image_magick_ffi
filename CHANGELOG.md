@@ -37,6 +37,7 @@
 * Added new bindings for MagickWand methods.
 * Updated package's metadata.
 
-## 0.0.1-dev.8 - TODO: set Date
+## 0.0.1-dev.8 - Jan 27, 2023
 
 * Added new bindings for MagickWand methods.
+* Major refactor and improvements to the codebase.

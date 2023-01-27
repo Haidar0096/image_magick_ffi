@@ -572,3 +572,20 @@ enum PixelMask {
   static PixelMask fromValue(int value) =>
       PixelMask.values.firstWhere((e) => e.value == value);
 }
+
+/// Represents an image dispose type
+enum DisposeType {
+  UndefinedDispose(0),
+  NoneDispose(1),
+  BackgroundDispose(2),
+  PreviousDispose(3);
+
+  static const DisposeType UnrecognizedDispose = UndefinedDispose;
+
+  final int value;
+
+  static DisposeType fromValue(int value) =>
+      DisposeType.values.firstWhere((e) => e.value == value);
+
+  const DisposeType(this.value);
+}

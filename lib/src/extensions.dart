@@ -250,3 +250,15 @@ extension Float64ListExtension on Float64List {
     return ptr;
   }
 }
+
+extension IntExtension on int {
+  /// Creates a bool from this int.
+  ///
+  /// The value of this int should be either 0 or 1, otherwise an
+  /// exception is thrown.
+  bool toBool() => this == 1
+      ? true
+      : this == 0
+          ? false
+          : throw Exception('Invalid value passed to toBool: $this');
+}
