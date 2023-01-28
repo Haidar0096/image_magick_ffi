@@ -42,7 +42,7 @@
 * Added new bindings for MagickWand methods.
 * Major refactor and improvements to the codebase.
 
-## 0.0.1-dev.9 - Date to be set
+## 0.0.1-dev.9 - Jan 28, 2023
 
 * Added new bindings for MagickWand methods.
 * Made `initializeImageMagick` public again to allow manual initialization of the library when used in a pure dart app.
