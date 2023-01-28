@@ -589,3 +589,10 @@ enum DisposeType {
 
   const DisposeType(this.value);
 }
+
+/// Represents an endiannness type.
+enum EndianType {
+  UndefinedEndian,
+  LSBEndian,
+  MSBEndian,
+}

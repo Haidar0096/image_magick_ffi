@@ -2696,6 +2696,87 @@ class MagickWand {
   DisposeType magickGetImageDispose() => DisposeType.fromValue(
       _magickWandBindings.MagickGetImageDispose(_wandPtr));
 
+  /// MagickGetImageEndian() gets the image endian.
+  EndianType magickGetImageEndian() =>
+      EndianType.values[_magickWandBindings.MagickGetImageEndian(_wandPtr)];
+
+  /// MagickGetImageFilename() returns the filename of a particular image in a
+  /// sequence.
+  String magickGetImageFilename() {
+    final Pointer<Char> filenamePtr =
+        _magickWandBindings.MagickGetImageFilename(_wandPtr);
+    final String filename = filenamePtr.cast<Utf8>().toDartString();
+    _magickRelinquishMemory(filenamePtr.cast());
+    return filename;
+  }
+
+  /// MagickGetImageFormat() returns the format of a particular image in a
+  /// sequence.
+  String magickGetImageFormat() {
+    final Pointer<Char> formatPtr =
+        _magickWandBindings.MagickGetImageFormat(_wandPtr);
+    final String format = formatPtr.cast<Utf8>().toDartString();
+    _magickRelinquishMemory(formatPtr.cast());
+    return format;
+  }
+
+  /// MagickGetImageFuzz() gets the image fuzz.
+  double magickGetImageFuzz() =>
+      _magickWandBindings.MagickGetImageFuzz(_wandPtr);
+
+  /// MagickGetImageGamma() gets the image gamma.
+  double magickGetImageGamma() =>
+      _magickWandBindings.MagickGetImageGamma(_wandPtr);
+
+  /// MagickGetImageGravity() gets the image gravity.
+  GravityType magickGetImageGravity() => GravityType.fromValue(
+      _magickWandBindings.MagickGetImageGravity(_wandPtr));
+
+  /// MagickGetImageGreenPrimary() returns the chromaticity green primary point.
+  MagickGetImageGreenPrimaryResult? magickGetImageGreenPrimary() => using(
+        (Arena arena) {
+          final Pointer<Double> xPtr = arena();
+          final Pointer<Double> yPtr = arena();
+          final Pointer<Double> zPtr = arena();
+          final bool result = _magickWandBindings.MagickGetImageGreenPrimary(
+                  _wandPtr, xPtr, yPtr, zPtr)
+              .toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImageGreenPrimaryResult(
+            xPtr.value,
+            yPtr.value,
+            zPtr.value,
+          );
+        },
+      );
+
+  /// MagickGetImageHeight() returns the image height.
+  int magickGetImageHeight() =>
+      _magickWandBindings.MagickGetImageHeight(_wandPtr);
+
+  /// MagickGetImageHistogram() returns the image histogram as an array of
+  /// PixelWand wands.
+  ///
+  /// Don't forget to call [destroyPixelWand] on the returned [PixelWand]s when
+  /// done.
+  ///
+  /// This method runs inside an isolate different from the main isolate.
+  Future<List<PixelWand>?> magickGetImageHistogram() async {
+    List<int> pixelWandsPtrsAddresses = await _magickCompute(
+      _magickGetImageHistogram,
+      _wandPtr.address,
+    );
+    if (pixelWandsPtrsAddresses.isEmpty) {
+      return null;
+    }
+    return pixelWandsPtrsAddresses
+        .map((address) =>
+            PixelWand._(Pointer<mwbg.PixelWand>.fromAddress(address)))
+        .toList();
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

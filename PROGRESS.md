@@ -1,6 +1,7 @@
 ### The purpose of this file is to track the progress of implementing the bindings to the ImageMagick C API.
 
 # [MagickWand Methods](https://imagemagick.org/script/magick-wand.php#:~:text=are%20found%20here%3A-,Magick%20Wand%20Methods,-Set%20or%20Get)
+
 - [x] ClearMagickWand
 - [x] CloneMagickWand
 - [x] DestroyMagickWand
@@ -25,7 +26,9 @@
 - [x] NewMagickWand
 - [ ] NewMagickWandFromImage
 - [x] IsMagickWandInstantiated
+
 # [Set or Get Magick Wand Properties](https://imagemagick.org/script/magick-wand.php#:~:text=Set%20or%20Get%20Magick%20Wand%20Properties)
+
 - [x] MagickDeleteImageArtifact
 - [x] MagickDeleteImageProperty
 - [x] MagickDeleteOption
@@ -99,7 +102,9 @@
 - [x] MagickSetSize
 - [x] MagickSetSizeOffset
 - [x] MagickSetType
+
 # [Magick Wand Image Methods](https://imagemagick.org/script/magick-wand.php#:~:text=Magick%20Wand%20Image%20Methods)
+
 - [ ] GetImageFromMagickWand
 - [x] MagickAdaptiveBlurImage
 - [x] MagickAdaptiveResizeImage
@@ -199,6 +204,18 @@
 - [x] MagickGetImageDelay
 - [x] MagickGetImageDepth
 - [x] MagickGetImageDispose
+- [ ] MagickGetImageDistortion
+- [ ] MagickGetImageDistortions
+- [x] MagickGetImageEndian
+- [x] MagickGetImageFilename
+- [ ] MagickGetImageFilter [needs updating ImageMagick's version]
+- [x] MagickGetImageFormat
+- [x] MagickGetImageFuzz
+- [x] MagickGetImageGamma
+- [x] MagickGetImageGravity
+- [x] MagickGetImageGreenPrimary
+- [x] MagickGetImageHeight
+- [x] MagickGetImageHistogram
 
 
 

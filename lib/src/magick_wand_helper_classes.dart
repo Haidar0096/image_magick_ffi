@@ -1596,6 +1596,46 @@ Future<int> _magickGetImageColors(int wandPtrAddress) async =>
       Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
     );
 
+/// Represents the result of a call to [magickGetImageGreenPrimary].
+class MagickGetImageGreenPrimaryResult {
+  /// The chromaticity green primary x-point.
+  final double x;
+
+  /// The chromaticity green primary y-point.
+  final double y;
+
+  /// The chromaticity green primary z-point.
+  final double z;
+
+  const MagickGetImageGreenPrimaryResult(
+    this.x,
+    this.y,
+    this.z,
+  );
+
+  @override
+  String toString() => 'MagickGetImageGreenPrimaryResult{x: $x, y: $y, z: $z}';
+}
+
+Future<List<int>> _magickGetImageHistogram(int wandPtrAddress) async => using(
+      (Arena arena) {
+        final Pointer<Size> numberColorsPtr = arena();
+        final Pointer<Pointer<mwbg.PixelWand>> pixelWandsPtr =
+            _magickWandBindings.MagickGetImageHistogram(
+          Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+          numberColorsPtr,
+        );
+        if (pixelWandsPtr == nullptr) {
+          return [];
+        }
+        final List<int> result = [];
+        for (int i = 0; i < numberColorsPtr.value; i++) {
+          result.add(pixelWandsPtr[i].address);
+        }
+        return result;
+      },
+    );
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {
