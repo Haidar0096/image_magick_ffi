@@ -216,6 +216,10 @@
 - [x] MagickGetImageGreenPrimary
 - [x] MagickGetImageHeight
 - [x] MagickGetImageHistogram
+- [x] MagickGetImageInterlaceScheme
+- [x] MagickGetImageInterpolateMethod
+- [x] MagickGetImageIterations
+- [x] MagickGetImageLength
 
 
 

@@ -2777,6 +2777,34 @@ class MagickWand {
         .toList();
   }
 
+  /// MagickGetImageInterlaceScheme() gets the image interlace scheme.
+  InterlaceType magickGetImageInterlaceScheme() => InterlaceType
+      .values[_magickWandBindings.MagickGetImageInterlaceScheme(_wandPtr)];
+
+  /// MagickGetImageInterpolateMethod() returns the interpolation method for the
+  /// specified image.
+  PixelInterpolateMethod magickGetImageInterpolateMethod() =>
+      PixelInterpolateMethod.values[
+          _magickWandBindings.MagickGetImageInterpolateMethod(_wandPtr)];
+
+  /// MagickGetImageIterations() gets the image iterations.
+  int magickGetImageIterations() =>
+      _magickWandBindings.MagickGetImageIterations(_wandPtr);
+
+  /// MagickGetImageLength() returns the image length in bytes.
+  int? magickGetImageLength() => using(
+        (Arena arena) {
+          final Pointer<Size> lengthPtr = arena();
+          final bool result =
+              _magickWandBindings.MagickGetImageLength(_wandPtr, lengthPtr)
+                  .toBool();
+          if (!result) {
+            return null;
+          }
+          return lengthPtr.value;
+        },
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
