@@ -46,3 +46,8 @@
 
 * Added new bindings for MagickWand methods.
 * Made `initializeImageMagick` public again to allow manual initialization of the library when used in a pure dart app.
+
+## 0.0.1-dev.10 - Date to be set
+
+* Added new bindings for MagickWand methods.
+* Improved the codebase and documentation.
