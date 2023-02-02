@@ -5,6 +5,7 @@ report bugs. It is not recommended to use this plugin in production apps yet.
 
 # Table Of Contents
 
+- [⚠️Attention⚠️](#️attention️)
 - [Table Of Contents](#table-of-contents)
 - [Contributors](#contributors)
 - [ImageMagickFFi Plugin](#imagemagickffi-plugin)
@@ -13,8 +14,14 @@ report bugs. It is not recommended to use this plugin in production apps yet.
 - [Install](#install)
 - [Setup](#setup)
 - [Usage](#usage)
+  - [In a Flutter app:](#in-a-flutter-app)
+    - [Initialize a MagickWand](#initialize-a-magickwand)
+    - [Use the MagickWand](#use-the-magickwand)
+    - [Dispose the MagickWand and the plugin](#dispose-the-magickwand-and-the-plugin)
+  - [In a pure Dart app:](#in-a-pure-dart-app)
+  - [Learn how to use the plugin](#learn-how-to-use-the-plugin)
 - [Contributing](#contributing)
-- [Become a Supporter](#become-a-supporter)
+- [Want to say thanks?](#want-to-say-thanks)
 
 # Contributors
 
@@ -92,8 +99,9 @@ for some operations as writing an image.
   Your contributions to provide the binaries are welcomed :)
 
 # Usage
+## In a Flutter app:
 
-## Initialize a MagickWand
+### Initialize a MagickWand
 
 ```dart
   @override
@@ -112,7 +120,7 @@ for some operations as writing an image.
   }
 ```
 
-## Use the plugin
+### Use the MagickWand
 
 ```dart
   // read an image, do some operations on it, then save it
@@ -176,7 +184,7 @@ void _throwWandExceptionIfExists(MagickWand wand) {
 }
 ```   
 
-## Dispose the MagickWand and the plugin
+### Dispose the MagickWand and the plugin
 
 ```dart
 @override
@@ -187,6 +195,95 @@ dispose() {
 }
 ```
 
+## In a pure Dart app:
+- Depend on the plugin in your `pubspec.yaml` just as any other package.
+- You then have to copy the dependencies (.lib files, .dll files) manually to the same path as your executable (unfortunately, this is how it is done now in dart). To get these dependencies, you can build a flutter app then copy the dependencies from there.
+
+Then you can use the plugin normally, for ex:
+```dart
+import 'dart:io';
+import 'package:image_magick_ffi/image_magick_ffi.dart';
+
+Future<void> main(List<String> arguments) async {
+  final File inputFile1 = File("D:\\magick\\Screenshot.png");
+  final File inputFile2 = File("D:\\magick\\fayruz_love.png");
+  final File inputFile3 = File("D:\\magick\\untitled.png");
+
+  print('Magick Dart App Started!');
+
+  initializeImageMagick(); // initialize the plugin
+
+  MagickWand wand1 = MagickWand.newMagickWand(); // create a MagickWand
+  MagickWand wand2 = MagickWand.newMagickWand(); // create a MagickWand
+
+  // await setProgressMonitor(wand1, 'wand1');
+  // throwWandExceptionIfExists(wand1);
+  //
+  // await setProgressMonitor(wand2, 'wand2');
+  // throwWandExceptionIfExists(wand2);
+
+  await wand1.magickReadImage(inputFile3.path);
+  throwWandExceptionIfExists(wand1);
+
+  await wand2.magickReadImage(inputFile2.path);
+  throwWandExceptionIfExists(wand2);
+
+  Stopwatch stopwatch = Stopwatch()..start();
+  ///////////////////////////////// Use MagickWand here /////////////////////////////////
+  final imagePage =
+      wand1.magickGetImagePage(); // get the dimensions of the image
+  throwWandExceptionIfExists(wand1);
+
+  final int width = imagePage!.width;
+  final int height = imagePage.height;
+  final int x = 0;
+  final int y = 0;
+
+  final cropWand = await wand1.magickGetImageRegion(
+    width: width ~/ 2,
+    height: height ~/ 2,
+    x: x,
+    y: y,
+  ); // crop the image into a new wand
+
+  await cropWand!.magickWriteImage(getOutputFilePath(inputFile1.path));
+  throwWandExceptionIfExists(wand2);
+
+  ///////////////////////////////// Use MagickWand here /////////////////////////////////
+  print('elapsed time: ${stopwatch.elapsedMilliseconds} millis');
+
+  await wand1.destroyMagickWand(); // dispose the MagickWand
+  await wand2.destroyMagickWand(); // dispose the MagickWand
+  await cropWand.destroyMagickWand(); // dispose the MagickWand
+
+  disposeImageMagick(); // dispose the plugin
+
+  print('Magick Dart App Ended!');
+}
+
+String getOutputFilePath(String inputFilePath) {
+  final String outputFilePath = inputFilePath.replaceAll(
+      RegExp(r'\.(png|jpg|jpeg|gif|bmp|tiff|tif|webp|pdf|ps|eps|svg|ico)$'),
+      '_output.png');
+  return outputFilePath;
+}
+
+Future<void> setProgressMonitor(MagickWand wand, [String? wandName]) async {
+  await wand.magickSetProgressMonitor((info, offset, size, clientData) {
+    print('[${wandName ?? 'unnamed wand'}] $info, $offset, $size, $clientData');
+  });
+}
+
+void throwWandExceptionIfExists(MagickWand wand) {
+  final exception = wand.magickGetException();
+  if (exception.severity != ExceptionType.UndefinedException) {
+    throw Exception(
+        'An exception occurred with the wand: ${exception.description}');
+  }
+}
+```
+
+## Learn how to use the plugin
 - For more info about code usage, have a look at the example app in this repo, there is a
   complete    
   working app there that is ready for you to play around with.
@@ -201,5 +298,5 @@ dispose() {
 - Feel free to open an issue if you have any problem or suggestion.
 - Feel free to open a pull request if you want to contribute.
 
-# Become a Supporter
+# Want to say thanks?
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/haidarmehsen)
