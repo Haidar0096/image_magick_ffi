@@ -220,6 +220,12 @@
 - [x] MagickGetImageInterpolateMethod
 - [x] MagickGetImageIterations
 - [x] MagickGetImageLength
+- [x] MagickGetImageMatteColor
+- [x] MagickGetImageOrientation
+- [x] MagickGetImagePage
+- [x] MagickGetImagePixelColor
+- [x] MagickGetImageRedPrimary
+- [x] MagickGetImageRegion
 
 
 

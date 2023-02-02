@@ -556,7 +556,7 @@ Future<bool> _magickColorMatrixImage(
     using(
       (Arena arena) => _magickWandBindings.MagickColorMatrixImage(
         Pointer<mwbg.MagickWand>.fromAddress(params.wandPtrAddress),
-        params.colorMatrix._toKernelInfoStructPointer(allocator: arena).cast(),
+        params.colorMatrix._toKernelInfoStructPointer(allocator: arena),
       ),
     ).toBool();
 
@@ -779,7 +779,7 @@ Future<bool> _magickConvolveImage(_MagickConvolveImageParams args) async =>
     using(
       (Arena arena) => _magickWandBindings.MagickConvolveImage(
         Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
-        args.kernel._toKernelInfoStructPointer(allocator: arena).cast(),
+        args.kernel._toKernelInfoStructPointer(allocator: arena),
       ),
     ).toBool();
 
@@ -1072,7 +1072,7 @@ Future<Uint8List?> _magickExportImageCharPixels(
           pixelsPtr.cast(),
         ).toBool();
         if (result) {
-          return pixelsPtr.cast<UnsignedChar>().toUint8List(pixelsArraySize);
+          return pixelsPtr.toUint8List(pixelsArraySize);
         }
         return null;
       },
@@ -1099,7 +1099,7 @@ Future<Float64List?> _magickExportImageDoublePixels(
           // TODO: see if we can return the list using `asTypedData` instead
           // of copying, while still freeing the pointer automatically when the
           // list is garbage collected.
-          return pixelsPtr.cast<Double>().toFloat64List(pixelsArraySize);
+          return pixelsPtr.toFloat64List(pixelsArraySize);
         }
         return null;
       },
@@ -1126,7 +1126,7 @@ Future<Float32List?> _magickExportImageFloatPixels(
           // TODO: see if we can return the list using `asTypedData` instead
           // of copying, while still freeing the pointer automatically when the
           // list is garbage collected.
-          return pixelsPtr.cast<Float>().toFloat32List(pixelsArraySize);
+          return pixelsPtr.toFloat32List(pixelsArraySize);
         }
         return null;
       },
@@ -1153,7 +1153,7 @@ Future<Uint32List?> _magickExportImageLongPixels(
           // TODO: see if we can return the list using `asTypedData` instead
           // of copying, while still freeing the pointer automatically when the
           // list is garbage collected.
-          return pixelsPtr.cast<Uint32>().toUint32List(pixelsArraySize);
+          return pixelsPtr.toUint32List(pixelsArraySize);
         }
         return null;
       },
@@ -1180,7 +1180,7 @@ Future<Uint64List?> _magickExportImageLongLongPixels(
           // TODO: see if we can return the list using `asTypedData` instead
           // of copying, while still freeing the pointer automatically when the
           // list is garbage collected.
-          return pixelsPtr.cast<Uint64>().toUint64List(pixelsArraySize);
+          return pixelsPtr.toUint64List(pixelsArraySize);
         }
         return null;
       },
@@ -1210,7 +1210,7 @@ Future<Uint16List?> _magickExportImageShortPixels(
           // TODO: see if we can return the list using `asTypedData` instead
           // of copying, while still freeing the pointer automatically when the
           // list is garbage collected.
-          return pixelsPtr.cast<Uint16>().toUint16List(pixelsArraySize);
+          return pixelsPtr.toUint16List(pixelsArraySize);
         }
         return null;
       },
@@ -1635,6 +1635,71 @@ Future<List<int>> _magickGetImageHistogram(int wandPtrAddress) async => using(
         return result;
       },
     );
+
+/// Represents the result of a call to [magickGetImagePage].
+class MagickGetImagePageResult {
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  const MagickGetImagePageResult(
+    this.width,
+    this.height,
+    this.x,
+    this.y,
+  );
+
+  @override
+  String toString() =>
+      'MagickGetImagePageResult{width: $width, height: $height, x: $x, y: $y}';
+}
+
+/// Represents the result of a call to [magickGetImageRedPrimary].
+class MagickGetImageRedPrimaryResult {
+  /// The chromaticity red primary x-point.
+  final double x;
+
+  /// The chromaticity red primary y-point.
+  final double y;
+
+  /// The chromaticity red primary z-point.
+  final double z;
+
+  const MagickGetImageRedPrimaryResult(
+    this.x,
+    this.y,
+    this.z,
+  );
+
+  @override
+  String toString() => 'MagickGetImageRedPrimaryResult{x: $x, y: $y, z: $z}';
+}
+
+class _MagickGetImageRegionParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final int x;
+  final int y;
+
+  _MagickGetImageRegionParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.x,
+    this.y,
+  );
+}
+
+Future<int> _magickGetImageRegion(_MagickGetImageRegionParams args) async =>
+    _magickWandBindings.MagickGetImageRegion(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.width,
+      args.height,
+      args.x,
+      args.y,
+    ).address;
 
 // TODO: continue adding helper classes here
 

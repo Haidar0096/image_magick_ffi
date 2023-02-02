@@ -816,7 +816,9 @@ class MagickWand {
   /// reasonable results, radius should be larger than sigma. Use a radius of 0
   /// and `magickAdaptiveBlurImage()` selects a suitable radius for you.
   ///
+  /// {@template magick_wand.method_runs_in_different_isolate}
   /// This method runs inside an isolate different from the main isolate.
+  /// {@endtemplate}
   ///
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the
   /// center pixel.
@@ -829,7 +831,7 @@ class MagickWand {
 
   /// Adaptively resize image with data dependent triangulation.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [columns] : the number of columns in the scaled image.
   /// - [rows] : the number of rows in the scaled image.
@@ -845,7 +847,7 @@ class MagickWand {
   /// reasonable results, radius should be larger than sigma. Use a radius of 0
   /// and `magickAdaptiveSharpenImage()` selects a suitable radius for you.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the
   /// center pixel.
@@ -861,7 +863,7 @@ class MagickWand {
   /// of an image whose global intensity histogram doesn't contain distinctive
   /// peaks.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [width] : the width of the local neighborhood.
   /// - [height] : the height of the local neighborhood.
@@ -893,7 +895,7 @@ class MagickWand {
   /// when multiple image adds are inserted into the middle of the wand image
   /// list.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [other] : the other wand to add images from.
   Future<bool> magickAddImage(MagickWand other) async => await _magickCompute(
         _magickAddImage,
@@ -902,7 +904,7 @@ class MagickWand {
 
   /// Adds random noise to the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [noiseType] : the type of noise.
   /// - [attenuate] : attenuate the random distribution.
   Future<bool> magickAddNoiseImage(
@@ -918,7 +920,7 @@ class MagickWand {
 
   /// Transforms an image as dictated by the affine matrix of the drawing wand.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickAffineTransformImage(DrawingWand drawingWand) async =>
       await _magickCompute(
           _magickAffineTransformImage,
@@ -926,7 +928,7 @@ class MagickWand {
               _wandPtr.address, drawingWand._wandPtr.address));
 
   /// Annotates an image with text.
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x] : x ordinate to left of text.
   /// - [y] : y ordinate to text baseline.
   /// - [angle] : the text rotation angle.
@@ -959,7 +961,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [stack] : By default, images are stacked left-to-right. Set stack to
   /// true to stack them top-to-bottom.
   Future<MagickWand?> magickAppendImages(bool stack) async {
@@ -979,7 +981,7 @@ class MagickWand {
   /// Extracts the 'mean' from the image and adjust the image to try make set
   /// its gamma appropriately.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickAutoGammaImage() async =>
       await _magickCompute(_magickAutoGammaImage, _wandPtr.address);
 
@@ -987,21 +989,21 @@ class MagickWand {
   /// and maximum values to the
   /// full quantum range.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickAutoLevelImage() async =>
       await _magickCompute(_magickAutoLevelImage, _wandPtr.address);
 
   /// Adjusts an image so that its orientation is suitable $ for viewing (i.e.
   /// top-left orientation).
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickAutoOrientImage() async =>
       await _magickCompute(_magickAutoOrientImage, _wandPtr.address);
 
   /// Automatically performs image thresholding dependent on which method you
   /// specify.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [method] : the method to use.
   Future<bool> magickAutoThresholdImage(AutoThresholdMethod method) async =>
       await _magickCompute(
@@ -1017,7 +1019,7 @@ class MagickWand {
   /// differences (e.g., range differences, such as color intensity, depth
   /// distance, etc.). This preserves sharp edges.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the
   /// center pixel.
   /// - [sigma] : the standard deviation of the , in pixels.
@@ -1050,7 +1052,7 @@ class MagickWand {
   /// all pixels below the threshold into black while leaving all pixels above
   /// the threshold unchanged.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [pixelWand] : the pixel wand to determine the threshold.
   Future<bool> magickBlackThresholdImage(PixelWand pixelWand) async =>
       await _magickCompute(
@@ -1064,7 +1066,7 @@ class MagickWand {
   /// Mutes the colors of the image to simulate a scene at nighttime in the
   /// moonlight.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [factor] : the blue shift factor (default 1.5).
   Future<bool> magickBlueShiftImage([double factor = 1.5]) async =>
       await _magickCompute(
@@ -1077,7 +1079,7 @@ class MagickWand {
   /// reasonable results, the radius should be larger than sigma.
   /// Use a radius of 0 and BlurImage() selects a suitable radius for you.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the
   /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
@@ -1093,7 +1095,7 @@ class MagickWand {
   /// `magickBorderImage()` surrounds the image with a border of the color
   /// defined by the bordercolor pixel wand.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [borderColorWand] : the border color pixel wand.
   /// - [width] : the border width.
   /// - [height] : the border height.
@@ -1120,7 +1122,7 @@ class MagickWand {
   /// It converts the brightness and contrast parameters into slope and
   /// intercept and calls a polynomial function to apply to the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [brightness] : the brightness percent (-100 .. 100).
   /// - [contrast] : the contrast percent (-100 .. 100).
@@ -1140,7 +1142,7 @@ class MagickWand {
   /// `magickCannyEdgeImage()` uses a multi-stage algorithm to detect a wide
   /// range of edges in images.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius] : the radius of the gaussian smoothing filter.
   /// - [sigma] : the sigma of the gaussian smoothing filter.
   /// - [lowerPercent] : percentage of edge pixels in the lower threshold.
@@ -1175,7 +1177,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [expression] : the expression.
   ///
@@ -1199,7 +1201,7 @@ class MagickWand {
 
   /// Simulates a charcoal drawing.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius] : the radius of the Gaussian, in pixels, not counting the
   /// center pixel.
   /// - [sigma] : the standard deviation of the Gaussian, in pixels.
@@ -1213,7 +1215,7 @@ class MagickWand {
   /// Removes a region of an image and collapses the image to occupy the
   /// removed portion.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [width] : the width of the region.
   /// - [height] : the height of the region.
   /// - [x] : the x offset of the region.
@@ -1239,7 +1241,7 @@ class MagickWand {
   /// which the contrast amplification is limited, so as to reduce this problem
   /// of noise amplification.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [width] : the width of the tile divisions to use in horizontal
   /// direction.
   /// - [height] : the height of the tile divisions to use in vertical
@@ -1269,13 +1271,13 @@ class MagickWand {
 
   /// Restricts the color range from 0 to the quantum depth.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickClampImage() async =>
       await _magickCompute(_magickClampImage, _wandPtr.address);
 
   /// Clips along the first path from the 8BIM profile, if present.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickClipImage() async =>
       await _magickCompute(_magickClipImage, _wandPtr.address);
 
@@ -1284,7 +1286,7 @@ class MagickWand {
   /// preceded with #, to work on a numbered path, e.g., "#1" to use the first
   /// path.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [pathName] : name of clipping path resource. If name is preceded by #,
   /// use clipping path numbered
   /// by name.
@@ -1300,7 +1302,7 @@ class MagickWand {
 
   /// Replaces colors in the image from a color lookup table.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [clutImage] : the clut image.
   /// - [method] : the pixel interpolation method.
   Future<bool> magickClutImage(
@@ -1324,7 +1326,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickWand?> magickCoalesceImages() async {
     final Pointer<mwbg.MagickWand> resultPtr =
         Pointer<mwbg.MagickWand>.fromAddress(
@@ -1357,7 +1359,7 @@ class MagickWand {
       which includes the offset, slope, and power for each of the RGB channels
       as well as the saturation.
 
-      This method runs inside an isolate different from the main isolate.
+      {@macro magick_wand.method_runs_in_different_isolate}
       - [colorCorrectionCollection] : the color correction collection in XML.*/
   Future<bool> magickColorDecisionListImage(
           String colorCorrectionCollection) async =>
@@ -1371,7 +1373,7 @@ class MagickWand {
 
   /// Blends the fill color with each pixel in the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [colorize] : the colorize pixel wand.
   /// - [blend] : the alpha pixel wand.
   Future<bool> magickColorizeImage(
@@ -1393,7 +1395,7 @@ class MagickWand {
   /// offsets are in column 6 rather than 5 (in support of CMYKA images) and
   /// offsets are normalized (divide Flash offset by 255).
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [colorMatrix] : the color matrix.
   Future<bool> magickColorMatrixImage(
@@ -1408,7 +1410,7 @@ class MagickWand {
 
   /// Forces all pixels in the color range to white otherwise black.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [startColor] : the start color pixel wand.
   /// - [stopColor] : the stop color pixel wand.
   Future<bool> magickColorThresholdImage(
@@ -1430,7 +1432,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [colorSpace]: the colorspace.
   Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async {
     final Pointer<mwbg.MagickWand> resultPtr =
@@ -1448,7 +1450,7 @@ class MagickWand {
 
   /// `magickCommentImage()` adds a comment to your image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [comment]: the image comment.
   Future<bool> magickCommentImage(String comment) async => await _magickCompute(
         _magickCommentImage,
@@ -1461,7 +1463,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [method] : the compare method.
   Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async {
     final Pointer<mwbg.MagickWand> resultPtr =
@@ -1482,7 +1484,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [reference] : the reference wand.
   /// - [metric] : the metric.
   /// - [distortion] : the computed distortion between the images.
@@ -1513,7 +1515,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [operator]: A complex operator.
   Future<MagickWand?> magickComplexImages(ComplexOperator operator) async {
     final Pointer<mwbg.MagickWand> resultPtr =
@@ -1531,7 +1533,7 @@ class MagickWand {
 
   /// Composite one image onto another at the specified offset.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [sourceImage]: the magick wand holding source image
   /// - [compose]: This operator affects how the composite is applied to the
   /// image.
@@ -1560,7 +1562,7 @@ class MagickWand {
 
   /// Composite one image onto another using the specified gravity.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///  - [sourceWand]: the magick wand holding source image.
   ///  - [compose]: This operator affects how the composite is applied to the
   ///  image.
@@ -1601,7 +1603,7 @@ class MagickWand {
   /// be cloned to match the number of images remaining in the source image
   /// list. This is equivalent to the "-layer Composite" Shell API operator.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [sourceWand]: the magick wand holding source image.
   /// - Compose, x, and y are the compose arguments.
   Future<bool> magickCompositeLayers({
@@ -1625,7 +1627,7 @@ class MagickWand {
   /// elements of the image. Set sharpen to a value other than 0 to increase
   /// the image contrast otherwise the contrast is reduced.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [sharpen]: Increase or decrease image contrast.
   Future<bool> magickContrastImage(bool sharpen) async => await _magickCompute(
         _magickContrastImage,
@@ -1636,7 +1638,7 @@ class MagickWand {
   /// span the entire range of colors available. You can also reduce the
   /// influence of a particular channel with a gamma value of 0.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [blackPoint]: the black point.
   /// - [whitePoint]: the white point.
   Future<bool> magickContrastStretchImage(
@@ -1652,7 +1654,7 @@ class MagickWand {
 
   /// Applies a custom convolution kernel to the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [kernel]: An array of doubles representing the convolution kernel.
   Future<bool> magickConvolveImage({required KernelInfo kernel}) async =>
@@ -1663,7 +1665,7 @@ class MagickWand {
 
   /// Extracts a region of the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [width]: the region width.
   /// - [height]: the region height.
   /// - [x]: the region x offset.
@@ -1682,7 +1684,7 @@ class MagickWand {
   /// Displaces an image's colormap by a given number of positions. If you
   /// cycle the colormap a number of times you can produce a psychodelic effect.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickCycleColormapImage(int displace) async =>
       await _magickCompute(
         _magickCycleColormapImage,
@@ -1704,7 +1706,7 @@ class MagickWand {
   /// wand.MagickConstituteImageFromCharPixel(640,640,'RGB',pixels)
   /// ```
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1738,7 +1740,7 @@ class MagickWand {
   /// Adds an image to the wand comprised of the pixel data you supply. The
   /// pixel data must be in scanline order top-to-bottom.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1772,7 +1774,7 @@ class MagickWand {
   /// Adds an image to the wand comprised of the pixel data you supply. The
   /// pixel data must be in scanline order top-to-bottom.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1806,7 +1808,7 @@ class MagickWand {
   /// Adds an image to the wand comprised of the pixel data you supply. The
   /// pixel data must be in scanline order top-to-bottom.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1840,7 +1842,7 @@ class MagickWand {
   /// Adds an image to the wand comprised of the pixel data you supply. The
   /// pixel data must be in scanline order top-to-bottom.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1874,7 +1876,7 @@ class MagickWand {
   /// Adds an image to the wand comprised of the pixel data you supply. The
   /// pixel data must be in scanline order top-to-bottom.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [columns]: width in pixels of the image.
   /// - [rows]: height in pixels of the image.
   /// - [map]: This string reflects the expected ordering of the pixel array.
@@ -1907,7 +1909,7 @@ class MagickWand {
 
   /// Converts cipher pixels to plain pixels.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [passphrase]: the passphrase
   Future<bool> magickDecipherImage(String passphrase) async =>
       await _magickCompute(
@@ -1919,7 +1921,7 @@ class MagickWand {
   /// bounding region of any pixel differences it discovers.
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickWand?> magickDeconstructImages() async {
     final int resultWandAddress =
         await _magickCompute(_magickDeconstructImages, _wandPtr.address);
@@ -1935,7 +1937,7 @@ class MagickWand {
   /// scanning or surface, or simply because the paper was not placed
   /// completely flat when scanned.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [threshold]: separate background from foreground.
   Future<bool> magickDeskewImage(double threshold) async =>
       await _magickCompute(
@@ -1946,7 +1948,7 @@ class MagickWand {
   /// Reduces the speckle noise in an image while preserving the edges of the
   /// original image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickDespeckleImage() async => await _magickCompute(
         _magickDespeckleImage,
         _wandPtr.address,
@@ -1962,7 +1964,7 @@ class MagickWand {
   /// Also in many cases the virtual offset of the source image will be taken
   /// into account in the mapping.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [method]: the method of image distortion.
   ///
   /// ArcDistortion always ignores the source image offset, and always 'bestfit'
@@ -2000,7 +2002,7 @@ class MagickWand {
 
   /// Renders the drawing wand on the current image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickDrawImage(DrawingWand drawWand) async =>
       await _magickCompute(
         _magickDrawImage,
@@ -2010,7 +2012,7 @@ class MagickWand {
   /// Enhance edges within the image with a convolution filter of the given
   /// radius. Use a radius of 0 and Edge() selects a suitable radius for you.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius]: the radius of the pixel neighborhood.
   Future<bool> magickEdgeImage(double radius) async => await _magickCompute(
         _magickEdgeImage,
@@ -2023,7 +2025,7 @@ class MagickWand {
   /// larger than sigma. Use a radius of 0 and Emboss() selects a suitable
   /// radius for you.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
   /// pixel.
   /// - [sigma]: the standard deviation of the Gaussian, in pixels.
@@ -2038,7 +2040,7 @@ class MagickWand {
 
   /// MagickEncipherImage() converts plaint pixels to cipher pixels.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [passphrase]: the passphrase
   Future<bool> magickEncipherImage(String passphrase) async =>
       await _magickCompute(
@@ -2049,7 +2051,7 @@ class MagickWand {
   /// MagickEnhanceImage() applies a digital filter that improves the quality
   /// of a noisy image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickEnhanceImage() async => await _magickCompute(
         _magickEnhanceImage,
         _wandPtr.address,
@@ -2057,7 +2059,7 @@ class MagickWand {
 
   /// MagickEqualizeImage() equalizes the image histogram.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickEqualizeImage() async => await _magickCompute(
         _magickEqualizeImage,
         _wandPtr.address,
@@ -2068,7 +2070,7 @@ class MagickWand {
   /// to increase or decrease contrast in an image, or to produce the "negative"
   /// of an image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [operator]: the operator channel.
   Future<bool> magickEvaluateImage({
     required MagickEvaluateOperator operator,
@@ -2082,7 +2084,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2117,7 +2119,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2152,7 +2154,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2187,7 +2189,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2222,7 +2224,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2257,7 +2259,7 @@ class MagickWand {
   /// Extracts pixel data from an image and returns it to you.
   /// The data is returned as in the order specified by map.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [x]: The region x offset.
   /// - [y]: The region y offset.
   /// - [columns]: The region width.
@@ -2293,7 +2295,7 @@ class MagickWand {
   /// color. Set the (x,y) offset of the geometry to move the original wand
   /// relative to the extended wand.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [width]: the region width.
   /// - [height]: the region height.
   /// - [x]: the region x offset.
@@ -2318,7 +2320,7 @@ class MagickWand {
   /// Creates a vertical mirror image by reflecting the pixels around the
   /// central x-axis.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickFlipImage() async => await _magickCompute(
         _magickFlipImage,
         _wandPtr.address,
@@ -2329,7 +2331,7 @@ class MagickWand {
   /// color value is changed for any neighbor pixel that does not match the
   /// bordercolor member of image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [fill]: the floodfill color pixel wand.
   /// - [fuzz]: By default target must match a particular pixel color exactly.
   /// However, in many cases two colors may differ by a small amount. The fuzz
@@ -2365,7 +2367,7 @@ class MagickWand {
   /// Creates a horizontal mirror image by reflecting the pixels around the
   /// central y-axis.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickFlopImage() async => await _magickCompute(
         _magickFlopImage,
         _wandPtr.address,
@@ -2376,7 +2378,7 @@ class MagickWand {
   /// the frame. The inner and outer bevels indicate the width of the inner and
   /// outer shadows of the frame.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [matteColor]: the frame color pixel wand.
   /// - [width]: the border width.
   /// - [height]: the border height.
@@ -2408,7 +2410,7 @@ class MagickWand {
   /// these operators to lighten or darken an image, to increase or decrease
   /// contrast in an image, or to produce the "negative" of an image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [function]: the image function.
   /// - [arguments]: the function arguments.
   Future<bool> magickFunctionImage({
@@ -2428,7 +2430,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [expression]: the expression.
   Future<MagickWand?> magickFxImage(String expression) async {
     final int resultWandAddress = await _magickCompute(
@@ -2449,7 +2451,7 @@ class MagickWand {
   /// green, and blue channels, or adjust all three with the gamma parameter.
   /// Values typically range from 0.8 to 2.3.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [level]: defines the level of gamma correction.
   Future<bool> magickGammaImage(double level) async => await _magickCompute(
         _magickGammaImage,
@@ -2464,7 +2466,7 @@ class MagickWand {
   /// radius should be larger than sigma. Use a radius of 0 and
   /// `magickGaussianBlurImage()` selects a suitable radius for you.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [radius]: the radius of the, in pixels, not counting the center pixel.
   /// - [sigma]: the standard deviation of the, in pixels.
   Future<bool> magickGaussianBlurImage({
@@ -2484,7 +2486,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickWand?> magickGetImage() async {
     final int resultWandAddress = await _magickCompute(
       _magickGetImage,
@@ -2504,7 +2506,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [clipMask]: the type of the clip mask.
   Future<MagickWand?> magickGetImageMask(PixelMask type) async {
     final int resultWandAddress = await _magickCompute(
@@ -2533,7 +2535,7 @@ class MagickWand {
   /// Utilize `magickResetIterator()` to ensure the write is from the beginning
   /// of the image sequence.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<Uint8List?> magickGetImageBlob() async => await _magickCompute(
         _magickGetImageBlob,
         _wandPtr.address,
@@ -2548,7 +2550,7 @@ class MagickWand {
   /// stream (e.g. JPEG). in this instance, just the first image of the sequence
   /// is returned as a blob.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<Uint8List?> magickGetImagesBlob() async => await _magickCompute(
         _magickGetImagesBlob,
         _wandPtr.address,
@@ -2556,7 +2558,7 @@ class MagickWand {
 
   /// Returns the chromaticity blue primary point for the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   MagickGetImageBluePrimaryResult? magickGetImageBluePrimary() => using(
         (Arena arena) {
           final Pointer<Double> xPtr = arena();
@@ -2581,7 +2583,7 @@ class MagickWand {
 
   /// Returns the image border color.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [borderColor]: the border color.
   bool magickGetImageBorderColor(PixelWand borderColor) =>
@@ -2598,7 +2600,7 @@ class MagickWand {
   /// difference entropy, information measures of correlation 1, information
   /// measures of correlation 2, and maximum correlation coefficient.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<ChannelFeatures?> magickGetImageFeatures(int distance) async =>
       await _magickCompute(
         _magickGetImageFeatures,
@@ -2610,7 +2612,7 @@ class MagickWand {
 
   /// Gets the kurtosis and skewness of one or more image channels.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickGetImageKurtosisResult?> magickGetImageKurtosis() async =>
       await _magickCompute(
         _magickGetImageKurtosis,
@@ -2619,7 +2621,7 @@ class MagickWand {
 
   /// Gets the mean and standard deviation of one or more image channels.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickGetImageMeanResult?> magickGetImageMean() async =>
       await _magickCompute(
         _magickGetImageMean,
@@ -2628,7 +2630,7 @@ class MagickWand {
 
   /// Gets the range for one or more image channels.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<MagickGetImageRangeResult?> magickGetImageRange() async =>
       await _magickCompute(
         _magickGetImageRange,
@@ -2639,7 +2641,7 @@ class MagickWand {
   /// the channel depth, its minima and maxima, the mean, the standard
   /// deviation, the kurtosis and the skewness.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<ChannelStatistics?> magickGetImageStatistics() async =>
       await _magickCompute(
         _magickGetImageStatistics,
@@ -2659,7 +2661,7 @@ class MagickWand {
 
   /// Gets the number of unique colors in the image.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<int> magickGetImageColors() async => await _magickCompute(
         _magickGetImageColors,
         _wandPtr.address,
@@ -2667,7 +2669,7 @@ class MagickWand {
 
   /// Gets the image colorspace.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   ColorspaceType magickGetImageColorspace() => ColorspaceType
       .values[_magickWandBindings.MagickGetImageColorspace(_wandPtr)];
 
@@ -2762,7 +2764,7 @@ class MagickWand {
   /// Don't forget to call [destroyPixelWand] on the returned [PixelWand]s when
   /// done.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<List<PixelWand>?> magickGetImageHistogram() async {
     List<int> pixelWandsPtrsAddresses = await _magickCompute(
       _magickGetImageHistogram,
@@ -2805,6 +2807,102 @@ class MagickWand {
         },
       );
 
+  /// MagickGetImageMatteColor() returns the image matte color.
+  bool magickGetImageMatteColor(PixelWand pixelWand) =>
+      _magickWandBindings.MagickGetImageMatteColor(_wandPtr, pixelWand._wandPtr)
+          .toBool();
+
+  /// MagickGetImageOrientation() returns the image orientation.
+  OrientationType magickGetImageOrientation() => OrientationType
+      .values[_magickWandBindings.MagickGetImageOrientation(_wandPtr)];
+
+  /// MagickGetImagePage() returns the page geometry associated with the image.
+  MagickGetImagePageResult? magickGetImagePage() => using(
+        (Arena arena) {
+          final Pointer<Size> widthPtr = arena();
+          final Pointer<Size> heightPtr = arena();
+          final Pointer<mwbg.ssize_t> xPtr = arena();
+          final Pointer<mwbg.ssize_t> yPtr = arena();
+          final bool result = _magickWandBindings.MagickGetImagePage(
+                  _wandPtr, widthPtr, heightPtr, xPtr, yPtr)
+              .toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImagePageResult(
+            widthPtr.value,
+            heightPtr.value,
+            xPtr.value,
+            yPtr.value,
+          );
+        },
+      );
+
+  /// MagickGetImagePixelColor() gets the color of the specified pixel.
+  /// - [x]: the x offset.
+  /// - [y]: the y offset.
+  bool magickGetImagePixelColor({
+    required int x,
+    required int y,
+    required PixelWand pixelWand,
+  }) =>
+      _magickWandBindings.MagickGetImagePixelColor(
+              _wandPtr, x, y, pixelWand._wandPtr)
+          .toBool();
+
+  /// MagickGetImageRedPrimary() returns the chromaticity red primary point.
+  MagickGetImageRedPrimaryResult? magickGetImageRedPrimary() => using(
+        (Arena arena) {
+          final Pointer<Double> xPtr = arena();
+          final Pointer<Double> yPtr = arena();
+          final Pointer<Double> zPtr = arena();
+          final bool result = _magickWandBindings.MagickGetImageRedPrimary(
+                  _wandPtr, xPtr, yPtr, zPtr)
+              .toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImageRedPrimaryResult(
+            xPtr.value,
+            yPtr.value,
+            zPtr.value,
+          );
+        },
+      );
+
+  /// MagickGetImageRegion() extracts a region of the image and returns it as a
+  /// new wand.
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [width]: the region width.
+  /// - [height]: the region height.
+  /// - [x]: the region x offset.
+  /// - [y]: the region y offset.
+  Future<MagickWand?> magickGetImageRegion({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+  }) async {
+    final int wandPtrAddress = await _magickCompute(
+      _magickGetImageRegion,
+      _MagickGetImageRegionParams(
+        _wandPtr.address,
+        width,
+        height,
+        x,
+        y,
+      ),
+    );
+    if (wandPtrAddress == 0) {
+      return null;
+    }
+    return MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress));
+  }
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
@@ -2813,7 +2911,7 @@ class MagickWand {
   /// magickSetLastIterator() to append add to the end,
   /// magickSetIteratorIndex() to place images just after the given index.
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickReadImage(String imageFilePath) async =>
       await _magickCompute(
         _magickReadImage,
@@ -2824,7 +2922,7 @@ class MagickWand {
   /// NULL, the image is written to the filename set by magickReadImage() or
   /// magickSetImageFilename().
   ///
-  /// This method runs inside an isolate different from the main isolate.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
   Future<bool> magickWriteImage(String imageFilePath) async =>
       await _magickCompute(
         _magickWriteImage,
