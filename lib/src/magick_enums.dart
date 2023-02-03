@@ -596,3 +596,40 @@ enum EndianType {
   LSBEndian,
   MSBEndian,
 }
+
+/// Represents a rendering intent.
+enum RenderingIntent {
+  UndefinedIntent,
+  SaturationIntent,
+  PerceptualIntent,
+  AbsoluteIntent,
+  RelativeIntent,
+}
+
+/// Represents a resolution type.
+enum ResolutionType {
+  UndefinedResolution,
+  PixelsPerInchResolution,
+  PixelsPerCentimeterResolution,
+}
+
+/// Represents a virtual pixel method.
+enum VirtualPixelMethod {
+  UndefinedVirtualPixelMethod,
+  BackgroundVirtualPixelMethod,
+  DitherVirtualPixelMethod,
+  EdgeVirtualPixelMethod,
+  MirrorVirtualPixelMethod,
+  RandomVirtualPixelMethod,
+  TileVirtualPixelMethod,
+  TransparentVirtualPixelMethod,
+  MaskVirtualPixelMethod,
+  BlackVirtualPixelMethod,
+  GrayVirtualPixelMethod,
+  WhiteVirtualPixelMethod,
+  HorizontalTileVirtualPixelMethod,
+  VerticalTileVirtualPixelMethod,
+  HorizontalTileEdgeVirtualPixelMethod,
+  VerticalTileEdgeVirtualPixelMethod,
+  CheckerTileVirtualPixelMethod,
+}

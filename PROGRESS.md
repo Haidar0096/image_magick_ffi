@@ -226,6 +226,11 @@
 - [x] MagickGetImagePixelColor
 - [x] MagickGetImageRedPrimary
 - [x] MagickGetImageRegion
-
-
-
+- [x] MagickGetImageRenderingIntent
+- [x] MagickGetImageResolution
+- [x] MagickGetImageScene
+- [x] MagickGetImageSignature
+- [x] MagickGetImageTicksPerSecond
+- [x] MagickGetImageType
+- [x] MagickGetImageUnits
+- [x] MagickGetImageVirtualPixelMethod

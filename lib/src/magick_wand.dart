@@ -2903,6 +2903,64 @@ class MagickWand {
     return MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress));
   }
 
+  /// MagickGetImageRenderingIntent() gets the image rendering intent.
+  RenderingIntent magickGetImageRenderingIntent() => RenderingIntent
+      .values[_magickWandBindings.MagickGetImageRenderingIntent(_wandPtr)];
+
+  /// MagickGetImageResolution() gets the image X and Y resolution.
+  MagickGetImageResolutionResult? magickGetImageResolution() => using(
+        (Arena arena) {
+          final Pointer<Double> xResolutionPtr = arena();
+          final Pointer<Double> yResolutionPtr = arena();
+          final bool result = _magickWandBindings.MagickGetImageResolution(
+                  _wandPtr, xResolutionPtr, yResolutionPtr)
+              .toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImageResolutionResult(
+            xResolutionPtr.value,
+            yResolutionPtr.value,
+          );
+        },
+      );
+
+  /// MagickGetImageScene() gets the image scene.
+  int magickGetImageScene() =>
+      _magickWandBindings.MagickGetImageScene(_wandPtr);
+
+  /// MagickGetImageSignature() generates an SHA-256 message digest for the
+  /// image pixel stream.
+  String? magickGetImageSignature() => using(
+        (Arena arena) {
+          final Pointer<Char> signaturePtr =
+              _magickWandBindings.MagickGetImageSignature(_wandPtr);
+          if (signaturePtr.address == 0) {
+            return null;
+          }
+          String signature = signaturePtr.cast<Utf8>().toDartString();
+          _magickRelinquishMemory(signaturePtr.cast());
+          return signature;
+        },
+      );
+
+  /// MagickGetImageTicksPerSecond() gets the image ticks-per-second.
+  int magickGetImageTicksPerSecond() =>
+      _magickWandBindings.MagickGetImageTicksPerSecond(_wandPtr);
+
+  /// MagickGetImageType() gets the potential image type.
+  ImageType magickGetImageType() =>
+      ImageType.values[_magickWandBindings.MagickGetImageType(_wandPtr)];
+
+  /// MagickGetImageUnits() gets the image units of resolution.
+  ResolutionType magickGetImageUnits() =>
+      ResolutionType.values[_magickWandBindings.MagickGetImageUnits(_wandPtr)];
+
+  /// MagickGetImageVirtualPixelMethod() returns the virtual pixel method for
+  /// the specified image.
+  VirtualPixelMethod magickGetImageVirtualPixelMethod() => VirtualPixelMethod
+      .values[_magickWandBindings.MagickGetImageVirtualPixelMethod(_wandPtr)];
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

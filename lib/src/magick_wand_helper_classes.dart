@@ -1701,6 +1701,21 @@ Future<int> _magickGetImageRegion(_MagickGetImageRegionParams args) async =>
       args.y,
     ).address;
 
+/// Represents the result of a call to [magickGetImageResolution].
+class MagickGetImageResolutionResult {
+  /// The image x-resolution.
+  final double xResolution;
+
+  /// The image y-resolution.
+  final double yResolution;
+
+  const MagickGetImageResolutionResult(this.xResolution, this.yResolution);
+
+  @override
+  String toString() =>
+      'MagickGetImageResolutionResult{xResolution: $xResolution, yResolution: $yResolution}';
+}
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {
