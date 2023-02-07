@@ -3091,6 +3091,258 @@ class MagickWand {
         ),
       );
 
+  /// MagickImportImageCharPixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageCharPixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageCharPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint8List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.CharPixel,
+          pixels,
+        ),
+      );
+
+  /// MagickImportImageDoublePixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageDoublePixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageDoublePixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Float64List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.DoublePixel,
+          pixels,
+        ),
+      );
+
+  /// MagickImportImageFloatPixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageFloatPixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageFloatPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Float32List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.FloatPixel,
+          pixels,
+        ),
+      );
+
+  /// MagickImportImageLongPixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageLongPixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageLongPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint32List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.LongPixel,
+          pixels,
+        ),
+      );
+
+  /// MagickImportImageLongLongPixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageLongLongPixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageLongLongPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint64List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.LongLongPixel,
+          pixels,
+        ),
+      );
+
+  /// MagickImportImageShortPixels() accepts pixel data and stores it in the
+  /// image at the location you specify. The method returns true on success
+  /// otherwise false if an error is encountered. The pixel data should be as
+  /// the order specified by [map].
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: The region x offset.
+  /// - [y]: The region y offset.
+  /// - [columns]: The region width.
+  /// - [rows]: The region height.
+  /// - [map]: This string reflects the expected ordering of the pixel array.
+  /// It can be any combination or order of R = red, G = green, B = blue, A =
+  /// alpha (0 is transparent), O = alpha (0 is opaque), C = cyan, Y = yellow,
+  /// M = magenta, K = black, I = intensity (for grayscale), P = pad.
+  /// - [pixels]: The pixel data.
+  ///
+  /// - See also: [magickExportImageShortPixels]
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<bool> magickImportImageShortPixels({
+    required int x,
+    required int y,
+    required int columns,
+    required int rows,
+    required String map,
+    required Uint16List pixels,
+  }) async =>
+      await _magickCompute(
+        _magickImportImagePixels,
+        _MagickImportImagePixelsParams(
+          _wandPtr.address,
+          x,
+          y,
+          columns,
+          rows,
+          map,
+          _StorageType.ShortPixel,
+          pixels,
+        ),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

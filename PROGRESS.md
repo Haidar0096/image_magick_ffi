@@ -245,3 +245,4 @@
 - [x] MagickIdentifyImage
 - [x] MagickIdentifyImageType
 - [x] MagickImplodeImage
+- [x] MagickImportImagePixels

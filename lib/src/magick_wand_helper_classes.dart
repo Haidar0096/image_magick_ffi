@@ -1791,7 +1791,7 @@ Future<ImageType> _magickIdentifyImageType(int wandPtrAddress) async =>
       Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
     )];
 
-class _MagickImplodeImageParams{
+class _MagickImplodeImageParams {
   final int wandPtrAddress;
   final double amount;
   final PixelInterpolateMethod method;
@@ -1809,6 +1809,87 @@ Future<bool> _magickImplodeImage(_MagickImplodeImageParams args) async =>
       args.amount,
       args.method.index,
     ).toBool();
+
+class _MagickImportImagePixelsParams {
+  final int wandPtrAddress;
+  final int x;
+  final int y;
+  final int columns;
+  final int rows;
+  final String map;
+  final _StorageType storageType;
+  final TypedData pixels;
+
+  _MagickImportImagePixelsParams(
+    this.wandPtrAddress,
+    this.x,
+    this.y,
+    this.columns,
+    this.rows,
+    this.map,
+    this.storageType,
+    this.pixels,
+  );
+}
+
+Future<bool> _magickImportImagePixels(
+        _MagickImportImagePixelsParams args) async =>
+    using(
+      (Arena arena) {
+        if (args.pixels.lengthInBytes == 0) {
+          return false;
+        }
+        final Pointer<Void> pixelsPtr;
+        switch (args.storageType) {
+          case _StorageType.UndefinedPixel:
+            return false;
+          case _StorageType.CharPixel:
+            pixelsPtr = (args.pixels as Uint8List)
+                .toUnsignedCharArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case _StorageType.DoublePixel:
+            pixelsPtr = (args.pixels as Float64List)
+                .toDoubleArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case _StorageType.FloatPixel:
+            pixelsPtr = (args.pixels as Float32List)
+                .toFloatArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case _StorageType.LongPixel:
+            pixelsPtr = (args.pixels as Uint32List)
+                .toUint32ArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case _StorageType.LongLongPixel:
+            pixelsPtr = (args.pixels as Uint64List)
+                .toUint64ArrayPointer(allocator: arena)
+                .cast();
+            break;
+          case _StorageType.QuantumPixel:
+            // TODO: support this when it becomes clear how to map the `Quantum`
+            // C type to dart
+            return false;
+          case _StorageType.ShortPixel:
+            pixelsPtr = (args.pixels as Uint16List)
+                .toUint16ArrayPointer(allocator: arena)
+                .cast();
+            break;
+        }
+        return _magickWandBindings.MagickImportImagePixels(
+          Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+          args.x,
+          args.y,
+          args.columns,
+          args.rows,
+          args.map.toNativeUtf8(allocator: arena).cast(),
+          args.storageType.index,
+          pixelsPtr,
+        ).toBool();
+      },
+    );
 
 // TODO: continue adding helper classes here
 
