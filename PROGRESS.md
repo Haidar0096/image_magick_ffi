@@ -234,3 +234,14 @@
 - [x] MagickGetImageType
 - [x] MagickGetImageUnits
 - [x] MagickGetImageVirtualPixelMethod
+- [x] MagickGetImageWhitePoint
+- [x] MagickGetImageWidth
+- [x] MagickGetNumberImages
+- [x] MagickGetImageTotalInkDensity
+- [x] MagickHaldClutImage
+- [x] MagickHasNextImage
+- [x] MagickHasPreviousImage
+- [x] MagickHoughLineImage
+- [x] MagickIdentifyImage
+- [x] MagickIdentifyImageType
+- [x] MagickImplodeImage

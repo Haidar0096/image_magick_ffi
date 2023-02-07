@@ -1716,6 +1716,100 @@ class MagickGetImageResolutionResult {
       'MagickGetImageResolutionResult{xResolution: $xResolution, yResolution: $yResolution}';
 }
 
+/// Represents the result of a call to [magickGetImageWhitePoint].
+class MagickGetImageWhitePointResult {
+  /// The chromaticity white point x-point.
+  final double x;
+
+  /// The chromaticity white point y-point.
+  final double y;
+
+  /// The chromaticity white point z-point.
+  final double z;
+
+  const MagickGetImageWhitePointResult(this.x, this.y, this.z);
+
+  @override
+  String toString() => 'MagickGetImageWhitePointResult{x: $x, y: $y, z: $z}';
+}
+
+Future<double> _magickGetImageTotalInkDensity(int wandPtrAddress) async =>
+    _magickWandBindings.MagickGetImageTotalInkDensity(
+      Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+    );
+
+class _MagickHaldClutImageParams {
+  final int wandPtrAddress;
+  final int clutWandPtrAddress;
+
+  _MagickHaldClutImageParams(
+    this.wandPtrAddress,
+    this.clutWandPtrAddress,
+  );
+}
+
+Future<bool> _magickHaldClutImage(_MagickHaldClutImageParams args) async =>
+    _magickWandBindings.MagickHaldClutImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      Pointer<mwbg.MagickWand>.fromAddress(args.clutWandPtrAddress),
+    ).toBool();
+
+class _MagickHoughLineImageParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final int threshold;
+
+  _MagickHoughLineImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.threshold,
+  );
+}
+
+Future<bool> _magickHoughLineImage(_MagickHoughLineImageParams args) async =>
+    _magickWandBindings.MagickHoughLineImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.width,
+      args.height,
+      args.threshold,
+    ).toBool();
+
+Future<String?> _magickIdentifyImage(int wandPtrAddress) async {
+  final Pointer<Char> resultPtr = _magickWandBindings.MagickIdentifyImage(
+    Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+  );
+  final String? result =
+      resultPtr.address == 0 ? null : resultPtr.cast<Utf8>().toDartString();
+  _magickRelinquishMemory(resultPtr.cast());
+  return result;
+}
+
+Future<ImageType> _magickIdentifyImageType(int wandPtrAddress) async =>
+    ImageType.values[_magickWandBindings.MagickIdentifyImageType(
+      Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+    )];
+
+class _MagickImplodeImageParams{
+  final int wandPtrAddress;
+  final double amount;
+  final PixelInterpolateMethod method;
+
+  _MagickImplodeImageParams(
+    this.wandPtrAddress,
+    this.amount,
+    this.method,
+  );
+}
+
+Future<bool> _magickImplodeImage(_MagickImplodeImageParams args) async =>
+    _magickWandBindings.MagickImplodeImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.amount,
+      args.method.index,
+    ).toBool();
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

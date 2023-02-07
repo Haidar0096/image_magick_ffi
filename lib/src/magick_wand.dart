@@ -2961,6 +2961,136 @@ class MagickWand {
   VirtualPixelMethod magickGetImageVirtualPixelMethod() => VirtualPixelMethod
       .values[_magickWandBindings.MagickGetImageVirtualPixelMethod(_wandPtr)];
 
+  /// MagickGetImageWhitePoint() returns the chromaticity white point.
+  MagickGetImageWhitePointResult? magickGetImageWhitePoint() => using(
+        (Arena arena) {
+          final Pointer<Double> xPtr = arena();
+          final Pointer<Double> yPtr = arena();
+          final Pointer<Double> zPtr = arena();
+          final bool result = _magickWandBindings.MagickGetImageWhitePoint(
+                  _wandPtr, xPtr, yPtr, zPtr)
+              .toBool();
+          if (!result) {
+            return null;
+          }
+          return MagickGetImageWhitePointResult(
+            xPtr.value,
+            yPtr.value,
+            zPtr.value,
+          );
+        },
+      );
+
+  /// MagickGetImageWidth() returns the image width.
+  int magickGetImageWidth() =>
+      _magickWandBindings.MagickGetImageWidth(_wandPtr);
+
+  /// MagickGetNumberImages() returns the number of images associated with a
+  /// magick wand.
+  int magickGetNumberImages() =>
+      _magickWandBindings.MagickGetNumberImages(_wandPtr);
+
+  /// MagickGetImageTotalInkDensity() gets the image total ink density.
+  Future<double> magickGetImageTotalInkDensity() async => await _magickCompute(
+        _magickGetImageTotalInkDensity,
+        _wandPtr.address,
+      );
+
+  /// MagickHaldClutImage() replaces colors in the image from a Hald color
+  /// lookup table. A Hald color lookup table is a 3-dimensional color cube
+  /// mapped to 2 dimensions. Create it with the HALD coder. You can apply any
+  /// color transformation to the Hald image and then use this method to apply
+  /// the transform to the image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [haldWand]: the Hald CLUT image.
+  Future<bool> magickHaldClutImage(MagickWand haldWand) async =>
+      await _magickCompute(
+        _magickHaldClutImage,
+        _MagickHaldClutImageParams(
+          _wandPtr.address,
+          haldWand._wandPtr.address,
+        ),
+      );
+
+  /// MagickHasNextImage() returns MagickTrue if the wand has more images when
+  /// traversing the list in the forward direction
+  bool magickHasNextImage() =>
+      _magickWandBindings.MagickHasNextImage(_wandPtr).toBool();
+
+  /// MagickHasPreviousImage() returns MagickTrue if the wand has more images
+  /// when traversing the list in the reverse direction.
+  bool magickHasPreviousImage() =>
+      _magickWandBindings.MagickHasPreviousImage(_wandPtr).toBool();
+
+  /// MagickHoughLineImage() can be used in conjunction with any binary edge
+  /// extracted image (we recommend Canny) to identify lines in the image. The
+  /// algorithm accumulates counts for every white pixel for every possible
+  /// orientation (for angles from 0 to 179 in 1 degree increments) and
+  /// distance from the center of the image to the corner (in 1 px increments)
+  /// and stores the counts in an accumulator matrix of angle vs distance. The
+  /// size of the accumulator is 180x(diagonal/2). Next it searches this space
+  /// for peaks in counts and converts the locations of the peaks to slope and
+  /// intercept in the normal x,y input image space. Use the slope/intercepts
+  /// to find the endpoints clipped to the bounds of the image. The lines are
+  /// then drawn. The counts are a measure of the length of the lines.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [width]: find line pairs as local maxima in this neighborhood.
+  /// - [height]: find line pairs as local maxima in this neighborhood.
+  /// - [threshold]: the line count threshold.
+  Future<bool> magickHoughLineImage(
+          int width, int height, int threshold) async =>
+      await _magickCompute(
+        _magickHoughLineImage,
+        _MagickHoughLineImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          threshold,
+        ),
+      );
+
+  /// MagickIdentifyImage() identifies an image by its attributes. Attributes
+  /// include the image width, height, size, and others.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<String?> magickIdentifyImage() async => await _magickCompute(
+        _magickIdentifyImage,
+        _wandPtr.address,
+      );
+
+  /// MagickIdentifyImageType() gets the potential image type:
+  ///
+  /// To ensure the image type matches its potential, use MagickSetImageType().
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<ImageType> magickIdentifyImageType() async => await _magickCompute(
+        _magickIdentifyImageType,
+        _wandPtr.address,
+      );
+
+  /// MagickImplodeImage() creates a new image that is a copy of an existing
+  /// one with the image pixels "implode" by the specified percentage.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [amount]: Define the extent of the implosion.
+  /// - [method]: the pixel interpolation method.
+  Future<bool> magickImplodeImage({
+    required double amount,
+    required PixelInterpolateMethod method,
+  }) =>
+      _magickCompute(
+        _magickImplodeImage,
+        _MagickImplodeImageParams(
+          _wandPtr.address,
+          amount,
+          method,
+        ),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the
