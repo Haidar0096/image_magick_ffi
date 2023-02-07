@@ -290,8 +290,8 @@ void throwWandExceptionIfExists(MagickWand wand) {
 - Also check out
   - [The official ImageMagick website](https://imagemagick.org/).
   - [ImageMagick usage documentation](https://imagemagick.org/Usage/).
-  - [Fred's ImageMagick scripts](http://www.fmwconcepts.com/imagemagick/index.php).
-  - [Snibgo's examples](http://im.snibgo.com/).
+  - Fred's ImageMagick scripts (you can find them in the links above).
+  - Snibgo's examples (you can find them in the links above).
 
 # Contributing
 
