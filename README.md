@@ -5,7 +5,6 @@ report bugs. It is not recommended to use this plugin in production apps yet.
 
 # Table Of Contents
 
-- [⚠️Attention⚠️](#️attention️)
 - [Table Of Contents](#table-of-contents)
 - [Contributors](#contributors)
 - [ImageMagickFFi Plugin](#imagemagickffi-plugin)
