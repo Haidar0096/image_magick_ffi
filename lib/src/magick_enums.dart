@@ -633,3 +633,80 @@ enum VirtualPixelMethod {
   VerticalTileEdgeVirtualPixelMethod,
   CheckerTileVirtualPixelMethod,
 }
+
+/// Represents a montage mode.
+enum MontageMode {
+  UndefinedMode,
+  FrameMode,
+  UnframeMode,
+  ConcatenateMode,
+}
+
+/// Represents a morphology method.
+enum MorphologyMethod {
+  UndefinedMorphology,
+  ConvolveMorphology,
+  CorrelateMorphology,
+  ErodeMorphology,
+  DilateMorphology,
+  ErodeIntensityMorphology,
+  DilateIntensityMorphology,
+  IterativeDistanceMorphology,
+  OpenMorphology,
+  CloseMorphology,
+  OpenIntensityMorphology,
+  CloseIntensityMorphology,
+  SmoothMorphology,
+  EdgeInMorphology,
+  EdgeOutMorphology,
+  EdgeMorphology,
+  TopHatMorphology,
+  BottomHatMorphology,
+  HitAndMissMorphology,
+  ThinningMorphology,
+  ThickenMorphology,
+  DistanceMorphology,
+  VoronoiMorphology,
+}
+
+/// Represents a dither method.
+enum DitherMethod {
+  UndefinedDitherMethod,
+  NoDitherMethod,
+  RiemersmaDitherMethod,
+  FloydSteinbergDitherMethod,
+}
+
+/// Represents a preview type.
+enum PreviewType {
+  UndefinedPreview,
+  RotatePreview,
+  ShearPreview,
+  RollPreview,
+  HuePreview,
+  SaturationPreview,
+  BrightnessPreview,
+  GammaPreview,
+  SpiffPreview,
+  DullPreview,
+  GrayscalePreview,
+  QuantizePreview,
+  DespecklePreview,
+  ReduceNoisePreview,
+  AddNoisePreview,
+  SharpenPreview,
+  BlurPreview,
+  ThresholdPreview,
+  EdgeDetectPreview,
+  SpreadPreview,
+  SolarizePreview,
+  ShadePreview,
+  RaisePreview,
+  SegmentPreview,
+  SwirlPreview,
+  ImplodePreview,
+  WavePreview,
+  OilPaintPreview,
+  CharcoalDrawingPreview,
+  JPEGPreview,
+}

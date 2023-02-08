@@ -260,3 +260,38 @@
 - [x] MagickMagnifyImage
 - [x] MagickMeanShiftImage
 - [x] MagickMergeImageLayers
+- [x] MagickMinifyImage
+- [x] MagickModulateImage
+- [x] MagickMontageImage
+- [x] MagickMorphImages
+- [x] MagickMorphologyImage
+- [x] MagickMotionBlurImage
+- [x] MagickNegateImage
+- [x] MagickNewImage
+- [x] MagickNextImage
+- [x] MagickNormalizeImage
+- [x] MagickOilPaintImage
+- [x] MagickOpaquePaintImage
+- [x] MagickOptimizeImageLayers
+- [x] MagickOptimizeImageTransparency
+- [x] MagickOrderedDitherImage
+- [x] MagickPingImage
+- [ ] MagickPingImageBlob
+- [ ] MagickPingImageFile
+- [x] MagickPolaroidImage
+- [ ] MagickPolynomialImage
+- [x] MagickPosterizeImage
+- [x] MagickPreviewImages
+- [x] MagickPreviousImage
+- [x] MagickQuantizeImage
+- [ ] MagickQuantizeImages
+- [x] MagickRangeThresholdImage 
+- [x] MagickRotationalBlurImage 
+- [x] MagickRaiseImage 
+- [x] MagickRandomThresholdImage 
+- [x] MagickReadImage 
+- [x] MagickReadImageBlob 
+- [ ] MagickReadImageFile
+- [x] MagickRemapImage 
+- [x] MagickRemoveImage 
+ 

@@ -25,11 +25,18 @@ typedef MagickProgressMonitor = void Function(
 /// Initialize an instance of it with [MagickWand.newMagickWand].
 /// When done from it, call [destroyMagickWand] to release the resources.
 ///
-/// <strong>
+/// <strong><li>
 /// Never use a [MagickWand] after calling [destroyMagickWand] on it.
-/// </strong>
+/// </li></strong>
+/// <strong><li>
+/// Some methods of the MagickWand accept params like strings, there is no way
+///  to validate what you are going to provide to these params by the plugin
+///  itself, it is your responsibility to pass valid values to these params as
+/// per the documentation, otherwise an invalid state may be reached and the
+///  app may crash.
+/// </li></strong>
 ///
-/// See `https://imagemagick.org/script/magick-wand.php` for more information
+/// - See `https://imagemagick.org/script/magick-wand.php` for more information
 /// about the backing C-API.
 class MagickWand {
   Pointer<mwbg.MagickWand> _wandPtr;
@@ -2476,7 +2483,7 @@ class MagickWand {
       ).toBool();
 
   /// Implements direct to memory image formats. It returns the image as a blob
-  /// (a formatted "file" in memory) and its length, starting from the current
+  /// (a formatted "file" in memory), starting from the current
   /// position in the image sequence. Use MagickSetImageFormat() to set the
   /// format to write to the blob (GIF, JPEG, PNG, etc.).
   /// Utilize `magickResetIterator()` to ensure the write is from the beginning
@@ -3565,7 +3572,567 @@ class MagickWand {
         ),
       );
 
-  // TODO: continue adding the remaining methods
+  /// MagickMinifyImage() is a convenience method that scales an image
+  /// proportionally to one-half its original size
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickMinifyImage() async =>
+      await _magickCompute(_magickMinifyImage, _wandPtr.address);
+
+  /// MagickModulateImage() lets you control the brightness, saturation, and
+  ///  hue of an image. Hue is the percentage of absolute rotation from the
+  /// current position. For example 50 results in a counter-clockwise rotation
+  ///  of 90 degrees, 150 results in a clockwise rotation of 90 degrees, with
+  ///  0 and 200 both resulting in a rotation of 180 degrees.
+  /// To increase the color brightness by 20 and decrease the color saturation
+  ///  by 10 and leave the hue unchanged, use: 120,90,100.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [brightness]: the percent change in brightness.
+  /// - [saturation]: the percent change in saturation.
+  /// - [hue]:the percent change in hue.
+  Future<bool> magickModulateImage({
+    required double brightness,
+    required double saturation,
+    required double hue,
+  }) async =>
+      await _magickCompute(
+        _magickModulateImage,
+        _MagickModulateImageParams(
+          _wandPtr.address,
+          brightness,
+          saturation,
+          hue,
+        ),
+      );
+
+  /// MagickMontageImage() creates a composite image by combining several
+  /// separate images. The images are tiled on the composite image with the
+  /// name of the image optionally appearing just below the individual tile.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [drawingWand]: the drawing wand. The font name, size, and color are
+  /// obtained from this wand.
+  /// - [tileGeometry]: the number of tiles per row and page (e.g. 6x4+0+0).
+  /// - [thumbnailGeometry]: Preferred image size and border size of each
+  /// thumbnail (e.g. 120x120+4+3>).
+  /// - [mode]: Thumbnail framing mode: Frame, Unframe, or Concatenate.
+  /// - [frame]: Surround the image with an ornamental border (e.g. 15x15+3+3).
+  /// The frame color is that of the thumbnail's matte color.
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  Future<MagickWand?> magickMontageImage({
+    required DrawingWand drawingWand,
+    required String tileGeometry,
+    required String thumbnailGeometry,
+    required MontageMode mode,
+    required String frame,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickMontageImage,
+          _MagickMontageImageParams(
+            _wandPtr.address,
+            drawingWand._wandPtr.address,
+            tileGeometry,
+            thumbnailGeometry,
+            mode,
+            frame,
+          ),
+        ),
+      );
+
+  /// MagickMorphImages() method morphs a set of images. Both the image pixels
+  ///  and size are linearly interpolated to give the appearance of a
+  /// meta-morphosis from one image to the next.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// - [numberFrames]: the number of in-between images to generate.
+  Future<MagickWand?> magickMorphImages({
+    required int numberFrames,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickMorphImages,
+          _MagickMorphImagesParams(
+            _wandPtr.address,
+            numberFrames,
+          ),
+        ),
+      );
+
+  /// MagickMorphologyImage() applies a user supplied kernel to the image
+  ///  according to the given morphology method.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  ///
+  /// - [method]: the morphology method to be applied.
+  /// - [iterations]: apply the operation this many times (or no change). A
+  /// value of -1 means loop until no change found. How this is applied may
+  /// depend on the morphology method. Typically this is a value of 1.
+  /// - [kernel]: An array of doubles representing the morphology kernel.
+  Future<bool> magickMorphologyImage({
+    required MorphologyMethod method,
+    required int iterations,
+    required KernelInfo kernel,
+  }) async =>
+      await _magickCompute(
+        _magickMorphologyImage,
+        _MagickMorphologyImageParams(
+          _wandPtr.address,
+          method,
+          iterations,
+          kernel,
+        ),
+      );
+
+  /// MagickMotionBlurImage() simulates motion blur. We convolve the image with
+  ///  a Gaussian operator of the given radius and standard deviation (sigma).
+  ///  For reasonable results, radius should be larger than sigma. Use a radius
+  ///  of 0 and MotionBlurImage() selects a suitable radius for you. Angle gives
+  ///  the angle of the blurring motion.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  /// - [angle]: Apply the effect along this angle.
+  Future<bool> magickMotionBlurImage({
+    required double radius,
+    required double sigma,
+    required double angle,
+  }) async =>
+      await _magickCompute(
+        _magickMotionBlurImage,
+        _MagickMotionBlurImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          angle,
+        ),
+      );
+
+  /// MagickNegateImage() negates the colors in the reference image. The
+  ///  Grayscale option means that only grayscale values within the image are
+  /// negated.
+  ///
+  /// You can also reduce the influence of a particular channel with a gamma
+  /// value of 0.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [gray]: If true, only negate grayscale pixels within the image.
+  Future<bool> magickNegateImage({
+    required bool gray,
+  }) async =>
+      await _magickCompute(
+        _magickNegateImage,
+        _MagickNegateImageParams(
+          _wandPtr.address,
+          gray,
+        ),
+      );
+
+  /// MagickNewImage() adds a blank image canvas of the specified size and
+  /// background color to the wand.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [width]: the image width.
+  /// - [height]: the image height.
+  /// - [background]: the image background color.
+  Future<bool> magickNewImage({
+    required int width,
+    required int height,
+    required PixelWand background,
+  }) async =>
+      await _magickCompute(
+        _magickNewImage,
+        _MagickNewImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          background._wandPtr.address,
+        ),
+      );
+
+  /// MagickNextImage() sets the next image in the wand as the current image.
+  /// It is typically used after MagickResetIterator(), after which its first
+  /// use will set the first image as the current image (unless the wand is
+  /// empty). It will return false when no more images are left to be
+  /// returned which happens when the wand is empty, or the current image is the
+  /// last image. When the above condition (end of image list) is reached, the
+  /// iterator is automatically set so that you can start using
+  /// MagickPreviousImage() to again iterate over the images in the reverse
+  /// direction, starting with the last image (again). You can jump to this
+  /// condition immediately using MagickSetLastIterator().
+  bool magickNextImage() =>
+      _magickWandBindings.MagickNextImage(_wandPtr).toBool();
+
+  /// MagickNormalizeImage() enhances the contrast of a color image by adjusting
+  /// the pixels color to span the entire range of colors available.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickNormalizeImage() async => await _magickCompute(
+        _magickNormalizeImage,
+        _wandPtr.address,
+      );
+
+  /// MagickOilPaintImage() applies a special effect filter that simulates an
+  /// oil painting. Each pixel is replaced by the most frequent color occurring
+  /// in a circular region defined by radius.
+  ///
+  ///  {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [radius]: the radius of the circular neighborhood.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickOilPaintImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await _magickCompute(
+        _magickOilPaintImage,
+        _MagickOilPaintImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+        ),
+      );
+
+  /// MagickOpaquePaintImage() changes any pixel that matches color with the
+  /// color defined by fill.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [target]: Change this target color to the fill color within the image.
+  /// - [fill]: the fill pixel wand.
+  /// - [fuzz]: By default target must match a particular pixel color exactly.
+  ///  However, in many cases two colors may differ by a small amount. The fuzz
+  ///  member of image defines how much tolerance is acceptable to consider two
+  ///  colors as the same. For example, set fuzz to 10 and the color red at
+  ///  intensities of 100 and 102 respectively are now interpreted as the same
+  ///  color for the purposes of the floodfill.
+  /// - [invert]: paint any pixel that does not match the target color.
+  Future<bool> magickOpaquePaintImage({
+    required PixelWand target,
+    required PixelWand fill,
+    required double fuzz,
+    required bool invert,
+  }) async =>
+      await _magickCompute(
+        _magickOpaquePaintImage,
+        _MagickOpaquePaintImageParams(
+          _wandPtr.address,
+          target._wandPtr.address,
+          fill._wandPtr.address,
+          fuzz,
+          invert,
+        ),
+      );
+
+  /// MagickOptimizeImageLayers() compares each image the GIF disposed forms of
+  ///  the previous image in the sequence. From this it attempts to select the
+  ///  smallest cropped image to replace each frame, while preserving the
+  ///  results of the animation.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  Future<MagickWand?> magickOptimizeImageLayers() async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickOptimizeImageLayers,
+          _wandPtr.address,
+        ),
+      );
+
+  /// MagickOptimizeImageTransparency() takes a frame optimized GIF animation,
+  /// and compares the overlayed pixels against the disposal image resulting
+  /// from all the previous frames in the animation. Any pixel that does not
+  /// change the disposal image (and thus does not effect the outcome of an
+  /// overlay) is made transparent.
+  ///
+  /// WARNING: This modifies the current images directly, rather than generate a
+  /// new image sequence.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickOptimizeImageTransparency() async => await _magickCompute(
+        _magickOptimizeImageTransparency,
+        _wandPtr.address,
+      );
+
+  /// MagickOrderedDitherImage() performs an ordered dither based on a number
+  ///  of pre-defined dithering threshold maps, but over multiple intensity
+  /// levels, which can be different for different channels, according to the
+  /// input arguments.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.invalid_params_crash_the_app}
+  ///
+  /// - [thresholdMap] : A string containing the name of the threshold dither
+  /// map to use, followed by zero or more numbers representing the number of
+  /// color levels tho dither between.
+  /// Any level number less than 2 is equivalent to 2, and means only binary
+  ///  dithering will be applied to each color channel.
+  /// No numbers also means a 2 level (bitmap) dither will be applied to all
+  ///  channels, while a single number is the number of levels applied to each
+  ///  channel in sequence. More numbers will be applied in turn to each of the
+  ///  color channels.
+  /// For example: "o3x3,6" generates a 6 level posterization of the image with
+  ///  a ordered 3x3 diffused pixel dither being applied between each level.
+  /// While checker,8,8,4 will produce a 332 colormaped image with only a single
+  ///  checkerboard hash pattern (50 grey) between each color level, to
+  ///  basically double the number of color levels with a bare minimum of
+  ///  dithering.
+  Future<bool> magickOrderedDitherImage({required String thresholdMap}) async =>
+      await _magickCompute(
+        _magickOrderedDitherImage,
+        _MagickOrderedDitherImageParams(
+          _wandPtr.address,
+          thresholdMap,
+        ),
+      );
+
+  /// MagickPingImage() is the same as MagickReadImage() except the only valid
+  ///  information returned is the image width, height, size, and format. It is
+  ///  designed to efficiently obtain this information from a file without
+  /// reading the entire image sequence into memory.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [fileName]: The image filename.
+  Future<bool> magickPingImage(String fileName) async => await _magickCompute(
+        _magickPingImage,
+        _MagickPingImageParams(
+          _wandPtr.address,
+          fileName,
+        ),
+      );
+
+  /// MagickPolaroidImage() simulates a Polaroid picture.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [drawingWand]: the draw wand.
+  /// - [caption]: the Polaroid caption.
+  /// - [angle]: Apply the effect along this angle.
+  /// - [method]: the pixel interpolation method.
+  Future<bool> magickPolaroidImage({
+    required DrawingWand drawingWand,
+    required String caption,
+    required double angle,
+    required PixelInterpolateMethod method,
+  }) async =>
+      await _magickCompute(
+        _magickPolaroidImage,
+        _MagickPolaroidImageParams(
+          _wandPtr.address,
+          drawingWand._wandPtr.address,
+          caption,
+          angle,
+          method,
+        ),
+      );
+
+  /// MagickPosterizeImage() reduces the image to a limited number of color
+  /// level.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [levels]: Number of color levels allowed in each channel. Very low
+  /// values (2, 3, or 4) have the most visible effect.
+  /// - [method]: chooses the dither method.
+  Future<bool> magickPosterizeImage({
+    required int levels,
+    required DitherMethod method,
+  }) async =>
+      await _magickCompute(
+        _magickPosterizeImage,
+        _MagickPosterizeImageParams(
+          _wandPtr.address,
+          levels,
+          method,
+        ),
+      );
+
+  /// MagickPreviewImages() tiles 9 thumbnails of the specified image with an
+  ///  image processing operation applied at varying strengths. This helpful to
+  ///  quickly pin-point an appropriate parameter for an image processing
+  ///  operation.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [preview]: the image processing operation.
+  Future<MagickWand?> magickPreviewImages(PreviewType preview) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickPreviewImages,
+          _MagickPreviewImagesParams(
+            _wandPtr.address,
+            preview,
+          ),
+        ),
+      );
+
+  /// MagickPreviousImage() sets the previous image in the wand as the current
+  /// image.
+  /// It is typically used after magickSetLastIterator(), after which its first
+  /// use will set the last image as the current image (unless the wand is
+  /// empty).
+  /// It will return false when no more images are left to be returned which
+  /// happens when the wand is empty, or the current image is the first image.
+  /// At that point the iterator is than reset to again process images in the
+  /// forward direction, again starting with the first image in list. Images
+  /// added at this point are prepended.
+  /// Also at that point any images added to the wand using
+  /// magickAddImages() or magickReadImages() will be prepended before the first
+  /// image. In this sense the condition is not quite exactly the same as
+  /// magickResetIterator().
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  bool magickPreviousImage() =>
+      _magickWandBindings.MagickPreviousImage(_wandPtr).toBool();
+
+  /// MagickQuantizeImage() analyzes the colors within a reference image and
+  ///  chooses a fixed number of colors to represent the image. The goal of the
+  ///  algorithm is to minimize the color difference between the input and
+  ///  output image while minimizing the processing time.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [numberColors]: the number of colors.
+  /// - [colorspace]: perform color reduction in this colorspace, typically
+  /// RGBColorspace.
+  /// - [treeDepth]: Normally, this integer value is zero or one. A zero or one
+  /// tells Quantize to choose a optimal tree depth of Log4(number_colors). A
+  /// tree of this depth generally allows the best representation of the
+  /// reference image with the least amount of memory and the fastest
+  /// computational speed. In some cases, such as an image with low color
+  /// dispersion (a few number of colors), a value other than
+  /// Log4(number_colors) is required. To expand the color tree completely, use
+  /// a value of 8.
+  /// - [ditherMethod]: choose from UndefinedDitherMethod, NoDitherMethod,
+  /// RiemersmaDitherMethod, FloydSteinbergDitherMethod.
+  /// - [measureError]: A value other than zero measures the difference between
+  /// the original and quantized images. This difference is the total
+  /// quantization error. The error is computed by summing over all pixels in an
+  /// image the distance squared in RGB space between each reference pixel value
+  /// and its quantized value.
+  Future<bool> magickQuantizeImage({
+    required int numberColors,
+    required ColorspaceType colorspace,
+    required int treeDepth,
+    required DitherMethod ditherMethod,
+    required bool measureError,
+  }) async =>
+      await _magickCompute(
+        _magickQuantizeImage,
+        _MagickQuantizeImageParams(
+          _wandPtr.address,
+          numberColors,
+          colorspace,
+          treeDepth,
+          ditherMethod,
+          measureError,
+        ),
+      );
+
+  /// MagickRangeThresholdImage() applies soft and hard thresholding.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickRangeThresholdImage({
+    required double lowBlack,
+    required double lowWhite,
+    required double highWhite,
+    required double highBlack,
+  }) async =>
+      await _magickCompute(
+        _magickRangeThresholdImage,
+        _MagickRangeThresholdImageParams(
+          _wandPtr.address,
+          lowBlack,
+          lowWhite,
+          highWhite,
+          highBlack,
+        ),
+      );
+
+  /// MagickRotationalBlurImage() rotational blurs an image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [angle]: the angle of the blurring effect in degrees.
+  Future<bool> magickRotationalBlurImage({
+    required double angle,
+  }) async =>
+      await _magickCompute(
+        _magickRotationalBlurImage,
+        _MagickRotationalBlurImageParams(
+          _wandPtr.address,
+          angle,
+        ),
+      );
+
+  /// MagickRaiseImage() creates a simulated three-dimensional button-like
+  ///  effect by lightening and darkening the edges of the image. Members width
+  ///  and height of raise_info define the width of the vertical and horizontal
+  ///  edge of the effect.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [width]: the width of the area to raise.
+  /// - [height]: the height of the area to raise.
+  /// - [x]: the x offset of the area to raise.
+  /// - [y]: the y offset of the area to raise.
+  /// - [raise]: a value other than zero creates a 3-D raise effect, otherwise
+  /// it has a lowered effect.
+  Future<bool> magickRaiseImage({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+    required bool raise,
+  }) async =>
+      await _magickCompute(
+        _magickRaiseImage,
+        _MagickRaiseImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          x,
+          y,
+          raise,
+        ),
+      );
+
+  /// MagickRandomThresholdImage() changes the value of individual pixels based
+  ///  on the intensity of each pixel compared to threshold. The result is a
+  ///  high-contrast, two color image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [low]: the low threshold. Ranges from 0 to QuantumRange.
+  /// - [high]: the high threshold. Ranges from 0 to QuantumRange.
+  Future<bool> magickRandomThresholdImage({
+    required double low,
+    required double high,
+  }) async =>
+      await _magickCompute(
+        _magickRandomThresholdImage,
+        _MagickRandomThresholdImageParams(
+          _wandPtr.address,
+          low,
+          high,
+        ),
+      );
 
   /// Reads an image or image sequence. The images are inserted just before the
   /// current image pointer position. Use magickSetFirstIterator(), to insert
@@ -3579,6 +4146,50 @@ class MagickWand {
         _magickReadImage,
         _MagickReadImageParams(_wandPtr.address, imageFilePath),
       );
+
+  /// MagickReadImageBlob() reads an image or image sequence from a blob. In all
+  ///  other respects it is like MagickReadImage().
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickReadImageBlob(Uint8List blob) async =>
+      await _magickCompute(
+        _magickReadImageBlob,
+        _MagickReadImageBlobParams(
+          _wandPtr.address,
+          blob,
+        ),
+      );
+
+  /// MagickRemapImage() replaces the colors of an image with the closest color
+  /// from a reference image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [remapWand]: the remap wand.
+  /// - [ditherMethod]: the dither method.
+  Future<bool> magickRemapImage({
+    required MagickWand remapWand,
+    required DitherMethod ditherMethod,
+  }) async =>
+      await _magickCompute(
+        _magickRemapImage,
+        _MagickRemapImageParams(
+          _wandPtr.address,
+          remapWand._wandPtr.address,
+          ditherMethod,
+        ),
+      );
+
+  /// MagickRemoveImage() removes an image from the image list.
+  /// 
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickRemoveImage() async =>
+      await _magickCompute(
+        _magickRemoveImage,
+        _wandPtr.address,
+      );
+
+  // TODO: continue adding the remaining methods
 
   /// Writes an image to the specified filename. If the filename parameter is
   /// NULL, the image is written to the filename set by magickReadImage() or
