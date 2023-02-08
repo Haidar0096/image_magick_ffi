@@ -3343,6 +3343,105 @@ class MagickWand {
         ),
       );
 
+  /// MagickInterpolativeResizeImage() resize image using a interpolative
+  /// method.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickInterpolativeResizeImage({
+    required int columns,
+    required int rows,
+    required PixelInterpolateMethod method,
+  }) async =>
+      await _magickCompute(
+        _magickInterpolativeResizeImage,
+        _MagickInterpolativeResizeImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          method,
+        ),
+      );
+
+  /// MagickKmeansImage() applies k-means color reduction to an image. This is
+  /// a colorspace clustering or segmentation technique.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [numberColors]: number of colors to use as seeds.
+  /// - [maxIterations]: maximum number of iterations while converging.
+  /// - [tolerance]: the maximum tolerance.
+  Future<bool> magickKmeansImage({
+    required int numberColors,
+    required int maxIterations,
+    required double tolerance,
+  }) async =>
+      await _magickCompute(
+        _magickKmeansImage,
+        _MagickKmeansImageParams(
+          _wandPtr.address,
+          numberColors,
+          maxIterations,
+          tolerance,
+        ),
+      );
+
+  /// Use MagickKuwaharaImage() is an edge preserving noise reduction filter.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [radius]: the square window radius.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickKuwaharaImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await _magickCompute(
+        _magickKuwaharaImage,
+        _MagickKuwaharaImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+        ),
+      );
+
+  /// MagickLabelImage() adds a label to your image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  Future<bool> magickLabelImage(String label) async => await _magickCompute(
+        _magickLabelImage,
+        _MagickLabelImageParams(_wandPtr.address, label),
+      );
+
+  /// MagickLevelImage() adjusts the levels of an image by scaling the colors
+  /// falling between specified white and black points to the full available
+  /// quantum range. The parameters provided represent the black, mid, and
+  /// white points. The black point specifies the darkest color in the image.
+  /// Colors darker than the black point are set to zero. Mid point specifies a
+  /// gamma correction to apply to the image. White point specifies the lightest
+  /// color in the image. Colors brighter than the white point are set to the
+  /// maximum quantum value.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [blackPoint]: the black point.
+  /// - [gamma]: the gamma.
+  /// - [whitePoint]: the white point.
+  Future<bool> magickLevelImage({
+    required double blackPoint,
+    required double gamma,
+    required double whitePoint,
+  }) async =>
+      await _magickCompute(
+        _magickLevelImage,
+        _MagickLevelImageParams(
+          _wandPtr.address,
+          blackPoint,
+          gamma,
+          whitePoint,
+        ),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Reads an image or image sequence. The images are inserted just before the

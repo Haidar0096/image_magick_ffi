@@ -1891,6 +1891,106 @@ Future<bool> _magickImportImagePixels(
       },
     );
 
+class _MagickInterpolativeResizeImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+  final PixelInterpolateMethod method;
+
+  _MagickInterpolativeResizeImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+    this.method,
+  );
+}
+
+Future<bool> _magickInterpolativeResizeImage(
+        _MagickInterpolativeResizeImageParams args) async =>
+    _magickWandBindings.MagickInterpolativeResizeImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.columns,
+      args.rows,
+      args.method.index,
+    ).toBool();
+
+class _MagickKmeansImageParams {
+  final int wandPtrAddress;
+  final int numberColors;
+  final int maxIterations;
+  final double tolerance;
+
+  _MagickKmeansImageParams(
+    this.wandPtrAddress,
+    this.numberColors,
+    this.maxIterations,
+    this.tolerance,
+  );
+}
+
+Future<bool> _magickKmeansImage(_MagickKmeansImageParams args) async =>
+    _magickWandBindings.MagickKmeansImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.numberColors,
+      args.maxIterations,
+      args.tolerance,
+    ).toBool();
+
+class _MagickKuwaharaImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+
+  _MagickKuwaharaImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.sigma,
+  );
+}
+
+Future<bool> _magickKuwaharaImage(_MagickKuwaharaImageParams args) async =>
+    _magickWandBindings.MagickKuwaharaImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.radius,
+      args.sigma,
+    ).toBool();
+
+class _MagickLabelImageParams {
+  final int wandPtrAddress;
+  final String label;
+
+  _MagickLabelImageParams(this.wandPtrAddress, this.label);
+}
+
+Future<bool> _magickLabelImage(_MagickLabelImageParams args) async => using(
+      (Arena arena) => _magickWandBindings.MagickLabelImage(
+        Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+        args.label.toNativeUtf8(allocator: arena).cast(),
+      ),
+    ).toBool();
+
+class _MagickLevelImageParams {
+  final int wandPtrAddress;
+  final double blackPoint;
+  final double gamma;
+  final double whitePoint;
+
+  _MagickLevelImageParams(
+    this.wandPtrAddress,
+    this.blackPoint,
+    this.gamma,
+    this.whitePoint,
+  );
+}
+
+Future<bool> _magickLevelImage(_MagickLevelImageParams args) async =>
+    _magickWandBindings.MagickLevelImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.blackPoint,
+      args.gamma,
+      args.whitePoint,
+    ).toBool();
+
 // TODO: continue adding helper classes here
 
 class _MagickReadImageParams {

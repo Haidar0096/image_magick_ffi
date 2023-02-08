@@ -246,3 +246,9 @@
 - [x] MagickIdentifyImageType
 - [x] MagickImplodeImage
 - [x] MagickImportImagePixels
+- [x] MagickInterpolativeResizeImage
+- [ ] MagickInverseFourierTransformImage
+- [x] MagickKMeansImage
+- [x] MagickKuwaharaImage
+- [x] MagickLabelImage
+- [x] MagickLevelImage
