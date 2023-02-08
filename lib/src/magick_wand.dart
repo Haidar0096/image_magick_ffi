@@ -52,6 +52,10 @@ class MagickWand {
 
   MagickWand._(this._wandPtr);
 
+  static MagickWand? _fromAddress(int address) => address == 0
+      ? null
+      : MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(address));
+
   /// Clears resources associated with this wand, leaving the wand blank,
   /// and ready to be used for a new set of images.
   void clearMagickWand() => _magickWandBindings.ClearMagickWand(_wandPtr);
@@ -964,19 +968,13 @@ class MagickWand {
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [stack] : By default, images are stacked left-to-right. Set stack to
   /// true to stack them top-to-bottom.
-  Future<MagickWand?> magickAppendImages(bool stack) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickAppendImages,
-        _MagickAppendImagesParams(_wandPtr.address, stack),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickAppendImages(bool stack) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickAppendImages,
+          _MagickAppendImagesParams(_wandPtr.address, stack),
+        ),
+      );
 
   /// Extracts the 'mean' from the image and adjust the image to try make set
   /// its gamma appropriately.
@@ -1185,19 +1183,13 @@ class MagickWand {
   /// <b>Sending invalid parameters will cause an invalid state and may crash
   /// the app, so you should make sure to validate the input to this method.</b>
   /// {@endtemplate}
-  Future<MagickWand?> magickChannelFxImage(String expression) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickChannelFxImage,
-        _MagickChannelFxImageParams(_wandPtr.address, expression),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickChannelFxImage(String expression) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickChannelFxImage,
+          _MagickChannelFxImageParams(_wandPtr.address, expression),
+        ),
+      );
 
   /// Simulates a charcoal drawing.
   ///
@@ -1327,16 +1319,9 @@ class MagickWand {
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
-  Future<MagickWand?> magickCoalesceImages() async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(_magickCoalesceImages, _wandPtr.address),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickCoalesceImages() async => MagickWand._fromAddress(
+        await _magickCompute(_magickCoalesceImages, _wandPtr.address),
+      );
 
   // ignore: slash_for_doc_comments
   /**`magickColorDecisionListImage()` accepts a lightweight Color Correction
@@ -1434,19 +1419,13 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [colorSpace]: the colorspace.
-  Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickCombineImages,
-        _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickCombineImages(ColorspaceType colorSpace) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickCombineImages,
+          _MagickCombineImagesParams(_wandPtr.address, colorSpace.index),
+        ),
+      );
 
   /// `magickCommentImage()` adds a comment to your image.
   ///
@@ -1465,19 +1444,13 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [method] : the compare method.
-  Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickCompareImagesLayers,
-        _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickCompareImagesLayers(LayerMethod method) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickCompareImagesLayers,
+          _MagickCompareImagesLayersParams(_wandPtr.address, method.index),
+        ),
+      );
 
   /// Compares an image to a reconstructed image and returns the specified
   /// difference image.
@@ -1492,24 +1465,18 @@ class MagickWand {
     required MagickWand reference,
     required MetricType metric,
     required Float64List distortion,
-  }) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickCompareImages,
-        _MagickCompareImagesParams(
-          _wandPtr.address,
-          reference._wandPtr.address,
-          metric.index,
-          distortion,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickCompareImages,
+          _MagickCompareImagesParams(
+            _wandPtr.address,
+            reference._wandPtr.address,
+            metric.index,
+            distortion,
+          ),
         ),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+      );
 
   /// Performs complex mathematics on an image sequence.
   ///
@@ -1517,19 +1484,13 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [operator]: A complex operator.
-  Future<MagickWand?> magickComplexImages(ComplexOperator operator) async {
-    final Pointer<mwbg.MagickWand> resultPtr =
-        Pointer<mwbg.MagickWand>.fromAddress(
-      await _magickCompute(
-        _magickComplexImages,
-        _MagickComplexImagesParams(_wandPtr.address, operator.index),
-      ),
-    );
-    if (resultPtr == nullptr) {
-      return null;
-    }
-    return MagickWand._(resultPtr);
-  }
+  Future<MagickWand?> magickComplexImages(ComplexOperator operator) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickComplexImages,
+          _MagickComplexImagesParams(_wandPtr.address, operator.index),
+        ),
+      );
 
   /// Composite one image onto another at the specified offset.
   ///
@@ -1922,15 +1883,10 @@ class MagickWand {
   ///
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   /// {@macro magick_wand.method_runs_in_different_isolate}
-  Future<MagickWand?> magickDeconstructImages() async {
-    final int resultWandAddress =
-        await _magickCompute(_magickDeconstructImages, _wandPtr.address);
-    if (resultWandAddress == 0) {
-      return null;
-    }
-    return MagickWand._(
-        Pointer<mwbg.MagickWand>.fromAddress(resultWandAddress));
-  }
+  Future<MagickWand?> magickDeconstructImages() async =>
+      MagickWand._fromAddress(
+        await _magickCompute(_magickDeconstructImages, _wandPtr.address),
+      );
 
   /// Removes skew from the image. Skew is an artifact that occurs in scanned
   /// images because of the camera being misaligned, imperfections in the
@@ -2432,18 +2388,16 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [expression]: the expression.
-  Future<MagickWand?> magickFxImage(String expression) async {
-    final int resultWandAddress = await _magickCompute(
-      _magickFxImage,
-      _MagickFxImageParams(
-        _wandPtr.address,
-        expression,
-      ),
-    );
-    return resultWandAddress == 0
-        ? null
-        : MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(resultWandAddress));
-  }
+  Future<MagickWand?> magickFxImage(String expression) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickFxImage,
+          _MagickFxImageParams(
+            _wandPtr.address,
+            expression,
+          ),
+        ),
+      );
 
   /// Gamma-corrects an image. The same image viewed on different devices will
   /// have perceptual differences in the way the image's intensities are
@@ -2487,15 +2441,12 @@ class MagickWand {
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
-  Future<MagickWand?> magickGetImage() async {
-    final int resultWandAddress = await _magickCompute(
-      _magickGetImage,
-      _wandPtr.address,
-    );
-    return resultWandAddress == 0
-        ? null
-        : MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(resultWandAddress));
-  }
+  Future<MagickWand?> magickGetImage() async => MagickWand._fromAddress(
+        await _magickCompute(
+          _magickGetImage,
+          _wandPtr.address,
+        ),
+      );
 
   /// Returns false if the image alpha channel is not activated. That is, the
   /// image is RGB rather than RGBA or CMYK rather than CMYKA.
@@ -2508,18 +2459,14 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [clipMask]: the type of the clip mask.
-  Future<MagickWand?> magickGetImageMask(PixelMask type) async {
-    final int resultWandAddress = await _magickCompute(
-      _magickGetImageMask,
-      _MagickGetImageMaskParams(
-        _wandPtr.address,
-        type,
-      ),
-    );
-    return resultWandAddress == 0
-        ? null
-        : MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(resultWandAddress));
-  }
+  Future<MagickWand?> magickGetImageMask(PixelMask type) async =>
+      MagickWand._fromAddress(await _magickCompute(
+        _magickGetImageMask,
+        _MagickGetImageMaskParams(
+          _wandPtr.address,
+          type,
+        ),
+      ));
 
   /// Returns the image background color.
   bool magickGetImageBackgroundColor(PixelWand backgroundColor) =>
@@ -2886,22 +2833,19 @@ class MagickWand {
     required int height,
     required int x,
     required int y,
-  }) async {
-    final int wandPtrAddress = await _magickCompute(
-      _magickGetImageRegion,
-      _MagickGetImageRegionParams(
-        _wandPtr.address,
-        width,
-        height,
-        x,
-        y,
-      ),
-    );
-    if (wandPtrAddress == 0) {
-      return null;
-    }
-    return MagickWand._(Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress));
-  }
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickGetImageRegion,
+          _MagickGetImageRegionParams(
+            _wandPtr.address,
+            width,
+            height,
+            x,
+            y,
+          ),
+        ),
+      );
 
   /// MagickGetImageRenderingIntent() gets the image rendering intent.
   RenderingIntent magickGetImageRenderingIntent() => RenderingIntent
@@ -2935,7 +2879,7 @@ class MagickWand {
         (Arena arena) {
           final Pointer<Char> signaturePtr =
               _magickWandBindings.MagickGetImageSignature(_wandPtr);
-          if (signaturePtr.address == 0) {
+          if (signaturePtr == nullptr) {
             return null;
           }
           String signature = signaturePtr.cast<Utf8>().toDartString();
@@ -3014,12 +2958,12 @@ class MagickWand {
         ),
       );
 
-  /// MagickHasNextImage() returns MagickTrue if the wand has more images when
+  /// MagickHasNextImage() returns true if the wand has more images when
   /// traversing the list in the forward direction
   bool magickHasNextImage() =>
       _magickWandBindings.MagickHasNextImage(_wandPtr).toBool();
 
-  /// MagickHasPreviousImage() returns MagickTrue if the wand has more images
+  /// MagickHasPreviousImage() returns true if the wand has more images
   /// when traversing the list in the reverse direction.
   bool magickHasPreviousImage() =>
       _magickWandBindings.MagickHasPreviousImage(_wandPtr).toBool();
@@ -3463,6 +3407,161 @@ class MagickWand {
           blackColor._wandPtr.address,
           whiteColor._wandPtr.address,
           invert,
+        ),
+      );
+
+  /// MagickLevelizeImage() applies the reversed MagickLevelImage(). It
+  /// compresses the full range of color values, so that they lie between
+  /// the given black and white points. Gamma is applied before the values
+  /// are mapped. It can be used to de-contrast a greyscale image to the exact
+  /// levels specified.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [blackPoint]: The level to map zero (black) to.
+  /// - [whitePoint]: The level to map QuantumRange (white) to.
+  /// - [gamma]: adjust gamma by this factor before mapping values.
+  Future<bool> magickLevelizeImage({
+    required double blackPoint,
+    required double whitePoint,
+    required double gamma,
+  }) async =>
+      await _magickCompute(
+        _magickLevelizeImage,
+        _MagickLevelizeImageParams(
+          _wandPtr.address,
+          blackPoint,
+          whitePoint,
+          gamma,
+        ),
+      );
+
+  /// MagickLinearStretchImage() stretches with saturation the image intensity.
+  /// You can also reduce the influence of a particular channel with a gamma
+  /// value of 0.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [blackPoint]: the black point.
+  /// - [whitePoint]: the white point.
+  Future<bool> magickLinearStretchImage({
+    required double blackPoint,
+    required double whitePoint,
+  }) async =>
+      await _magickCompute(
+        _magickLinearStretchImage,
+        _MagickLinearStretchImageParams(
+          _wandPtr.address,
+          blackPoint,
+          whitePoint,
+        ),
+      );
+
+  /// MagickLiquidRescaleImage() rescales image with seam carving.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  /// - [deltaX]: maximum seam transversal step (0 means straight seams).
+  /// - [rigidity]: introduce a bias for non-straight seams (typically 0).
+  Future<bool> magickLiquidRescaleImage({
+    required int columns,
+    required int rows,
+    required double deltaX,
+    required double rigidity,
+  }) async =>
+      await _magickCompute(
+        _magickLiquidRescaleImage,
+        _MagickLiquidRescaleImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          deltaX,
+          rigidity,
+        ),
+      );
+
+  /// MagickLocalContrastImage() attempts to increase the appearance of
+  /// large-scale light-dark transitions. Local contrast enhancement works
+  /// similarly to sharpening with an unsharp mask, however the mask is instead
+  /// created using an image with a greater blur distance.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [strength]: the strength of the blur mask in percent.
+  Future<bool> magickLocalContrastImage({
+    required double radius,
+    required double strength,
+  }) async =>
+      await _magickCompute(
+        _magickLocalContrastImage,
+        _MagickLocalContrastImageParams(
+          _wandPtr.address,
+          radius,
+          strength,
+        ),
+      );
+
+  /// MagickMagnifyImage() is a convenience method that scales an image
+  /// proportionally to twice its original size.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickMagnifyImage() async =>
+      await _magickCompute(_magickMagnifyImage, _wandPtr.address);
+
+  /// MagickMeanShiftImage() delineate arbitrarily shaped clusters in the image.
+  /// For each pixel, it visits all the pixels in the neighborhood specified by
+  /// the window centered at the pixel and excludes those that are outside the
+  /// radius=(window-1)/2 surrounding the pixel. From those pixels, it finds
+  /// those that are within the specified color distance from the current mean,
+  /// and computes a new x,y centroid from those coordinates and a new mean.
+  /// This new x,y centroid is used as the center for a new window. This process
+  /// iterates until it converges and the final mean is replaces the (original
+  /// window center) pixel value. It repeats this process for the next pixel,
+  /// etc., until it processes all pixels in the image. Results are typically
+  /// better with colorspaces other than sRGB. We recommend YIQ, YUV or YCbCr.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [width]: the width of the neighborhood.
+  /// - [height]: the height of the neighborhood.
+  /// - [colorDistance]: the color distance.
+  Future<bool> magickMeanShiftImage({
+    required int width,
+    required int height,
+    required double colorDistance,
+  }) async =>
+      await _magickCompute(
+        _magickMeanShiftImage,
+        _MagickMeanShiftImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          colorDistance,
+        ),
+      );
+
+  /// MagickMergeImageLayers() composes all the image layers from the current
+  /// given image onward to produce a single image of the merged layers. The
+  /// inital canvas's size depends on the given LayerMethod, and is initialized
+  /// using the first images background color. The images are then composited
+  /// onto that image in sequence using the given composition that has been
+  ///  assigned to each individual image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// - [method]: the method of selecting the size of the initial canvas.
+  Future<MagickWand?> magickMergeImageLayers({
+    required LayerMethod method,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickMergeImageLayers,
+          _MagickMergeImageLayersParams(
+            _wandPtr.address,
+            method,
+          ),
         ),
       );
 

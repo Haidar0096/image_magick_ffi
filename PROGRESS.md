@@ -253,3 +253,10 @@
 - [x] MagickLabelImage
 - [x] MagickLevelImage
 - [x] MagickLevelImageColors
+- [x] MagickLevelizeImage
+- [x] MagickLinearStretchImage
+- [x] MagickLiquidRescaleImage
+- [x] MagickLocalContrastImage
+- [x] MagickMagnifyImage
+- [x] MagickMeanShiftImage
+- [x] MagickMergeImageLayers

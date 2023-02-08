@@ -1781,7 +1781,7 @@ Future<String?> _magickIdentifyImage(int wandPtrAddress) async {
     Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
   );
   final String? result =
-      resultPtr.address == 0 ? null : resultPtr.cast<Utf8>().toDartString();
+      resultPtr == nullptr ? null : resultPtr.cast<Utf8>().toDartString();
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }
@@ -2013,6 +2013,137 @@ Future<bool> _magickLevelImageColors(
       Pointer<mwbg.PixelWand>.fromAddress(args.whiteColorPixelWandAddress),
       args.invert.toInt(),
     ).toBool();
+
+class _MagickLevelizeImageParams {
+  final int wandPtrAddress;
+  final double blackPoint;
+  final double whitePoint;
+  final double gamma;
+
+  _MagickLevelizeImageParams(
+    this.wandPtrAddress,
+    this.blackPoint,
+    this.whitePoint,
+    this.gamma,
+  );
+}
+
+Future<bool> _magickLevelizeImage(_MagickLevelizeImageParams args) async =>
+    _magickWandBindings.MagickLevelizeImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.blackPoint,
+      args.whitePoint,
+      args.gamma,
+    ).toBool();
+
+class _MagickLinearStretchImageParams {
+  final int wandPtrAddress;
+  final double blackPoint;
+  final double whitePoint;
+
+  _MagickLinearStretchImageParams(
+    this.wandPtrAddress,
+    this.blackPoint,
+    this.whitePoint,
+  );
+}
+
+Future<bool> _magickLinearStretchImage(
+        _MagickLinearStretchImageParams args) async =>
+    _magickWandBindings.MagickLinearStretchImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.blackPoint,
+      args.whitePoint,
+    ).toBool();
+
+class _MagickLiquidRescaleImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+  final double deltaX;
+  final double rigidity;
+
+  _MagickLiquidRescaleImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+    this.deltaX,
+    this.rigidity,
+  );
+}
+
+Future<bool> _magickLiquidRescaleImage(
+        _MagickLiquidRescaleImageParams args) async =>
+    _magickWandBindings.MagickLiquidRescaleImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.columns,
+      args.rows,
+      args.deltaX,
+      args.rigidity,
+    ).toBool();
+
+class _MagickLocalContrastImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double strength;
+
+  _MagickLocalContrastImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.strength,
+  );
+}
+
+Future<bool> _magickLocalContrastImage(
+        _MagickLocalContrastImageParams args) async =>
+    _magickWandBindings.MagickLocalContrastImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.radius,
+      args.strength,
+    ).toBool();
+
+Future<bool> _magickMagnifyImage(int wandPtrAddress) async =>
+    _magickWandBindings.MagickMagnifyImage(
+      Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
+    ).toBool();
+
+class _MagickMeanShiftImageParams {
+  final int wandPtrAddress;
+  final int width;
+  final int height;
+  final double colorDistance;
+
+  _MagickMeanShiftImageParams(
+    this.wandPtrAddress,
+    this.width,
+    this.height,
+    this.colorDistance,
+  );
+}
+
+Future<bool> _magickMeanShiftImage(_MagickMeanShiftImageParams args) async =>
+    _magickWandBindings.MagickMeanShiftImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.width,
+      args.height,
+      args.colorDistance,
+    ).toBool();
+
+class _MagickMergeImageLayersParams {
+  final int wandPtrAddress;
+  final LayerMethod layerMethod;
+
+  _MagickMergeImageLayersParams(
+    this.wandPtrAddress,
+    this.layerMethod,
+  );
+}
+
+Future<int> _magickMergeImageLayers(_MagickMergeImageLayersParams args) async =>
+    _magickWandBindings.MagickMergeImageLayers(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.layerMethod.index,
+    ).address;
 
 // TODO: continue adding helper classes here
 
