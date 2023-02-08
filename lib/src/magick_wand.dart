@@ -565,7 +565,7 @@ class MagickWand {
 
   ///  Sets the antialias property of the wand.
   bool magickSetAntialias(bool antialias) =>
-      _magickWandBindings.MagickSetAntialias(_wandPtr, antialias ? 1 : 0)
+      _magickWandBindings.MagickSetAntialias(_wandPtr, antialias.toInt())
           .toBool();
 
   /// Sets the wand background color.
@@ -3439,6 +3439,30 @@ class MagickWand {
           blackPoint,
           gamma,
           whitePoint,
+        ),
+      );
+
+  /// MagickLevelImageColors() maps the given color to "black" and "white"
+  /// values, linearly spreading out the colors, and level values on a channel
+  /// by channel bases, as per LevelImage(). The given colors allows you to
+  /// specify different level ranges for each of the color channels separately.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [blackColor]: the black color.
+  /// - [whiteColor]: the white color.
+  ///- [invert]: if true map the colors (levelize), rather than from (level)
+  Future<bool> magickLevelImageColors({
+    required PixelWand blackColor,
+    required PixelWand whiteColor,
+    required bool invert,
+  }) async =>
+      await _magickCompute(
+        _magickLevelImageColors,
+        _MagickLevelImageColorsParams(
+          _wandPtr.address,
+          blackColor._wandPtr.address,
+          whiteColor._wandPtr.address,
+          invert,
         ),
       );
 

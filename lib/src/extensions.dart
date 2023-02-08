@@ -262,3 +262,8 @@ extension IntExtension on int {
           ? false
           : throw Exception('Invalid value passed to toBool: $this');
 }
+
+extension BoolExtension on bool {
+  /// Creates an int from this bool.
+  int toInt() => this ? 1 : 0;
+}

@@ -203,7 +203,7 @@ class _MagickAppendImagesParams {
 Future<int> _magickAppendImages(_MagickAppendImagesParams params) async =>
     _magickWandBindings.MagickAppendImages(
       Pointer<mwbg.MagickWand>.fromAddress(params.wandPtrAddress),
-      params.stack ? 1 : 0,
+      params.stack.toInt(),
     ).address;
 
 Future<bool> _magickAutoGammaImage(int wandPtrAddress) async =>
@@ -478,7 +478,7 @@ Future<bool> _magickClipImagePath(_MagickClipImagePathParams params) async =>
       (Arena arena) => _magickWandBindings.MagickClipImagePath(
         Pointer<mwbg.MagickWand>.fromAddress(params.wandPtrAddress),
         params.pathname.toNativeUtf8(allocator: arena).cast(),
-        params.inside ? 1 : 0,
+        params.inside.toInt(),
       ),
     ).toBool();
 
@@ -682,7 +682,7 @@ Future<bool> _magickCompositeImage(_MagickCompositeImageParams args) async =>
       Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
       Pointer<mwbg.MagickWand>.fromAddress(args.sourceWandPtrAddress),
       args.compositeOperator,
-      args.clipToSelf ? 1 : 0,
+      args.clipToSelf.toInt(),
       args.x,
       args.y,
     ).toBool();
@@ -745,7 +745,7 @@ class _MagickContrastImageParams {
 Future<bool> _magickContrastImage(_MagickContrastImageParams args) async =>
     _magickWandBindings.MagickContrastImage(
       Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
-      args.sharpen ? 1 : 0,
+      args.sharpen.toInt(),
     ).toBool();
 
 class _MagickContrastStretchImageParams {
@@ -951,7 +951,7 @@ Future<bool> _magickDistortImage(_MagickDistortImageParams args) async => using(
         args.method.index,
         args.arguments.length,
         args.arguments.toDoubleArrayPointer(allocator: arena),
-        args.bestFit ? 1 : 0,
+        args.bestFit.toInt(),
       ),
     ).toBool();
 
@@ -1275,7 +1275,7 @@ Future<bool> _magickFloodfillPaintImage(
       Pointer<mwbg.PixelWand>.fromAddress(args.bordercolorPixelWandAddress),
       args.x,
       args.y,
-      args.invert ? 1 : 0,
+      args.invert.toInt(),
     ).toBool();
 
 Future<bool> _magickFlopImage(int wandPtrAddress) async =>
@@ -1989,6 +1989,29 @@ Future<bool> _magickLevelImage(_MagickLevelImageParams args) async =>
       args.blackPoint,
       args.gamma,
       args.whitePoint,
+    ).toBool();
+
+class _MagickLevelImageColorsParams {
+  final int wandPtrAddress;
+  final int blackColorPixelWandAddress;
+  final int whiteColorPixelWandAddress;
+  final bool invert;
+
+  _MagickLevelImageColorsParams(
+    this.wandPtrAddress,
+    this.blackColorPixelWandAddress,
+    this.whiteColorPixelWandAddress,
+    this.invert,
+  );
+}
+
+Future<bool> _magickLevelImageColors(
+        _MagickLevelImageColorsParams args) async =>
+    _magickWandBindings.MagickLevelImageColors(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      Pointer<mwbg.PixelWand>.fromAddress(args.blackColorPixelWandAddress),
+      Pointer<mwbg.PixelWand>.fromAddress(args.whiteColorPixelWandAddress),
+      args.invert.toInt(),
     ).toBool();
 
 // TODO: continue adding helper classes here

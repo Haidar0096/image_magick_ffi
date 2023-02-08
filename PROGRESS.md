@@ -252,3 +252,4 @@
 - [x] MagickKuwaharaImage
 - [x] MagickLabelImage
 - [x] MagickLevelImage
+- [x] MagickLevelImageColors
