@@ -2635,7 +2635,348 @@ Future<bool> _magickRemoveImage(int wandPtrAddress) async =>
       Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
     ).toBool();
 
+class _MagickResampleImageParams {
+  final int wandPtrAddress;
+  final double xResolution;
+  final double yResolution;
+  final FilterType filter;
+
+  _MagickResampleImageParams(
+    this.wandPtrAddress,
+    this.xResolution,
+    this.yResolution,
+    this.filter,
+  );
+}
+
+Future<bool> _magickResampleImage(_MagickResampleImageParams args) async =>
+    _magickWandBindings.MagickResampleImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.xResolution,
+      args.yResolution,
+      args.filter.index,
+    ).toBool();
+
+class _MagickResetImagePageParams {
+  final int wandPtrAddress;
+  final String page;
+
+  _MagickResetImagePageParams(
+    this.wandPtrAddress,
+    this.page,
+  );
+}
+
+Future<bool> _magickResetImagePage(_MagickResetImagePageParams args) async =>
+    using(
+      (Arena arena) => _magickWandBindings.MagickResetImagePage(
+        Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+        args.page.toNativeUtf8(allocator: arena).cast(),
+      ),
+    ).toBool();
+
+class _MagickResizeImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+  final FilterType filter;
+
+  _MagickResizeImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+    this.filter,
+  );
+}
+
+Future<bool> _magickResizeImage(_MagickResizeImageParams args) async =>
+    _magickWandBindings.MagickResizeImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.columns,
+      args.rows,
+      args.filter.index,
+    ).toBool();
+
+class _MagickRollImageParams {
+  final int wandPtrAddress;
+  final int x;
+  final int y;
+
+  _MagickRollImageParams(
+    this.wandPtrAddress,
+    this.x,
+    this.y,
+  );
+}
+
+Future<bool> _magickRollImage(_MagickRollImageParams args) async =>
+    _magickWandBindings.MagickRollImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.x,
+      args.y,
+    ).toBool();
+
+class _MagickRotateImageParams {
+  final int wandPtrAddress;
+  final int backgroundPixelWandPtrAddress;
+  final double degrees;
+
+  _MagickRotateImageParams(
+    this.wandPtrAddress,
+    this.backgroundPixelWandPtrAddress,
+    this.degrees,
+  );
+}
+
+Future<bool> _magickRotateImage(_MagickRotateImageParams args) async =>
+    _magickWandBindings.MagickRotateImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      Pointer<mwbg.PixelWand>.fromAddress(args.backgroundPixelWandPtrAddress),
+      args.degrees,
+    ).toBool();
+
+class _MagickSampleImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+
+  _MagickSampleImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+  );
+}
+
+Future<bool> _magickSampleImage(_MagickSampleImageParams args) async =>
+    _magickWandBindings.MagickSampleImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.columns,
+      args.rows,
+    ).toBool();
+
+class _MagickScaleImageParams {
+  final int wandPtrAddress;
+  final int columns;
+  final int rows;
+
+  _MagickScaleImageParams(
+    this.wandPtrAddress,
+    this.columns,
+    this.rows,
+  );
+}
+
+Future<bool> _magickScaleImage(_MagickScaleImageParams args) async =>
+    _magickWandBindings.MagickScaleImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.columns,
+      args.rows,
+    ).toBool();
+
+class _MagickSegmentImageParams {
+  final int wandPtrAddress;
+  final ColorspaceType colorspace;
+  final bool verbose;
+  final double clusterThreshold;
+  final double smoothThreshold;
+
+  _MagickSegmentImageParams(
+    this.wandPtrAddress,
+    this.colorspace,
+    this.verbose,
+    this.clusterThreshold,
+    this.smoothThreshold,
+  );
+}
+
+Future<bool> _magickSegmentImage(_MagickSegmentImageParams args) async =>
+    _magickWandBindings.MagickSegmentImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.colorspace.index,
+      args.verbose.toInt(),
+      args.clusterThreshold,
+      args.smoothThreshold,
+    ).toBool();
+
+class _MagickSelectiveBlurImageParams {
+  final int wandPtrAddress;
+  final double radius;
+  final double sigma;
+  final double threshold;
+
+  _MagickSelectiveBlurImageParams(
+    this.wandPtrAddress,
+    this.radius,
+    this.sigma,
+    this.threshold,
+  );
+}
+
+Future<bool> _magickSelectiveBlurImage(
+        _MagickSelectiveBlurImageParams args) async =>
+    _magickWandBindings.MagickSelectiveBlurImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.radius,
+      args.sigma,
+      args.threshold,
+    ).toBool();
+
+class _MagickSeparateImageParams {
+  final int wandPtrAddress;
+  final ChannelType channel;
+
+  _MagickSeparateImageParams(
+    this.wandPtrAddress,
+    this.channel,
+  );
+}
+
+Future<bool> _magickSeparateImage(_MagickSeparateImageParams args) async =>
+    _magickWandBindings.MagickSeparateImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.channel.value,
+    ).toBool();
+
+class _MagickSepiaToneImageParams {
+  final int wandPtrAddress;
+  final double threshold;
+
+  _MagickSepiaToneImageParams(
+    this.wandPtrAddress,
+    this.threshold,
+  );
+}
+
+Future<bool> _magickSepiaToneImage(_MagickSepiaToneImageParams args) async =>
+    _magickWandBindings.MagickSepiaToneImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.threshold,
+    ).toBool();
+
+class _MagickSetImageParams {
+  final int wandPtrAddress;
+  final int setWandPtrAddress;
+
+  _MagickSetImageParams(
+    this.wandPtrAddress,
+    this.setWandPtrAddress,
+  );
+}
+
+Future<bool> _magickSetImage(_MagickSetImageParams args) async =>
+    _magickWandBindings.MagickSetImage(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      Pointer<mwbg.MagickWand>.fromAddress(args.setWandPtrAddress),
+    ).toBool();
+
+class _MagickSetImageAlphaChannelParams {
+  final int wandPtrAddress;
+  final AlphaChannelOption alphaType;
+
+  _MagickSetImageAlphaChannelParams(
+    this.wandPtrAddress,
+    this.alphaType,
+  );
+}
+
+Future<bool> _magickSetImageAlphaChannel(
+        _MagickSetImageAlphaChannelParams args) async =>
+    _magickWandBindings.MagickSetImageAlphaChannel(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.alphaType.index,
+    ).toBool();
+
+class _MagickSetImageChannelMaskParams {
+  final int wandPtrAddress;
+  final ChannelType channel;
+
+  _MagickSetImageChannelMaskParams(
+    this.wandPtrAddress,
+    this.channel,
+  );
+}
+
+Future<bool> _magickSetImageChannelMask(
+        _MagickSetImageChannelMaskParams args) async =>
+    _magickWandBindings.MagickSetImageChannelMask(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.channel.value,
+    ).toBool();
+
+class _MagickSetImageMaskParams {
+  final int wandPtrAddress;
+  final PixelMask type;
+  final int clipMaskWandPtrAddress;
+
+  _MagickSetImageMaskParams(
+    this.wandPtrAddress,
+    this.type,
+    this.clipMaskWandPtrAddress,
+  );
+}
+
+Future<bool> _magickSetImageMask(_MagickSetImageMaskParams args) async =>
+    _magickWandBindings.MagickSetImageMask(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.type.value,
+      Pointer<mwbg.MagickWand>.fromAddress(args.clipMaskWandPtrAddress),
+    ).toBool();
+
+class _MagickSetImageColorParams {
+  final int wandPtrAddress;
+  final int backgroundColorWandPtrAddress;
+
+  _MagickSetImageColorParams(
+    this.wandPtrAddress,
+    this.backgroundColorWandPtrAddress,
+  );
+}
+
+Future<bool> _magickSetImageColor(_MagickSetImageColorParams args) async =>
+    _magickWandBindings.MagickSetImageColor(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      Pointer<mwbg.PixelWand>.fromAddress(args.backgroundColorWandPtrAddress),
+    ).toBool();
+
+class _MagickSetImageColormapColorParams {
+  final int wandPtrAddress;
+  final int index;
+  final int colorWandPtrAddress;
+
+  _MagickSetImageColormapColorParams(
+    this.wandPtrAddress,
+    this.index,
+    this.colorWandPtrAddress,
+  );
+}
+
+Future<bool> _magickSetImageColormapColor(
+        _MagickSetImageColormapColorParams args) async =>
+    _magickWandBindings.MagickSetImageColormapColor(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.index,
+      Pointer<mwbg.PixelWand>.fromAddress(args.colorWandPtrAddress),
+    ).toBool();
+
+class _MagickSetImageColorspaceParams {
+  final int wandPtrAddress;
+  final ColorspaceType colorspace;
+
+  _MagickSetImageColorspaceParams(
+    this.wandPtrAddress,
+    this.colorspace,
+  );
+}
+
+Future<bool> _magickSetImageColorspace(
+        _MagickSetImageColorspaceParams args) async =>
+    _magickWandBindings.MagickSetImageColorspace(
+      Pointer<mwbg.MagickWand>.fromAddress(args.wandPtrAddress),
+      args.colorspace.index,
+    ).toBool();
+
 // TODO: continue adding helper classes here
+
 class _MagickWriteImageParams {
   final int wandPtrAddress;
   final String imageFilePath;

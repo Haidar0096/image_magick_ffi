@@ -294,4 +294,25 @@
 - [ ] MagickReadImageFile
 - [x] MagickRemapImage 
 - [x] MagickRemoveImage 
+- [x] MagickResampleImage 
+- [x] MagickResetImagePage 
+- [x] MagickResizeImage 
+- [x] MagickRollImage 
+- [x] MagickRotateImage 
+- [x] MagickSampleImage 
+- [x] MagickScaleImage 
+- [x] MagickSegmentImage 
+- [x] MagickSelectiveBlurImage 
+- [x] MagickSeparateImage 
+- [x] MagickSepiaToneImage 
+- [x] MagickSetImage 
+- [x] MagickSetImageAlphaChannel 
+- [x] MagickSetImageBackgroundColor 
+- [x] MagickSetImageBluePrimary 
+- [x] MagickSetImageBorderColor 
+- [x] MagickSetImageChannelMask 
+- [x] MagickSetImageMask 
+- [x] MagickSetImageColor 
+- [x] MagickSetImageColormapColor 
+- [x] MagickSetImageColorspace 
  

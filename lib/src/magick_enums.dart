@@ -710,3 +710,98 @@ enum PreviewType {
   CharcoalDrawingPreview,
   JPEGPreview,
 }
+
+/// Represents a filter type.
+enum FilterType {
+  UndefinedFilter,
+  PointFilter,
+  BoxFilter,
+  TriangleFilter,
+  HermiteFilter,
+  HannFilter,
+  HammingFilter,
+  BlackmanFilter,
+  GaussianFilter,
+  QuadraticFilter,
+  CubicFilter,
+  CatromFilter,
+  MitchellFilter,
+  JincFilter,
+  SincFilter,
+  SincFastFilter,
+  KaiserFilter,
+  WelchFilter,
+  ParzenFilter,
+  BohmanFilter,
+  BartlettFilter,
+  LagrangeFilter,
+  LanczosFilter,
+  LanczosSharpFilter,
+  Lanczos2Filter,
+  Lanczos2SharpFilter,
+  RobidouxFilter,
+  RobidouxSharpFilter,
+  CosineFilter,
+  SplineFilter,
+  LanczosRadiusFilter,
+  CubicSplineFilter,
+  SentinelFilter, /* a count of all the filters, not a real filter */
+}
+
+/// Represents a channel type.
+enum ChannelType {
+  UndefinedChannel(0x0000),
+  RedChannel(0x0001),
+  GrayChannel(0x0001),
+  CyanChannel(0x0001),
+  LChannel(0x0001),
+  GreenChannel(0x0002),
+  MagentaChannel(0x0002),
+  aChannel(0x0002),
+  BlueChannel(0x0004),
+  bChannel(0x0002),
+  YellowChannel(0x0004),
+  BlackChannel(0x0008),
+  AlphaChannel(0x0010),
+  OpacityChannel(0x0010),
+  IndexChannel(0x0020),
+  ReadMaskChannel(0x0040),
+  WriteMaskChannel(0x0080),
+  MetaChannel(0x0100),
+  CompositeMaskChannel(0x0200),
+  CompositeChannels(0x001F),
+  AllChannels(0x7ffffff),
+  TrueAlphaChannel(0x0100),
+  RGBChannels(0x0200),
+  GrayChannels(0x0400),
+  SyncChannels(0x20000);
+
+  static const DefaultChannels = AllChannels;
+
+  final int value;
+
+  const ChannelType(this.value);
+
+  static ChannelType fromValue(int value) =>
+      ChannelType.values.firstWhere((e) => e.value == value);
+}
+
+/// Represents an alpha channel type.
+enum AlphaChannelOption {
+  UndefinedAlphaChannel,
+  ActivateAlphaChannel,
+  AssociateAlphaChannel,
+  BackgroundAlphaChannel,
+  CopyAlphaChannel,
+  DeactivateAlphaChannel,
+  DiscreteAlphaChannel,
+  DisassociateAlphaChannel,
+  ExtractAlphaChannel,
+  OffAlphaChannel,
+  OnAlphaChannel,
+  OpaqueAlphaChannel,
+  RemoveAlphaChannel,
+  SetAlphaChannel,
+  ShapeAlphaChannel,
+  TransparentAlphaChannel,
+}

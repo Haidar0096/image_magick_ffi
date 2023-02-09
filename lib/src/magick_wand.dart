@@ -4181,12 +4181,398 @@ class MagickWand {
       );
 
   /// MagickRemoveImage() removes an image from the image list.
-  /// 
+  ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
-  Future<bool> magickRemoveImage() async =>
-      await _magickCompute(
+  Future<bool> magickRemoveImage() async => await _magickCompute(
         _magickRemoveImage,
         _wandPtr.address,
+      );
+
+  /// MagickResampleImage() resample image to desired resolution.
+  /// Bessel Blackman Box Catrom Cubic Gaussian Hanning Hermite Lanczos Mitchell
+  ///  Point Quadratic Sinc Triangle
+  /// Most of the filters are FIR (finite impulse response), however, Bessel,
+  /// Gaussian, and Sinc are IIR (infinite impulse response). Bessel and Sinc
+  /// are windowed (brought down to zero) with the Blackman filter.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickResampleImage({
+    required double xResolution,
+    required double yResolution,
+    required FilterType filter,
+  }) async =>
+      await _magickCompute(
+        _magickResampleImage,
+        _MagickResampleImageParams(
+          _wandPtr.address,
+          xResolution,
+          yResolution,
+          filter,
+        ),
+      );
+
+  /// MagickResetImagePage() resets the Wand page canvas and position.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [page]: the relative page specification.
+  Future<bool> magickResetImagePage(String page) async => await _magickCompute(
+        _magickResetImagePage,
+        _MagickResetImagePageParams(
+          _wandPtr.address,
+          page,
+        ),
+      );
+
+  /// MagickResizeImage() scales an image to the desired dimensions with one of
+  /// these filters:
+  /// ```
+  ///  Bessel   Blackman   Box
+  ///  Catrom   CubicGaussian
+  ///  Hanning  Hermite    Lanczos
+  ///  Mitchell PointQuadratic
+  ///  Sinc     Triangle
+  /// ```
+  ///
+  /// Most of the filters are FIR (finite impulse response), however, Bessel,
+  /// Gaussian, and Sinc are IIR (infinite impulse response). Bessel and Sinc
+  /// are windowed (brought down to zero) with the Blackman filter.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  /// - [filter]: the filter to use.
+  Future<bool> magickResizeImage({
+    required int columns,
+    required int rows,
+    required FilterType filter,
+  }) async =>
+      await _magickCompute(
+        _magickResizeImage,
+        _MagickResizeImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+          filter,
+        ),
+      );
+
+  /// MagickRollImage() offsets an image as defined by x and y.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// - [x]: the x offset.
+  /// - [y]: the y offset.
+  Future<bool> magickRollImage({
+    required int x,
+    required int y,
+  }) async =>
+      await _magickCompute(
+        _magickRollImage,
+        _MagickRollImageParams(
+          _wandPtr.address,
+          x,
+          y,
+        ),
+      );
+
+  /// MagickRotateImage() rotates an image the specified number of degrees.
+  /// Empty triangles left over from rotating the image are filled with the
+  /// background color.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [background]: the background pixel wand.
+  /// - [degrees]: the number of degrees to rotate the image.
+  Future<bool> magickRotateImage({
+    required PixelWand background,
+    required double degrees,
+  }) async =>
+      await _magickCompute(
+        _magickRotateImage,
+        _MagickRotateImageParams(
+          _wandPtr.address,
+          background._wandPtr.address,
+          degrees,
+        ),
+      );
+
+  /// MagickSampleImage() scales an image to the desired dimensions with pixel
+  /// sampling. Unlike other scaling methods, this method does not introduce any
+  /// additional color into the scaled image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  Future<bool> magickSampleImage({
+    required int columns,
+    required int rows,
+  }) async =>
+      await _magickCompute(
+        _magickSampleImage,
+        _MagickSampleImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+        ),
+      );
+
+  /// MagickScaleImage() scales the size of an image to the given dimensions.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  Future<bool> magickScaleImage({
+    required int columns,
+    required int rows,
+  }) async =>
+      await _magickCompute(
+        _magickScaleImage,
+        _MagickScaleImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+        ),
+      );
+
+  /// MagickSegmentImage() segments an image by analyzing the histograms of the
+  /// color components and identifying units that are homogeneous with the fuzzy
+  /// C-means technique.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [colorspace]: the image colorspace.
+  /// - [verbose]: Set to true to print detailed information about the
+  /// identified classes.
+  /// - [clusterThreshold]: This represents the minimum number of pixels
+  /// contained in a hexahedra before it can be considered valid (expressed as a
+  /// percentage).
+  /// - [smoothThreshold]: the smoothing threshold eliminates noise in the
+  /// second derivative of the histogram. As the value is increased, you can
+  /// expect a smoother second derivative.
+  Future<bool> magickSegmentImage({
+    required ColorspaceType colorspace,
+    required bool verbose,
+    required double clusterThreshold,
+    required double smoothThreshold,
+  }) async =>
+      await _magickCompute(
+        _magickSegmentImage,
+        _MagickSegmentImageParams(
+          _wandPtr.address,
+          colorspace,
+          verbose,
+          clusterThreshold,
+          smoothThreshold,
+        ),
+      );
+
+  /// MagickSelectiveBlurImage() selectively blur an image within a contrast
+  /// threshold. It is similar to the unsharpen mask that sharpens everything with
+  /// contrast above a certain threshold.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [radius]: the radius of the gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [sigma]: the standard deviation of the gaussian, in pixels.
+  /// - [threshold]: only pixels within this contrast threshold are included in
+  /// the blur operation.
+  Future<bool> magickSelectiveBlurImage({
+    required double radius,
+    required double sigma,
+    required double threshold,
+  }) async =>
+      await _magickCompute(
+        _magickSelectiveBlurImage,
+        _MagickSelectiveBlurImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          threshold,
+        ),
+      );
+
+  /// MagickSeparateImage() separates a channel from the image and returns a
+  /// grayscale image. A channel is a particular color component of each pixel
+  /// in the image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [channel]: the channel.
+  Future<bool> magickSeparateImage({
+    required ChannelType channel,
+  }) async =>
+      await _magickCompute(
+        _magickSeparateImage,
+        _MagickSeparateImageParams(
+          _wandPtr.address,
+          channel,
+        ),
+      );
+
+  /// MagickSepiaToneImage() applies a special effect to the image, similar to
+  /// the effect achieved in a photo darkroom by sepia toning. Threshold ranges
+  /// from 0 to QuantumRange and is a measure of the extent of the sepia toning.
+  /// A threshold of 80 is a good starting point for a reasonable tone.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [threshold]: Define the extent of the sepia toning.
+  Future<bool> magickSepiaToneImage({
+    required double threshold,
+  }) async =>
+      await _magickCompute(
+        _magickSepiaToneImage,
+        _MagickSepiaToneImageParams(
+          _wandPtr.address,
+          threshold,
+        ),
+      );
+
+  /// MagickSetImage() replaces the last image returned by
+  /// MagickSetIteratorIndex(), MagickNextImage(), MagickPreviousImage() with
+  /// the images from the specified wand.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [setWand]: the set_wand wand.
+  Future<bool> magickSetImage({
+    required MagickWand setWand,
+  }) async =>
+      await _magickCompute(
+        _magickSetImage,
+        _MagickSetImageParams(
+          _wandPtr.address,
+          setWand._wandPtr.address,
+        ),
+      );
+
+  /// MagickSetImageAlphaChannel() activates, deactivates, resets, or sets the
+  /// alpha channel.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [alphaType]: the alpha channel type: ActivateAlphaChannel,
+  /// DeactivateAlphaChannel, OpaqueAlphaChannel, or SetAlphaChannel.
+  Future<bool> magickSetImageAlphaChannel({
+    required AlphaChannelOption alphaType,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageAlphaChannel,
+        _MagickSetImageAlphaChannelParams(
+          _wandPtr.address,
+          alphaType,
+        ),
+      );
+
+  /// MagickSetImageBackgroundColor() sets the image background color.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [background]: the background pixel wand.
+  bool magickSetImageBackgroundColor({
+    required PixelWand background,
+  }) =>
+      _magickWandBindings.MagickSetImageBackgroundColor(
+        _wandPtr,
+        background._wandPtr,
+      ).toBool();
+
+  /// MagickSetImageBluePrimary() sets the image chromaticity blue primary
+  /// point.
+  /// - [x]: the blue primary x-point.
+  /// - [y]: the blue primary y-point.
+  /// - [z]: the blue primary z-point.
+  bool magickSetImageBluePrimary({
+    required double x,
+    required double y,
+    required double z,
+  }) =>
+      _magickWandBindings.MagickSetImageBluePrimary(_wandPtr, x, y, z).toBool();
+
+  /// MagickSetImageBorderColor() sets the image border color.
+  /// - [border]: the border pixel wand.
+  bool magickSetImageBorderColor({
+    required PixelWand border,
+  }) =>
+      _magickWandBindings.MagickSetImageBorderColor(
+        _wandPtr,
+        border._wandPtr,
+      ).toBool();
+
+  /// MagickSetImageChannelMask() sets image channel mask.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageChannelMask({
+    required ChannelType channelMask,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageChannelMask,
+        _MagickSetImageChannelMaskParams(
+          _wandPtr.address,
+          channelMask,
+        ),
+      );
+
+  /// MagickSetImageMask() sets image clip mask.
+  /// - [type]: type of mask, ReadPixelMask or WritePixelMask.
+  /// - [clipMask]: the clip_mask wand.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageMask({
+    required PixelMask type,
+    required MagickWand clipMask,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageMask,
+        _MagickSetImageMaskParams(
+          _wandPtr.address,
+          type,
+          clipMask._wandPtr.address,
+        ),
+      );
+
+  /// MagickSetImageColor() set the entire wand canvas to the specified color.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [background]: the image color.
+  Future<bool> magickSetImageColor({
+    required PixelWand background,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageColor,
+        _MagickSetImageColorParams(
+          _wandPtr.address,
+          background._wandPtr.address,
+        ),
+      );
+
+  /// MagickSetImageColormapColor() sets the color of the specified colormap
+  /// index.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [index]: the offset into the image colormap.
+  /// - [color]: Return the colormap color in this wand.
+  Future<bool> magickSetImageColormapColor({
+    required int index,
+    required PixelWand color,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageColormapColor,
+        _MagickSetImageColormapColorParams(
+          _wandPtr.address,
+          index,
+          color._wandPtr.address,
+        ),
+      );
+
+  /// MagickSetImageColorspace() sets the image colorspace. But does not modify
+  /// the image data.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [colorspace]: the image colorspace.
+  Future<bool> magickSetImageColorspace({
+    required ColorspaceType colorspace,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageColorspace,
+        _MagickSetImageColorspaceParams(
+          _wandPtr.address,
+          colorspace,
+        ),
       );
 
   // TODO: continue adding the remaining methods
