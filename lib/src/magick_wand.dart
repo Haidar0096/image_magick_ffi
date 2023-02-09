@@ -4575,6 +4575,29 @@ class MagickWand {
         ),
       );
 
+  /// MagickSetImageCompose() sets the image composite operator, useful for
+  /// specifying how to composite the image thumbnail when using the
+  /// MagickMontageImage() method.
+  ///
+  /// - [compose]: the image composite operator.
+  bool magickSetImageCompose({
+    required CompositeOperator compose,
+  }) =>
+      _magickWandBindings.MagickSetImageCompose(
+        _wandPtr,
+        compose.index,
+      ).toBool();
+
+  /// MagickSetImageCompression() sets the image compression.
+  /// - [compression]: the image compression type.
+  bool magickSetImageCompression({
+    required CompressionType compression,
+  }) =>
+      _magickWandBindings.MagickSetImageCompression(
+        _wandPtr,
+        compression.index,
+      ).toBool();
+
   // TODO: continue adding the remaining methods
 
   /// Writes an image to the specified filename. If the filename parameter is

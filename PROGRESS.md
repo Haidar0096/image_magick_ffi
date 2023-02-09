@@ -314,5 +314,6 @@
 - [x] MagickSetImageMask 
 - [x] MagickSetImageColor 
 - [x] MagickSetImageColormapColor 
-- [x] MagickSetImageColorspace 
- 
+- [x] MagickSetImageColorspace
+- [x] MagickSetImageCompose
+- [x] MagickSetImageCompression
