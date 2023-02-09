@@ -339,3 +339,24 @@
 - [x] MagickSetImageOrientation
 - [x] MagickSetImagePage
 - [x] MagickSetImagePixelColor
+- [ ] MagickSetImageProgressMonitor [tedious, will only implement if enough people ask]
+- [x] MagickSetImageRedPrimary
+- [x] MagickSetImageRenderingIntent
+- [x] MagickSetImageResolution
+- [x] MagickSetImageScene
+- [x] MagickSetImageTicksPerSecond
+- [x] MagickSetImageType
+- [x] MagickSetImageUnits
+- [x] MagickSetImageVirtualPixelMethod
+- [x] MagickSetImageWhitePoint
+- [x] MagickShadeImage
+- [x] MagickShadowImage
+- [x] MagickSharpenImage
+- [x] MagickShaveImage
+- [x] MagickShearImage
+- [x] MagickSigmoidalContrastImage
+- [ ] MagickSimilarityImage
+- [x] MagickSketchImage
+- [x] MagickSmushImages
+- [x] MagickSolarizeImage
+- [x] MagickSparseColorImage

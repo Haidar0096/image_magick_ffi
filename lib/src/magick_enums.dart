@@ -805,3 +805,22 @@ enum AlphaChannelOption {
   ShapeAlphaChannel,
   TransparentAlphaChannel,
 }
+
+/// Represents a sparse color method.
+enum SparseColorMethod {
+  UndefinedColorInterpolate(0),
+  BarycentricColorInterpolate(1),
+  BilinearColorInterpolate(7),
+  PolynomialColorInterpolate(8),
+  ShepardsColorInterpolate(16),
+  VoronoiColorInterpolate(18),
+  InverseColorInterpolate(19),
+  ManhattanColorInterpolate(20);
+
+  final int value;
+
+  const SparseColorMethod(this.value);
+
+  static SparseColorMethod fromValue(int value) =>
+      SparseColorMethod.values.firstWhere((e) => e.value == value);
+}

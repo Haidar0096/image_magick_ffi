@@ -4789,6 +4789,360 @@ class MagickWand {
         ),
       );
 
+  /// MagickSetImageRedPrimary() sets the image chromaticity red primary point.
+  /// - [x]: the red primary x-point.
+  /// - [y]: the red primary y-point.
+  /// - [z]: the red primary z-point.
+  bool magickSetImageRedPrimary({
+    required double x,
+    required double y,
+    required double z,
+  }) =>
+      _magickWandBindings.MagickSetImageRedPrimary(
+        _wandPtr,
+        x,
+        y,
+        z,
+      ).toBool();
+
+  /// MagickSetImageRenderingIntent() sets the image rendering intent.
+  /// - [renderingIntent]: the image rendering intent.
+  bool magickSetImageRenderingIntent(RenderingIntent renderingIntent) =>
+      _magickWandBindings.MagickSetImageRenderingIntent(
+        _wandPtr,
+        renderingIntent.index,
+      ).toBool();
+
+  /// MagickSetImageResolution() sets the image resolution.
+  /// - [xResolution]: the image x resolution.
+  /// - [yResolution]: the image y resolution.
+  bool magickSetImageResolution({
+    required double xResolution,
+    required double yResolution,
+  }) =>
+      _magickWandBindings.MagickSetImageResolution(
+        _wandPtr,
+        xResolution,
+        yResolution,
+      ).toBool();
+
+  /// MagickSetImageScene() sets the image scene.
+  /// - [scene]: the image scene number.
+  bool magickSetImageScene(int scene) =>
+      _magickWandBindings.MagickSetImageScene(
+        _wandPtr,
+        scene,
+      ).toBool();
+
+  /// MagickSetImageTicksPerSecond() sets the image ticks-per-second.
+  /// - [ticksPerSecond]: the units to use for the image delay.
+  bool magickSetImageTicksPerSecond(int ticksPerSecond) =>
+      _magickWandBindings.MagickSetImageTicksPerSecond(
+        _wandPtr,
+        ticksPerSecond,
+      ).toBool();
+
+  /// MagickSetImageType() sets the image type.
+  /// - [imageType]: the image type.
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageType(ImageType imageType) async =>
+      await _magickCompute(
+        _magickSetImageType,
+        _MagickSetImageTypeParams(
+          _wandPtr.address,
+          imageType,
+        ),
+      );
+
+  /// MagickSetImageUnits() sets the image units of resolution.
+  /// - [units]: the image units of resolution.
+  bool magickSetImageUnits(ResolutionType units) =>
+      _magickWandBindings.MagickSetImageUnits(
+        _wandPtr,
+        units.index,
+      ).toBool();
+
+  /// MagickSetImageVirtualPixelMethod() sets the image virtual pixel method.
+  /// - [method]: the image virtual pixel method.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageVirtualPixelMethod(
+    VirtualPixelMethod method,
+  ) async =>
+      await _magickCompute(
+        _magickSetImageVirtualPixelMethod,
+        _MagickSetImageVirtualPixelMethodParams(
+          _wandPtr.address,
+          method,
+        ),
+      );
+
+  /// MagickSetImageWhitePoint() sets the image chromaticity white point.
+  /// - [x]: the white x-point.
+  /// - [y]: the white y-point.
+  /// - [z]: the white z-point.
+  bool magickSetImageWhitePoint({
+    required double x,
+    required double y,
+    required double z,
+  }) =>
+      _magickWandBindings.MagickSetImageWhitePoint(
+        _wandPtr,
+        x,
+        y,
+        z,
+      ).toBool();
+
+  /// MagickShadeImage() shines a distant light on an image to create a
+  /// three-dimensional effect. You control the positioning of the light with
+  /// azimuth and elevation; azimuth is measured in degrees off the x axis and
+  /// elevation is measured in pixels above the Z axis.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [gray]: A value other than zero shades the intensity of each pixel.
+  /// - [azimuth]: Define the light source direction.
+  /// - [elevation]: Define the light source direction.
+  Future<bool> magickShadeImage({
+    required bool gray,
+    required double azimuth,
+    required double elevation,
+  }) async =>
+      await _magickCompute(
+        _magickShadeImage,
+        _MagickShadeImageParams(
+          _wandPtr.address,
+          gray,
+          azimuth,
+          elevation,
+        ),
+      );
+
+  /// MagickShadowImage() simulates an image shadow.
+  /// - [alpha]: percentage transparency.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  /// - [x]: the shadow x-offset.
+  /// - [y]: the shadow y-offset.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickShadowImage({
+    required double alpha,
+    required double sigma,
+    required int x,
+    required int y,
+  }) async =>
+      await _magickCompute(
+        _magickShadowImage,
+        _MagickShadowImageParams(
+          _wandPtr.address,
+          alpha,
+          sigma,
+          x,
+          y,
+        ),
+      );
+
+  /// MagickSharpenImage() sharpens an image. We convolve the image with a
+  /// Gaussian operator of the given radius and standard deviation (sigma). For
+  /// reasonable results, the radius should be larger than sigma. Use a radius
+  /// of 0 and MagickSharpenImage() selects a suitable radius for you.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  ///  pixel.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  Future<bool> magickSharpenImage({
+    required double radius,
+    required double sigma,
+  }) async =>
+      await _magickCompute(
+        _magickSharpenImage,
+        _MagickSharpenImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+        ),
+      );
+
+  /// MagickShaveImage() shaves pixels from the image edges.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  Future<bool> magickShaveImage({
+    required int columns,
+    required int rows,
+  }) async =>
+      await _magickCompute(
+        _magickShaveImage,
+        _MagickShaveImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+        ),
+      );
+
+  /// MagickShearImage() slides one edge of an image along the X or Y axis,
+  /// creating a parallelogram. An X direction shear slides an edge along the X
+  /// axis, while a Y direction shear slides an edge along the Y axis. The
+  /// amount of the shear is controlled by a shear angle. For X direction
+  /// shears, x_shear is measured relative to the Y axis, and similarly, for Y
+  /// direction shears y_shear is measured relative to the X axis. Empty
+  /// triangles left over from shearing the image are filled with the
+  /// background color.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [background]: the background pixel wand.
+  /// - [xShear]: the number of degrees to shear the image.
+  /// - [yShear]: the number of degrees to shear the image.
+  Future<bool> magickShearImage({
+    required PixelWand background,
+    required double xShear,
+    required double yShear,
+  }) async =>
+      await _magickCompute(
+        _magickShearImage,
+        _MagickShearImageParams(
+          _wandPtr.address,
+          background._wandPtr.address,
+          xShear,
+          yShear,
+        ),
+      );
+
+  /// MagickSigmoidalContrastImage() adjusts the contrast of an image with a
+  /// non-linear sigmoidal contrast algorithm. Increase the contrast of the image
+  /// using a sigmoidal transfer function without saturating highlights or
+  /// shadows. Contrast indicates how much to increase the contrast (0 is none;
+  /// 3 is typical; 20 is pushing it); mid-point indicates where midtones fall in
+  /// the resultant image (0 is white; 50 is middle-gray; 100 is black). Set
+  /// sharpen to true to increase the image contrast otherwise the contrast
+  /// is reduced.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [sharpen]: Increase or decrease image contrast.
+  /// - [alpha]: strength of the contrast, the larger the number the more
+  /// 'threshold-like' it becomes.
+  /// - [beta]: midpoint of the function as a color value 0 to QuantumRange.
+  Future<bool> magickSigmoidalContrastImage({
+    required bool sharpen,
+    required double alpha,
+    required double beta,
+  }) async =>
+      await _magickCompute(
+        _magickSigmoidalContrastImage,
+        _MagickSigmoidalContrastImageParams(
+          _wandPtr.address,
+          sharpen,
+          alpha,
+          beta,
+        ),
+      );
+
+  /// MagickSketchImage() simulates a pencil sketch. We convolve the image with
+  /// a Gaussian operator of the given radius and standard deviation (sigma).
+  /// For reasonable results, radius should be larger than sigma. Use a radius
+  /// of 0 and SketchImage() selects a suitable radius for you. Angle gives the
+  /// angle of the blurring motion.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  /// - [angle]: apply the effect along this angle.
+  Future<bool> magickSketchImage({
+    required double radius,
+    required double sigma,
+    required double angle,
+  }) async =>
+      await _magickCompute(
+        _magickSketchImage,
+        _MagickSketchImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          angle,
+        ),
+      );
+
+  /// MagickSmushImages() takes all images from the current image pointer to the
+  /// end of the image list and smushes them to each other top-to-bottom if the
+  /// stack parameter is true, otherwise left-to-right.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// - [stack]: By default, images are stacked left-to-right. Set stack to
+  /// true to stack them top-to-bottom.
+  /// - [offset]: minimum distance in pixels between images.
+  Future<MagickWand?> magickSmushImages({
+    required bool stack,
+    required int offset,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickSmushImages,
+          _MagickSmushImagesParams(
+            _wandPtr.address,
+            stack,
+            offset,
+          ),
+        ),
+      );
+
+  /// MagickSolarizeImage() applies a special effect to the image, similar to
+  /// the effect achieved in a photo darkroom by selectively exposing areas of
+  /// photo sensitive paper to light. Threshold ranges from 0 to QuantumRange
+  /// and is a measure of the extent of the solarization.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [threshold]: Define the extent of the solarization.
+  Future<bool> magickSolarizeImage(double threshold) async =>
+      await _magickCompute(
+        _magickSolarizeImage,
+        _MagickSolarizeImageParams(
+          _wandPtr.address,
+          threshold,
+        ),
+      );
+
+  /// MagickSparseColorImage() given a set of coordinates, interpolates the
+  /// colors found at those coordinates, across the whole image, using various
+  /// methods.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [method]: the method of image sparseion.
+  /// ArcSparseColorion will always ignore source image offset, and always
+  /// 'bestfit' the destination image with the top left corner offset relative
+  /// to the polar mapping center.
+  ///
+  /// Bilinear has no simple inverse mapping so will not allow 'bestfit' style
+  /// of image sparseion.
+  ///
+  /// Affine, Perspective, and Bilinear, will do least squares fitting of the
+  /// distortion when more than the minimum number of control point pairs are
+  /// provided.
+  ///
+  /// Perspective, and Bilinear, will fall back to a Affine sparseion when
+  /// less than 4 control point pairs are provided. While Affine sparseions
+  /// will let you use any number of control point pairs, that is Zero pairs
+  /// is a No-Op (viewport only) distortion, one pair is a translation and two
+  /// pairs of control points will do a scale-rotate-translate, without any
+  /// shearing.
+  /// - [arguments]: the arguments for this sparseion method.
+  Future<bool> magickSparseColorImage({
+    required SparseColorMethod method,
+    required Float64List arguments,
+  }) async =>
+      await _magickCompute(
+        _magickSparseColorImage,
+        _MagickSparseColorImageParams(
+          _wandPtr.address,
+          method,
+          arguments,
+        ),
+      );
+
   // TODO: continue adding the remaining methods
 
   /// Writes an image to the specified filename. If the filename parameter is
