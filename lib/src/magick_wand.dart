@@ -3559,9 +3559,7 @@ class MagickWand {
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// - [method]: the method of selecting the size of the initial canvas.
-  Future<MagickWand?> magickMergeImageLayers({
-    required LayerMethod method,
-  }) async =>
+  Future<MagickWand?> magickMergeImageLayers(LayerMethod method) async =>
       MagickWand._fromAddress(
         await _magickCompute(
           _magickMergeImageLayers,
@@ -3655,9 +3653,7 @@ class MagickWand {
   /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
   ///
   /// - [numberFrames]: the number of in-between images to generate.
-  Future<MagickWand?> magickMorphImages({
-    required int numberFrames,
-  }) async =>
+  Future<MagickWand?> magickMorphImages(int numberFrames) async =>
       MagickWand._fromAddress(
         await _magickCompute(
           _magickMorphImages,
@@ -3731,10 +3727,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [gray]: If true, only negate grayscale pixels within the image.
-  Future<bool> magickNegateImage({
-    required bool gray,
-  }) async =>
-      await _magickCompute(
+  Future<bool> magickNegateImage(bool gray) async => await _magickCompute(
         _magickNegateImage,
         _MagickNegateImageParams(
           _wandPtr.address,
@@ -3893,7 +3886,7 @@ class MagickWand {
   ///  checkerboard hash pattern (50 grey) between each color level, to
   ///  basically double the number of color levels with a bare minimum of
   ///  dithering.
-  Future<bool> magickOrderedDitherImage({required String thresholdMap}) async =>
+  Future<bool> magickOrderedDitherImage(String thresholdMap) async =>
       await _magickCompute(
         _magickOrderedDitherImage,
         _MagickOrderedDitherImageParams(
@@ -4070,9 +4063,7 @@ class MagickWand {
   /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
   /// - [angle]: the angle of the blurring effect in degrees.
-  Future<bool> magickRotationalBlurImage({
-    required double angle,
-  }) async =>
+  Future<bool> magickRotationalBlurImage(double angle) async =>
       await _magickCompute(
         _magickRotationalBlurImage,
         _MagickRotationalBlurImageParams(
@@ -4396,9 +4387,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [channel]: the channel.
-  Future<bool> magickSeparateImage({
-    required ChannelType channel,
-  }) async =>
+  Future<bool> magickSeparateImage(ChannelType channel) async =>
       await _magickCompute(
         _magickSeparateImage,
         _MagickSeparateImageParams(
@@ -4414,9 +4403,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [threshold]: Define the extent of the sepia toning.
-  Future<bool> magickSepiaToneImage({
-    required double threshold,
-  }) async =>
+  Future<bool> magickSepiaToneImage(double threshold) async =>
       await _magickCompute(
         _magickSepiaToneImage,
         _MagickSepiaToneImageParams(
@@ -4431,10 +4418,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [setWand]: the set_wand wand.
-  Future<bool> magickSetImage({
-    required MagickWand setWand,
-  }) async =>
-      await _magickCompute(
+  Future<bool> magickSetImage(MagickWand setWand) async => await _magickCompute(
         _magickSetImage,
         _MagickSetImageParams(
           _wandPtr.address,
@@ -4448,9 +4432,7 @@ class MagickWand {
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [alphaType]: the alpha channel type: ActivateAlphaChannel,
   /// DeactivateAlphaChannel, OpaqueAlphaChannel, or SetAlphaChannel.
-  Future<bool> magickSetImageAlphaChannel({
-    required AlphaChannelOption alphaType,
-  }) async =>
+  Future<bool> magickSetImageAlphaChannel(AlphaChannelOption alphaType) async =>
       await _magickCompute(
         _magickSetImageAlphaChannel,
         _MagickSetImageAlphaChannelParams(
@@ -4463,9 +4445,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [background]: the background pixel wand.
-  bool magickSetImageBackgroundColor({
-    required PixelWand background,
-  }) =>
+  bool magickSetImageBackgroundColor(PixelWand background) =>
       _magickWandBindings.MagickSetImageBackgroundColor(
         _wandPtr,
         background._wandPtr,
@@ -4485,9 +4465,7 @@ class MagickWand {
 
   /// MagickSetImageBorderColor() sets the image border color.
   /// - [border]: the border pixel wand.
-  bool magickSetImageBorderColor({
-    required PixelWand border,
-  }) =>
+  bool magickSetImageBorderColor(PixelWand border) =>
       _magickWandBindings.MagickSetImageBorderColor(
         _wandPtr,
         border._wandPtr,
@@ -4496,9 +4474,7 @@ class MagickWand {
   /// MagickSetImageChannelMask() sets image channel mask.
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
-  Future<bool> magickSetImageChannelMask({
-    required ChannelType channelMask,
-  }) async =>
+  Future<bool> magickSetImageChannelMask(ChannelType channelMask) async =>
       await _magickCompute(
         _magickSetImageChannelMask,
         _MagickSetImageChannelMaskParams(
@@ -4529,9 +4505,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [background]: the image color.
-  Future<bool> magickSetImageColor({
-    required PixelWand background,
-  }) async =>
+  Future<bool> magickSetImageColor(PixelWand background) async =>
       await _magickCompute(
         _magickSetImageColor,
         _MagickSetImageColorParams(
@@ -4564,9 +4538,7 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   /// - [colorspace]: the image colorspace.
-  Future<bool> magickSetImageColorspace({
-    required ColorspaceType colorspace,
-  }) async =>
+  Future<bool> magickSetImageColorspace(ColorspaceType colorspace) async =>
       await _magickCompute(
         _magickSetImageColorspace,
         _MagickSetImageColorspaceParams(
@@ -4580,9 +4552,7 @@ class MagickWand {
   /// MagickMontageImage() method.
   ///
   /// - [compose]: the image composite operator.
-  bool magickSetImageCompose({
-    required CompositeOperator compose,
-  }) =>
+  bool magickSetImageCompose(CompositeOperator compose) =>
       _magickWandBindings.MagickSetImageCompose(
         _wandPtr,
         compose.index,
@@ -4590,13 +4560,234 @@ class MagickWand {
 
   /// MagickSetImageCompression() sets the image compression.
   /// - [compression]: the image compression type.
-  bool magickSetImageCompression({
-    required CompressionType compression,
-  }) =>
+  bool magickSetImageCompression(CompressionType compression) =>
       _magickWandBindings.MagickSetImageCompression(
         _wandPtr,
         compression.index,
       ).toBool();
+
+  /// MagickSetImageCompressionQuality() sets the image compression quality.
+  /// - [quality]: the image compression quality.
+  bool magickSetImageCompressionQuality(int quality) =>
+      _magickWandBindings.MagickSetImageCompressionQuality(
+        _wandPtr,
+        quality,
+      ).toBool();
+
+  /// MagickSetImageDelay() sets the image delay.
+  /// - [delay]: the image delay in ticks-per-second units.
+  bool magickSetImageDelay(int delay) =>
+      _magickWandBindings.MagickSetImageDelay(
+        _wandPtr,
+        delay,
+      ).toBool();
+
+  /// MagickSetImageDepth() sets the image depth.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [depth]: the image depth in bits: 8, 16, or 32.
+  Future<bool> magickSetImageDepth(int depth) async => await _magickCompute(
+        _magickSetImageDepth,
+        _MagickSetImageDepthParams(
+          _wandPtr.address,
+          depth,
+        ),
+      );
+
+  /// MagickSetImageDispose() sets the image disposal method.
+  /// - [dispose]: the image disposal type.
+  bool magickSetImageDispose(DisposeType dispose) =>
+      _magickWandBindings.MagickSetImageDispose(
+        _wandPtr,
+        dispose.value,
+      ).toBool();
+
+  /// MagickSetImageEndian() sets the image endian method.
+  /// - [endian]: the image endian type.
+  bool magickSetImageEndian(EndianType endian) =>
+      _magickWandBindings.MagickSetImageEndian(
+        _wandPtr,
+        endian.index,
+      ).toBool();
+
+  /// MagickSetImageExtent() sets the image size (i.e. columns & rows).
+  /// - [columns]: the image width in pixels.
+  /// - [rows]: the image height in pixels.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageExtent({
+    required int columns,
+    required int rows,
+  }) async =>
+      await _magickCompute(
+        _magickSetImageExtent,
+        _MagickSetImageExtentParams(
+          _wandPtr.address,
+          columns,
+          rows,
+        ),
+      );
+
+  /// MagickSetImageFilename() sets the filename of a particular image in a
+  /// sequence.
+  /// - [filename]: the image filename.
+  bool magickSetImageFilename(String filename) =>
+      using((Arena arena) => _magickWandBindings.MagickSetImageFilename(
+            _wandPtr,
+            filename.toNativeUtf8(allocator: arena).cast(),
+          )).toBool();
+
+  /// MagickSetImageFormat() sets the format of a particular image in a
+  /// sequence.
+  /// - [format]: the image format.
+  bool magickSetImageFormat(String format) =>
+      using((Arena arena) => _magickWandBindings.MagickSetImageFormat(
+            _wandPtr,
+            format.toNativeUtf8(allocator: arena).cast(),
+          )).toBool();
+
+  /// MagickSetImageFuzz() sets the image fuzz.
+  /// - [fuzz]: the image fuzz.
+  bool magickSetImageFuzz(double fuzz) =>
+      _magickWandBindings.MagickSetImageFuzz(
+        _wandPtr,
+        fuzz,
+      ).toBool();
+
+  /// MagickSetImageGamma() sets the image gamma.
+  /// - [gamma]: the image gamma.
+  bool magickSetImageGamma(double gamma) =>
+      _magickWandBindings.MagickSetImageGamma(
+        _wandPtr,
+        gamma,
+      ).toBool();
+
+  /// MagickSetImageGravity() sets the image gravity type.
+  /// - [gravity]: the image gravity type.
+  bool magickSetImageGravity(GravityType gravity) =>
+      _magickWandBindings.MagickSetImageGravity(
+        _wandPtr,
+        gravity.value,
+      ).toBool();
+
+  /// MagickSetImageGreenPrimary() sets the image chromaticity green primary
+  /// point.
+  /// - [x]: the green primary x-point.
+  /// - [y]: the green primary y-point.
+  /// - [z]: the green primary z-point.
+  bool magickSetImageGreenPrimary(double x, double y, double z) =>
+      _magickWandBindings.MagickSetImageGreenPrimary(
+        _wandPtr,
+        x,
+        y,
+        z,
+      ).toBool();
+
+  /// MagickSetImageInterlaceScheme() sets the image interlace scheme.
+  /// - [interlace]: the image interlace scheme.
+  bool magickSetImageInterlaceScheme(InterlaceType interlace) =>
+      _magickWandBindings.MagickSetImageInterlaceScheme(
+        _wandPtr,
+        interlace.index,
+      ).toBool();
+
+  /// MagickSetImageInterpolateMethod() sets the image interpolate pixel method.
+  /// - [interpolate]: the image interpolate pixel method.
+  bool magickSetImageInterpolateMethod(PixelInterpolateMethod interpolate) =>
+      _magickWandBindings.MagickSetImageInterpolateMethod(
+        _wandPtr,
+        interpolate.index,
+      ).toBool();
+
+  /// MagickSetImageIterations() sets the image iterations.
+  /// - [delay]: the image delay in 1/100th of a second.
+  bool magickSetImageIterations(int iterations) =>
+      _magickWandBindings.MagickSetImageIterations(
+        _wandPtr,
+        iterations,
+      ).toBool();
+
+  /// MagickSetImageMatte() sets the image matte channel.
+  /// - [matte]: Set to true to enable the image matte channel otherwise
+  /// false.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageMatte(bool matte) async => await _magickCompute(
+        _magickSetImageMatte,
+        _MagickSetImageMatteParams(
+          _wandPtr.address,
+          matte,
+        ),
+      );
+
+  /// MagickSetImageMatteColor() sets the image alpha color.
+  /// - [matte]: the alpha pixel wand.
+  bool magickSetImageMatteColor(PixelWand matte) =>
+      _magickWandBindings.MagickSetImageMatteColor(
+        _wandPtr,
+        matte._wandPtr,
+      ).toBool();
+
+  /// MagickSetImageAlpha() sets the image to the specified alpha level.
+  /// - [alpha]: the level of transparency: 1.0 is fully opaque and 0.0 is fully
+  /// transparent.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImageAlpha(double alpha) async => await _magickCompute(
+        _magickSetImageAlpha,
+        _MagickSetImageAlphaParams(
+          _wandPtr.address,
+          alpha,
+        ),
+      );
+
+  /// MagickSetImageOrientation() sets the image orientation.
+  /// - [orientation]: the image orientation type.
+  bool magickSetImageOrientation(OrientationType orientation) =>
+      _magickWandBindings.MagickSetImageOrientation(
+        _wandPtr,
+        orientation.index,
+      ).toBool();
+
+  /// MagickSetImagePage() sets the page geometry of the image.
+  /// - [width]: the page width.
+  /// - [height]: the page height.
+  /// - [x]: the page x-offset.
+  /// - [y]: the page y-offset.
+  bool magickSetImagePage({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+  }) =>
+      _magickWandBindings.MagickSetImagePage(
+        _wandPtr,
+        width,
+        height,
+        x,
+        y,
+      ).toBool();
+
+  /// MagickSetImagePixelColor() sets the color of the specified pixel.
+  /// - [x]: the x offset into the image.
+  /// - [y]: the y offset into the image.
+  /// - [color]: Return the colormap color in this wand.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickSetImagePixelColor({
+    required int x,
+    required int y,
+    required PixelWand color,
+  }) async =>
+      await _magickCompute(
+        _magickSetImagePixelColor,
+        _MagickSetImagePixelColorParams(
+          _wandPtr.address,
+          x,
+          y,
+          color._wandPtr.address,
+        ),
+      );
 
   // TODO: continue adding the remaining methods
 

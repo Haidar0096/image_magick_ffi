@@ -317,3 +317,25 @@
 - [x] MagickSetImageColorspace
 - [x] MagickSetImageCompose
 - [x] MagickSetImageCompression
+- [x] MagickSetImageCompressionQuality
+- [x] MagickSetImageDelay
+- [x] MagickSetImageDepth
+- [x] MagickSetImageDispose
+- [x] MagickSetImageEndian
+- [x] MagickSetImageExtent
+- [x] MagickSetImageFilename
+- [ ] MagickSetImageFilter [needs updating ImageMagick's version]
+- [x] MagickSetImageFormat
+- [x] MagickSetImageFuzz
+- [x] MagickSetImageGamma
+- [x] MagickSetImageGravity
+- [x] MagickSetImageGreenPrimary
+- [x] MagickSetImageInterlaceScheme
+- [x] MagickSetImageInterpolateMethod
+- [x] MagickSetImageIterations
+- [x] MagickSetImageMatte
+- [x] MagickSetImageMatteColor
+- [x] MagickSetImageAlpha
+- [x] MagickSetImageOrientation
+- [x] MagickSetImagePage
+- [x] MagickSetImagePixelColor
