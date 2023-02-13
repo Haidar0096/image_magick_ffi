@@ -3963,6 +3963,8 @@ class MagickWand {
   ///
   /// {@macro magick_wand.method_runs_in_different_isolate}
   ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
   /// - [preview]: the image processing operation.
   Future<MagickWand?> magickPreviewImages(PreviewType preview) async =>
       MagickWand._fromAddress(
@@ -5143,7 +5145,448 @@ class MagickWand {
         ),
       );
 
-  // TODO: continue adding the remaining methods
+  /// MagickSpliceImage() splices a solid color into the image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [width]: the region width.
+  /// - [height]: the region height.
+  /// - [x]: the region x offset.
+  /// - [y]: the region y offset.
+  Future<bool> magickSpliceImage({
+    required int width,
+    required int height,
+    required int x,
+    required int y,
+  }) async =>
+      await _magickCompute(
+        _magickSpliceImage,
+        _MagickSpliceImageParams(
+          _wandPtr.address,
+          width,
+          height,
+          x,
+          y,
+        ),
+      );
+
+  /// MagickSpreadImage() is a special effects method that randomly displaces
+  /// each pixel in a block defined by the radius parameter.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [method]: interpolation method.
+  /// - [radius]: Choose a random pixel in a neighborhood of this extent.
+  Future<bool> magickSpreadImage({
+    required PixelInterpolateMethod method,
+    required double radius,
+  }) async =>
+      await _magickCompute(
+        _magickSpreadImage,
+        _MagickSpreadImageParams(
+          _wandPtr.address,
+          method,
+          radius,
+        ),
+      );
+
+  /// MagickStatisticImage() replace each pixel with corresponding statistic
+  /// from the neighborhood of the specified width and height.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [type]: the statistic type (e.g. median, mode, etc.).
+  /// - [width]: the width of the pixel neighborhood.
+  /// - [height]: the height of the pixel neighborhood.
+  Future<bool> magickStatisticImage({
+    required StatisticType type,
+    required int width,
+    required int height,
+  }) async =>
+      await _magickCompute(
+        _magickStatisticImage,
+        _MagickStatisticImageParams(
+          _wandPtr.address,
+          type,
+          width,
+          height,
+        ),
+      );
+
+  /// MagickSteganoImage() hides a digital watermark within the image. Recover
+  /// the hidden watermark later to prove that the authenticity of an image.
+  /// Offset defines the start position within the image to hide the watermark.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  ///
+  /// - [watermarkWand] : the watermark wand.
+  /// - [offset] : Start hiding at this offset into the image.
+  Future<MagickWand?> magickSteganoImage({
+    required MagickWand watermarkWand,
+    required int offset,
+  }) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickSteganoImage,
+          _MagickSteganoImageParams(
+            _wandPtr.address,
+            watermarkWand._wandPtr.address,
+            offset,
+          ),
+        ),
+      );
+
+  /// MagickStereoImage() composites two images and produces a single image
+  /// that is the composite of a left and right image of a stereo pair.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  /// - [offsetWand]: Another image wand.
+  Future<MagickWand?> magickStereoImage(MagickWand offsetWand) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickStereoImage,
+          _MagickStereoImageParams(
+            _wandPtr.address,
+            offsetWand._wandPtr.address,
+          ),
+        ),
+      );
+
+  /// MagickStripImage() strips an image of all profiles and comments.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickStripImage() async => await _magickCompute(
+        _magickStripImage,
+        _wandPtr.address,
+      );
+
+  /// MagickSwirlImage() swirls the pixels about the center of the image, where
+  /// degrees indicates the sweep of the arc through which each pixel is moved.
+  /// You get a more dramatic effect as the degrees move from 1 to 360.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [degrees]: Define the tightness of the swirling effect.
+  /// - [method]: the pixel interpolation method.
+  Future<bool> magickSwirlImage({
+    required double degrees,
+    required PixelInterpolateMethod method,
+  }) async =>
+      await _magickCompute(
+        _magickSwirlImage,
+        _MagickSwirlImageParams(
+          _wandPtr.address,
+          degrees,
+          method,
+        ),
+      );
+
+  /// MagickTextureImage() repeatedly tiles the texture image across and down
+  /// the image canvas.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  ///
+  /// {@macro magick_wand.do_not_forget_to_destroy_returned_wand}
+  /// - [textureWand]: the texture wand.
+  Future<MagickWand?> magickTextureImage(MagickWand textureWand) async =>
+      MagickWand._fromAddress(
+        await _magickCompute(
+          _magickTextureImage,
+          _MagickTextureImageParams(
+            _wandPtr.address,
+            textureWand._wandPtr.address,
+          ),
+        ),
+      );
+
+  /// MagickThresholdImage() changes the value of individual pixels based on
+  /// the intensity of each pixel compared to threshold. The result is a
+  /// high-contrast, two color image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [threshold]: Define the threshold value.
+  Future<bool> magickThresholdImage(double threshold) async =>
+      await _magickCompute(
+        _magickThresholdImage,
+        _MagickThresholdImageParams(
+          _wandPtr.address,
+          threshold,
+        ),
+      );
+
+  /// MagickThresholdImageChannel() changes the value of individual pixels based
+  ///  on the intensity of each pixel compared to threshold. The result is a
+  /// high-contrast, two color image. It differs from MagickThresholdImage() in
+  /// that it lets you specify a channel.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [channel]: the channel.
+  /// - [threshold]: Define the threshold value.
+  Future<bool> magickThresholdImageChannel({
+    required ChannelType channel,
+    required double threshold,
+  }) async =>
+      await _magickCompute(
+        _magickThresholdImageChannel,
+        _MagickThresholdImageChannelParams(
+          _wandPtr.address,
+          channel,
+          threshold,
+        ),
+      );
+
+  /// MagickThumbnailImage() changes the size of an image to the given
+  /// dimensions and removes any associated profiles. The goal is to produce
+  /// small low cost thumbnail images suited for display on the Web.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [columns]: the number of columns in the scaled image.
+  /// - [rows]: the number of rows in the scaled image.
+  Future<bool> magickThumbnailImage({
+    required int columns,
+    required int rows,
+  }) async =>
+      await _magickCompute(
+        _magickThumbnailImage,
+        _MagickThumbnailImageParams(
+          _wandPtr.address,
+          columns,
+          rows,
+        ),
+      );
+
+  /// MagickTintImage() applies a color vector to each pixel in the image. The
+  /// length of the vector is 0 for black and white and at its maximum for the
+  /// midtones. The vector weighting function is
+  /// f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [tint]: the tint pixel wand.
+  /// - [blend]: the blend pixel wand.
+  Future<bool> magickTintImage({
+    required PixelWand tint,
+    required PixelWand blend,
+  }) async =>
+      await _magickCompute(
+        _magickTintImage,
+        _MagickTintImageParams(
+          _wandPtr.address,
+          tint._wandPtr.address,
+          blend._wandPtr.address,
+        ),
+      );
+
+  /// MagickTransformImageColorspace() transform the image colorspace, setting
+  ///  the images colorspace while transforming the images data to that
+  ///  colorspace.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [colorspace]: the image colorspace.
+  Future<bool> magickTransformImageColorspace(
+          ColorspaceType colorspace) async =>
+      await _magickCompute(
+        _magickTransformImageColorspace,
+        _MagickTransformImageColorspaceParams(
+          _wandPtr.address,
+          colorspace,
+        ),
+      );
+
+  /// MagickTransparentPaintImage() changes any pixel that matches color with
+  /// the color defined by fill.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [target]: Change this target color to specified alpha value within the
+  /// image.
+  /// - [alpha]: the level of transparency: 1.0 is fully opaque and 0.0 is fully
+  /// transparent.
+  /// - [fuzz]: By default target must match a particular pixel color exactly.
+  /// However, in many cases two colors may differ by a small amount. The fuzz
+  /// member of image defines how much tolerance is acceptable to consider two
+  /// colors as the same. For example, set fuzz to 10 and the color red at
+  /// intensities of 100 and 102 respectively are now interpreted as the same
+  /// color for the purposes of the floodfill.
+  /// - [invert]: paint any pixel that does not match the target color.
+  Future<bool> magickTransparentPaintImage({
+    required PixelWand target,
+    required double alpha,
+    required double fuzz,
+    required bool invert,
+  }) async =>
+      await _magickCompute(
+        _magickTransparentPaintImage,
+        _MagickTransparentPaintImageParams(
+          _wandPtr.address,
+          target._wandPtr.address,
+          alpha,
+          fuzz,
+          invert,
+        ),
+      );
+
+  /// MagickTransposeImage() creates a vertical mirror image by reflecting the
+  /// pixels around the central x-axis while rotating them 90-degrees.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickTransposeImage() async => await _magickCompute(
+        _magickTransposeImage,
+        _wandPtr.address,
+      );
+
+  /// MagickTransverseImage() creates a horizontal mirror image by reflecting
+  ///  the pixels around the central y-axis while rotating them 270-degrees.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickTransverseImage() async => await _magickCompute(
+        _magickTransverseImage,
+        _wandPtr.address,
+      );
+
+  /// MagickTrimImage() remove edges that are the background color from the
+  /// image.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [fuzz]: By default target must match a particular pixel color exactly.
+  /// However, in many cases two colors may differ by a small amount. The fuzz
+  /// member of image defines how much tolerance is acceptable to consider two
+  /// colors as the same. For example, set fuzz to 10 and the color red at
+  /// intensities of 100 and 102 respectively are now interpreted as the same
+  /// color for the purposes of the floodfill.
+  Future<bool> magickTrimImage(double fuzz) async => await _magickCompute(
+        _magickTrimImage,
+        _MagickTrimImageParams(_wandPtr.address, fuzz),
+      );
+
+  /// MagickUniqueImageColors() discards all but one of any pixel color.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickUniqueImageColors() async => await _magickCompute(
+        _magickUniqueImageColors,
+        _wandPtr.address,
+      );
+
+  /// MagickUnsharpMaskImage() sharpens an image. We convolve the image with a
+  /// Gaussian operator of the given radius and standard deviation (sigma). For
+  /// reasonable results, radius should be larger than sigma. Use a radius of 0
+  /// and UnsharpMaskImage() selects a suitable radius for you.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [radius]: the radius of the Gaussian, in pixels, not counting the center
+  /// pixel.
+  /// - [sigma]: the standard deviation of the Gaussian, in pixels.
+  /// - [gain]: the percentage of the difference between the original and the
+  /// blur image that is added back into the original.
+  /// - [threshold]: the threshold in pixels needed to apply the difference gain.
+  Future<bool> magickUnsharpMaskImage({
+    required double radius,
+    required double sigma,
+    required double gain,
+    required double threshold,
+  }) async =>
+      await _magickCompute(
+        _magickUnsharpMaskImage,
+        _MagickUnsharpMaskImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          gain,
+          threshold,
+        ),
+      );
+
+  /// MagickVignetteImage() softens the edges of the image in vignette style.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [radius]: the radius.
+  /// - [sigma]: the sigma.
+  /// - [x]: Define the x ellipse offset.
+  /// - [y]: Define the y ellipse offset.
+  Future<bool> magickVignetteImage({
+    required double radius,
+    required double sigma,
+    required int x,
+    required int y,
+  }) async =>
+      await _magickCompute(
+        _magickVignetteImage,
+        _MagickVignetteImageParams(
+          _wandPtr.address,
+          radius,
+          sigma,
+          x,
+          y,
+        ),
+      );
+
+  /// MagickWaveImage() creates a "ripple" effect in the image by shifting the
+  /// pixels vertically along a sine wave whose amplitude and wavelength is
+  /// specified by the given parameters.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [amplitude]: Define the amplitude of the sine wave.
+  /// - [waveLength]: Define the wave length of the sine wave.
+  /// - [method]: the pixel interpolation method.
+  Future<bool> magickWaveImage({
+    required double amplitude,
+    required double waveLength,
+    required PixelInterpolateMethod method,
+  }) async =>
+      await _magickCompute(
+        _magickWaveImage,
+        _MagickWaveImageParams(
+          _wandPtr.address,
+          amplitude,
+          waveLength,
+          method,
+        ),
+      );
+
+  /// MagickWaveletDenoiseImage() removes noise from the image using a wavelet
+  /// transform. The wavelet transform is a fast hierarchical scheme for
+  /// processing an image using a set of consecutive lowpass and high_pass
+  /// filters, followed by a decimation. This results in a decomposition into
+  /// different scales which can be regarded as different “frequency bands”,
+  /// determined by the mother wavelet.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [threshold]: set the threshold for smoothing.
+  /// - [softness]: attenuate the smoothing threshold.
+  Future<bool> magickWaveletDenoiseImage({
+    required double threshold,
+    required double softness,
+  }) async =>
+      await _magickCompute(
+        _magickWaveletDenoiseImage,
+        _MagickWaveletDenoiseImageParams(
+          _wandPtr.address,
+          threshold,
+          softness,
+        ),
+      );
+
+  /// MagickWhiteBalanceImage() applies white balancing to an image according to
+  /// a grayworld assumption in the LAB colorspace.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  Future<bool> magickWhiteBalanceImage() async => await _magickCompute(
+        _magickWhiteBalanceImage,
+        _wandPtr.address,
+      );
+
+  /// MagickWhiteThresholdImage() is like ThresholdImage() but force all pixels
+  /// above the threshold into white while leaving all pixels below the
+  /// threshold unchanged.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [threshold]: the threshold color.
+  Future<bool> magickWhiteThresholdImage(PixelWand threshold) async =>
+      await _magickCompute(
+        _magickWhiteThresholdImage,
+        _MagickWhiteThresholdImageParams(
+          _wandPtr.address,
+          threshold._wandPtr.address,
+        ),
+      );
 
   /// Writes an image to the specified filename. If the filename parameter is
   /// NULL, the image is written to the filename set by magickReadImage() or
@@ -5154,5 +5597,20 @@ class MagickWand {
       await _magickCompute(
         _magickWriteImage,
         _MagickWriteImageParams(_wandPtr.address, imageFilePath),
+      );
+
+  /// MagickWriteImages() writes an image or image sequence.
+  ///
+  /// {@macro magick_wand.method_runs_in_different_isolate}
+  /// - [imageFilePath]: the image filename.
+  /// - [adjoin]: join images into a single multi-image file.
+  Future<bool> magickWriteImages(String imageFilePath, bool adjoin) async =>
+      await _magickCompute(
+        _magickWriteImages,
+        _MagickWriteImagesParams(
+          _wandPtr.address,
+          imageFilePath,
+          adjoin,
+        ),
       );
 }

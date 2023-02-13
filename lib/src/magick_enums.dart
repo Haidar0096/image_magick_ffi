@@ -824,3 +824,18 @@ enum SparseColorMethod {
   static SparseColorMethod fromValue(int value) =>
       SparseColorMethod.values.firstWhere((e) => e.value == value);
 }
+
+/// Represents a statistic type
+enum StatisticType {
+  UndefinedStatistic,
+  GradientStatistic,
+  MaximumStatistic,
+  MeanStatistic,
+  MedianStatistic,
+  MinimumStatistic,
+  ModeStatistic,
+  NonpeakStatistic,
+  RootMeanSquareStatistic,
+  StandardDeviationStatistic,
+  ContrastStatistic,
+}

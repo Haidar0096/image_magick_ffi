@@ -360,3 +360,31 @@
 - [x] MagickSmushImages
 - [x] MagickSolarizeImage
 - [x] MagickSparseColorImage
+- [x] MagickSpliceImage
+- [x] MagickSpreadImage
+- [x] MagickStatisticImage
+- [x] MagickSteganoImage
+- [x] MagickStereoImage
+- [x] MagickStripImage
+- [x] MagickSwirlImage
+- [x] MagickTextureImage
+- [x] MagickThresholdImage
+- [x] MagickThresholdImageChannel
+- [x] MagickThumbnailImage
+- [x] MagickTintImage
+- [x] MagickTransformImageColorspace
+- [x] MagickTransparentPaintImage
+- [x] MagickTransposeImage
+- [x] MagickTransverseImage
+- [x] MagickTrimImage
+- [x] MagickUniqueImageColors
+- [x] MagickUnsharpMaskImage
+- [x] MagickVignetteImage
+- [x] MagickWaveImage
+- [x] MagickWaveletDenoiseImage
+- [x] MagickWhiteBalanceImage
+- [x] MagickWhiteThresholdImage
+- [x] MagickWriteImage
+- [ ] MagickWriteImageFile
+- [x] MagickWriteImages
+- [ ] MagickWriteImagesFile
