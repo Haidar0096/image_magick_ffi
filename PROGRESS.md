@@ -409,3 +409,68 @@
 - [x] PixelSetIteratorRow
 - [x] PixelSetLastIteratorRow
 - [x] PixelSyncIterator
+
+# [Pixel Wand Methods](https://imagemagick.org/api/pixel-wand.php)
+
+- [x] ClearPixelWand
+- [x] ClonePixelWand
+- [ ] ClonePixelWands
+- [x] DestroyPixelWand
+- [ ] DestroyPixelWands
+- [x] IsPixelWandSimilar
+- [x] IsPixelWand
+- [x] NewPixelWand
+- [x] NewPixelWands
+- [x] PixelClearException
+- [x] PixelGetAlpha
+- [ ] PixelGetAlphaQuantum
+- [x] PixelGetBlack
+- [ ] PixelGetBlackQuantum
+- [x] PixelGetBlue
+- [ ] PixelGetBlueQuantum
+- [x] PixelGetColorAsString
+- [x] PixelGetColorAsNormalizedString
+- [x] PixelGetColorCount
+- [x] PixelGetCyan
+- [ ] PixelGetCyanQuantum
+- [x] PixelGetException
+- [x] PixelGetExceptionType
+- [x] PixelGetFuzz
+- [x] PixelGetGreen
+- [ ] PixelGetGreenQuantum
+- [x] PixelGetHSL
+- [ ] PixelGetIndex
+- [x] PixelGetMagenta
+- [ ] PixelGetMagentaQuantum
+- [x] PixelGetMagickColor
+- [x] PixelGetPixel
+- [x] PixelGetQuantumPacket
+- [ ] PixelGetQuantumPixel
+- [x] PixelGetRed
+- [ ] PixelGetRedQuantum
+- [x] PixelGetYellow
+- [ ] PixelGetYellowQuantum
+- [x] PixelSetAlpha
+- [ ] PixelSetAlphaQuantum
+- [x] PixelSetBlack
+- [ ] PixelSetBlackQuantum
+- [x] PixelSetBlue
+- [ ] PixelSetBlueQuantum
+- [x] PixelSetColor
+- [x] PixelSetColorCount
+- [x] PixelSetColorFromWand
+- [x] PixelSetCyan
+- [ ] PixelSetCyanQuantum
+- [x] PixelSetFuzz
+- [x] PixelSetGreen
+- [ ] PixelSetGreenQuantum
+- [x] PixelSetHSL
+- [ ] PixelSetIndex
+- [x] PixelSetMagenta
+- [ ] PixelSetMagentaQuantum
+- [x] PixelSetPixelColor
+- [ ] PixelSetQuantumPixel
+- [x] PixelSetRed
+- [ ] PixelSetRedQuantum
+- [x] PixelSetYellow
+- [ ] PixelSetYellowQuantum

@@ -22,6 +22,10 @@ part 'drawing_wand.dart';
 
 part 'pixel_wand.dart';
 
+part 'pixel_wand_helpers.dart';
+
+part 'pixel_info.dart';
+
 part 'magick_enums.dart';
 
 part 'magick_global_methods.dart';

@@ -839,3 +839,25 @@ enum StatisticType {
   StandardDeviationStatistic,
   ContrastStatistic,
 }
+
+/// Represents a class type.
+enum ClassType {
+  UndefinedClass,
+  DirectClass,
+  PseudoClass,
+}
+
+/// Represents a pixel trait
+enum PixelTrait {
+  UndefinedPixelTrait(0),
+  CopyPixelTrait(1),
+  UpdatePixelTrait(2),
+  BlendPixelTrait(0);
+
+  final int value;
+
+  const PixelTrait(this.value);
+
+  static PixelTrait fromValue(int value) =>
+      PixelTrait.values.firstWhere((e) => e.value == value);
+}

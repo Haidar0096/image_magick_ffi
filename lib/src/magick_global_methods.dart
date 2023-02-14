@@ -6,6 +6,10 @@ part of 'image_magick_ffi.dart';
 /// If this plugin is being used within a Flutter app, this method will be
 /// automatically called on boot. Otherwise, you need to call this method before
 /// any usage of the plugin.
+///
+/// Note that this method will throw an exception if initializing the
+/// environment fails for any reason. In that case, you should not use the
+/// plugin before proper initialization.
 void initializeImageMagick() {
   _magickWandGenesis();
   int initDartApiResult =
