@@ -177,5 +177,5 @@ class PixelIterator {
   ///
   /// {@template pixel_iterator.runs_in_different_isolate}
   Future<bool> pixelSyncIterator() async =>
-      await _magickCompute(_pixelSyncIterator, _iteratorPtr.address).toBool();
+      await _magickCompute(_pixelSyncIterator, _iteratorPtr.address);
 }
