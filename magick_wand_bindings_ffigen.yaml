@@ -6,11 +6,12 @@ description: |
 output: 'lib/src/magick_wand_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/ffi_gen/image_magick/include/MagickWand/MagickWand.h'
+    - 'src/ffi_gen/image_magick/Q16-HDRI/include/MagickWand/MagickWand.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types
   // ignore_for_file: non_constant_identifier_names
+  // ignore_for_file: type = lint
 comments:
   style: any
   length: full
@@ -18,4 +19,4 @@ llvm-path:
   - '/usr/lib/llvm-14'
   - 'C:\Program Files\LLVM'
 compiler-opts:
-  - '-Isrc/ffi_gen/image_magick/include/'
+  - '-Isrc/ffi_gen/image_magick/Q16-HDRI/include/'
