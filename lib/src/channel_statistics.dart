@@ -1,5 +1,6 @@
 part of 'image_magick_ffi.dart';
 
+/// Represents the statistics of a channel.
 class ChannelStatistics {
   final int depth;
   final double area;
@@ -57,6 +58,45 @@ class ChannelStatistics {
             median: ptr.ref.median,
           );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChannelStatistics &&
+          runtimeType == other.runtimeType &&
+          depth == other.depth &&
+          area == other.area &&
+          minima == other.minima &&
+          maxima == other.maxima &&
+          sum == other.sum &&
+          sumSquared == other.sumSquared &&
+          sumCubed == other.sumCubed &&
+          sumFourthPower == other.sumFourthPower &&
+          mean == other.mean &&
+          variance == other.variance &&
+          standardDeviation == other.standardDeviation &&
+          kurtosis == other.kurtosis &&
+          skewness == other.skewness &&
+          entropy == other.entropy &&
+          median == other.median;
+
+  @override
+  int get hashCode =>
+      depth.hashCode ^
+      area.hashCode ^
+      minima.hashCode ^
+      maxima.hashCode ^
+      sum.hashCode ^
+      sumSquared.hashCode ^
+      sumCubed.hashCode ^
+      sumFourthPower.hashCode ^
+      mean.hashCode ^
+      variance.hashCode ^
+      standardDeviation.hashCode ^
+      kurtosis.hashCode ^
+      skewness.hashCode ^
+      entropy.hashCode ^
+      median.hashCode;
 
   @override
   String toString() =>

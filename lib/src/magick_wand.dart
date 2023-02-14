@@ -57,6 +57,16 @@ class MagickWand {
   /// stream.
   StreamController<dynamic>? _progressMonitorStreamController;
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MagickWand &&
+          runtimeType == other.runtimeType &&
+          _wandPtr == other._wandPtr;
+
+  @override
+  int get hashCode => _wandPtr.hashCode;
+
   MagickWand._(this._wandPtr);
 
   static MagickWand? _fromAddress(int address) => address == 0

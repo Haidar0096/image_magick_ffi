@@ -54,6 +54,41 @@ class KernelInfo {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KernelInfo &&
+          runtimeType == other.runtimeType &&
+          type == other.type &&
+          width == other.width &&
+          height == other.height &&
+          x == other.x &&
+          y == other.y &&
+          values == other.values &&
+          minimum == other.minimum &&
+          maximum == other.maximum &&
+          negativeRange == other.negativeRange &&
+          positiveRange == other.positiveRange &&
+          angle == other.angle &&
+          next == other.next &&
+          signature == other.signature;
+
+  @override
+  int get hashCode =>
+      type.hashCode ^
+      width.hashCode ^
+      height.hashCode ^
+      x.hashCode ^
+      y.hashCode ^
+      values.hashCode ^
+      minimum.hashCode ^
+      maximum.hashCode ^
+      negativeRange.hashCode ^
+      positiveRange.hashCode ^
+      angle.hashCode ^
+      next.hashCode ^
+      signature.hashCode;
+
+  @override
   String toString() =>
       'KernelInfo{type: $type, width: $width, height: $height, x: $x, y: $y, values: $values, minimum: $minimum, maximum: $maximum, negativeRange: $negativeRange, positiveRange: $positiveRange, angle: $angle, next: $next, signature: $signature}';
 }

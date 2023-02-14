@@ -1,8 +1,23 @@
 part of 'image_magick_ffi.dart';
 
-// A pixel iterator that can be used to iterate over the pixels of an image.
+/// A pixel iterator that can be used to iterate over the pixels of an image.
+///
+/// Create a new pixel iterator using [newPixelIterator] or
+/// [newPixelRegionIterator].
+///
+/// When done with a PixelIterator, destroy it with [destroyPixelIterator].
 class PixelIterator {
   final Pointer<mwbg.PixelIterator> _iteratorPtr;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PixelIterator &&
+          runtimeType == other.runtimeType &&
+          _iteratorPtr == other._iteratorPtr;
+
+  @override
+  int get hashCode => _iteratorPtr.hashCode;
 
   const PixelIterator._(this._iteratorPtr);
 
@@ -30,7 +45,7 @@ class PixelIterator {
 
   /// Returns a new pixel iterator.
   ///
-  /// {@template pixel_iterator.don't_forget_to_destroy_the_retured_iterator}
+  /// {@template pixel_iterator.don't_forget_to_destroy_the_returned_iterator}
   /// Don't forget to destroy the returned iterator using [destroyPixelIterator]
   /// when you are done with it.
   /// {@endtemplate}
@@ -44,7 +59,7 @@ class PixelIterator {
       _magickWandBindings.PixelClearIteratorException(_iteratorPtr).toBool();
 
   /// Returns a new pixel iterator for a region of the image.
-  /// {@macro pixel_iterator.don't_forget_to_destroy_the_retured_iterator}
+  /// {@macro pixel_iterator.don't_forget_to_destroy_the_returned_iterator}
   /// - [x] The x offset of the region.
   /// - [y] The y offset of the region.
   /// - [width] The width of the region.
