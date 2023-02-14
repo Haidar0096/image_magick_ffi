@@ -388,3 +388,24 @@
 - [ ] MagickWriteImageFile
 - [x] MagickWriteImages
 - [ ] MagickWriteImagesFile
+
+# [Pixel Iterator Methods](https://imagemagick.org/api/pixel-iterator.php)
+
+- [x] ClearPixelIterator
+- [x] ClonePixelIterator
+- [x] DestroyPixelIterator
+- [x] IsPixelIterator
+- [x] NewPixelIterator
+- [x] PixelClearIteratorException
+- [x] NewPixelRegionIterator
+- [x] PixelGetCurrentIteratorRow
+- [x] PixelGetIteratorException
+- [x] PixelGetIteratorExceptionType
+- [x] PixelGetIteratorRow
+- [x] PixelGetNextIteratorRow
+- [x] PixelGetPreviousIteratorRow
+- [x] PixelResetIterator
+- [x] PixelSetFirstIteratorRow
+- [x] PixelSetIteratorRow
+- [x] PixelSetLastIteratorRow
+- [x] PixelSyncIterator

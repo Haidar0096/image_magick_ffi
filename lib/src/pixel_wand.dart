@@ -6,5 +6,9 @@ class PixelWand {
 
   const PixelWand._(this._wandPtr);
 
+  static PixelWand? _fromAddress(int address) => address == 0
+      ? null
+      : PixelWand._(Pointer<mwbg.PixelWand>.fromAddress(address));
+
 // TODO: add fields and methods later
 }

@@ -16,6 +16,8 @@ import 'package:image_magick_ffi/src/plugin_bindings_generated.dart' as pbg;
 
 part 'magick_wand.dart';
 
+part 'magick_wand_helpers.dart';
+
 part 'drawing_wand.dart';
 
 part 'pixel_wand.dart';
@@ -26,13 +28,15 @@ part 'magick_global_methods.dart';
 
 part 'kernel_info.dart';
 
-part 'magick_wand_helper_classes.dart';
-
 part 'magick_compute.dart';
 
 part 'channel_features.dart';
 
 part 'channel_statistics.dart';
+
+part 'pixel_iterator.dart';
+
+part 'pixel_iterator_helpers.dart';
 
 typedef _PluginFfiBindings = pbg.PluginFfiBindings;
 typedef _MagickWandFfiBindings = mwbg.MagickWandFfiBindings;
