@@ -1263,10 +1263,145 @@ class DrawingWand {
   void drawSetStrokeOpacity(double opacity) =>
       _magickWandBindings.DrawSetStrokeOpacity(_wandPtr, opacity);
 
-  // TODO: add remaining methods
+  /// DrawSetStrokeWidth() sets the width of the stroke used to draw object
+  /// outlines.
+  /// - [strokeWidth] : the stroke width
+  void drawSetStrokeWidth(double strokeWidth) =>
+      _magickWandBindings.DrawSetStrokeWidth(_wandPtr, strokeWidth);
+
+  /// DrawSetTextAlignment() specifies a text alignment to be applied when
+  /// annotating with text.
+  /// - [alignment] : text alignment
+  void drawSetTextAlignment(AlignType alignment) =>
+      _magickWandBindings.DrawSetTextAlignment(_wandPtr, alignment.index);
+
+  /// DrawSetTextAntialias() controls whether text is antialiased. Text is
+  /// antialiased by default.
+  /// - [textAntialias] : antialias boolean. Set to false to disable
+  ///  antialiasing.
+  void drawSetTextAntialias(bool textAntialias) =>
+      _magickWandBindings.DrawSetTextAntialias(
+        _wandPtr,
+        textAntialias.toInt(),
+      );
+
+  /// DrawSetTextDecoration() specifies a decoration to be applied when
+  /// annotating with text.
+  /// - [decoration] : the text decoration
+  void drawSetTextDecoration(DecorationType decoration) =>
+      _magickWandBindings.DrawSetTextDecoration(_wandPtr, decoration.index);
+
+  /// DrawSetTextDirection() specifies the direction to be used when annotating
+  /// with text.
+  /// - [direction] : the text direction
+  void drawSetTextDirection(DirectionType direction) =>
+      _magickWandBindings.DrawSetTextDirection(_wandPtr, direction.index);
+
+  /// DrawSetTextEncoding() specifies the code set to use for text annotations.
+  /// The only character encoding which may be specified at this time is "UTF-8"
+  /// for representing Unicode as a sequence of bytes. Specify an empty string
+  /// to set text encoding to the system's default. Successful text annotation
+  /// using Unicode may require fonts designed to support Unicode.
+  /// - [encoding] : character string specifying text encoding
+  void drawSetTextEncoding(String encoding) => using(
+        (Arena arena) => _magickWandBindings.DrawSetTextEncoding(
+          _wandPtr,
+          encoding.toNativeUtf8(allocator: arena).cast(),
+        ),
+      );
+
+  /// DrawSetTextKerning() sets the spacing between characters in text.
+  /// - [kerning] : text kerning
+  void drawSetTextKerning(double kerning) =>
+      _magickWandBindings.DrawSetTextKerning(_wandPtr, kerning);
+
+  /// - [interlineSpacing] : text line spacing
+  void drawSetTextInterlineSpacing(double interlineSpacing) =>
+      _magickWandBindings.DrawSetTextInterlineSpacing(
+        _wandPtr,
+        interlineSpacing,
+      );
+
+  /// DrawSetTextInterwordSpacing() sets the spacing between words in text.
+  /// - [interwordSpacing] : text word spacing
+  void drawSetTextInterwordSpacing(double interwordSpacing) =>
+      _magickWandBindings.DrawSetTextInterwordSpacing(
+        _wandPtr,
+        interwordSpacing,
+      );
+
+  /// DrawSetTextUnderColor() specifies the color of a background rectangle to
+  /// place under text annotations.
+  /// - [underWand] : text under wand
+  void drawSetTextUnderColor(PixelWand underWand) =>
+      _magickWandBindings.DrawSetTextUnderColor(
+        _wandPtr,
+        underWand._wandPtr,
+      );
+
+  /// DrawSetVectorGraphics() sets the vector graphics associated with the
+  /// specified wand. Use this method with DrawGetVectorGraphics() as a method
+  /// to persist the vector graphics state.
+  ///
+  /// {@macro drawing_wand.runs_in_different_isolate}
+  /// - [xml] : the drawing wand XML.
+  Future<void> drawSetVectorGraphics(String xml) async => await _magickCompute(
+        _drawSetVectorGraphics,
+        _DrawSetVectorGraphicsParams(
+          _wandPtr.address,
+          xml,
+        ),
+      );
+
+  /// DrawSkewX() skews the current coordinate system in the horizontal
+  /// direction.
+  /// - [degrees] : number of degrees to skew the coordinates
+  void drawSkewX(double degrees) =>
+      _magickWandBindings.DrawSkewX(_wandPtr, degrees);
+
+  /// DrawSkewY() skews the current coordinate system in the vertical direction.
+  /// - [degrees] : number of degrees to skew the coordinates
+  void drawSkewY(double degrees) =>
+      _magickWandBindings.DrawSkewY(_wandPtr, degrees);
+
+  /// DrawTranslate() applies a translation to the current coordinate system
+  /// which moves the coordinate system origin to the specified coordinate.
+  /// - [x] : new x ordinate for coordinate system origin
+  /// - [y] : new y ordinate for coordinate system origin
+  void drawTranslate(double x, double y) =>
+      _magickWandBindings.DrawTranslate(_wandPtr, x, y);
+
+  /// DrawSetViewbox() sets the overall canvas size to be recorded with the
+  /// drawing vector data. Usually this will be specified using the same size as
+  /// the canvas image. When the vector data is saved to SVG or MVG formats, the
+  /// viewbox is use to specify the size of the canvas image that a viewer will
+  /// render the vector data on.
+  /// - [x1] : left x ordinate
+  /// - [y1] : top y ordinate
+  /// - [x2] : right x ordinate
+  /// - [y2] : bottom y ordinate
+  void drawSetViewbox(double x1, double y1, double x2, double y2) =>
+      _magickWandBindings.DrawSetViewbox(_wandPtr, x1, y1, x2, y2);
+
+  /// IsDrawingWand() returns true if the wand is verified as a drawing wand.
+  bool isDrawingWand() => _magickWandBindings.IsDrawingWand(_wandPtr).toBool();
 
   /// NewDrawingWand() returns a drawing wand required for all other methods in
   /// the API.
   factory DrawingWand.newDrawingWand() =>
       DrawingWand._(_magickWandBindings.NewDrawingWand());
+
+  /// PopDrawingWand() destroys the current drawing wand and returns to the
+  /// previously pushed drawing wand. Multiple drawing wands may exist. It is an
+  /// error to attempt to pop more drawing wands than have been pushed, and it is
+  /// proper form to pop all drawing wands which have been pushed.
+  bool popDrawingWand() =>
+      _magickWandBindings.PopDrawingWand(_wandPtr).toBool();
+
+  /// PushDrawingWand() clones the current drawing wand to create a new drawing
+  /// wand. The original drawing wand(s) may be returned to by invoking
+  /// PopDrawingWand(). The drawing wands are stored on a drawing wand stack. For
+  /// every Pop there must have already been an equivalent Push.
+  bool pushDrawingWand() =>
+      _magickWandBindings.PushDrawingWand(_wandPtr).toBool();
 }

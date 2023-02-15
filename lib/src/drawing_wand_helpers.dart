@@ -92,3 +92,20 @@ Future<String?> _drawGetVectorGraphics(int drawingWantPtrAddress) async {
   _magickRelinquishMemory(vectorGraphicsPtr.cast());
   return vectorGraphics;
 }
+
+class _DrawSetVectorGraphicsParams {
+  final int drawingWantPtrAddress;
+  final String xml;
+
+  const _DrawSetVectorGraphicsParams(
+    this.drawingWantPtrAddress,
+    this.xml,
+  );
+}
+
+void _drawSetVectorGraphics(_DrawSetVectorGraphicsParams params) => using(
+      (Arena arena) => _magickWandBindings.DrawSetVectorGraphics(
+        Pointer<mwbg.DrawingWand>.fromAddress(params.drawingWantPtrAddress),
+        params.xml.toNativeUtf8(allocator: arena).cast(),
+      ),
+    );

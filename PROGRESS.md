@@ -594,6 +594,23 @@
 - [x] DrawSetStrokeLineJoin
 - [x] DrawSetStrokeMiterLimit
 - [x] DrawSetStrokeOpacity
-
-
+- [x] DrawSetStrokeWidth
+- [x] DrawSetTextAlignment
+- [x] DrawSetTextAntialias
+- [x] DrawSetTextDecoration
+- [x] DrawSetTextDirection
+- [x] DrawSetTextEncoding
+- [x] DrawSetTextKerning
+- [x] DrawSetTextInterlineSpacing
+- [x] DrawSetTextInterwordSpacing
+- [x] DrawSetTextUnderColor
+- [x] DrawSetVectorGraphics
+- [x] DrawSkewX
+- [x] DrawSkewY
+- [x] DrawTranslate
+- [x] DrawSetViewbox
+- [x] IsDrawingWand
 - [x] NewDrawingWand
+- [ ] PeekDrawingWand [tedious, will only implement if enough people ask]
+- [x] PopDrawingWand
+- [x] PushDrawingWand
