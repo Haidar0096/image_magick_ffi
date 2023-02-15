@@ -25,16 +25,16 @@ typedef MagickProgressMonitor = void Function(
 /// Initialize an instance of it with [MagickWand.newMagickWand].
 /// When done from it, call [destroyMagickWand] to release the resources.
 ///
-/// <strong><li>
+/// <li><strong>
 /// Never use a [MagickWand] after calling [destroyMagickWand] on it.
-/// </li></strong>
-/// <strong><li>
+/// </strong></li>
+/// <li><strong>
 /// Some methods of the MagickWand accept params like strings, there is no way
 ///  to validate what you are going to provide to these params by the plugin
 ///  itself, it is your responsibility to pass valid values to these params as
 /// per the documentation, otherwise an invalid state may be reached and the
 ///  app may crash.
-/// </li></strong>
+/// </strong></li>
 ///
 /// - See `https://imagemagick.org/script/magick-wand.php` for more information
 /// about the backing C-API.
