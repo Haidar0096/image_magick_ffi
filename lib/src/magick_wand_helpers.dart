@@ -1780,8 +1780,7 @@ Future<String?> _magickIdentifyImage(int wandPtrAddress) async {
   final Pointer<Char> resultPtr = _magickWandBindings.MagickIdentifyImage(
     Pointer<mwbg.MagickWand>.fromAddress(wandPtrAddress),
   );
-  final String? result =
-      resultPtr == nullptr ? null : resultPtr.cast<Utf8>().toDartString();
+  final String? result = resultPtr.toNullableString();
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }

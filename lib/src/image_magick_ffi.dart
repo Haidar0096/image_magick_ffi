@@ -20,6 +20,16 @@ part 'magick_wand_helpers.dart';
 
 part 'drawing_wand.dart';
 
+part 'drawing_wand_helpers.dart';
+
+part 'affine_matrix.dart';
+
+part 'point_info.dart';
+
+part 'segment_info.dart';
+
+part 'type_metric.dart';
+
 part 'pixel_wand.dart';
 
 part 'pixel_wand_helpers.dart';

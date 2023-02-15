@@ -51,3 +51,8 @@
 
 * Added new bindings for MagickWand methods.
 * Improved the codebase quality and documentation.
+
+## 0.0.1-dev.11 - Date to be set
+
+* Added new bindings for MagickWand methods.
+* Improved the codebase quality and documentation.

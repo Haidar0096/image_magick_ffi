@@ -825,7 +825,7 @@ enum SparseColorMethod {
       SparseColorMethod.values.firstWhere((e) => e.value == value);
 }
 
-/// Represents a statistic type
+/// Represents a statistic type.
 enum StatisticType {
   UndefinedStatistic,
   GradientStatistic,
@@ -847,7 +847,7 @@ enum ClassType {
   PseudoClass,
 }
 
-/// Represents a pixel trait
+/// Represents a pixel trait.
 enum PixelTrait {
   UndefinedPixelTrait(0),
   CopyPixelTrait(1),
@@ -860,4 +860,94 @@ enum PixelTrait {
 
   static PixelTrait fromValue(int value) =>
       PixelTrait.values.firstWhere((e) => e.value == value);
+}
+
+/// Represents a paint method.
+enum PaintMethod {
+  UndefinedMethod,
+  PointMethod,
+  ReplaceMethod,
+  FloodfillMethod,
+  FillToBorderMethod,
+  ResetMethod,
+}
+
+/// Represents a fill rule.
+enum FillRule {
+  UndefinedRule,
+  EvenOddRule,
+  NonZeroRule,
+}
+
+/// Represents a clip path unit.
+enum ClipPathUnits {
+  UndefinedPathUnits,
+  UserSpace,
+  UserSpaceOnUse,
+  ObjectBoundingBox,
+}
+
+/// Represents a stretch type.
+enum StretchType {
+  UndefinedStretch,
+  NormalStretch,
+  UltraCondensedStretch,
+  ExtraCondensedStretch,
+  CondensedStretch,
+  SemiCondensedStretch,
+  SemiExpandedStretch,
+  ExpandedStretch,
+  ExtraExpandedStretch,
+  UltraExpandedStretch,
+  AnyStretch,
+}
+
+/// Represents a style type.
+enum StyleType {
+  UndefinedStyle,
+  NormalStyle,
+  ItalicStyle,
+  ObliqueStyle,
+  AnyStyle,
+  BoldStyle, /* deprecated */
+}
+
+/// Represents a line cap.
+enum LineCap {
+  UndefinedCap,
+  ButtCap,
+  RoundCap,
+  SquareCap,
+}
+
+/// Represents a line join.
+enum LineJoin {
+  UndefinedJoin,
+  MiterJoin,
+  RoundJoin,
+  BevelJoin,
+}
+
+/// Represents an align type.
+enum AlignType {
+  UndefinedAlign,
+  LeftAlign,
+  CenterAlign,
+  RightAlign,
+}
+
+/// Represents a text decoration
+enum DecorationType {
+  UndefinedDecoration,
+  NoDecoration,
+  UnderlineDecoration,
+  OverlineDecoration,
+  LineThroughDecoration,
+}
+
+/// Represents a text direction.
+enum DirectionType {
+  UndefinedDirection,
+  RightToLeftDirection,
+  LeftToRightDirection,
 }

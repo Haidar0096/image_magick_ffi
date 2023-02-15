@@ -29,10 +29,7 @@ String? magickQueryConfigureOption(String option) => using((Arena arena) {
           option.toNativeUtf8(allocator: arena).cast();
       final Pointer<Char> resultPtr =
           _magickWandBindings.MagickQueryConfigureOption(optionPtr);
-      if (resultPtr == nullptr) {
-        return null;
-      }
-      final String result = resultPtr.cast<Utf8>().toDartString();
+      final String? result = resultPtr.toNullableString();
       _magickRelinquishMemory(resultPtr.cast());
       return result;
     });
@@ -102,26 +99,25 @@ bool isMagickWandInstantiated() =>
 
 /// Returns the ImageMagick API copyright as a string.
 String magickGetCopyright() =>
-    _magickWandBindings.MagickGetCopyright().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetCopyright().toNullableString()!;
 
 /// Returns the ImageMagick home URL.
 String magickGetHomeURL() {
   Pointer<Char> resultPtr = _magickWandBindings.MagickGetHomeURL();
-  String result = resultPtr.cast<Utf8>().toDartString();
+  String result = resultPtr.toNullableString()!;
   _magickRelinquishMemory(resultPtr.cast());
   return result;
 }
 
 /// Returns the ImageMagick package name.
 String magickGetPackageName() =>
-    _magickWandBindings.MagickGetPackageName().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetPackageName().toNullableString()!;
 
 /// Returns the ImageMagick quantum depth.
 MagickGetQuantumDepthResult magickGetQuantumDepth() => using((Arena arena) {
       final Pointer<Size> depthPtr = arena();
       String depthString = _magickWandBindings.MagickGetQuantumDepth(depthPtr)
-          .cast<Utf8>()
-          .toDartString();
+          .toNullableString()!;
       return MagickGetQuantumDepthResult(depthPtr.value, depthString);
     });
 
@@ -129,14 +125,13 @@ MagickGetQuantumDepthResult magickGetQuantumDepth() => using((Arena arena) {
 MagickGetQuantumRangeResult magickGetQuantumRange() => using((Arena arena) {
       final Pointer<Size> rangePtr = arena();
       String rangeString = _magickWandBindings.MagickGetQuantumRange(rangePtr)
-          .cast<Utf8>()
-          .toDartString();
+          .toNullableString()!;
       return MagickGetQuantumRangeResult(rangePtr.value, rangeString);
     });
 
 /// Returns the ImageMagick release date.
 String magickGetReleaseDate() =>
-    _magickWandBindings.MagickGetReleaseDate().cast<Utf8>().toDartString();
+    _magickWandBindings.MagickGetReleaseDate().toNullableString()!;
 
 /// Returns the specified resource in megabytes.
 int magickGetResource(ResourceType type) =>
@@ -149,9 +144,8 @@ int magickGetResourceLimit(ResourceType type) =>
 /// Returns the ImageMagick version.
 MagickGetVersionResult magickGetVersion() => using((Arena arena) {
       final Pointer<Size> versionPtr = arena();
-      String versionString = _magickWandBindings.MagickGetVersion(versionPtr)
-          .cast<Utf8>()
-          .toDartString();
+      String versionString =
+          _magickWandBindings.MagickGetVersion(versionPtr).toNullableString()!;
       return MagickGetVersionResult(versionPtr.value, versionString);
     });
 

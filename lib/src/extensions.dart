@@ -123,7 +123,7 @@ extension CharPointerPointerExtension on Pointer<Pointer<Char>> {
     }
     final List<String> list = [];
     for (int i = 0; i < length; i++) {
-      list.add(this[i].cast<Utf8>().toDartString());
+      list.add(this[i].toNullableString()!);
     }
     return list;
   }
@@ -266,4 +266,12 @@ extension IntExtension on int {
 extension BoolExtension on bool {
   /// Creates an int from this bool.
   int toInt() => this ? 1 : 0;
+}
+
+extension CharPointerExtension on Pointer<Char> {
+  /// Creates a nullable `String` from this pointer. If this pointer is equal
+  /// to `nullptr`, null is returned. Otherwise, the pointer is cast to `Utf8`
+  /// and converted to a Dart string.
+  String? toNullableString() =>
+      this == nullptr ? null : cast<Utf8>().toDartString();
 }

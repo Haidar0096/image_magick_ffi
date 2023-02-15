@@ -116,7 +116,7 @@ class PixelIterator {
           final PixelGetIteratorExceptionResult result =
               PixelGetIteratorExceptionResult(
             ExceptionType.fromValue(severityPtr.value),
-            descriptionPtr.cast<Utf8>().toDartString(),
+            descriptionPtr.toNullableString()!,
           );
           _magickRelinquishMemory(descriptionPtr.cast());
           return result;

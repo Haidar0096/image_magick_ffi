@@ -91,8 +91,7 @@ class PixelWand {
   String? pixelGetColorAsString() {
     final Pointer<Char> colorPtr =
         _magickWandBindings.PixelGetColorAsString(_wandPtr);
-    if (colorPtr == nullptr) return null;
-    String color = colorPtr.cast<Utf8>().toDartString();
+    String? color = colorPtr.toNullableString();
     _magickRelinquishMemory(colorPtr.cast());
     return color;
   }
@@ -102,8 +101,7 @@ class PixelWand {
   String? pixelGetColorAsNormalizedString() {
     final Pointer<Char> colorPtr =
         _magickWandBindings.PixelGetColorAsNormalizedString(_wandPtr);
-    if (colorPtr == nullptr) return null;
-    String color = colorPtr.cast<Utf8>().toDartString();
+    String? color = colorPtr.toNullableString();
     _magickRelinquishMemory(colorPtr.cast());
     return color;
   }
@@ -126,7 +124,7 @@ class PixelWand {
           );
           final PixelGetExceptionResult result = PixelGetExceptionResult(
             ExceptionType.fromValue(severityPtr.value),
-            descriptionPtr.cast<Utf8>().toDartString(),
+            descriptionPtr.toNullableString()!,
           );
           _magickRelinquishMemory(descriptionPtr.cast());
           return result;

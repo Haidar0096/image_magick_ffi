@@ -124,7 +124,7 @@ class MagickWand {
         final MagickGetExceptionResult magickGetExceptionResult =
             MagickGetExceptionResult(
           ExceptionType.fromValue(severity.value),
-          description.cast<Utf8>().toDartString(),
+          description.toNullableString()!,
         );
         _magickRelinquishMemory(description.cast());
         return magickGetExceptionResult;
@@ -320,24 +320,20 @@ class MagickWand {
       _magickWandBindings.MagickGetCompressionQuality(_wandPtr);
 
   /// Returns the filename associated with an image sequence.
-  String magickGetFilename() => _magickWandBindings.MagickGetFilename(_wandPtr)
-      .cast<Utf8>()
-      .toDartString();
+  String magickGetFilename() =>
+      _magickWandBindings.MagickGetFilename(_wandPtr).toNullableString()!;
 
   /// Returns the font associated with the MagickWand.
   String? magickGetFont() {
     final Pointer<Char> fontPtr = _magickWandBindings.MagickGetFont(_wandPtr);
-    if (fontPtr == nullptr) {
-      return null;
-    }
-    final String result = fontPtr.cast<Utf8>().toDartString();
+    final String? result = fontPtr.toNullableString();
     _magickRelinquishMemory(fontPtr.cast());
     return result;
   }
 
   /// Returns the format of the magick wand.
   String magickGetFormat() =>
-      _magickWandBindings.MagickGetFormat(_wandPtr).cast<Utf8>().toDartString();
+      _magickWandBindings.MagickGetFormat(_wandPtr).toNullableString()!;
 
   /// Gets the wand gravity.
   GravityType magickGetGravity() =>
@@ -349,10 +345,7 @@ class MagickWand {
             artifact.toNativeUtf8(allocator: arena).cast();
         final Pointer<Char> resultPtr =
             _magickWandBindings.MagickGetImageArtifact(_wandPtr, artifactPtr);
-        if (resultPtr == nullptr) {
-          return null;
-        }
-        final String result = resultPtr.cast<Utf8>().toDartString();
+        final String? result = resultPtr.toNullableString();
         _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
@@ -409,10 +402,7 @@ class MagickWand {
             property.toNativeUtf8(allocator: arena).cast();
         final Pointer<Char> resultPtr =
             _magickWandBindings.MagickGetImageProperty(_wandPtr, propertyPtr);
-        if (resultPtr == nullptr) {
-          return null;
-        }
-        final String result = resultPtr.cast<Utf8>().toDartString();
+        final String? result = resultPtr.toNullableString();
         _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
@@ -447,10 +437,7 @@ class MagickWand {
         final Pointer<Char> keyPtr = key.toNativeUtf8(allocator: arena).cast();
         final Pointer<Char> resultPtr =
             _magickWandBindings.MagickGetOption(_wandPtr, keyPtr);
-        if (resultPtr == nullptr) {
-          return null;
-        }
-        final String result = resultPtr.cast<Utf8>().toDartString();
+        final String? result = resultPtr.toNullableString();
         _magickRelinquishMemory(resultPtr.cast());
         return result;
       });
@@ -2671,7 +2658,7 @@ class MagickWand {
   String magickGetImageFilename() {
     final Pointer<Char> filenamePtr =
         _magickWandBindings.MagickGetImageFilename(_wandPtr);
-    final String filename = filenamePtr.cast<Utf8>().toDartString();
+    final String filename = filenamePtr.toNullableString()!;
     _magickRelinquishMemory(filenamePtr.cast());
     return filename;
   }
@@ -2681,7 +2668,7 @@ class MagickWand {
   String magickGetImageFormat() {
     final Pointer<Char> formatPtr =
         _magickWandBindings.MagickGetImageFormat(_wandPtr);
-    final String format = formatPtr.cast<Utf8>().toDartString();
+    final String format = formatPtr.toNullableString()!;
     _magickRelinquishMemory(formatPtr.cast());
     return format;
   }
@@ -2896,10 +2883,7 @@ class MagickWand {
         (Arena arena) {
           final Pointer<Char> signaturePtr =
               _magickWandBindings.MagickGetImageSignature(_wandPtr);
-          if (signaturePtr == nullptr) {
-            return null;
-          }
-          String signature = signaturePtr.cast<Utf8>().toDartString();
+          String? signature = signaturePtr.toNullableString();
           _magickRelinquishMemory(signaturePtr.cast());
           return signature;
         },
