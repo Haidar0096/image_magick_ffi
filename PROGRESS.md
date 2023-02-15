@@ -614,3 +614,21 @@
 - [ ] PeekDrawingWand [tedious, will only implement if enough people ask]
 - [x] PopDrawingWand
 - [x] PushDrawingWand
+
+# [WandView](https://imagemagick.org/api/wand-view.php)
+
+- [ ] CloneWandView
+- [ ] DestroyWandView
+- [ ] DuplexTransferWandViewIterator
+- [ ] GetWandViewException
+- [ ] GetWandViewExtent
+- [ ] GetWandViewIterator
+- [ ] GetWandViewIterator
+- [ ] GetWandViewWand
+- [ ] IsWandView
+- [ ] NewWandView
+- [ ] NewWandViewExtent
+- [ ] SetWandViewDescription
+- [ ] SetWandViewIterator
+- [ ] TransferWandViewIterator
+- [ ] UpdateWandViewIterator
