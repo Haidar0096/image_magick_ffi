@@ -1,10 +1,13 @@
-# ⚠️Attention⚠️
-
-This is not a stable release. It is a development release for beta-testers to try out the plugin and
-report bugs. It is not recommended to use this plugin in production apps yet.
+# This package have been split
+Because ImageMagick comes with different variants (Q8, Q8-HDRI, Q16, Q16-HDRI) and each variant has separate dependencies, it was decided to split this package into 4 packages, one for each variant. This package is now deprecated and will no longer be maintained. Please use one of the following packages instead:
+- [image_magick_q8](https://pub.dev/packages/image_magick_q8)
+- [image_magick_q8_hdri](https://pub.dev/packages/image_magick_q8_hdri)
+- [image_magick_q16](https://pub.dev/packages/image_magick_q16)
+- [image_magick_q16_hdri](https://pub.dev/packages/image_magick_q16_hdri)
 
 # Table Of Contents
 
+- [This package have been split](#this-package-have-been-split)
 - [Table Of Contents](#table-of-contents)
 - [Contributors](#contributors)
 - [ImageMagickFFi Plugin](#imagemagickffi-plugin)

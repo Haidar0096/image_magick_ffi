@@ -54,5 +54,9 @@
 
 ## 0.0.1-dev.11 - Date to be set
 
-* Added new bindings for MagickWand methods.
-* Improved the codebase quality and documentation.
+* Deprecated the plugin in favor of splitting it into the 4 variants:
+  [image_magick_q8](https://pub.dev/packages/image_magick_q8),
+  [image_magick_q8_hdri](https://pub.dev/packages/image_magick_q8_hdri),
+  [image_magick_q16](https://pub.dev/packages/image_magick_q16),
+  [image_magick_q16_hdri](https://pub.dev/packages/image_magick_q16_hdri).
+  
